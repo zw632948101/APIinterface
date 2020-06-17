@@ -1,12 +1,14 @@
+from tools.DataBaseOperate import DataBaseOperate
+from tools.Config import Config, Log
 import random
 import os
-from utils.databaseConnection.DataBaseOperate import DataBaseOperate
-from utils.environmentConfiguration import config
+import datetime
 
-host_ip = config.get('database').get(config.get('run')).get('host_ip')
+host_ip = Config('config').data['database'][Config('config').data['run']]['host_ip']
 
 
 class ConfigInformationSql(object):
+    L = Log("ConfigInformationSql")
     db = DataBaseOperate()
 
     def query_province_id_by_province_name(self, province_name):
@@ -36,6 +38,7 @@ class ConfigInformationSql(object):
 
 
 class NectarSourceInformationSql(object):
+    L = Log("NectarSourceInformationSql")
     db = DataBaseOperate()
 
     def sql_nectar_source_id_by_status(self):
@@ -78,6 +81,7 @@ class NectarSourceInformationSql(object):
         """
         sql = "SELECT tc.`key` FROM `fc-bee`.t_config tc WHERE tc.`code` = 10002 AND tc.is_delete = 0;"
         return self.db.operate(host_ip, sql)
+
     def sql_random_nectar_source_type(self, n):
         """
         随机查询n个蜜源品种类型
@@ -103,8 +107,19 @@ class NectarSourceInformationSql(object):
         sql = "SELECT tr.`id` FROM `fc-bee`.t_region tr WHERE tr.`level` = '%s' AND tr.is_delete = 0;" % level
         return self.db.operate(host_ip, sql)
 
+    def sql_nectar_source_last_seetle_time(self, nectar_source_id):
+        """
+        查询指定蜂场的最后一次入驻时间
+        :return:
+        """
+        sql = 'SELECT enter_time FROM `fc-bee`.t_enter_record WHERE is_delete = 0 AND nectar_source_id = %s AND leave_time IS NULL ' \
+              'ORDER BY enter_time DESC LIMIT 1;' % nectar_source_id
+        enter_times = self.db.operate(host_ip, sql)[0]
+        last_enter_time = datetime.datetime.strptime(enter_times.get("enter_time"), "%Y-%m-%d")
+        return int(datetime.datetime.timestamp(last_enter_time)*1000)
 
 class ContainerInformationSql(object):
+    L = Log("NectarSourceInformationSql")
     db = DataBaseOperate()
 
     def sql_container_id_by_status(self):
@@ -179,6 +194,7 @@ class ContainerInformationSql(object):
 
 
 class ExtractInformationSql(object):
+    L = Log("ExtractInformationSql")
     db = DataBaseOperate()
 
     def sql_all_extract_record(self):
@@ -218,6 +234,7 @@ class ExtractInformationSql(object):
 
 
 class StatisticsSql(object):
+    L = Log("StatisticsSql")
     db = DataBaseOperate()
 
     def sql_statistics_nectar_source(self):
@@ -338,6 +355,7 @@ class StatisticsSql(object):
 
 
 class ClinteleSql(DataBaseOperate):
+    L = Log("StatisticsSql")
 
     def __init__(self):
         super(ClinteleSql, self).__init__()
@@ -503,6 +521,7 @@ class ClinteleSql(DataBaseOperate):
 
 
 class BeeSettleInRecordSql(object):
+    L = Log("BeeSettleInRecordSql")
     db = DataBaseOperate()
 
     def query_test(self):
@@ -511,6 +530,7 @@ class BeeSettleInRecordSql(object):
 
 
 class VisitRecordSql(object):
+    L = Log("VisitRecordSql")
     db = DataBaseOperate()
 
     def sql_all_customer(self):
@@ -636,6 +656,7 @@ class VisitRecordSql(object):
 
 
 class BeeClueSql(object):
+    L = Log("VisitRecordSql")
     db = DataBaseOperate()
 
     def sql_all_bee_clue(self):
@@ -758,6 +779,7 @@ class BeeClueSql(object):
 
 
 class PurchaseSql(object):
+    L = Log("PurchaseSql")
     db = DataBaseOperate()
 
     def query_customer_id(self):
@@ -918,6 +940,7 @@ class PurchaseSql(object):
 
 
 class HelpSql(object):
+    L = Log("HelpSql")
     db = DataBaseOperate()
 
     def sql_help_info_by_user_id(self):
@@ -943,6 +966,7 @@ class HelpSql(object):
 #     cis.sql_all_container()
 
 class UserAuthData(DataBaseOperate):
+    L = Log("UserAuthData")
     """
         实名认证MySQL数据查询
     """
@@ -952,6 +976,7 @@ class UserAuthData(DataBaseOperate):
 
 
 class ShuntSql(object):
+    L = Log("VisitRecordSql")
     db = DataBaseOperate()
 
     def sql_shunt_buy_status(self, shunt_status, user_id):
@@ -992,6 +1017,7 @@ class ShuntSql(object):
 
 
 class PersonalSql(object):
+    L = Log("PersonalSql")
     db = DataBaseOperate()
 
     def sql_mutual_label_type(self, n):
@@ -1024,6 +1050,7 @@ class PersonalSql(object):
 
 
 class UserAuthData(DataBaseOperate):
+    L = Log("UserAuthData")
     """
         实名认证MySQL数据查询
     """
@@ -1033,6 +1060,7 @@ class UserAuthData(DataBaseOperate):
 
 
 class ShuntSql(object):
+    L = Log("VisitRecordSql")
     db = DataBaseOperate()
 
     def sql_shunt_buy_status(self, shunt_status, user_id):
@@ -1338,14 +1366,20 @@ WHERE user_id = {}
 
 
 class BeeReserveInformationSql(object):
+    L = Log("BeeReserveInformationSql")
     db = DataBaseOperate()
 
     def sql_bee_reserve(self):
         sql = '''SELECT * FROM `fc-bee`.t_bee_reserve WHERE is_delete=0; '''
         return self.db.operate(host_ip, sql)
 
+    def sql_bee_reserve_count(self):
+        sql = '''SELECT count(1) AS '保护区总数' FROM `fc-bee`.t_bee_reserve WHERE is_delete=0;'''
+        return self.db.operate(host_ip, sql)
+
 
 class StaffSql(object):
+    L = Log("StaffSql")
     db = DataBaseOperate()
 
     def sql_staff_number(self):
@@ -1357,11 +1391,41 @@ class StaffSql(object):
               WHERE tur.role_code IN (1002, 1003, 1004, 1005 ,1006)
               AND tbf.status <> 3
               AND tbf.is_delete = 0
-              AND tur.is_delete = 0
-	          GROUP BY user_id;'''
+              AND tur.is_delete = 0 GROUP BY user_id;'''
         return self.db.operate(host_ip, sql)
+
+    def sql_bee_friend_own_count(self):
+        """
+        查询自有养蜂人总数（养蜂技师和养蜂总监）
+        :return:
+        """
+        sql = 'SELECT * FROM `fc-bee`.t_bee_friend tbf ' \
+              'WHERE user_id IN (SELECT user_id FROM `fc-bee`.t_user_role tur WHERE tur.role_code IN (1002, 1003) AND tur.is_delete = 0)' \
+              ' AND is_delete = 0 AND status IN (1, 2);'
+        return self.db.operate(host_ip, sql)
+
+    def sql_bee_friend_own_count_by_area(self, province, city):
+        """
+        查询指定省市的自有养蜂人
+        :param province: 省码
+        :param city: 市码
+        :return:
+        """
+        sql ='SELECT tbf.* FROM `fc-bee`.t_bee_friend tbf ' \
+             'WHERE user_id IN (SELECT user_id FROM `fc-bee`.t_user_role tur WHERE tur.role_code IN (1002, 1003) AND tur.is_delete = 0) ' \
+             'AND is_delete = 0 AND status IN (1, 2) AND province=%s AND city=%s ' \
+             'ORDER BY create_time DESC ;'% (province, city)
+        return self.db.operate(host_ip, sql)
+
+
 
 
 class CollectionStatisticsSQL(DataBaseOperate):
     def __init__(self):
         super(CollectionStatisticsSQL, self).__init__()
+        self.__log = Log('执行蜂友采集统计查询', "DEBUG").logger
+
+
+if __name__ == '__main__':
+    d = NectarSourceInformationSql()
+    print(d.sql_nectar_source_last_seetle_time(213))

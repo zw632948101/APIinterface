@@ -49,6 +49,16 @@ class ShuntingRecordsSql(object):
         sql = "SELECT * FROM `fc-bee`.t_shunt WHERE is_delete=0 AND create_time BETWEEN '%s' AND '%s' ORDER BY create_time DESC;" % (create_start, create_end)
         return self.db.operate(host_ip, sql)
 
+    def sql_shunt_page_list_by_issuer(self, phone):
+        """
+        根据发布人手机号查询调车记录
+        :return:
+        """
+        sql = "SELECT tu.username, tu.phone, ts.* FROM `fc-bee`.t_shunt ts " \
+              "LEFT JOIN `world-user`.t_user tu ON ts.user_id = tu.id AND tu.account_type = 21 AND ts.is_delete = 0 " \
+              "WHERE tu.phone LIKE '%%%s%%' AND ts.user_id IS NOT NULL " \
+              "ORDER BY ts.create_time DESC;" % (phone)
+
 if __name__ == '__main__':
     sr = ShuntingRecordsSql()
     sr.sql_all_shunt_records_by_usetime('2020-5-12 09:00:00', '2020-6-16 00:00:00')

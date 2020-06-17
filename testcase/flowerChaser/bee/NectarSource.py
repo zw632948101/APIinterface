@@ -111,16 +111,10 @@ class NectarSourceMain(unittest.TestCase):
             self.assertEqual(site_area, int(nectar_source_detail["site_area"]))
             self.assertEqual(nectar_source_area, int(nectar_source_detail["nectar_source_area"]))
             self.assertEqual(str(vehicle_length), nectar_source_detail["vehicle_length"])
-            # self.assertEqual(water_pic, nectar_source_detail["water_pic"])
-            # self.assertEqual(road_pic, nectar_source_detail["road_pic"])
-            # self.assertEqual(site_pic, nectar_source_detail["site_pic"])
-            # self.assertEqual(other_pic, nectar_source_detail["other_pic"])
             self.assertEqual(price, int(nectar_source_detail["price"]))
             self.assertEqual(remark, nectar_source_detail["remark"])
         else:
-            self.assertTrue(False, "蜜源地添加失败")
-
-        # self.assertEqual(response['status'], "OK")
+            self.assertTrue(False, "内部蜂场添加失败")
 
     def test_mobile_nectar_source_add_without_name(self):
         """
@@ -1216,7 +1210,7 @@ class NectarSourceMain(unittest.TestCase):
         if nectar_source[0]["id"] is not None:
             num = random.randrange(0, len(nectar_source))
             nectar_source_id = nectar_source[num]["id"]
-            response = self.nectar_source._mobile_nectar_source_detail(id_=214)
+            response = self.nectar_source._mobile_nectar_source_detail(id_=nectar_source_id)
             self.assertEqual(response['status'], "OK")
         else:
             self.assertTrue(False, "暂无蜂场")
@@ -1274,7 +1268,7 @@ class NectarSourceMain(unittest.TestCase):
             road_pic = json.dumps(road_pic, ensure_ascii=False)
             water_pic = ["https://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com/data/fc-bee/attach/1577330419920.jpg"]
             water_pic = json.dumps(water_pic, ensure_ascii=False)
-            response = self.nectar_source._mobile_nectar_source_edit(type_=type_list, id_= nectar_source_id, name_=name, baseType_=base_type,
+            response = self.nectar_source._mobile_nectar_source_edit(type_=type_list, id_=nectar_source_id, name_=name, baseType_=base_type,
                                                                      province_=province_id, city_=city_id, county_=district_id, address_=address, lng_=lng, lat_=lat,
                                                                      altitude_=altitude,
                                                                      flowerStart_=flower_starts,
@@ -2433,7 +2427,7 @@ class NectarSourceMain(unittest.TestCase):
         POST /mobile/nectar-source/list 蜜源列表-蜜源地区查询
         :return:
         """
-        response = self.nectar_source._mobile_nectar_source_list( includeCity_=450700)
+        response = self.nectar_source._mobile_nectar_source_list(includeCity_=450700)
         self.assertEqual(response['status'], "OK")
 
     def test_mobile_nectar_source_list_with_include_type(self):
@@ -2562,8 +2556,8 @@ class NectarSourceMain(unittest.TestCase):
                 hive_num = random.randint(1, 999999)
                 response = self.nectar_source._mobile_enter_enter_save(containerIds_=container,
                                                                        hiveNum_=hive_num,
-                                                                       nectarSourceId_=nectar_source_id,
-                                                                       enterTime_=1590373748000)
+                                                                       nectarSourceId_=213,
+                                                                       enterTime_=1591977600000)
                 self.assertEqual(response['status'], "OK")
             else:
                 self.assertTrue(False, "暂无蜂场")
@@ -2605,7 +2599,24 @@ class NectarSourceMain(unittest.TestCase):
         POST /mobile/nectar-source/leave 平台和蜂箱撤场
         :return:
         """
-        self.nectar_source._mobile_nectar_source_leave(nectarSourceId_=214, leaveTime_=1590508800000)
+        nectar_source = self.nectar_source_db.sql_all_nectar_source()
+        if nectar_source[0]["id"] is not None:
+            num = random.randrange(0, len(nectar_source))
+            nectar_source_id = nectar_source[num]["id"]
+            seetle_time_db = self.nectar_source_db.sql_nectar_source_last_seetle_time(nectar_source_id=nectar_source_id)
+            if seetle_time_db:
+                leave_time_start = seetle_time_db
+                leave_time_end = int(time.time() * 1000)
+                leave_time = random.randint(leave_time_start, leave_time_end)
+            else:
+                start_date = datetime.datetime(year=2020, month=1, day=1)
+                end_data = datetime.datetime(year=2020, month=12, day=30)
+                leave_times = self.fake.date_time_between(start_date=start_date, end_date=end_data)
+                leave_time = int(leave_times.timestamp() * 1000)
+            response = self.nectar_source._mobile_nectar_source_leave(nectarSourceId_=nectar_source_id, leaveTime_=leave_time)
+            self.assertEqual(response['status'], "OK")
+        else:
+            self.assertTrue(False, "暂无内部蜂场")
 
     def test_mobile_nectar_source_add_with_required(self):
         """
