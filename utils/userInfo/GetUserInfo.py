@@ -7,7 +7,7 @@ import json
 
 
 class DBUserInfo(object):
-    host_ip = config.get('database').get(config.get('run').get('host_ip'))
+    host_ip = config.get('database').get(config.get('run')).get('host_ip')
 
     def mgr_query_user_info_by_account(self, account):
         sql = """
