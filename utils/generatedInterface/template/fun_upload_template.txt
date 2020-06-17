@@ -1,0 +1,8 @@
+    def fun_name(selffunctions):
+        if self.user is None:
+            data = {fun_params}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_idfunc_param}
+        response = self.request.post_file(url=self.url+'key', data=data, hosts=self.url,file_path=file_parameter)
+        return self.__judge_response_status(json.loads(response))
+
