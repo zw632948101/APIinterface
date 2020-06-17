@@ -21,11 +21,8 @@ class UpdateAction(object):
         super(UpdateAction, self).__init__()
         self.env = config.get('updateActionAPI')
         self.hosts = config.get('hosts').get(self.env)
-        self.interfaces_path = '%s%s/%s/' % (os.path.abspath('.').split('utils')[0],
-                                             'interfaces',
-                                             config.get('projectName'))
-        self.template_path = '%s/%s/' % (os.path.abspath('.'),
-                                         '/template')
+        self.interfaces_path = '../../interfaces/%s/' % config.get('projectName')
+        self.template_path = './template/'
 
 
     def get_edit_api(self):
@@ -52,7 +49,6 @@ class UpdateAction(object):
                 summary = paths[p][request_method].get("summary", [])
                 desc = desc + ' ' + summary
                 para_desc_list.append(desc)
-                # L.logger.debug("{'%s': '%s'}" % (p, desc))
                 paras = paths[p][request_method].get("parameters", [])
                 para_desc_list.append(request_method)
             p_dict = {}
@@ -122,9 +118,9 @@ class UpdateAction(object):
         :return:
         """
         if request_method == 'post':
-            fun_template = open('template/fun_post_template.txt', 'r').read()
+            fun_template = open(self.template_path + 'fun_post_template.txt', 'r').read()
         elif request_method == 'get':
-            fun_template = open('template/fun_get_template.txt', 'r').read()
+            fun_template = open(self.template_path + 'fun_get_template.txt', 'r').read()
 
         param_rep = {'func_param': param_data, 'lower_action': lower_action, 'fun_name': fun_name, 'key': api,
                      'functions': fun_data , 'fun_params': param_datas}
@@ -134,7 +130,7 @@ class UpdateAction(object):
         return fun_str
 
     def __constitute_upload(self, param_data, lower_action, fun_name, api, fun_data):
-        fun_template = open('template/fun_upload_template.txt', 'r').read()
+        fun_template = open(self.template_path + 'fun_upload_template.txt', 'r').read()
         param_rep = {'param': param_data, 'lower_action': lower_action, 'fun_name': fun_name, 'key': api,
                      'functions': fun_data}
         param_rep = dict((re.escape(k), v) for k, v in param_rep.items())
@@ -165,9 +161,6 @@ class UpdateAction(object):
         import os
         # todo
         action_file_name = self.interfaces_path + action_name.capitalize() + "Action_%s.py" % now
-        log.warning("*****************")
-        log.warning(action_file_name)
-        # action_file_name = "../actions/" + action_name.capitalize() + "Action_%s.py" % now
         # 读取方法模板文件
         fun_template = open(self.template_path + 'fun_post_template.txt', 'r').read()
         with open(action_file_name, "w", encoding='utf-8') as f:
