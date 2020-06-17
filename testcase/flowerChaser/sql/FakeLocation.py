@@ -8,8 +8,8 @@
 
 import random
 import json
-from sql.Bee import ConfigInformationSql
-from tools.Request import Request
+from ..sql.Bee import ConfigInformationSql
+from utils.dataRequest.dataRequester import Request
 
 
 class FakeLocation(object):
