@@ -8,14 +8,14 @@
 
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
-from actions.UserAction import UserAction
+from interfaces.flowerChaser.UserAction import UserAction
 from utils.log.logger import logger
 from tools.RedisOperate import Redis
-from sql.Passport import PassportInfoSql
-from testcase.flowerChaser.sql.Bee  import PersonalSql
+from testcase.flowerChaser.sql.Passport import PassportInfoSql
+from testcase.flowerChaser.sql.Bee import PersonalSql
 from faker import Faker
 from utils.fake.FakeLocation import FakeLocation
-from tools.Tool import Tool
+from utils.dataConversion.dataConversion import DataConversion
 import random
 import json
 

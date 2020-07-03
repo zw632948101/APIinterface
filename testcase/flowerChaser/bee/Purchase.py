@@ -3,7 +3,7 @@
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
 from utils.log.logger import logger
-from testcase.flowerChaser.sql.Bee  import ContainerInformationSql, PurchaseSql
+from testcase.flowerChaser.sql.Bee import ContainerInformationSql, PurchaseSql
 import random
 from faker import Faker
 import time, datetime

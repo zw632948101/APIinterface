@@ -4,7 +4,7 @@
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
 from utils.log.logger import logger
-from testcase.flowerChaser.sql.Bee  import VisitRecordSql
+from testcase.flowerChaser.sql.Bee import VisitRecordSql
 from utils.fake.FakeLocation import FakeLocation
 import random
 import json

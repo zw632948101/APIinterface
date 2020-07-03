@@ -11,10 +11,10 @@ import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
 from utils.log.logger import logger
 from faker import Faker
-from testcase.flowerChaser.sql.Bee  import NectarSourceInformationSql
-from sql.Passport import PassportInfoSql
+from testcase.flowerChaser.sql.Bee import NectarSourceInformationSql
+from testcase.flowerChaser.sql.Passport import PassportInfoSql
 from utils.fake.FakeLocation import FakeLocation
-from testcase.flowerChaser.sql.Bee  import VisitRecordSql
+from testcase.flowerChaser.sql.Bee import VisitRecordSql
 import json
 import random
 import datetime

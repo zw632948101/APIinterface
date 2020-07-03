@@ -9,10 +9,10 @@
 
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
-from actions.UserAction import UserAction
+from interfaces.flowerChaser.UserAction import UserAction
 from utils.log.logger import logger
 from sql.Keeper import KeeperInfoSql
-from sql.Passport import PassportInfoSql
+from testcase.flowerChaser.sql.Passport import PassportInfoSql
 from faker import Faker
 from random import choice
 

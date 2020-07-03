@@ -6,17 +6,17 @@ import json
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
 from utils.fake.FakeLocation import FakeLocation
-from testcase.flowerChaser.sql.Bee  import StaffSql
+from testcase.flowerChaser.sql.Bee import StaffSql
 from utils.log.logger import logger
 from faker import Faker
 from random import choice
-from tools.Tool import Tool
+from utils.dataConversion.dataConversion import DataConversion
 import datetime, time
 import random
 import json
 
 
-class StaffTrailMain(unittest.TestCase, FakeLocation, Tool):
+class StaffTrailMain(unittest.TestCase, FakeLocation, DataConversion):
     """
     接口文档:http://192.168.62.242:36054/swagger-ui.html
     """

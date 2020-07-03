@@ -14,9 +14,9 @@ import random
 from interfaces.flowerChaser.BeeAction import BeeAction
 from utils.log.logger import logger
 from faker import Faker
-from testcase.flowerChaser.sql.Bee  import CollectionStatisticsSQL, VisitRecordSql
-from sql.Passport import PassportInfoSql
-from tools.Common import TimestampTransform as tt
+from testcase.flowerChaser.sql.Bee import CollectionStatisticsSQL, VisitRecordSql
+from testcase.flowerChaser.sql.Passport import PassportInfoSql
+from utils.Timestamp.TimestampTransform import TimestampTransform as tt
 
 
 class CollectionStatistics(unittest.TestCase, tt):

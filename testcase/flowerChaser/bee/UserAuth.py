@@ -11,7 +11,7 @@ __author__: wei.zhang
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
 from utils.log.logger import logger
-from testcase.flowerChaser.sql.Bee  import UserAuthData
+from testcase.flowerChaser.sql.Bee import UserAuthData
 from faker import Faker
 
 

@@ -12,16 +12,16 @@ import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
 from utils.fake.FakeLocation import FakeLocation
 from utils.log.logger import logger
-from testcase.flowerChaser.sql.Bee  import ClinteleSql
-from testcase.flowerChaser.sql.Bee  import VisitRecordSql
+from testcase.flowerChaser.sql.Bee import ClinteleSql
+from testcase.flowerChaser.sql.Bee import VisitRecordSql
 from faker import Faker
 from random import choice
-from tools.Tool import Tool
+from utils.dataConversion.dataConversion import DataConversion
 import datetime, time
 import random
 
 
-class CommentrMain(unittest.TestCase, ClinteleSql, FakeLocation, Tool):
+class CommentrMain(unittest.TestCase, ClinteleSql, FakeLocation, DataConversion):
     """
     接口文档:http://192.168.62.242:36054/swagger-ui.html
     """

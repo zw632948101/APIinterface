@@ -9,12 +9,12 @@
 
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
-from actions.UserAction import UserAction
+from interfaces.flowerChaser.UserAction import UserAction
 from utils.log.logger import logger
-from sql.Passport import PassportInfoSql
-from testcase.flowerChaser.sql.Bee  import ContainerInformationSql
-from testcase.flowerChaser.sql.Bee  import NectarSourceInformationSql
-from sql.WorkRecord import WorkRecordSql
+from testcase.flowerChaser.sql.Passport import PassportInfoSql
+from testcase.flowerChaser.sql.Bee import ContainerInformationSql
+from testcase.flowerChaser.sql.Bee import NectarSourceInformationSql
+from testcase.flowerChaser.sql.WorkRecord import WorkRecordSql
 from utils.fake.FakeLocation import FakeLocation
 from faker import Faker
 

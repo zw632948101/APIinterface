@@ -11,7 +11,7 @@ import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
 from utils.log.logger import logger
 from faker import Faker
-from sql.Passport import PassportInfoSql
+from testcase.flowerChaser.sql.Passport import PassportInfoSql
 import random
 
 

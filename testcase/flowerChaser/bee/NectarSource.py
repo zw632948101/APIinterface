@@ -4,14 +4,15 @@
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
 from utils.log.logger import logger
-from testcase.flowerChaser.sql.Bee  import ConfigInformationSql, NectarSourceInformationSql, ContainerInformationSql
+from testcase.flowerChaser.sql.Bee import ConfigInformationSql, NectarSourceInformationSql, ContainerInformationSql
 from utils.fake.FakeLocation import FakeLocation
 import random
 import json
 from faker import Faker
 import datetime, time
 import re
-from tools.Tool import Tool
+from utils.dataConversion.dataConversion import DataConversion
+
 
 class NectarSourceMain(unittest.TestCase):
     """
@@ -34,7 +35,7 @@ class NectarSourceMain(unittest.TestCase):
         """
         name = self.fake.text(max_nb_chars=20)
         db_type = self.nectar_source_db.sql_random_nectar_source_type(random.randint(1, 5))
-        type_list = Tool.data_assemble('typeCode', db_type)
+        type_list = DataConversion.data_assemble('typeCode', db_type)
         type_str = ",".join(type_list)
         base_type = random.randint(1, 3)
         province_id, city_id, district_id, address, lng, lat = self.fl.fake_location()
@@ -54,7 +55,7 @@ class NectarSourceMain(unittest.TestCase):
         site_area = self.fake.random_int(min=1, max=99999999)
         nectar_source_area = self.fake.random_int(min=1, max=99999999)
         expect_ive_num = random.randint(1, 99999)
-        price = self.fake.random_int(min=1, max=999999)*100
+        price = self.fake.random_int(min=1, max=999999) * 100
         vehicle_length = random.randint(1001, 1018)
         remark = self.fake.text(max_nb_chars=200)
         prospect_pic = ["http://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com/data/fc-bee/attach/1592186431321.jpg"]
@@ -68,7 +69,9 @@ class NectarSourceMain(unittest.TestCase):
         water_pic = ["https://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com/data/fc-bee/attach/1577330419920.jpg"]
         water_pic = json.dumps(water_pic, ensure_ascii=False)
         response = self.nectar_source._mobile_nectar_source_add(type_=type_list, name_=name, baseType_=base_type,
-                                                                province_=province_id, city_=city_id,  county_=district_id, address_=address, lng_=lng, lat_=lat,
+                                                                province_=province_id, city_=city_id,
+                                                                county_=district_id, address_=address, lng_=lng,
+                                                                lat_=lat,
                                                                 altitude_=altitude,
                                                                 flowerStart_=flower_starts,
                                                                 flowerEnd_=flower_ends, bloomStart_=bloom_starts,
@@ -80,7 +83,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 price_=price,
                                                                 vehicleLength_=vehicle_length,
                                                                 remark_=remark,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 waterPic_=water_pic)
         if response["status"] == "OK":
             nectar_sources = self.nectar_source_db.sql_all_nectar_source()[0]
@@ -144,7 +148,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("蜜源名称不能为空", response['errorMsg'])
 
@@ -176,7 +181,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("蜜源名称不能超过20字", response['errorMsg'])
 
@@ -209,7 +215,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("蜜源品种不能为空", response['errorMsg'])
 
@@ -242,7 +249,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("蜜源类型不存在", response['errorMsg'])
 
@@ -275,7 +283,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("省不能为空", response['errorMsg'])
 
@@ -308,7 +317,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("市不能为空", response['errorMsg'])
 
@@ -341,7 +351,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("经度超出范围(-180~+180)", response['errorMsg'])
 
@@ -374,7 +385,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("省码不存在", response['errorMsg'])
 
@@ -407,7 +419,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("纬度超出范围(-90~+90)", response['errorMsg'])
 
@@ -440,7 +453,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("详细地址不能为空", response['errorMsg'])
 
@@ -473,7 +487,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("盛花期起始时间不能为空", response['errorMsg'])
 
@@ -506,7 +521,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("盛花期结束时间不能为空", response['errorMsg'])
 
@@ -539,7 +555,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("开花期结束时间不能为空", response['errorMsg'])
 
@@ -572,7 +589,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=1321530)
         self.assertEqual("开花期结束时间不能为空", response['errorMsg'])
 
@@ -605,7 +623,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("开花时间段需包含盛花时间段", response['errorMsg'])
 
@@ -638,7 +657,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("联系人不能为空", response['errorMsg'])
 
@@ -672,7 +692,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("联系人不能超过20字", response['errorMsg'])
 
@@ -705,7 +726,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("联系电话不能为空", response['errorMsg'])
 
@@ -738,7 +760,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("联系电话格式不正确", response['errorMsg'])
 
@@ -771,7 +794,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("场地面积不能为空", response['errorMsg'])
 
@@ -804,7 +828,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("场地面积最多8位整数+两位小数", response['errorMsg'])
 
@@ -837,7 +862,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("蜜源面积不能为空", response['errorMsg'])
 
@@ -870,7 +896,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("蜜源面积最多8位整数+两位小数", response['errorMsg'])
 
@@ -903,7 +930,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=None,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("可通行车辆最大长度(类型)不能为空", response['errorMsg'])
 
@@ -936,7 +964,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1000,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("车辆类型不存在", response['errorMsg'])
 
@@ -969,7 +998,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=1001, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("蜂场数量范围1~999整数", response['errorMsg'])
 
@@ -1002,7 +1032,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=1001, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("蜂场数量范围1~999整数", response['errorMsg'])
 
@@ -1035,7 +1066,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("蜜源信息备注不能超过200字", response['errorMsg'])
 
@@ -1067,7 +1099,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 nectarSourceArea_=38167586339442,
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=132153)
         self.assertEqual("OK", response['status'])
 
@@ -1100,7 +1133,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic,
                                                                 price_=132153)
         self.assertEqual("道路照片不能为空", response['errorMsg'])
 
@@ -1167,7 +1201,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                 vehicleLength_=1003,
                                                                 amNum_=5, acNum_=443, remark_=remark,
                                                                 waterPic_=water_pic,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 price_=price)
         self.assertEqual("蜂场价格最多6位整数+两位小数", response['errorMsg'])
 
@@ -1235,7 +1270,7 @@ class NectarSourceMain(unittest.TestCase):
             nectar_source_id = nectar_source[num]["id"]
             name = self.fake.text(max_nb_chars=20)
             db_type = self.nectar_source_db.sql_random_nectar_source_type(random.randint(1, 5))
-            type_list = Tool.data_assemble('typeCode', db_type)
+            type_list = DataConversion.data_assemble('typeCode', db_type)
             type_str = ",".join(type_list)
             base_type = random.randint(1, 3)
             province_id, city_id, district_id, address, lng, lat = self.fl.fake_location()
@@ -1268,8 +1303,11 @@ class NectarSourceMain(unittest.TestCase):
             road_pic = json.dumps(road_pic, ensure_ascii=False)
             water_pic = ["https://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com/data/fc-bee/attach/1577330419920.jpg"]
             water_pic = json.dumps(water_pic, ensure_ascii=False)
-            response = self.nectar_source._mobile_nectar_source_edit(type_=type_list, id_=nectar_source_id, name_=name, baseType_=base_type,
-                                                                     province_=province_id, city_=city_id, county_=district_id, address_=address, lng_=lng, lat_=lat,
+            response = self.nectar_source._mobile_nectar_source_edit(type_=type_list, id_=nectar_source_id, name_=name,
+                                                                     baseType_=base_type,
+                                                                     province_=province_id, city_=city_id,
+                                                                     county_=district_id, address_=address, lng_=lng,
+                                                                     lat_=lat,
                                                                      altitude_=altitude,
                                                                      flowerStart_=flower_starts,
                                                                      flowerEnd_=flower_ends, bloomStart_=bloom_starts,
@@ -1281,7 +1319,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                      price_=price,
                                                                      vehicleLength_=vehicle_length,
                                                                      remark_=remark,
-                                                                     prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                     prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                     sitePic_=site_pic, roadPic_=road_pic,
                                                                      waterPic_=water_pic)
             if response["status"] == "OK":
                 nectar_sources = self.nectar_source_db.sql_nectar_source_by_id(nectar_source_id)
@@ -1349,7 +1388,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  nectarSourceArea_=38167586339442,
                                                                  vehicleLength_=1003,
                                                                  amNum_=5, acNum_=443, remark_=remark,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  waterPic_=water_pic,
                                                                  price_=132153)
         self.assertEqual("蜜源名称不能为空", response['errorMsg'])
@@ -1384,8 +1424,9 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  id_=5,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
-                                                                 waterPic_=water_pic,price_=132153)
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
+                                                                 waterPic_=water_pic, price_=132153)
         self.assertEqual("蜜源名称不能超过20字", response['errorMsg'])
 
     def test_mobile_nectar_source_edit_without_type(self):
@@ -1418,7 +1459,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic, id_=5,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic, price_=132153)
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic, price_=132153)
         self.assertEqual("蜜源品种不能为空", response['errorMsg'])
 
     def test_mobile_nectar_source_edit_with_wrong_type_id(self):
@@ -1451,7 +1493,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003, id_=5,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153)
         self.assertEqual("蜜源类型不存在", response['errorMsg'])
 
@@ -1485,7 +1528,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003, id_=5,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153)
         self.assertEqual("省不能为空", response['errorMsg'])
 
@@ -1519,7 +1563,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003, id_=5,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153)
         self.assertEqual("市不能为空", response['errorMsg'])
 
@@ -1552,7 +1597,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003, id_=5,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153)
         self.assertEqual("经度超出范围(-180~+180)", response['errorMsg'])
 
@@ -1585,7 +1631,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003, id_=5,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153)
         self.assertEqual("省码不存在", response['errorMsg'])
 
@@ -1618,7 +1665,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003, id_=5,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153)
         self.assertEqual("纬度超出范围(-90~+90)", response['errorMsg'])
 
@@ -1652,7 +1700,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153)
         self.assertEqual("详细地址不能为空", response['errorMsg'])
 
@@ -1686,7 +1735,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003, id_=5,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153)
         self.assertEqual("盛花期起始时间不能为空", response['errorMsg'])
 
@@ -1720,7 +1770,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003, id_=5,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153)
         self.assertEqual("盛花期结束时间不能为空", response['errorMsg'])
 
@@ -1754,7 +1805,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003, id_=5,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153)
         self.assertEqual("开花期结束时间不能为空", response['errorMsg'])
 
@@ -1788,7 +1840,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153)
         self.assertEqual("开花期结束时间不能为空", response['errorMsg'])
 
@@ -1821,7 +1874,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003, id_=5,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153)
         self.assertEqual("开花时间段需包含盛花时间段", response['errorMsg'])
 
@@ -1854,7 +1908,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic, id_=5,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153)
         self.assertEqual("联系人不能为空", response['errorMsg'])
 
@@ -1888,7 +1943,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic, id_=5,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153)
         self.assertEqual("联系人不能超过20字", response['errorMsg'])
 
@@ -1922,7 +1978,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153, id_=5)
         self.assertEqual("联系电话不能为空", response['errorMsg'])
 
@@ -1956,7 +2013,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153, id_=5)
         self.assertEqual("联系电话格式不正确", response['errorMsg'])
 
@@ -1990,7 +2048,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153, id_=5)
         self.assertEqual("场地面积不能为空", response['errorMsg'])
 
@@ -2024,7 +2083,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153, id_=5)
         self.assertEqual("场地面积不超过15位正整数", response['errorMsg'])
 
@@ -2058,7 +2118,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153, id_=5)
         self.assertEqual("蜜源面积不能为空", response['errorMsg'])
 
@@ -2092,7 +2153,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153, id_=5)
         self.assertEqual("蜜源面积不超过15位正整数", response['errorMsg'])
 
@@ -2126,7 +2188,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=None,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153, id_=5)
         self.assertEqual("可通行车辆最大长度(类型)不能为空", response['errorMsg'])
 
@@ -2160,7 +2223,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1000,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153, id_=5)
         self.assertEqual("车辆类型不存在", response['errorMsg'])
 
@@ -2194,7 +2258,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003,
                                                                  amNum_=1001, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153, id_=5)
         self.assertEqual("蜂场数量范围1~999整数", response['errorMsg'])
 
@@ -2228,7 +2293,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003,
                                                                  amNum_=5, acNum_=1001, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153, id_=5)
         self.assertEqual("蜂场数量范围1~999整数", response['errorMsg'])
 
@@ -2265,7 +2331,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153, id_=5)
         self.assertEqual("蜜源信息备注不能超过200字", response['errorMsg'])
 
@@ -2299,7 +2366,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=None,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153, id_=5)
         self.assertEqual("OK", response['status'])
 
@@ -2333,7 +2401,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153, id_=5)
         self.assertEqual("道路照片不能为空", response['errorMsg'])
 
@@ -2367,7 +2436,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=132153, id_=5)
         self.assertEqual("场地照片不能为空", response['errorMsg'])
 
@@ -2402,7 +2472,8 @@ class NectarSourceMain(unittest.TestCase):
                                                                  vehicleLength_=1003,
                                                                  amNum_=5, acNum_=443, remark_=remark,
                                                                  waterPic_=water_pic,
-                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                 prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                 sitePic_=site_pic, roadPic_=road_pic,
                                                                  price_=price, id_=5)
         self.assertEqual("蜜源价格不超过8位正整数", response['errorMsg'])
 
@@ -2613,7 +2684,8 @@ class NectarSourceMain(unittest.TestCase):
                 end_data = datetime.datetime(year=2020, month=12, day=30)
                 leave_times = self.fake.date_time_between(start_date=start_date, end_date=end_data)
                 leave_time = int(leave_times.timestamp() * 1000)
-            response = self.nectar_source._mobile_nectar_source_leave(nectarSourceId_=nectar_source_id, leaveTime_=leave_time)
+            response = self.nectar_source._mobile_nectar_source_leave(nectarSourceId_=nectar_source_id,
+                                                                      leaveTime_=leave_time)
             self.assertEqual(response['status'], "OK")
         else:
             self.assertTrue(False, "暂无内部蜂场")
@@ -2633,7 +2705,8 @@ class NectarSourceMain(unittest.TestCase):
         site_pic = json.dumps(site_pic, ensure_ascii=False)
         road_pic = ["http://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com/data/fc-bee/attach/1592186565033.jpg"]
         road_pic = json.dumps(road_pic, ensure_ascii=False)
-        response = self.nectar_source._mobile_nectar_source_add(name_=name, type_=1001,  baseType_=None, province_=province_id,
+        response = self.nectar_source._mobile_nectar_source_add(name_=name, type_=1001, baseType_=None,
+                                                                province_=province_id,
                                                                 city_=city_id, lng_=lng, lat_=lat, county_=district_id,
                                                                 address_=address, altitude_=None,
                                                                 flowerStart_=None, flowerEnd_=None,
@@ -2644,6 +2717,7 @@ class NectarSourceMain(unittest.TestCase):
                                                                 expectHiveNum_=999,
                                                                 vehicleLength_=1003,
                                                                 remark_=None,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                sitePic_=site_pic, roadPic_=road_pic,
                                                                 waterPic_=None)
         self.assertEqual("OK", response['status'])

@@ -4,7 +4,7 @@ import random
 from unittest import TestCase
 from utils.log.logger import logger
 from interfaces.flowerChaser.BeeAction import BeeAction
-from testcase.flowerChaser.sql.Bee  import BeekeeperNearbySql
+from testcase.flowerChaser.sql.Bee import BeekeeperNearbySql
 
 
 class BeekeeperNearby(TestCase):

@@ -7,8 +7,10 @@
 """
 
 
-from tools.DataBaseOperate import DataBaseOperate
+from utils.databaseConnection.DataBaseOperate import DataBaseOperate
 from tools.Config import Config, Log
+from utils.log.logger import logger
+from utils.environmentConfiguration.Config import get_config
 
 host_ip = Config('config').data['database'][Config('config').data['run']]['host_ip']
 

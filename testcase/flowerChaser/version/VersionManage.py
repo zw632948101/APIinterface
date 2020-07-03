@@ -8,7 +8,7 @@
 
 
 import unittest
-from interfaces.flowerChaser.BeeAction import beeAction
+from interfaces.flowerChaser.BeeAction import BeeAction
 from actions.PassportAction import userAction
 from utils.log.logger import logger
 from sql.Version import VersionInfoSql
@@ -21,7 +21,7 @@ class VersionManageMain(unittest.TestCase):
     接口文档: http://192.168.62.242:36054/swagger-ui.html
     """
     ua = userAction()
-    ba = beeAction()
+    ba = BeeAction()
     email = '26632629@qq.com'
     ba.set_user(email, 123456)
     log = logger('VersionManageMain').logger

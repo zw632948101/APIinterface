@@ -10,15 +10,14 @@ import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
 from utils.fake.FakeLocation import FakeLocation
 from utils.log.logger import logger
-from testcase.flowerChaser.sql.Bee  import VisitRecordSql, HelpSql
+from testcase.flowerChaser.sql.Bee import VisitRecordSql, HelpSql
 from faker import Faker
-from tools.Tool import Tool
-
+from utils.dataConversion.dataConversion import DataConversion
 
 import random
 
 
-class HelpMain(unittest.TestCase, VisitRecordSql, FakeLocation, Tool, HelpSql):
+class HelpMain(unittest.TestCase, VisitRecordSql, FakeLocation, DataConversion, HelpSql):
     """
     接口文档:http://192.168.62.242:36054/swagger-ui.html
     """

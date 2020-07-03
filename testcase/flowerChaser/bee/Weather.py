@@ -4,16 +4,16 @@
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
 from utils.log.logger import logger
-from testcase.flowerChaser.sql.Bee  import BeeClueSql
+from testcase.flowerChaser.sql.Bee import BeeClueSql
 from utils.fake.FakeLocation import FakeLocation
 import random
 import json
 from faker import Faker
 import re
-from tools.Tool import Tool
+from utils.dataConversion.dataConversion import DataConversion
 
 
-class WeatherMain(unittest.TestCase, Tool):
+class WeatherMain(unittest.TestCase, DataConversion):
     """
     接口文档:http://192.168.62.242:36054/swagger-ui.html
     """

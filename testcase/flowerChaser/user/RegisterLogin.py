@@ -13,7 +13,7 @@ from faker import Faker
 from actions.PassportAction import PassportAction
 from utils.log.logger import logger
 from tools.RedisOperate import Redis
-from sql.Passport import PassportInfoSql
+from testcase.flowerChaser.sql.Passport import PassportInfoSql
 
 
 class RegisterLoginMain(unittest.TestCase):
