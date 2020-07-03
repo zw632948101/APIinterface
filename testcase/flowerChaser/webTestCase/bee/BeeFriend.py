@@ -8,13 +8,13 @@
 
 
 import unittest
-from actions.BeeAction import BeeAction
-from tools.Config import Log
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.log.logger import logger
 from faker import Faker
-from sql.Bee import NectarSourceInformationSql
+from testcase.flowerChaser.sql.Bee  import NectarSourceInformationSql
 from sql.Passport import PassportInfoSql
-from testCase.FakeLocation import FakeLocation
-from sql.Bee import VisitRecordSql
+from utils.fake.FakeLocation import FakeLocation
+from testcase.flowerChaser.sql.Bee  import VisitRecordSql
 import json
 import random
 import datetime
@@ -32,7 +32,7 @@ class RegisterLoginMain(unittest.TestCase):
     mobile = (vr.query_contact_number_buy_user(user_id=user_id))[0].get('contact_number')
     fl = FakeLocation()
     # mobile = '19982917912'
-    log = Log('BeeInformationMain').logger
+    log = logger('BeeInformationMain').logger
     log.info("开始执行蜂友管理模块测试用例")
     fake = Faker(locale="zh_CN")
     ba.set_user(mobile)

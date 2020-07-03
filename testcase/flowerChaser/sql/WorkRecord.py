@@ -15,7 +15,7 @@ host_ip = Config('config').data['database'][Config('config').data['run']]['host_
 
 
 class WorkRecordSql(object):
-    L = Log("WorkLogInfoSql").logger
+    L = logger("WorkLogInfoSql").logger
     db = DataBaseOperate()
 
     def query_all_log_by_email(self, email):

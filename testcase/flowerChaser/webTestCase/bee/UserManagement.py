@@ -8,8 +8,8 @@
 
 
 import unittest
-from actions.BeeAction import BeeAction
-from tools.Config import Log
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.log.logger import logger
 from faker import Faker
 from sql.Passport import PassportInfoSql
 import random
@@ -22,7 +22,7 @@ class RegisterLoginMain(unittest.TestCase):
     ba = BeeAction()
     ps = PassportInfoSql()
     mobile = '19982917912'
-    log = Log('BeeInformationMain').logger
+    log = logger('BeeInformationMain').logger
     log.info("开始执行用户管理模块测试用例")
     fake = Faker(locale="zh_CN")
     ba.set_user(mobile)

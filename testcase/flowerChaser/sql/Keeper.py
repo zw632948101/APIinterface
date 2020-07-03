@@ -14,7 +14,7 @@ host_ip = Config('config').data['database'][Config('config').data['run']]['host_
 
 
 class KeeperInfoSql(object):
-    L = Log("KeeperInfoSql")
+    L = logger("KeeperInfoSql")
     db = DataBaseOperate()
 
     def query_keeper_by_name(self, name):

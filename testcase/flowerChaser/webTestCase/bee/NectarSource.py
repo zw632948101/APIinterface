@@ -8,11 +8,11 @@
 
 
 import unittest
-from actions.BeeAction import BeeAction
-from tools.Config import Log
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.log.logger import logger
 from faker import Faker
-from sql.Bee import NectarSourceInformationSql, ConfigInformationSql, ContainerInformationSql, StaffSql
-from testCase.FakeLocation import FakeLocation
+from testcase.flowerChaser.sql.Bee  import NectarSourceInformationSql, ConfigInformationSql, ContainerInformationSql, StaffSql
+from utils.fake.FakeLocation import FakeLocation
 import random
 import json
 import time,datetime
@@ -30,7 +30,7 @@ class RegisterLoginMain(unittest.TestCase):
     staff_db = StaffSql()
     fl = FakeLocation()
     mobile = '15200000003'
-    log = Log('BeeInformationMain').logger
+    log = logger('BeeInformationMain').logger
     log.info("开始执行内部蜂场管理模块测试用例")
     fake = Faker(locale="zh_CN")
     nectar_source.set_user(mobile)

@@ -8,9 +8,9 @@
 
 
 import unittest
-from actions.BeeAction import BeeAction
+from interfaces.flowerChaser.BeeAction import BeeAction
 from actions.UserAction import UserAction
-from tools.Config import Log
+from utils.log.logger import logger
 from sql.Keeper import KeeperInfoSql
 from sql.Passport import PassportInfoSql
 from faker import Faker
@@ -24,7 +24,7 @@ class AdminOperationMain(unittest.TestCase):
     """
     ua = UserAction()
     ba = BeeAction()
-    log = Log('AdminOperation').logger
+    log = logger('AdminOperation').logger
     log.info("开始执行User接口测试用例")
     pis = PassportInfoSql()
     kis = KeeperInfoSql()

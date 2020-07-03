@@ -15,7 +15,7 @@ host_ip = Config('config').data['database'][Config('config').data['run']]['host_
 
 
 class VersionInfoSql(object):
-    L = Log("VersionInfoSql")
+    L = logger("VersionInfoSql")
     db = DataBaseOperate()
 
     def query_latest_update_version(self):

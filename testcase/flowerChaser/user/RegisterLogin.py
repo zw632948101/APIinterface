@@ -11,7 +11,7 @@ import unittest
 import json
 from faker import Faker
 from actions.PassportAction import PassportAction
-from tools.Config import Log
+from utils.log.logger import logger
 from tools.RedisOperate import Redis
 from sql.Passport import PassportInfoSql
 
@@ -23,7 +23,7 @@ class RegisterLoginMain(unittest.TestCase):
     pa = PassportAction()
     pis = PassportInfoSql()
     mobile = '19988776655'
-    log = Log('FarmInformationMain').logger
+    log = logger('FarmInformationMain').logger
     log.info("开始执行注册模块测试用例")
     fake = Faker()
     redis = Redis()

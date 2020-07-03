@@ -9,7 +9,7 @@ host_ip = Config('config').data['database'][Config('config').data['run']]['host_
 
 
 class ShuntingRecordsSql(object):
-    L = Log("ShuntingRecordsSql")
+    L = logger("ShuntingRecordsSql")
     db = DataBaseOperate()
 
     def sql_all_shunt_records(self):

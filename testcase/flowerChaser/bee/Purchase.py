@@ -1,9 +1,9 @@
 #! /usr/bin/env python3
 # -*- coding: UTF-8 -*-
 import unittest
-from actions.BeeAction import BeeAction
-from tools.Config import Log
-from sql.Bee import ContainerInformationSql, PurchaseSql
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.log.logger import logger
+from testcase.flowerChaser.sql.Bee  import ContainerInformationSql, PurchaseSql
 import random
 from faker import Faker
 import time, datetime
@@ -17,7 +17,7 @@ class ContainerMain(unittest.TestCase):
     container = BeeAction()
     container_db = ContainerInformationSql()
     purchase_db = PurchaseSql()
-    log = Log('ContainerMain').logger
+    log = logger('ContainerMain').logger
     log.info("开始执行合同管理接口测试用例")
     fake = Faker(locale="zh_CN")
     container.set_user('19982917912')

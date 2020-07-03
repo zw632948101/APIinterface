@@ -2,10 +2,10 @@
 # -*- coding: UTF-8 -*-
 
 import unittest
-from actions.BeeAction import BeeAction
-from tools.Config import Log
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.log.logger import logger
 from sql.Shunt import ShuntingRecordsSql
-from testCase.FakeLocation import FakeLocation
+from utils.fake.FakeLocation import FakeLocation
 import random
 import json
 from faker import Faker
@@ -19,7 +19,7 @@ class NectarSourceMain(unittest.TestCase):
     shunt_manage = BeeAction()
     shunt_record_db = ShuntingRecordsSql()
     fl = FakeLocation()
-    log = Log('FarmInformationMain').logger
+    log = logger('FarmInformationMain').logger
     log.info("开始执行调车管理测试用例")
     fake = Faker(locale="zh_CN")
     shunt_manage.set_user('19988776600')

@@ -9,11 +9,11 @@ __author__: wei.zhang
 """
 
 import unittest
-from actions.BeeAction import BeeAction
-from testCase.FakeLocation import FakeLocation
-from tools.Config import Log
-from sql.Bee import ClinteleSql
-from sql.Bee import VisitRecordSql
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.fake.FakeLocation import FakeLocation
+from utils.log.logger import logger
+from testcase.flowerChaser.sql.Bee  import ClinteleSql
+from testcase.flowerChaser.sql.Bee  import VisitRecordSql
 from faker import Faker
 from random import choice
 from tools.Tool import Tool
@@ -27,7 +27,7 @@ class CommentrMain(unittest.TestCase, ClinteleSql, FakeLocation, Tool):
     """
     comment = BeeAction()
     config_db_v = VisitRecordSql()
-    log = Log('ContainerMain').logger
+    log = logger('ContainerMain').logger
     fake = Faker(locale="zh_CN")
     comment.set_user('yaxin.guan@worldfarm.com', '123456')
 

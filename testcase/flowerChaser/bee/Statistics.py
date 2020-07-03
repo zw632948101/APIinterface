@@ -2,9 +2,9 @@
 # -*- coding: UTF-8 -*-
 
 import unittest
-from actions.BeeAction import BeeAction
-from tools.Config import Log
-from sql.Bee import StatisticsSql
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.log.logger import logger
+from testcase.flowerChaser.sql.Bee  import StatisticsSql
 import random
 import json
 from faker import Faker
@@ -18,7 +18,7 @@ class NectarSourceMain(unittest.TestCase):
     """
     statistics = BeeAction()
     statistics_db = StatisticsSql()
-    log = Log('FarmInformationMain').logger
+    log = logger('FarmInformationMain').logger
     log.info("开始执行统计接口测试用例")
     fake = Faker(locale="zh_CN")
     statistics.set_user('15388126072')

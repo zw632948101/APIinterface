@@ -15,7 +15,7 @@ host_ip = Config('config').data['database'][Config('config').data['run']]['host_
 
 
 class LogCommentSql(object):
-    L = Log("LogCommentSql").logger
+    L = logger("LogCommentSql").logger
     db = DataBaseOperate()
 
     def query_comment_by_log_id(self, log_id, is_delete=0):

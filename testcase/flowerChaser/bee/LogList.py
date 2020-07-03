@@ -8,14 +8,14 @@
 
 
 import unittest
-from actions.BeeAction import BeeAction
+from interfaces.flowerChaser.BeeAction import BeeAction
 from actions.UserAction import UserAction
-from tools.Config import Log
+from utils.log.logger import logger
 from sql.Passport import PassportInfoSql
-from sql.Bee import ContainerInformationSql
-from sql.Bee import NectarSourceInformationSql
+from testcase.flowerChaser.sql.Bee  import ContainerInformationSql
+from testcase.flowerChaser.sql.Bee  import NectarSourceInformationSql
 from sql.WorkRecord import WorkRecordSql
-from testCase.FakeLocation import FakeLocation
+from utils.fake.FakeLocation import FakeLocation
 from faker import Faker
 
 
@@ -27,7 +27,7 @@ class LogListMain(unittest.TestCase):
     ba = BeeAction()
     email = 'yaxin.guan@worldfarm.com'
     ba.set_user(email, 123456)
-    log = Log('LogListMain').logger
+    log = logger('LogListMain').logger
     log.info("开始执行摇蜜日志接口测试用例")
     pis = PassportInfoSql()
     cis = ContainerInformationSql()

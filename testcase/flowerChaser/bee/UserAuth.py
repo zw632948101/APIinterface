@@ -9,14 +9,14 @@ __author__: wei.zhang
 """
 
 import unittest
-from actions.BeeAction import BeeAction
-from tools.Config import Log
-from sql.Bee import UserAuthData
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.log.logger import logger
+from testcase.flowerChaser.sql.Bee  import UserAuthData
 from faker import Faker
 
 
 class UserAuth(unittest.TestCase, UserAuthData):
-    log = Log('ContainerMain').logger
+    log = logger('ContainerMain').logger
     fake = Faker(locale="zh_CN")
     bee = BeeAction()
     bee.set_user('15388126075')

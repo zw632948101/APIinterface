@@ -7,14 +7,14 @@
 """
 
 import unittest
-from actions.BeeAction import BeeAction
+from interfaces.flowerChaser.BeeAction import BeeAction
 from actions.UserAction import UserAction
-from tools.Config import Log
+from utils.log.logger import logger
 from tools.RedisOperate import Redis
 from sql.Passport import PassportInfoSql
-from sql.Bee import PersonalSql
+from testcase.flowerChaser.sql.Bee  import PersonalSql
 from faker import Faker
-from testCase.FakeLocation import FakeLocation
+from utils.fake.FakeLocation import FakeLocation
 from tools.Tool import Tool
 import random
 import json
@@ -26,7 +26,7 @@ class PersonalCenterMain(unittest.TestCase):
     """
     ua = UserAction()
     ba = BeeAction()
-    log = Log('UserManageMain').logger
+    log = logger('UserManageMain').logger
     log.info("开始执行User接口测试用例")
     pis = PassportInfoSql()
     ps = PersonalSql()

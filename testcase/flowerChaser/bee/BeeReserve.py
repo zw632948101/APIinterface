@@ -2,15 +2,13 @@
 @Time: 2020 2020/6/16
 中蜂保护区管理
 """
-import json
 import unittest
-from actions.BeeAction import BeeAction
-from testCase.FakeLocation import FakeLocation
-from tools.Config import Log
-from sql.Bee import BeeReserveInformationSql
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.fake.FakeLocation import FakeLocation
+from utils.log.logger import logger
+from testcase.flowerChaser.sql.Bee  import BeeReserveInformationSql
 from faker import Faker
 from tools.Tool import Tool
-import datetime, time
 import random
 import json
 
@@ -22,7 +20,7 @@ class BeeReserveMain(unittest.TestCase, FakeLocation, Tool):
     bee_reserve = BeeAction()
     br = BeeReserveInformationSql()
     fl = FakeLocation()
-    log = Log('BeeReserveMain').logger
+    log = logger('BeeReserveMain').logger
     fake = Faker(locale="zh_CN")
     bee_reserve.set_user('15200000003')
 

@@ -15,7 +15,7 @@ host_ip = Config('config').data['database'][Config('config').data['run']]['host_
 
 
 class PassportInfoSql(object):
-    L = Log("PassportInfoSql")
+    L = logger("PassportInfoSql")
     db = DataBaseOperate()
 
     def query_user_by_email(self, email):

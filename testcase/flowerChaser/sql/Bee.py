@@ -8,7 +8,7 @@ host_ip = Config('config').data['database'][Config('config').data['run']]['host_
 
 
 class ConfigInformationSql(object):
-    L = Log("ConfigInformationSql")
+    L = logger("ConfigInformationSql")
     db = DataBaseOperate()
 
     def query_province_id_by_province_name(self, province_name):
@@ -38,7 +38,7 @@ class ConfigInformationSql(object):
 
 
 class NectarSourceInformationSql(object):
-    L = Log("NectarSourceInformationSql")
+    L = logger("NectarSourceInformationSql")
     db = DataBaseOperate()
 
     def sql_nectar_source_id_by_status(self):
@@ -119,7 +119,7 @@ class NectarSourceInformationSql(object):
         return int(datetime.datetime.timestamp(last_enter_time)*1000)
 
 class ContainerInformationSql(object):
-    L = Log("NectarSourceInformationSql")
+    L = logger("NectarSourceInformationSql")
     db = DataBaseOperate()
 
     def sql_container_id_by_status(self):
@@ -194,7 +194,7 @@ class ContainerInformationSql(object):
 
 
 class ExtractInformationSql(object):
-    L = Log("ExtractInformationSql")
+    L = logger("ExtractInformationSql")
     db = DataBaseOperate()
 
     def sql_all_extract_record(self):
@@ -234,7 +234,7 @@ class ExtractInformationSql(object):
 
 
 class StatisticsSql(object):
-    L = Log("StatisticsSql")
+    L = logger("StatisticsSql")
     db = DataBaseOperate()
 
     def sql_statistics_nectar_source(self):
@@ -355,7 +355,7 @@ class StatisticsSql(object):
 
 
 class ClinteleSql(DataBaseOperate):
-    L = Log("StatisticsSql")
+    L = logger("StatisticsSql")
 
     def __init__(self):
         super(ClinteleSql, self).__init__()
@@ -521,7 +521,7 @@ class ClinteleSql(DataBaseOperate):
 
 
 class BeeSettleInRecordSql(object):
-    L = Log("BeeSettleInRecordSql")
+    L = logger("BeeSettleInRecordSql")
     db = DataBaseOperate()
 
     def query_test(self):
@@ -530,7 +530,7 @@ class BeeSettleInRecordSql(object):
 
 
 class VisitRecordSql(object):
-    L = Log("VisitRecordSql")
+    L = logger("VisitRecordSql")
     db = DataBaseOperate()
 
     def sql_all_customer(self):
@@ -656,7 +656,7 @@ class VisitRecordSql(object):
 
 
 class BeeClueSql(object):
-    L = Log("VisitRecordSql")
+    L = logger("VisitRecordSql")
     db = DataBaseOperate()
 
     def sql_all_bee_clue(self):
@@ -779,7 +779,7 @@ class BeeClueSql(object):
 
 
 class PurchaseSql(object):
-    L = Log("PurchaseSql")
+    L = logger("PurchaseSql")
     db = DataBaseOperate()
 
     def query_customer_id(self):
@@ -940,7 +940,7 @@ class PurchaseSql(object):
 
 
 class HelpSql(object):
-    L = Log("HelpSql")
+    L = logger("HelpSql")
     db = DataBaseOperate()
 
     def sql_help_info_by_user_id(self):
@@ -966,7 +966,7 @@ class HelpSql(object):
 #     cis.sql_all_container()
 
 class UserAuthData(DataBaseOperate):
-    L = Log("UserAuthData")
+    L = logger("UserAuthData")
     """
         实名认证MySQL数据查询
     """
@@ -976,7 +976,7 @@ class UserAuthData(DataBaseOperate):
 
 
 class ShuntSql(object):
-    L = Log("VisitRecordSql")
+    L = logger("VisitRecordSql")
     db = DataBaseOperate()
 
     def sql_shunt_buy_status(self, shunt_status, user_id):
@@ -1010,14 +1010,14 @@ class ShuntSql(object):
 
 
 # class BeekeeperNearbySql(DataBaseOperate):
-#     log = Log('执行周边蜂友相关sql查询')
+#     log = logger('执行周边蜂友相关sql查询')
 #
 #     def sql_mobile_nearby_bee_friend_page_list(self):
 #         pass
 
 
 class PersonalSql(object):
-    L = Log("PersonalSql")
+    L = logger("PersonalSql")
     db = DataBaseOperate()
 
     def sql_mutual_label_type(self, n):
@@ -1050,7 +1050,7 @@ class PersonalSql(object):
 
 
 class UserAuthData(DataBaseOperate):
-    L = Log("UserAuthData")
+    L = logger("UserAuthData")
     """
         实名认证MySQL数据查询
     """
@@ -1060,7 +1060,7 @@ class UserAuthData(DataBaseOperate):
 
 
 class ShuntSql(object):
-    L = Log("VisitRecordSql")
+    L = logger("VisitRecordSql")
     db = DataBaseOperate()
 
     def sql_shunt_buy_status(self, shunt_status, user_id):
@@ -1179,7 +1179,7 @@ class BeekeeperNearbySql(object):
         from tools.DataBaseOperatePool import DataBaseOperate
         self.__db = DataBaseOperate()
         self.__db.creat_db_pool(host_ip)
-        self.__log = Log('执行周边蜂友相关sql查询', "DEBUG").logger
+        self.__log = logger('执行周边蜂友相关sql查询', "DEBUG").logger
 
     def __del__(self):
         self.__db.close_db_pool()
@@ -1366,7 +1366,7 @@ WHERE user_id = {}
 
 
 class BeeReserveInformationSql(object):
-    L = Log("BeeReserveInformationSql")
+    L = logger("BeeReserveInformationSql")
     db = DataBaseOperate()
 
     def sql_bee_reserve(self):
@@ -1379,7 +1379,7 @@ class BeeReserveInformationSql(object):
 
 
 class StaffSql(object):
-    L = Log("StaffSql")
+    L = logger("StaffSql")
     db = DataBaseOperate()
 
     def sql_staff_number(self):
@@ -1423,7 +1423,7 @@ class StaffSql(object):
 class CollectionStatisticsSQL(DataBaseOperate):
     def __init__(self):
         super(CollectionStatisticsSQL, self).__init__()
-        self.__log = Log('执行蜂友采集统计查询', "DEBUG").logger
+        self.__log = logger('执行蜂友采集统计查询', "DEBUG").logger
 
 
 if __name__ == '__main__':

@@ -2,10 +2,10 @@
 # -*- coding: UTF-8 -*-
 
 import unittest
-from actions.BeeAction import BeeAction
-from tools.Config import Log
-from sql.Bee import BeeClueSql
-from testCase.FakeLocation import FakeLocation
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.log.logger import logger
+from testcase.flowerChaser.sql.Bee  import BeeClueSql
+from utils.fake.FakeLocation import FakeLocation
 import random
 import json
 from faker import Faker
@@ -19,7 +19,7 @@ class WeatherMain(unittest.TestCase, Tool):
     """
     ba = BeeAction()
     ba_db = BeeClueSql()
-    log = Log('BeeClueMain', level='DEBUG').logger
+    log = logger('BeeClueMain', level='DEBUG').logger
     log.info("开始执行天气管理接口测试用例")
     fake = Faker(locale="zh_CN")
     fl = FakeLocation()

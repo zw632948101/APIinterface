@@ -4,10 +4,10 @@
 """
 import json
 import unittest
-from actions.BeeAction import BeeAction
-from testCase.FakeLocation import FakeLocation
-from sql.Bee import StaffSql
-from tools.Config import Log
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.fake.FakeLocation import FakeLocation
+from testcase.flowerChaser.sql.Bee  import StaffSql
+from utils.log.logger import logger
 from faker import Faker
 from random import choice
 from tools.Tool import Tool
@@ -23,7 +23,7 @@ class StaffTrailMain(unittest.TestCase, FakeLocation, Tool):
     staff_trail = BeeAction()
     fl = FakeLocation()
     ss = StaffSql()
-    log = Log('StaffTrailMain').logger
+    log = logger('StaffTrailMain').logger
     fake = Faker(locale="zh_CN")
     staff_trail.set_user('15200000003')
 

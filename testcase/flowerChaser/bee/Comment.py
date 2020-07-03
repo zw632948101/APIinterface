@@ -2,8 +2,8 @@
 # -*- coding: UTF-8 -*-
 
 import unittest
-from actions.BeeAction import beeAction
-from tools.Config import Log
+from interfaces.flowerChaser.BeeAction import beeAction
+from utils.log.logger import logger
 from sql.WorkRecord import WorkRecordSql
 from sql.LogComment import LogCommentSql
 import random
@@ -18,7 +18,7 @@ class CommentMain(unittest.TestCase):
     comment = beeAction()
     comment_db = WorkRecordSql()
     lcs = LogCommentSql()
-    log = Log('ContainerMain').logger
+    log = logger('ContainerMain').logger
     log.info("开始执行日志评论管理接口测试用例")
     fake = Faker(locale="zh_CN")
     comment.set_user('26632629@qq.com', '123456')

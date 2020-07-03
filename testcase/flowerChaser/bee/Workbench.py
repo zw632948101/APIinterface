@@ -7,10 +7,10 @@
 """
 import json
 import unittest
-from actions.BeeAction import BeeAction
-from testCase.FakeLocation import FakeLocation
-from tools.Config import Log
-from sql.Bee import VisitRecordSql
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.fake.FakeLocation import FakeLocation
+from utils.log.logger import logger
+from testcase.flowerChaser.sql.Bee  import VisitRecordSql
 from faker import Faker
 from random import choice
 from tools.Tool import Tool
@@ -29,7 +29,7 @@ class WorkbenchMain(unittest.TestCase, VisitRecordSql, FakeLocation, Tool):
     fl = FakeLocation()
     user_id = 591
     mobile = (vr.query_contact_number_buy_user(user_id=user_id))[0].get('contact_number')
-    log = Log('WorkbenchMain').logger
+    log = logger('WorkbenchMain').logger
     fake = Faker(locale="zh_CN")
     # workbench.set_user('15200000033')
     workbench.set_user(mobile)

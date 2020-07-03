@@ -7,16 +7,15 @@
 """
 
 import unittest
-from actions.BeeAction import BeeAction
-from testCase.FakeLocation import FakeLocation
-from tools.Config import Log
-from sql.Bee import VisitRecordSql, HelpSql
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.fake.FakeLocation import FakeLocation
+from utils.log.logger import logger
+from testcase.flowerChaser.sql.Bee  import VisitRecordSql, HelpSql
 from faker import Faker
-from random import choice
 from tools.Tool import Tool
-import datetime, time
+
+
 import random
-import json
 
 
 class HelpMain(unittest.TestCase, VisitRecordSql, FakeLocation, Tool, HelpSql):
@@ -27,7 +26,7 @@ class HelpMain(unittest.TestCase, VisitRecordSql, FakeLocation, Tool, HelpSql):
     config_db = VisitRecordSql()
     help_db = HelpSql()
     fl = FakeLocation()
-    log = Log('HelpMain').logger
+    log = logger('HelpMain').logger
     fake = Faker(locale="zh_CN")
     help.set_user("19999999990")
 
