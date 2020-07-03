@@ -8,14 +8,14 @@
 
 
 from utils.databaseConnection.DataBaseOperate import DataBaseOperate
-from tools.Config import Config, Log
+from utils.log import log
+from utils.environmentConfiguration import config
 import time
 
-host_ip = Config('config').data['database'][Config('config').data['run']]['host_ip']
+host_ip = config.get('database').get(config.get('run')).get('host_ip')
 
 
 class PassportInfoSql(object):
-    L = logger("PassportInfoSql")
     db = DataBaseOperate()
 
     def query_user_by_email(self, email):

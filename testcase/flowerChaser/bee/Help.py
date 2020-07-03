@@ -9,7 +9,7 @@
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
 from utils.fake.FakeLocation import FakeLocation
-from utils.log.logger import logger
+from utils.log import log
 from testcase.flowerChaser.sql.Bee import VisitRecordSql, HelpSql
 from faker import Faker
 from utils.dataConversion.dataConversion import DataConversion
@@ -25,7 +25,6 @@ class HelpMain(unittest.TestCase, VisitRecordSql, FakeLocation, DataConversion, 
     config_db = VisitRecordSql()
     help_db = HelpSql()
     fl = FakeLocation()
-    log = logger('HelpMain').logger
     fake = Faker(locale="zh_CN")
     help.set_user("19999999990")
 

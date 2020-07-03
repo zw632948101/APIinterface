@@ -3,7 +3,7 @@
 
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
-from utils.log.logger import logger
+from utils.log import log
 from testcase.flowerChaser.sql.Bee import VisitRecordSql
 from utils.fake.FakeLocation import FakeLocation
 import random
@@ -20,7 +20,6 @@ class VisitRecordMain(unittest.TestCase):
     visit_record = BeeAction()
     config_db = VisitRecordSql()
     fl = FakeLocation()
-    log = logger('FarmInformationMain').logger
     log.info("开始执行拜访记录测试用例")
     fake = Faker(locale="zh_CN")
     visit_record.set_user('yaxin.guan@worldfarm.com', '123456')

@@ -2,13 +2,12 @@
 # -*- coding: UTF-8 -*-
 import random
 from unittest import TestCase
-from utils.log.logger import logger
+from utils.log import log
 from interfaces.flowerChaser.BeeAction import BeeAction
 from testcase.flowerChaser.sql.Bee import BeekeeperNearbySql
 
 
 class BeekeeperNearby(TestCase):
-    log = logger('BeekeeperNearby', level='DEBUG').logger
     log.debug('周边蜂友接口测试')
 
     @staticmethod

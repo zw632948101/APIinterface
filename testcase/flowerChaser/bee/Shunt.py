@@ -3,7 +3,7 @@
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
 from utils.fake.FakeLocation import FakeLocation
-from utils.log.logger import logger
+from utils.log import log
 from testcase.flowerChaser.sql.Bee import ContainerInformationSql, ShuntSql
 import random
 from faker import Faker
@@ -20,7 +20,7 @@ class ContainerMain(unittest.TestCase, tt, FakeLocation, tl):
     container = BeeAction()
     container_db = ContainerInformationSql()
     shunt_db = ShuntSql()
-    log = logger('ContainerMain').logger
+
     fake = Faker(locale="zh_CN")
     container.set_user('19982917912')
 

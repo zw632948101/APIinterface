@@ -11,7 +11,7 @@ __author__: wei.zhang
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
 from utils.fake.FakeLocation import FakeLocation
-from utils.log.logger import logger
+from utils.log import log
 from testcase.flowerChaser.sql.Bee import ClinteleSql
 from testcase.flowerChaser.sql.Bee import VisitRecordSql
 from faker import Faker
@@ -27,7 +27,6 @@ class CommentrMain(unittest.TestCase, ClinteleSql, FakeLocation, DataConversion)
     """
     comment = BeeAction()
     config_db_v = VisitRecordSql()
-    log = logger('ContainerMain').logger
     fake = Faker(locale="zh_CN")
     comment.set_user('yaxin.guan@worldfarm.com', '123456')
 

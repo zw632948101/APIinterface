@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
-from utils.log.logger import logger
+from utils.log import log
 from testcase.flowerChaser.sql.Bee import ContainerInformationSql, PurchaseSql
 import random
 from faker import Faker
@@ -17,7 +17,7 @@ class ContainerMain(unittest.TestCase):
     container = BeeAction()
     container_db = ContainerInformationSql()
     purchase_db = PurchaseSql()
-    log = logger('ContainerMain').logger
+
     log.info("开始执行合同管理接口测试用例")
     fake = Faker(locale="zh_CN")
     container.set_user('19982917912')

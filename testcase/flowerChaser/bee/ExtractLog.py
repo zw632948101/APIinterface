@@ -12,7 +12,7 @@ import random
 import time
 from interfaces.flowerChaser.BeeAction import BeeAction
 from interfaces.flowerChaser.UserAction import UserAction
-from utils.log.logger import logger
+from utils.log import log
 from testcase.flowerChaser.sql.Passport import PassportInfoSql
 from testcase.flowerChaser.sql.Bee import ContainerInformationSql
 from testcase.flowerChaser.sql.Bee import NectarSourceInformationSql
@@ -29,7 +29,6 @@ class ExtractLogMain(unittest.TestCase):
     ba = BeeAction()
     email = '26632629@qq.com'
     ba.set_user(email, 123456)
-    log = logger('ExtractLogMain').logger
     log.info("开始执行摇蜜日志接口测试用例")
     pis = PassportInfoSql()
     cis = ContainerInformationSql()

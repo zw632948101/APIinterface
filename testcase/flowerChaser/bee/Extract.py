@@ -3,7 +3,7 @@
 
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
-from utils.log.logger import logger
+from utils.log import log
 from testcase.flowerChaser.sql.Bee import ExtractInformationSql, NectarSourceInformationSql, ContainerInformationSql
 import random
 import json
@@ -21,7 +21,7 @@ class ExtractMain(unittest.TestCase):
     extract_db = ExtractInformationSql()
     nectar_source_db = NectarSourceInformationSql()
     container_db = ContainerInformationSql()
-    log = logger('ContainerMain').logger
+
     log.info("开始执行摇蜜管理接口测试用例")
     fake = Faker(locale="zh_CN")
     extract.set_user('19988776600')

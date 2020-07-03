@@ -5,7 +5,7 @@
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
 from utils.fake.FakeLocation import FakeLocation
-from utils.log.logger import logger
+from utils.log import log
 from testcase.flowerChaser.sql.Bee import BeeReserveInformationSql
 from faker import Faker
 from utils.dataConversion.dataConversion import DataConversion
@@ -20,7 +20,6 @@ class BeeReserveMain(unittest.TestCase, FakeLocation, DataConversion):
     bee_reserve = BeeAction()
     br = BeeReserveInformationSql()
     fl = FakeLocation()
-    log = logger('BeeReserveMain').logger
     fake = Faker(locale="zh_CN")
     bee_reserve.set_user('15200000003')
 

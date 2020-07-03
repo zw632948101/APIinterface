@@ -8,14 +8,14 @@
 
 
 from utils.databaseConnection.DataBaseOperate import DataBaseOperate
-from tools.Config import Config, Log
+from utils.log import log
+from utils.environmentConfiguration import config
 
 
-host_ip = Config('config').data['database'][Config('config').data['run']]['host_ip']
+host_ip = config.get('database').get(config.get('run')).get('host_ip')
 
 
 class LogCommentSql(object):
-    L = logger("LogCommentSql").logger
     db = DataBaseOperate()
 
     def query_comment_by_log_id(self, log_id, is_delete=0):

@@ -4,7 +4,7 @@
 
 from unittest import TestCase
 from interfaces.flowerChaser.BeeAction import BeeAction
-from utils.log.logger import logger
+from utils.log import log
 from testcase.flowerChaser.sql.Bee import BeeSettleInRecordSql
 import random
 import json
@@ -16,7 +16,6 @@ import requests
 class BeeSettleInRecord(TestCase):
     api = BeeAction()
     sql = BeeSettleInRecordSql()
-    log = logger('BeeSettleInRecord').logger
     log.info("开始执行蜜蜂入驻记录接口测试用例")
     fake = Faker(locale="zh_CN")
     api.set_user('26632629@qq.com', '123456')

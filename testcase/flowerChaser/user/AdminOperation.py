@@ -10,8 +10,8 @@
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
 from interfaces.flowerChaser.UserAction import UserAction
-from utils.log.logger import logger
-from sql.Keeper import KeeperInfoSql
+from utils.log import log
+from testcase.flowerChaser.sql.Keeper import KeeperInfoSql
 from testcase.flowerChaser.sql.Passport import PassportInfoSql
 from faker import Faker
 from random import choice
@@ -24,7 +24,6 @@ class AdminOperationMain(unittest.TestCase):
     """
     ua = UserAction()
     ba = BeeAction()
-    log = logger('AdminOperation').logger
     log.info("开始执行User接口测试用例")
     pis = PassportInfoSql()
     kis = KeeperInfoSql()

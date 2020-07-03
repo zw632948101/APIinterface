@@ -3,7 +3,7 @@
 
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
-from utils.log.logger import logger
+from utils.log import log
 from testcase.flowerChaser.sql.Bee import ConfigInformationSql, NectarSourceInformationSql, ContainerInformationSql
 from utils.fake.FakeLocation import FakeLocation
 import random
@@ -23,7 +23,6 @@ class NectarSourceMain(unittest.TestCase):
     nectar_source_db = NectarSourceInformationSql()
     container_db = ContainerInformationSql()
     fl = FakeLocation()
-    log = logger('FarmInformationMain').logger
     log.info("开始执行追花族蜂场管理测试用例")
     fake = Faker(locale="zh_CN")
     nectar_source.set_user('19988776600')

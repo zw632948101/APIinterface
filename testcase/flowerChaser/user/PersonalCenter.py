@@ -9,8 +9,8 @@
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
 from interfaces.flowerChaser.UserAction import UserAction
-from utils.log.logger import logger
-from tools.RedisOperate import Redis
+from utils.log import log
+from utils.databaseConnection.RedisOperate import Redis
 from testcase.flowerChaser.sql.Passport import PassportInfoSql
 from testcase.flowerChaser.sql.Bee import PersonalSql
 from faker import Faker
@@ -26,7 +26,6 @@ class PersonalCenterMain(unittest.TestCase):
     """
     ua = UserAction()
     ba = BeeAction()
-    log = logger('UserManageMain').logger
     log.info("开始执行User接口测试用例")
     pis = PassportInfoSql()
     ps = PersonalSql()
@@ -517,7 +516,7 @@ class PersonalCenterMain(unittest.TestCase):
         province_id, city_id, district_id, address, lng, lat = self.fl.fake_location()
         username = self.fake.name()
         db_regular_source = self.ps.sql_random_statistics_nectar_source_type(random.randint(1, 10))
-        regular_source = Tool.data_assemble('typeCode', db_regular_source)  # 将字典处理为列表
+        regular_source = DataConversion.data_assemble('typeCode', db_regular_source)  # 将字典处理为列表
         self.ba._mobile_fc_user_update(regularSource_=regular_source,
                                        userName_=username,
                                        headImg_="http://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com/data/fc-bee/attach/1585707418799.jpg",
@@ -537,7 +536,7 @@ class PersonalCenterMain(unittest.TestCase):
         """
         self.ba.set_user('19988776600')
         db_mutual_label = self.ps.sql_mutual_label_type(random.randint(0, 9))
-        mutual_label = Tool.data_assemble('typeCode', db_mutual_label)  # 将字典处理为列表
+        mutual_label = DataConversion.data_assemble('typeCode', db_mutual_label)  # 将字典处理为列表
         self.ba._mobile_label_set(labelType_=mutual_label, userId_=538)
 
     def test_mobile_fc_user_info(self):

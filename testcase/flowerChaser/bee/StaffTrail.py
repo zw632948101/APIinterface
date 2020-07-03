@@ -7,7 +7,7 @@ import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
 from utils.fake.FakeLocation import FakeLocation
 from testcase.flowerChaser.sql.Bee import StaffSql
-from utils.log.logger import logger
+from utils.log import log
 from faker import Faker
 from random import choice
 from utils.dataConversion.dataConversion import DataConversion
@@ -23,7 +23,6 @@ class StaffTrailMain(unittest.TestCase, FakeLocation, DataConversion):
     staff_trail = BeeAction()
     fl = FakeLocation()
     ss = StaffSql()
-    log = logger('StaffTrailMain').logger
     fake = Faker(locale="zh_CN")
     staff_trail.set_user('15200000003')
 

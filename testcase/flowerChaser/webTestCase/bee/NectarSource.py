@@ -9,7 +9,7 @@
 
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
-from utils.log.logger import logger
+from utils.log import log
 from faker import Faker
 from testcase.flowerChaser.sql.Bee import NectarSourceInformationSql, ConfigInformationSql, ContainerInformationSql, StaffSql
 from utils.fake.FakeLocation import FakeLocation
@@ -30,7 +30,6 @@ class RegisterLoginMain(unittest.TestCase):
     staff_db = StaffSql()
     fl = FakeLocation()
     mobile = '15200000003'
-    log = logger('BeeInformationMain').logger
     log.info("开始执行内部蜂场管理模块测试用例")
     fake = Faker(locale="zh_CN")
     nectar_source.set_user(mobile)
@@ -51,7 +50,7 @@ class RegisterLoginMain(unittest.TestCase):
         """
         name = self.fake.text(max_nb_chars=20)
         db_type = self.nectar_source_db.sql_random_nectar_source_type(random.randint(1, 5))
-        type_list = Tool.data_assemble('typeCode', db_type)
+        type_list = DataConversion.data_assemble('typeCode', db_type)
         type_str = ",".join(type_list)
         base_type = random.randint(1, 3)
         province_id, city_id, district_id, address, lng, lat = self.fl.fake_location()
@@ -142,7 +141,7 @@ class RegisterLoginMain(unittest.TestCase):
             nectar_source_id = nectar_source[num]["id"]
             name = self.fake.text(max_nb_chars=20)
             db_type = self.nectar_source_db.sql_random_nectar_source_type(random.randint(1, 5))
-            type_list = Tool.data_assemble('typeCode', db_type)
+            type_list = DataConversion.data_assemble('typeCode', db_type)
             type_str = ",".join(type_list)
             base_type = random.randint(1, 3)
             province_id, city_id, district_id, address, lng, lat = self.fl.fake_location()

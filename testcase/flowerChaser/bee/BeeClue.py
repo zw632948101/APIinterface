@@ -3,7 +3,7 @@
 
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
-from utils.log.logger import logger
+from utils.log import log
 from testcase.flowerChaser.sql.Bee import BeeClueSql
 from utils.fake.FakeLocation import FakeLocation
 import random
@@ -16,7 +16,6 @@ class BeeClueMain(unittest.TestCase):
     """
     beeclue = BeeAction()
     beeclue_db = BeeClueSql()
-    log = logger('BeeClueMain').logger
     log.info("开始执行卖蜂线索管理接口测试用例")
     fake = Faker(locale="zh_CN")
     fl = FakeLocation()

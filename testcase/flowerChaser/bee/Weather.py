@@ -3,7 +3,7 @@
 
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
-from utils.log.logger import logger
+from utils.log import log
 from testcase.flowerChaser.sql.Bee import BeeClueSql
 from utils.fake.FakeLocation import FakeLocation
 import random
@@ -19,7 +19,6 @@ class WeatherMain(unittest.TestCase, DataConversion):
     """
     ba = BeeAction()
     ba_db = BeeClueSql()
-    log = logger('BeeClueMain', level='DEBUG').logger
     log.info("开始执行天气管理接口测试用例")
     fake = Faker(locale="zh_CN")
     fl = FakeLocation()

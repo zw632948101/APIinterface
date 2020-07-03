@@ -8,14 +8,14 @@
 
 
 from utils.databaseConnection.DataBaseOperate import DataBaseOperate
-from tools.Config import Config, Log
+from utils.log import log
+from utils.environmentConfiguration import config
 import random
 
-host_ip = Config('config').data['database'][Config('config').data['run']]['host_ip']
+host_ip = config.get('database').get(config.get('run')).get('host_ip')
 
 
 class WorkRecordSql(object):
-    L = logger("WorkLogInfoSql").logger
     db = DataBaseOperate()
 
     def query_all_log_by_email(self, email):
@@ -97,7 +97,7 @@ class WorkRecordSql(object):
         for w in types[0]:
             work_type_id = w['key']
             work_type = w['value']
-            self.L.info("workType: %s --> %s" % (work_type, work_type_id))
+            log.info("workType: %s --> %s" % (work_type, work_type_id))
             group_types = []
             for g in types[1]:
                 if g["parent_key"] == work_type_id:
@@ -105,7 +105,7 @@ class WorkRecordSql(object):
             group_type_dict = random.choice(group_types)
             group_type_id = group_type_dict['key']
             group_type = group_type_dict['value']
-            self.L.info("groupType: %s --> %s" % (group_type, group_type_id))
+            log.info("groupType: %s --> %s" % (group_type, group_type_id))
             detail_types = []
             for d in types[2]:
                 if d["parent_key"] == group_type_id:
@@ -114,15 +114,15 @@ class WorkRecordSql(object):
                 detail_type_dict = random.choice(detail_types)
                 detail_type_id = detail_type_dict['key']
                 detail_type = detail_type_dict['value']
-                self.L.info("detailType: %s --> %s" % (detail_type, detail_type_id))
+                log.info("detailType: %s --> %s" % (detail_type, detail_type_id))
             else:
                 detail_type_id = None
-                self.L.info("detailType: %s" % detail_type_id)
+                log.info("detailType: %s" % detail_type_id)
             random_list.append((work_type_id, group_type_id, detail_type_id))
         return random_list
         # work_type_id = work_type_dict['key']
         # work_type = work_type_dict['value']
-        # self.L.info("workType: %s --> %s" % (work_type, work_type_id))
+        # log.info("workType: %s --> %s" % (work_type, work_type_id))
         # group_types = []
         # for g in types[1]:
         #     if g["parent_key"] == work_type_id:
@@ -130,7 +130,7 @@ class WorkRecordSql(object):
         # group_type_dict = random.choice(group_types)
         # group_type_id = group_type_dict['key']
         # group_type = group_type_dict['value']
-        # self.L.info("groupType: %s --> %s" % (group_type, group_type_id))
+        # log.info("groupType: %s --> %s" % (group_type, group_type_id))
         # detail_types = []
         # for d in types[2]:
         #     if d["parent_key"] == group_type_id:
@@ -139,10 +139,10 @@ class WorkRecordSql(object):
         #     detail_type_dict = random.choice(detail_types)
         #     detail_type_id = detail_type_dict['key']
         #     detail_type = detail_type_dict['value']
-        #     self.L.info("groupType: %s --> %s" % (detail_type, detail_type_id))
+        #     log.info("groupType: %s --> %s" % (detail_type, detail_type_id))
         # else:
         #     detail_type_id = ""
-        #     self.L.info("groupType: %s" % detail_type_id)
+        #     log.info("groupType: %s" % detail_type_id)
         # return work_type_id, group_type_id, detail_type_id\
 
     def get_all_work_log(self):
