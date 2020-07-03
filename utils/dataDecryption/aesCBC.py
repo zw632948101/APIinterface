@@ -1,4 +1,4 @@
-from crypto.Cipher import AES
+from Crypto.Cipher import AES
 from binascii import a2b_hex
 from os import getenv
 import json
