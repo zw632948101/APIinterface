@@ -5,34 +5,33 @@
 @Time: 2020 2020/3/31 17:10
 工作台-蜂友资料
 """
-import json
+# import json
 import unittest
-from actions.BeeAction import BeeAction
-from testCase.FakeLocation import FakeLocation
-from tools.Config import Log
-from sql.Bee import VisitRecordSql
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.fake.FakeLocation import FakeLocation
+# from utils.log import log
+from testcase.flowerChaser.sql.Bee import VisitRecordSql
 from faker import Faker
-from random import choice
-from tools.Tool import Tool
+# from random import choice
+# from tools.Tool import Tool
 import datetime, time
 import random
 import json
 
 
-class WorkbenchMain(unittest.TestCase, VisitRecordSql, FakeLocation, Tool):
+class WorkbenchMain(unittest.TestCase, VisitRecordSql, FakeLocation):
     """
     接口文档:http://192.168.62.242:36054/swagger-ui.html
     """
     workbench = BeeAction()
-    config_db = VisitRecordSql()
-    vr = VisitRecordSql()
-    fl = FakeLocation()
-    user_id = 591
-    mobile = (vr.query_contact_number_buy_user(user_id=user_id))[0].get('contact_number')
-    log = Log('WorkbenchMain').logger
+    # config_db = VisitRecordSql()
+    # vr = VisitRecordSql()
+    # fl = FakeLocation()
+    # user_id = 591
+    # mobile = (vr.query_contact_number_buy_user(user_id=user_id))[0].get('contact_number')
     fake = Faker(locale="zh_CN")
-    # workbench.set_user('15200000033')
-    workbench.set_user(mobile)
+    workbench.set_user('15200000033')
+    # workbench.set_user(mobile)
 
     def test_mobile_workbench_bee_friend_add(self):
         """
@@ -112,7 +111,7 @@ class WorkbenchMain(unittest.TestCase, VisitRecordSql, FakeLocation, Tool):
                                                                    platNum_=plat_num, babyNum_=baby_num,
                                                                    honeyNum_=honey_num, remark_=remark,
                                                                    nextNectarSource_=next_nectar_source,
-                                                                   contactNumber_=contact_number, keeperName_=keeper_name,
+                                                                   contactNumber_=contact_number,
                                                                    age_=age, gender_=gender, nativeProvince_=native_province,
                                                                    nativeCounty_=native_county, nativeCity_=native_city,
                                                                    seniority_=seniority, regularRoute_=regular_route,
