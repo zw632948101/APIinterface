@@ -151,7 +151,7 @@ class CommentrMain(unittest.TestCase, ClinteleSql, FakeLocation, DataConversion)
         if clueinfo:
             clue = choice(clueinfo)
         else:
-            self.log("当前系统中暂无卖蜂线索")
+            log("当前系统中暂无卖蜂线索")
             return
         province_id, city_id, county, address, lng, lat = self.fake_location()
         keeperName = self.fake.name()
@@ -267,7 +267,7 @@ class CommentrMain(unittest.TestCase, ClinteleSql, FakeLocation, DataConversion)
         if contact_number:
             customerid = choice(contact_number).get('id')
         else:
-            self.log("系统中没有客户资料")
+            log("系统中没有客户资料")
 
         province_id, city_id, county, address, lng, lat = self.fake_location()
         keeperName = self.fake.name()
@@ -368,7 +368,7 @@ class CommentrMain(unittest.TestCase, ClinteleSql, FakeLocation, DataConversion)
         if swarminfo:
             sid = 15
         else:
-            self.log("当前系统无蜂群信息")
+            log("当前系统无蜂群信息")
             return
         start_date = datetime.datetime(year=2019, month=1, day=1)
         end_data = datetime.datetime(year=2020, month=2, day=26)

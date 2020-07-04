@@ -35,7 +35,7 @@ class NectarSourceMain(unittest.TestCase):
         """
         json_response = self.statistics._api_statistics_generate()
         if json_response["status"] == "OK":
-            self.log.info("实时数据刷新成功")
+            log.info("实时数据刷新成功")
         else:
             self.assertTrue(False, "实时数据刷新失败")
 

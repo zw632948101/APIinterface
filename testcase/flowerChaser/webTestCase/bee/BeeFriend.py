@@ -176,7 +176,7 @@ class RegisterLoginMain(unittest.TestCase):
             self.assertEqual(sql_friend[0]['seniority'], seniority)
             self.assertEqual(sql_friend[0]['age'], age)
         else:
-            self.log.info('运行错误提示，请查看日志')
+            log.info('运行错误提示，请查看日志')
 
     def test_admin_swarm_edit(self):
         """

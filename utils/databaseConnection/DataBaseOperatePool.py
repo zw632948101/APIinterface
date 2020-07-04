@@ -22,6 +22,7 @@ class DataBaseOperate(object):
 
     def creat_db_pool(self, host):
         connection_config = decrypt(getenv('INTERFACE_CIPHER'))
+        host = decrypt(host)
 
         if connection_config.get(host, None) is None:
             log.error("IP域名错误")

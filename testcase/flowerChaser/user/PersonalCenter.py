@@ -407,7 +407,7 @@ class PersonalCenterMain(unittest.TestCase):
         json_response = self.ua._fc_mobile_user_change_verify_code(mobile_=mobile)
         if json_response["status"] == "OK":
             verify_code = json.loads(self.redis.get('SmsVerifyCode:ReplaceMobile:%s:code' % str(mobile)))['code']
-            self.log.info('手机号 %s, 短信已发送, 验证码 %s' % (mobile, verify_code))
+            log.info('手机号 %s, 短信已发送, 验证码 %s' % (mobile, verify_code))
             return verify_code
         else:
             self.assertTrue(False, "手机号正确, 发送验证码失败")

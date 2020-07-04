@@ -483,7 +483,7 @@ class AdminOperationMain(unittest.TestCase):
             self.assertEqual(old_user["id"], user["id"])
             self.assertEqual(random_role, user["role_code"])
             self.assertEqual(random_post, user["post_code"])
-            self.log.info("ID为%d的用户[%s], 角色设置为[%s], 岗位设置为[%s]"
+            log.info("ID为%d的用户[%s], 角色设置为[%s], 岗位设置为[%s]"
                           % (user["id"], user["username"], role_code[random_role], post_code[random_post]))
             self.ba._admin_fc_user_set_role(userIds_=[old_user["id"]],
                                             roleCode_=1001, postCode_=1000)
@@ -673,7 +673,7 @@ class AdminOperationMain(unittest.TestCase):
         self.ba.set_user('admin@worldfarm.com', 123456, 'employee')
         json_response = self.ba._admin_bee_keeper_edit(id_=old_keeper["id"], name_=new_keeper_name)
         if json_response["status"] == "OK":
-            self.log.info("ID为%s的养蜂师傅:%s 更名为:%s" % (old_keeper["id"], old_keeper["name"], new_keeper_name))
+            log.info("ID为%s的养蜂师傅:%s 更名为:%s" % (old_keeper["id"], old_keeper["name"], new_keeper_name))
             new_keeper = self.kis.query_latest_keeper()[0]
             self.assertEqual(new_keeper_name, new_keeper["name"])
         else:

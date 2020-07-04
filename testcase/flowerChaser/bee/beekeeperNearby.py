@@ -226,7 +226,7 @@ class BeekeeperNearby(TestCase):
         search_content = 505
         store_content = self.db.sql_mobile_swarm_get_by_user(search_content)
         api_content = self.api._mobile_swarm_get_by_user(userId_=search_content)
-        self.log.warning(api_content)
+        log.warning(api_content)
 
         if api_content.get('errorCode') == '10100363':
             self.assertEqual(len(store_content), 0)

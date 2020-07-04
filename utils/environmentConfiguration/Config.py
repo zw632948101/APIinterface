@@ -7,11 +7,11 @@ from os import name as os_name
 
 
 def get_config():
-    if os_name == 'posix':
-        file = dirname(abspath('.')) + "/utils/environmentConfiguration/config.yaml"
-    else:
-        file = dirname(abspath('.')) + "\\\\environmentConfiguration\\\\config.yaml"
-
+    # if os_name == 'posix':
+    #     file = dirname(abspath('.')) + "/utils/environmentConfiguration/config.yaml"
+    # else:
+    #     file = dirname(abspath('.')) + "\\\\environmentConfiguration\\\\config.yaml"
+    file = './../../../utils/environmentConfiguration/config.yaml'
     with open(file, encoding='utf-8') as f:
         config = yaml.safe_load(f)
         if config.get('which_project') in config.keys():

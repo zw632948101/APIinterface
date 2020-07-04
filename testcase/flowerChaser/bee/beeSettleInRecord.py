@@ -18,7 +18,7 @@ class BeeSettleInRecord(TestCase):
     sql = BeeSettleInRecordSql()
     log.info("开始执行蜜蜂入驻记录接口测试用例")
     fake = Faker(locale="zh_CN")
-    api.set_user('26632629@qq.com', '123456')
+    api.set_user('15388126080')
 
     def test_mobile_purchase_enter_save(self):
         """
