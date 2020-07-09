@@ -10,7 +10,7 @@ import json
 from faker import Faker
 import datetime, time
 from datetime import datetime
-import requests
+from utils.dataConversion.dataConversion import DataConversion as dc
 
 
 class ExtractMain(unittest.TestCase):
@@ -56,24 +56,16 @@ class ExtractMain(unittest.TestCase):
             num = random.randrange(0, len(nectar_source))
             # nectar_source_id = nectar_source[num]["id"]
             nectar_source_id = 213
-            # container_list = self.container_db.sql_container_by_nectar_source_id(nectar_source_id)
-            # for i in range(3):
-            #     num = random.randrange(0, len(container_list))
-            #     container_id = container_list[num]["id"]
-            #     containers.append(container_id)
-            # container = list(set(containers))
-            # for j in range(len(container)):
-            #     container_ids = {"containerId": container[j], "hiveNum": self.fake.random_int(min=1, max=999)}
-            #     detail_list.append(container_ids)
-            # detail = json.dumps(detail_list, ensure_ascii=False)
             weight = self.fake.pyfloat(left_digits=6, right_digits=2, positive=True)
             # start_dates = container_list[0]["enter_time"]
+            imagedict = self.nectar_source_db.sql_query_extract_add_png()
+            scenePic = json.dumps(list(set(dc.data_assemble('url', imagedict))))
             start_date = datetime.strptime(self.fake.date(), '%Y-%m-%d')
             end_data = datetime.now()
             enter_time = self.fake.date_time_between(start_date=start_date, end_date=end_data)
             gather_time = int(enter_time.timestamp() * 1000)
             operator_list = self.test_mobile_extract_operator()
-            operator = operator_list[random.randint(1, 10)]["operatorId"]
+            operator = operator_list[random.randint(1, len(operator_list))]["operatorId"]
             nectar_source_type = random.randint(1001, 1046)
             unit = random.randint(1, 3)
             response = self.extract._mobile_extract_add(nectarSourceId_=nectar_source_id,
@@ -81,11 +73,12 @@ class ExtractMain(unittest.TestCase):
                                                         gatherTime_=gather_time,
                                                         weight_=weight,
                                                         operatorId_=operator,
-                                                        unit_=unit)
+                                                        unit_=unit,
+                                                        scenePic_=scenePic)
             if response["status"] == "OK":
                 extract_records = self.extract_db.sql_all_extract_record()
                 extract_record_detail = extract_records[0]
-                self.assertEqual(nectar_source_id, extract_record_detail["nectar_source_id"])
+                self.assertEqual(str(nectar_source_id), extract_record_detail["nectar_source_id"])
                 gather_time_time = time.localtime(gather_time / 1000)
                 gather_time_stamp = time.strftime("%Y-%m-%d", gather_time_time)
                 self.assertEqual(gather_time_stamp, extract_record_detail["gather_time"])
@@ -168,7 +161,7 @@ class ExtractMain(unittest.TestCase):
         detail = json.dumps([{"containerId": 9, "hiveNum": 322}, {"containerId": 10, "hiveNum": 922}],
                             ensure_ascii=False)
         response = self.extract._mobile_extract_add(nectarSourceId_=8, gatherTime_=1568706985000,
-                                                    weight_=675, operator_='张丽娟',  unit_=random.randint(1, 3),
+                                                    weight_=675, operator_='张丽娟', unit_=random.randint(1, 3),
                                                     nectarSourceType_=1207)
         self.assertEqual("蜜源类型不存在", response['errorMsg'])
 
@@ -193,11 +186,13 @@ class ExtractMain(unittest.TestCase):
         """
         extract_records = self.extract_db.sql_all_extract_record()
         if extract_records[0]["id"] is not None:
+            imagedict = self.nectar_source_db.sql_query_extract_add_png()
+            scenePic = json.dumps(list(set(dc.data_assemble('url', imagedict))))
             num = random.randrange(0, len(extract_records))
             extract_record_id = extract_records[num]["id"]
             weight = self.fake.pyfloat(left_digits=3, right_digits=2, positive=True)
-            operator_list = self.test_mobile_extract_operator()
-            operator = operator_list[random.randint(1, 10)]
+            operator_list = dc.data_assemble('operatorId', self.test_mobile_extract_operator())
+            operator = operator_list[random.randint(1, len(operator_list))]
             extract_record_detail = self.extract_db.sql_extract_record_detail_by_extract_record_id(extract_record_id)
             detail = []
             for i in range(len(extract_record_detail)):
@@ -209,8 +204,9 @@ class ExtractMain(unittest.TestCase):
             # enter_time = extract_record_detail[0]["enter_time"]
             time = datetime.strptime(gather_times, '%Y-%m-%d')
             gather_time = int(time.timestamp() * 1000)
-            response = self.extract._mobile_extract_edit(id_=extract_record_id, weight_=weight, operator_=operator,
-                                                         unit_=random.randint(1, 3), gatherTime_=gather_time)
+            response = self.extract._mobile_extract_edit(id_=extract_record_id, weight_=weight, operatorId_=operator,
+                                                         unit_=random.randint(1, 3), gatherTime_=gather_time,
+                                                         scenePic_=scenePic)
             self.assertEqual(response['status'], "OK")
         else:
             self.assertTrue(False, "暂无摇蜜记录")
@@ -220,7 +216,7 @@ class ExtractMain(unittest.TestCase):
         POST /mobile/extract/edit 编辑摇蜜记录-更改摇蜜时间
         :return:
         """
-        response = self.extract._mobile_extract_edit(id_=12, weight_=79.82, operator_="蜂友10001",
+        response = self.extract._mobile_extract_edit(id_=12, weight_=79.82, operatorId_="蜂友10001",
                                                      unit_=3,
                                                      gatherTime_=1192636800000)
         self.assertEqual(response['status'], "OK")

@@ -56,12 +56,37 @@ class NectarSourceInformationSql(object):
         sql = "SELECT * FROM `fc-bee`.t_nectar_source WHERE `status`='%s' AND is_delete=0;" % str(status)
         return self.db.operate(host_ip, sql)
 
+    def sql_query_extract_add_png(self):
+        """
+        查询20张图片
+        :return:
+        """
+        sql = """SELECT url FROM `fc-bee`.t_nectar_source_attach WHERE is_delete=0 ORDER BY rand() DESC LIMIT 20;"""
+        return self.db.operate(host_ip, sql)
+
     def sql_all_nectar_source(self):
         """
         查询当前所有蜜源地
         :return:
         """
         sql = "SELECT * FROM `fc-bee`.t_nectar_source WHERE is_delete=0 ORDER BY id DESC ;"
+        return self.db.operate(host_ip, sql)
+
+    def query_all_operator_list(self):
+        """
+        查詢全部操作人列表
+        """
+        sql = """
+            SELECT
+            bf.user_id as userId ,bf.real_name as userName ,bf.contact_number as contactNumber ,ur.role_code as roleCode
+            ,tc.`value` as roleStr
+            FROM
+            `fc-bee`.t_bee_friend bf
+            INNER JOIN `fc-bee`.t_user_role ur ON ur.user_id = bf.user_id AND ur.is_delete = 0 AND ur.role_code IN (1005,1006,1002,1003,1004)
+            INNER JOIN `fc-bee`.t_config tc ON tc.`key` = ur.role_code  AND tc.is_delete = 0 AND  tc.`code` = '10001'
+            where bf.is_delete = 0
+            ORDER BY locate(ur.role_code,'1005,1006,1002,1003,1004') ,CONVERT(bf.user_name USING GBK) asc;
+              """
         return self.db.operate(host_ip, sql)
 
     def sql_nectar_source_by_id(self, id):
@@ -115,7 +140,8 @@ class NectarSourceInformationSql(object):
               'ORDER BY enter_time DESC LIMIT 1;' % nectar_source_id
         enter_times = self.db.operate(host_ip, sql)[0]
         last_enter_time = datetime.datetime.strptime(enter_times.get("enter_time"), "%Y-%m-%d")
-        return int(datetime.datetime.timestamp(last_enter_time)*1000)
+        return int(datetime.datetime.timestamp(last_enter_time) * 1000)
+
 
 class ContainerInformationSql(object):
     db = DataBaseOperate()
@@ -1378,13 +1404,11 @@ class StaffSql(object):
         :param city: 市码
         :return:
         """
-        sql ='SELECT tbf.* FROM `fc-bee`.t_bee_friend tbf ' \
-             'WHERE user_id IN (SELECT user_id FROM `fc-bee`.t_user_role tur WHERE tur.role_code IN (1002, 1003) AND tur.is_delete = 0) ' \
-             'AND is_delete = 0 AND status IN (1, 2) AND province=%s AND city=%s ' \
-             'ORDER BY create_time DESC ;'% (province, city)
+        sql = 'SELECT tbf.* FROM `fc-bee`.t_bee_friend tbf ' \
+              'WHERE user_id IN (SELECT user_id FROM `fc-bee`.t_user_role tur WHERE tur.role_code IN (1002, 1003) AND tur.is_delete = 0) ' \
+              'AND is_delete = 0 AND status IN (1, 2) AND province=%s AND city=%s ' \
+              'ORDER BY create_time DESC ;' % (province, city)
         return self.db.operate(host_ip, sql)
-
-
 
 
 class CollectionStatisticsSQL(DataBaseOperate):
@@ -1392,6 +1416,22 @@ class CollectionStatisticsSQL(DataBaseOperate):
         super(CollectionStatisticsSQL, self).__init__()
 
 
+class NectarSourcePlant(DataBaseOperate):
+    def __init__(self):
+        super(NectarSourcePlant, self).__init__()
+
+    def query_nectar_source_plant_all(self):
+        """
+        查询全部蜜源植物信息
+        """
+        sql = """SELECT tp.id,tp.plant_name as plantName,tp.code,tp.type,tp.variety,tp.alias,tp.region,tp.area,
+                 tp.flowering_description as floweringDescription,tp.nectar_flow_condition as nectarFlowCondition,
+                 tp.powder_type as powderType,tp.min_honey_yield as minHoneyYield,
+                 tp.max_honey_yield as maxHoneyYield,tp.pic_url,tp.code_icon,tp.map_icon,tp.remark
+                  FROM `fc-bee`.t_nectar_source_plant tp WHERE tp.is_delete = 0;"""
+        return self.operate(host_ip, sql)
+
+
 if __name__ == '__main__':
-    d = NectarSourceInformationSql()
-    print(d.sql_nectar_source_last_seetle_time(213))
+    d = NectarSourcePlant()
+    print(d.query_nectar_source_plant_all())
