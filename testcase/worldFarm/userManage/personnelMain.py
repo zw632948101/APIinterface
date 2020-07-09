@@ -6,20 +6,23 @@ __author__ = 'Zhang Wei'
 __date__ = '2019/ / '
 
 """
-from testcase.worldFarm import testCase,PersonnelManage
+from testcase.worldFarm import testCase, PersonnelManage
 from random import choice
 
 
 class PersonnelMain(testCase):
-
     fq = PersonnelManage()
+
+    def __init__(self, methodName='runTest'):
+        super(PersonnelMain, self).__init__(methodName=methodName)
+        self.ka.set_user(mobile=self.email, password=self.password)
 
     def test_mobile_message_page_list(self):
         """
         分页查询普通消息列表
         :return:
         """
-        register = self.ka.mobile_message_page_list(pn=1, ps=20, parentMsgType=10, msgType=1002, farmId=None)
+        register = self.ka._mobile_message_page_list(pn_=1, ps_=20, parentMsgType_=10, msgType_=1002, farmId_=None)
         self.assertEqual(register['status'], 'OK')
         if register['content']['datas'] == []:
             return
@@ -32,7 +35,7 @@ class PersonnelMain(testCase):
         :param account:
         :return:
         """
-        register = self.ka.mobile_user_invite_search(farmId=farmId, account=account)
+        register = self.ka._mobile_user_invite_search(farmId=farmId, account=account)
         self.assertEqual(register['status'], 'OK')
         return register['content'][0]['id']
 
@@ -46,7 +49,7 @@ class PersonnelMain(testCase):
         if inviteeId is None:
             inviteeId = self.test_mobile_user_invite_search()
 
-        register = self.ka.mobile_user_invite_inner_invite(farmId=farmId, inviteeId=inviteeId)
+        register = self.ka._mobile_user_invite_inner_invite(farmId=farmId, inviteeId=inviteeId)
         self.assertEqual(register['status'], 'OK')
         return register
 
@@ -58,7 +61,7 @@ class PersonnelMain(testCase):
         :return:
         """
         farmId = choice(self.fq.query_default_farm(self.email)).get('farm_id')
-        register = self.ka.mobile_user_invite_list(farmId=farmId)
+        register = self.ka._mobile_user_invite_list(farmId=farmId)
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_user_invite_inner_invite_info(self, inviteId=107):
@@ -67,7 +70,7 @@ class PersonnelMain(testCase):
         :param inviteId:
         :return:
         """
-        register = self.ka.mobile_user_invite_inner_invite_info(inviteId=inviteId)
+        register = self.ka._mobile_user_invite_inner_invite_info(inviteId=inviteId)
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_user_invite_inner_accept(self, inviteId=126):
@@ -77,7 +80,7 @@ class PersonnelMain(testCase):
         :param account:
         :return:
         """
-        register = self.ka.mobile_user_invite_inner_accept(inviteId=inviteId)
+        register = self.ka._mobile_user_invite_inner_accept(inviteId=inviteId)
         self.assertEqual(register['status'], 'OK')
         return register
 
@@ -105,7 +108,7 @@ class PersonnelMain(testCase):
         发送邮箱邀请
         :return:
         """
-        register = self.ka.mobile_user_invite_email_invite(farmId=678, email='xiujuan.chen@worldfarm.com')
+        register = self.ka._mobile_user_invite_email_invite(farmId=678, email='xiujuan.chen@worldfarm.com')
         self.assertEqual(register['status'], 'OK')
 
     def test_web_user_invite_email_invite(self):
@@ -113,7 +116,7 @@ class PersonnelMain(testCase):
         发送邮箱邀请
         :return:
         """
-        register = self.ka.web_user_invite_email_invite(farmId=678, email='xiujuan.chen@worldfarm.com')
+        register = self.ka._web_user_invite_email_invite(farmId=678, email='xiujuan.chen@worldfarm.com')
         self.assertEqual(register['status'], 'OK')
 
     def test_web_user_invite_email_accept(self):
@@ -121,7 +124,7 @@ class PersonnelMain(testCase):
         Web-成员邀请-接收邮箱邀请
         :return:
         """
-        register = self.ka.web_user_invite_email_accept(
+        register = self.ka._web_user_invite_email_accept(
             token='6C471458692D1205CECE30AC48ABE33A0476037986DBF3ED0BC35F6D68E3D6007EE29D549E5CAB8EEBEB78A59F73C7DD2D7E5E3ADC9D2969F9F9D90BD895942325D2FD61C2A8FA39CAFAB7FF7F255213DC7FF872F3480B07D1994E2473C7E3EA')
         self.assertEqual(register['status'], 'OK')
 
@@ -130,10 +133,9 @@ class PersonnelMain(testCase):
         Web-成员邀请-邮箱邀请信息
         :return:
         """
-        register = self.ka.web_user_invite_email_invite_info(
+        register = self.ka._web_user_invite_email_invite_info(
             token='6C471458692D1205CECE30AC48ABE33A0476037986DBF3ED0BC35F6D68E3D6007EE29D549E5CAB8EEBEB78A59F73C7DD2D7E5E3ADC9D2969F9F9D90BD895942325D2FD61C2A8FA39CAFAB7FF7F255213DC7FF872F3480B07D1994E2473C7E3EA')
         self.assertEqual(register['status'], 'OK')
-
 
     def test_mobile_farm_user_list_by_farm(self):
         """
@@ -141,7 +143,7 @@ class PersonnelMain(testCase):
         :return:
         """
         farm_id = choice(self.fq.query_default_farm(self.email)).get('farm_id')
-        register = self.ka.mobile_farm_user_list_by_farm(farmId=farm_id)
+        register = self.ka._mobile_farm_user_list_by_farm(farmId=farm_id)
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_farm_user_list_by_user(self):
@@ -149,7 +151,7 @@ class PersonnelMain(testCase):
         获取当前所在农场的所有成员列表
         :return:
         """
-        register = self.ka.mobile_farm_user_list_by_user()
+        register = self.ka._mobile_farm_user_list_by_user()
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_farm_user_remove(self):
@@ -157,7 +159,7 @@ class PersonnelMain(testCase):
         移除人员
         :return:
         """
-        register = self.ka.mobile_farm_user_remove(farmId=678, userId=191)
+        register = self.ka._mobile_farm_user_remove(farmId=678, userId=191)
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_farm_user_roles(self):
@@ -166,7 +168,7 @@ class PersonnelMain(testCase):
         :return:
         """
         farm_id = choice(self.fq.query_default_farm(self.email)).get('farm_id')
-        register = self.ka.mobile_farm_user_roles(farmId=farm_id)
+        register = self.ka._mobile_farm_user_roles(farmId=farm_id)
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_user_role_set_role(self):
@@ -174,7 +176,7 @@ class PersonnelMain(testCase):
         设置成员角色
         :return:
         """
-        register = self.ka.mobile_user_role_set_role(farmId=533, userId=203, roleId=2)
+        register = self.ka._mobile_user_role_set_role(farmId=533, userId=203, roleId=2)
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_farm_user_user_role(self):
@@ -183,7 +185,7 @@ class PersonnelMain(testCase):
         :return:
         """
         farm_info = self.fq.query_default_farm(self.email)[0]
-        register = self.ka.mobile_farm_user_user_role(farmId=farm_info.get('farm_id'))
+        register = self.ka._mobile_farm_user_user_role(farmId=farm_info.get('farm_id'))
         self.assertEqual(register['status'], 'OK')
         # 判断是否为当前登录用户
         self.assertEqual(register['content']['userId'], farm_info.get('user_id'))

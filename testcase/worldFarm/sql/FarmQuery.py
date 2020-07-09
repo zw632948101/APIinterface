@@ -5,12 +5,13 @@
 __author__ = 'Heng Xin'
 __date__ = '2019/7/13'
 """
-from testcase.worldFarm.sql import farmSQL
+from utils.databaseConnection.DataBaseOperate import DataBaseOperate
+from utils.environmentConfiguration import config
 
-
-class FarmQuery(farmSQL):
+class FarmQuery(DataBaseOperate):
     def __init__(self):
         super(FarmQuery, self).__init__()
+        self.hostip = config.get('database').get(config.get('run')).get('host_ip')
 
     def query_cattle_config(self):
         """
@@ -18,7 +19,7 @@ class FarmQuery(farmSQL):
         :return:
         """
         sql = "SELECT `code`,`key`,`value` FROM `world-koala`.t_config WHERE `code` in('10004','10012','10011','10003','10002') AND is_delete = '0';"
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         return info
 
     def query_farm_and_region(self, email):
@@ -48,8 +49,8 @@ class FarmQuery(farmSQL):
                 ORDER BY
                     tf.create_time DESC;
               """ % email
-        # info = self.operate('120.79.59.233', 'world-koala', sql)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        # info = self.operate('120.79.59.233',  sql)
+        info = self.operate(self.hostip,  sql)
         return info
 
     def query_device_eui(self):
@@ -69,8 +70,8 @@ class FarmQuery(farmSQL):
                 ORDER BY
                     td.create_time DESC LIMIT 10;
                 """
-        # info = self.operate('120.79.59.233', 'world-koala', sql)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        # info = self.operate('120.79.59.233',  sql)
+        info = self.operate(self.hostip,  sql)
         return info
 
     def query_farm_region_locations(self, email):
@@ -94,8 +95,8 @@ class FarmQuery(farmSQL):
                     ORDER BY tf.create_time DESC
                     LIMIT 1;
                 """ % email
-        # info = self.operate('120.79.59.233', 'world-koala', sql)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        # info = self.operate('120.79.59.233',  sql)
+        info = self.operate(self.hostip,  sql)
         return info[0]
 
     def query_device_eui_one(self, comparison):
@@ -119,8 +120,8 @@ class FarmQuery(farmSQL):
                 ORDER BY td.device_eui DESC
                 LIMIT 1;
                 """ % comparison
-        # info = self.operate('120.79.59.233', 'world-koala', sql)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        # info = self.operate('120.79.59.233',  sql)
+        info = self.operate(self.hostip,  sql)
         return info[0]
 
     def query_cattle_info_buy_eui(self, device_Id):
@@ -129,8 +130,8 @@ class FarmQuery(farmSQL):
         :return:
         """
         sql = """SELECT id FROM t_cattle WHERE device_id="s%";""" % str(device_Id)
-        # info = self.operate('120.79.59.233', 'world-koala', sql)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        # info = self.operate('120.79.59.233',  sql)
+        info = self.operate(self.hostip,  sql)
         return info
 
     def query_cattle_bind_id(self, email):
@@ -155,8 +156,8 @@ class FarmQuery(farmSQL):
                 AND tc.device_id is not NULL
                 AND tc.device_id != ''
                 AND tu.email = '%s';""" % email
-        # info = self.operate('120.79.59.233', 'world-koala', sql)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        # info = self.operate('120.79.59.233',  sql)
+        info = self.operate(self.hostip,  sql)
         return info
 
     def query_cattle_id(self, email):
@@ -177,8 +178,8 @@ class FarmQuery(farmSQL):
                 AND tfr.is_delete = 0
                 AND tc.is_delete = 0
                 AND tu.email = '%s';""" % email
-        # info = self.operate('120.79.59.233', 'world-koala', sql)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        # info = self.operate('120.79.59.233',  sql)
+        info = self.operate(self.hostip,  sql)
         return info
 
     def query_farm_region_list(self, farmid, types=None, isNeedFilter=None, isNeedNoPaddock=None):
@@ -246,7 +247,7 @@ class FarmQuery(farmSQL):
             sql = sql.replace("tc.farm_id,", "tfr.farm_id,")
             sql = sql.replace("tc.region_id,", "tfr.id AS region_id,")
             # 不过滤围栏并且统计无围栏的牲畜
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if isNeedNoPaddock == 1 and (isNeedFilter != 1 or isNeedFilter == 1):
             nocattle = self.query_farm_region_no_cattle(farmid)
             if info:
@@ -270,7 +271,7 @@ class FarmQuery(farmSQL):
                  AND tc.is_delete = 0
                  AND tc.region_id IS NULL;
                """ % farmid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -285,7 +286,7 @@ class FarmQuery(farmSQL):
         sql = """
                 SELECT * FROM `world-koala`.t_cattle tc WHERE tc.farm_id = %s AND tc.is_delete = 0 AND tc.device_type = %s;
               """ % (farmid, device_type)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -318,7 +319,7 @@ class FarmQuery(farmSQL):
                         AND (tfre.is_delete = 0 OR tfre.id IS NULL)
                         AND tfu.is_default = 1
                         GROUP BY tfre.id;""" % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -340,7 +341,7 @@ class FarmQuery(farmSQL):
                         AND tu.is_delete = 0 
                         AND tfu.is_delete = 0 
                         AND tfu.is_default = 1;""" % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip, sql)
         if info:
             return info
         return
@@ -362,7 +363,7 @@ class FarmQuery(farmSQL):
                 AND tfu.is_delete = 0
                 AND tu.is_delete = 0
               """ % farmid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -382,7 +383,7 @@ class FarmQuery(farmSQL):
                 tc.farm_id = '%s' 
                 AND tc.is_delete = 0;
               """ % farmid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -409,7 +410,7 @@ class FarmQuery(farmSQL):
                 AND tcdu.is_delete = 0 
                 AND UNIX_TIMESTAMP( tcdu.use_date ) = %s
               """ % (cattleIds, usedate / 1000)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -430,7 +431,7 @@ class FarmQuery(farmSQL):
                 tc.farm_id = %s 
                 AND tcdu.is_delete = 0
               """ % farmid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -449,7 +450,7 @@ class FarmQuery(farmSQL):
         sql = """
             SELECT * FROM `world-koala`.t_farm_raise tr WHERE tr.farm_id = '%s' AND tr.is_delete = 0 %s
               """ % (farmid, limit)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -463,7 +464,7 @@ class FarmQuery(farmSQL):
         sql = """
             SELECT * FROM `world-koala`.t_farm_raise tr WHERE tr.id = '%s'
               """ % raiseid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info[0]
         return
@@ -487,7 +488,7 @@ class FarmQuery(farmSQL):
             WHERE
                 UNIX_TIMESTAMP(tr.feeding_date) = '%s'
               """ % feedingDate
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info[0]
         return
@@ -518,7 +519,7 @@ class FarmQuery(farmSQL):
                 AND td.is_delete = 0
                 %s
               """ % (feedTypeDesc, raiseid, orderby)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -545,7 +546,7 @@ class FarmQuery(farmSQL):
                          AND tb1.device_eui IS NULL
                          ORDER BY td.id DESC
                          LIMIT 10;"""
-        info = self.operate(self.hostip, 'world-shark', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return

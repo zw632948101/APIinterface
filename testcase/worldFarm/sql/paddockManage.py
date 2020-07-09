@@ -6,7 +6,7 @@
 __author__: wei.zhang
 __remark__: 围栏管理
 """
-from .. import FarmQuery
+from testcase.worldFarm.sql.FarmQuery import FarmQuery
 
 
 class PaddockManage(FarmQuery):
@@ -46,7 +46,7 @@ class PaddockManage(FarmQuery):
                     tfr.id DESC 
                     LIMIT 1;
             """ % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info[0]
         return
@@ -58,7 +58,7 @@ class PaddockManage(FarmQuery):
         :return:
         """
         sql = "SELECT * FROM `world-koala`.t_farm_region tfr WHERE tfr.id = '%s'" % regionid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info[0]
         return
@@ -86,7 +86,7 @@ class PaddockManage(FarmQuery):
             ORDER BY
                 tc.region_id DESC;
             """ % regionid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info[0]
         return
@@ -150,7 +150,7 @@ class PaddockManage(FarmQuery):
                 tf.region_count DESC,
                 tf.create_time DESC
               """ % farmid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return

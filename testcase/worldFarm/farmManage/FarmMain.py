@@ -8,12 +8,15 @@ __date__ = '2018/8/20'
 import time
 import json
 from random import choice, randint
-from testcase.worldFarm import testCase,FarmManage
+from testcase.worldFarm import testCase, FarmManage
 
 
 class FarmMain(testCase):
-
     fq = FarmManage()
+
+    def __init__(self, methodName='runTest'):
+        super(FarmMain, self).__init__(methodName=methodName)
+        self.ka.set_user(mobile=self.email, password=self.password)
 
     def test_add_farm(self):
         """
@@ -28,8 +31,8 @@ class FarmMain(testCase):
         currencyType = choice(['AUD', 'USD', 'CNY'])
         geo_list = '[{"locations":[{"lng": 104.08544443737503, "lat": 30.82449307208601}, {"lng": 104.08544443737503, "lat": 30.73349307208601}, {"lng": 103.99444443737502, "lat": 30.73349307208601}, {"lng": 103.99444443737502, "lat": 30.82449307208601}, {"lng": 104.08544443737503, "lat": 30.82449307208601}]}]'
         geo_json = json.dumps(json.loads(geo_list))
-        register = self.ka.mobile_farm_add(name=name, postcodeId=2, address=address, lng=lng,
-                                           lat=lat, currencyType=currencyType, farmRightAddList=geo_json)
+        register = self.ka._mobile_farm_add(name=name, postcodeId=2, address=address, lng=lng,
+                                            lat=lat, currencyType=currencyType, farmRightAddList=geo_json)
         self.assertEqual(register['status'], "OK")
         farmer = self.fq.query_farm_my_farmer(self.email)[0]
         self.assertEqual(name, farmer.get('name'))
@@ -56,10 +59,10 @@ class FarmMain(testCase):
         type = choice([10, 20, 30, 40])
         rightNum = randint(1, 50)
         purchasePrice = randint(10000, 9999999)
-        register = self.ka.mobile_farm_update(farmId=farmer, name=name, postcodeId=3, address=address,
-                                              lng=lng, lat=lat, rightArea=rightArea,
-                                              type=type, rightNum=rightNum, purchasePrice=purchasePrice,
-                                              farmRightUpdateList=geo_json, pic=pic)
+        register = self.ka._mobile_farm_update(farmId=farmer, name=name, postcodeId=3, address=address,
+                                               lng=lng, lat=lat, rightArea=rightArea,
+                                               type=type, rightNum=rightNum, purchasePrice=purchasePrice,
+                                               farmRightUpdateList=geo_json, pic=pic)
         self.assertEqual(register['status'], "OK")
         farmdate = self.fq.query_update_farm_data(farmer)
         self.assertEqual(name, farmdate.get('name'))
@@ -77,8 +80,8 @@ class FarmMain(testCase):
         """
         geo_list = '[{"locations":[{"lat":31.034976885551373,"lng":105.10651153740901},{"lat":30.933928419629027,"lng":104.85937029385036},{"lat":30.719090791291833,"lng":104.93389288881303},{"lat":30.571234296640057,"lng":105.21905583536591},{"lat":30.573853180147438,"lng":105.51942748401791},{"lat":30.952842381895124,"lng":105.61904438345789},{"lat":31.202936087481078,"lng":105.50041659769431},{"lat":31.034976885551373,"lng":105.10651153740901}]}]'
         geo_json = json.dumps(json.loads(geo_list))
-        register = self.ka.mobile_farm_add(name="皮卡丘", postcodeId=2, address="中国四川省绵阳市三台县", lng=0, lat=0,
-                                           currencyType="AUD", farmRightAddList=geo_json)
+        register = self.ka._mobile_farm_add(name="皮卡丘", postcodeId=2, address="中国四川省绵阳市三台县", lng=0, lat=0,
+                                            currencyType="AUD", farmRightAddList=geo_json)
         self.assertEqual(register['status'], "OK")
 
     def test_mobile_farm_del(self):
@@ -87,7 +90,7 @@ class FarmMain(testCase):
         :return:
         """
         farmId = self.fq.query_farm_my_farmer(self.email)[0].get('id')
-        register = self.ka.mobile_farm_del(farmId=farmId)
+        register = self.ka._mobile_farm_del(farmId=farmId)
         self.assertEqual(register['status'], "OK")
 
     def test_mobile_farm_list(self):
@@ -97,7 +100,7 @@ class FarmMain(testCase):
         :return:
         """
 
-        register = self.ka.mobile_farm_list()
+        register = self.ka._mobile_farm_list()
         farminfo = self.fq.query_my_farm_list(self.email)
         self.assertEqual(register['status'], "OK")
         register = register.get('content')
@@ -118,7 +121,7 @@ class FarmMain(testCase):
         :return:
         """
         farmId = self.fq.query_default_farm(self.email)[0]
-        register = self.ka.admin_farm_detail(farmId=farmId.get('farm_id'))
+        register = self.ka._admin_farm_detail(farmId=farmId.get('farm_id'))
         self.assertEqual(register['status'], 'OK')
         farminfo = self.fq.query_one_farm_info(farmid=farmId.get('farm_id'))
         self.assertEqual(farminfo.get('name'), register['content'].get('farmName'))
@@ -137,7 +140,7 @@ class FarmMain(testCase):
         """
         farmId = choice(self.fq.query_default_farm(self.email)).get('farm_id')
         # farmId = 547
-        register = self.ka.mobile_farm_set_default(farmId=farmId)
+        register = self.ka._mobile_farm_set_default(farmId=farmId)
         self.assertEqual(register['status'], "OK")
 
     def test_mobile_farm_detail(self):
@@ -146,7 +149,7 @@ class FarmMain(testCase):
         :return:
         """
         farmId = choice(self.fq.query_my_farm_list(self.email)).get('id')
-        register = self.ka.mobile_farm_detail(farmId=farmId)
+        register = self.ka._mobile_farm_detail(farmId=farmId)
         self.assertEqual(register['status'], 'OK')
         farminfo = self.fq.query_one_farm_info(farmid=farmId)
         self.assertEqual(farminfo.get('name'), register['content'].get('farmName'))
@@ -166,7 +169,7 @@ class FarmMain(testCase):
         :return:
         """
         farm_list = self.fq.query_farm_default(self.email)
-        register = self.ka.mobile_farm_get_default()
+        register = self.ka._mobile_farm_get_default()
         self.assertEqual(register['status'], 'OK')
         for farm in farm_list:
 
@@ -182,7 +185,7 @@ class FarmMain(testCase):
         :return:
         """
         farm_id = choice(self.fq.query_default_farm(self.email)).get('farm_id')
-        register = self.ka.mobile_farm_search_condition(farmId=farm_id)
+        register = self.ka._mobile_farm_search_condition(farmId=farm_id)
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_share_add(self):
@@ -193,7 +196,7 @@ class FarmMain(testCase):
         landmarkdata = self.fq.query_all_farm_landmark(self.email)
         landmarkType = ','.join(list(set(self.tool.data_assemble('type2', landmarkdata))))
         farmid = landmarkdata[0].get('farm_id')
-        register = self.ka.mobile_share_add(farmId=farmid, content='{"landmarkType":"%s"}' % landmarkType)
+        register = self.ka._mobile_share_add(farmId=farmid, content='{"landmarkType":"%s"}' % landmarkType)
         self.assertEqual(register['status'], "OK")
 
     def test_web_share_detail(self):
@@ -201,7 +204,7 @@ class FarmMain(testCase):
         Web端-地图分享-查看分享内容
         :return:
         """
-        register = self.ka.web_share_detail(shareId="6B8B7412C98FA0925C21AC74EB1B4E87")
+        register = self.ka._web_share_detail(shareId="6B8B7412C98FA0925C21AC74EB1B4E87")
         self.assertEqual(register['status'], "OK")
 
     def test_mobile_farm_right_list(self):
@@ -210,7 +213,7 @@ class FarmMain(testCase):
         :return:
         """
         farm_id = choice(self.fq.query_default_farm(self.email)).get('farm_id')
-        register = self.ka.mobile_farm_right_list(farmId=farm_id)
+        register = self.ka._mobile_farm_right_list(farmId=farm_id)
         self.assertEqual(register['status'], "OK")
 
     def test_mobile_label_list(self):
@@ -219,7 +222,7 @@ class FarmMain(testCase):
         :return:
         """
         farm_id = choice(self.fq.query_default_farm(self.email)).get('farm_id')
-        register = self.ka.mobile_label_list(id=None, bizId=farm_id, nameLike=None)
+        register = self.ka._mobile_label_list(id=None, bizId=farm_id, nameLike=None)
         self.assertEqual(register['status'], "OK")
 
 

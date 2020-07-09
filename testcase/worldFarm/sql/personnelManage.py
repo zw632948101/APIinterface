@@ -6,7 +6,7 @@
 __author__: wei.zhang
 __remark__: 人员管理
 """
-from .. import FarmQuery
+from testcase.worldFarm.sql.FarmQuery import FarmQuery
 
 
 class PersonnelManage(FarmQuery):

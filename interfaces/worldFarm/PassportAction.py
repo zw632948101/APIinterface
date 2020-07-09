@@ -1,194 +1,180 @@
 #! /usr/bin/env python
 # encoding: utf-8
 
-from tools.Config import Config
-from tools.Request import Request
-
+from utils.dataRequest.dataRequester import Request
+from utils.environmentConfiguration import config
+from utils.userInfo.GetUserInfo import User
 import json
 
+
 class PassportAction(object):
-    def __init__(self, passport):
-        self.log = Log('Passport')
+    def __init__(self):
         self.request = Request()
-        self.passport = passport
-        self.request.headers['_Device-Id_'] = self.passport.device_id
-        self.request.headers['_Token_'] = self.passport.token
-        env = Config('config').data['run']
-        hosts = Config('config').data['hosts'][env]
-        self.url = hosts.get('WF_PASSPORT')
+        self.url = config.get('hosts').get(config.get('run')).get('WF_PASSPORT')
 
-    def admin_sso_email_login(self, appId=None, deviceType=None, deviceId=None, account=None, password=None):
-        data = {'_tk_': self.passport.token, '_deviceId_': self.passport.device_id, 'appId': appId, 'deviceType': deviceType, 'deviceId': deviceId, 'account': account, 'password': password}
+    def set_user(self, mobile=None, account_type='wf_account', password=None):
+        if mobile is None:
+            self.user = None
+        else:
+            self.user = User(mobile, account_type, password=password)
+            self.request.headers.update({"_Device-Id_": self.user.device_id})
+            self.request.headers.update({"_Token_": self.user.token})
+        return self.user
+
+    def __judge_response_status(self, json_response):
+        if json_response['status'] in ("OK", "ERROR"):
+            return json_response
+        else:
+            raise Exception('status未返回OK或ERROR')
+
+    def _admin_sso_automatic_login(self, token=None, encryptedPwd=None, deviceId=None):
+        if self.user is None:
+            data = {'token': token, 'encryptedPwd': encryptedPwd, 'deviceId': deviceId, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'token': token, 'encryptedPwd': encryptedPwd, 'deviceId': deviceId}
+        response = self.request.post(url=self.url+'/admin/sso/automatic-login', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_sso_email_login(self, appId=None, deviceType=None, deviceId=None, account=None, password=None):
+        if self.user is None:
+            data = {'appId': appId, 'deviceType': deviceType, 'deviceId': deviceId, 'account': account, 'password': password, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'appId': appId, 'deviceType': deviceType, 'deviceId': deviceId, 'account': account, 'password': password}
         response = self.request.post(url=self.url+'/admin/sso/email-login', data=data, hosts=self.url)
-        json_response = json.loads(response)
-        if json_response["status"] == "OK":
-            return json_response
-        elif json_response["status"] == "ERROR":
-            return json_response
-        else:
-            raise Exception("status未返回OK或ERROR")
+        return self.__judge_response_status(json.loads(response))
 
-    def admin_sso_logout(self):
-        data = {'_tk_': self.passport.token, '_deviceId_': self.passport.device_id}
+    def _admin_sso_login_by_wechat(self, code=None, deviceId=None, deviceType=None, authType=None, appId=None):
+        if self.user is None:
+            data = {'code': code, 'deviceId': deviceId, 'deviceType': deviceType, 'authType': authType, 'appId': appId, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code, 'deviceId': deviceId, 'deviceType': deviceType, 'authType': authType, 'appId': appId}
+        response = self.request.post(url=self.url+'/admin/sso/login-by-wechat', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_sso_logout(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
         response = self.request.post(url=self.url+'/admin/sso/logout', data=data, hosts=self.url)
-        json_response = json.loads(response)
-        if json_response["status"] == "OK":
-            return json_response
-        elif json_response["status"] == "ERROR":
-            return json_response
-        else:
-            raise Exception("status未返回OK或ERROR")
+        return self.__judge_response_status(json.loads(response))
 
-    def mobile_sso_automatic_login(self, token=None, encryptedPwd=None, deviceId=None):
-        data = {'_tk_': self.passport.token, '_deviceId_': self.passport.device_id, 'token': token, 'encryptedPwd': encryptedPwd, 'deviceId': deviceId}
+    def _admin_sso_sms_login(self, appId=None, mobile=None, verifyCode=None, deviceType=None, deviceId=None):
+        if self.user is None:
+            data = {'appId': appId, 'mobile': mobile, 'verifyCode': verifyCode, 'deviceType': deviceType, 'deviceId': deviceId, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'appId': appId, 'mobile': mobile, 'verifyCode': verifyCode, 'deviceType': deviceType, 'deviceId': deviceId}
+        response = self.request.post(url=self.url+'/admin/sso/sms-login', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_sso_verify_code_get(self, mobile=None, bizType=None):
+        if self.user is None:
+            data = {'mobile': mobile, 'bizType': bizType, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'mobile': mobile, 'bizType': bizType}
+        response = self.request.post(url=self.url+'/admin/sso/verify-code-get', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _mobile_sso_automatic_login(self, token=None, encryptedPwd=None, deviceId=None):
+        if self.user is None:
+            data = {'token': token, 'encryptedPwd': encryptedPwd, 'deviceId': deviceId, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'token': token, 'encryptedPwd': encryptedPwd, 'deviceId': deviceId}
         response = self.request.post(url=self.url+'/mobile/sso/automatic-login', data=data, hosts=self.url)
-        json_response = json.loads(response)
-        if json_response["status"] == "OK":
-            return json_response
-        elif json_response["status"] == "ERROR":
-            return json_response
-        else:
-            raise Exception("status未返回OK或ERROR")
+        return self.__judge_response_status(json.loads(response))
 
-    def mobile_sso_email_login(self, appId=None, deviceType=None, deviceId=None, account=None, password=None):
-        data = {'_tk_': self.passport.token, '_deviceId_': self.passport.device_id, 'appId': appId, 'deviceType': deviceType, 'deviceId': deviceId, 'account': account, 'password': password}
+    def _mobile_sso_email_login(self, appId=None, deviceType=None, deviceId=None, account=None, password=None):
+        if self.user is None:
+            data = {'appId': appId, 'deviceType': deviceType, 'deviceId': deviceId, 'account': account, 'password': password, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'appId': appId, 'deviceType': deviceType, 'deviceId': deviceId, 'account': account, 'password': password}
         response = self.request.post(url=self.url+'/mobile/sso/email-login', data=data, hosts=self.url)
-        json_response = json.loads(response)
-        if json_response["status"] == "OK":
-            return json_response
-        elif json_response["status"] == "ERROR":
-            return json_response
-        else:
-            raise Exception("status未返回OK或ERROR")
+        return self.__judge_response_status(json.loads(response))
 
-    def mobile_sso_email_registe(self, appId=None, deviceType=None, deviceId=None, account=None, userName=None, headImg=None, password=None):
-        data = {'_tk_': self.passport.token, '_deviceId_': self.passport.device_id, 'appId': appId, 'deviceType': deviceType, 'deviceId': deviceId, 'account': account, 'userName': userName, 'headImg': headImg, 'password': password}
+    def _mobile_sso_email_registe(self, appId=None, deviceType=None, deviceId=None, account=None, userName=None, headImg=None, password=None):
+        if self.user is None:
+            data = {'appId': appId, 'deviceType': deviceType, 'deviceId': deviceId, 'account': account, 'userName': userName, 'headImg': headImg, 'password': password, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'appId': appId, 'deviceType': deviceType, 'deviceId': deviceId, 'account': account, 'userName': userName, 'headImg': headImg, 'password': password}
         response = self.request.post(url=self.url+'/mobile/sso/email-registe', data=data, hosts=self.url)
-        json_response = json.loads(response)
-        if json_response["status"] == "OK":
-            return json_response
-        elif json_response["status"] == "ERROR":
-            return json_response
-        else:
-            raise Exception("status未返回OK或ERROR")
+        return self.__judge_response_status(json.loads(response))
 
-    def mobile_sso_logout(self):
-        data = {'_tk_': self.passport.token, '_deviceId_': self.passport.device_id}
+    def _mobile_sso_logout(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
         response = self.request.post(url=self.url+'/mobile/sso/logout', data=data, hosts=self.url)
-        json_response = json.loads(response)
-        if json_response["status"] == "OK":
-            return json_response
-        elif json_response["status"] == "ERROR":
-            return json_response
-        else:
-            raise Exception("status未返回OK或ERROR")
+        return self.__judge_response_status(json.loads(response))
 
-    def mobile_sso_sms_login(self, appId=None, mobile=None, verifyCode=None, deviceType=None, deviceId=None):
-        data = {'_tk_': self.passport.token, '_deviceId_': self.passport.device_id, 'appId': appId, 'mobile': mobile, 'verifyCode': verifyCode, 'deviceType': deviceType, 'deviceId': deviceId}
+    def _mobile_sso_sms_login(self, appId=None, mobile=None, verifyCode=None, deviceType=None, deviceId=None):
+        if self.user is None:
+            data = {'appId': appId, 'mobile': mobile, 'verifyCode': verifyCode, 'deviceType': deviceType, 'deviceId': deviceId, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'appId': appId, 'mobile': mobile, 'verifyCode': verifyCode, 'deviceType': deviceType, 'deviceId': deviceId}
         response = self.request.post(url=self.url+'/mobile/sso/sms-login', data=data, hosts=self.url)
-        json_response = json.loads(response)
-        if json_response["status"] == "OK":
-            return json_response
-        elif json_response["status"] == "ERROR":
-            return json_response
-        else:
-            raise Exception("status未返回OK或ERROR")
+        return self.__judge_response_status(json.loads(response))
 
-    def mobile_sso_third_bind_weixin(self, userName=None, userHeadImg=None, email=None, password=None, openId=None, accessToken=None, deviceId=None, authType=None, deviceType=None, appId=None):
-        data = {'_tk_': self.passport.token, '_deviceId_': self.passport.device_id, 'userName': userName, 'userHeadImg': userHeadImg, 'email': email, 'password': password, 'openId': openId, 'accessToken': accessToken, 'deviceId': deviceId, 'authType': authType, 'deviceType': deviceType, 'appId': appId}
+    def _mobile_sso_third_bind_weixin(self, userName=None, userHeadImg=None, mobile=None, verifyCode=None, openId=None, accessToken=None, deviceId=None, authType=None, deviceType=None, appId=None):
+        if self.user is None:
+            data = {'userName': userName, 'userHeadImg': userHeadImg, 'mobile': mobile, 'verifyCode': verifyCode, 'openId': openId, 'accessToken': accessToken, 'deviceId': deviceId, 'authType': authType, 'deviceType': deviceType, 'appId': appId, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'userName': userName, 'userHeadImg': userHeadImg, 'mobile': mobile, 'verifyCode': verifyCode, 'openId': openId, 'accessToken': accessToken, 'deviceId': deviceId, 'authType': authType, 'deviceType': deviceType, 'appId': appId}
         response = self.request.post(url=self.url+'/mobile/sso/third-bind-weixin', data=data, hosts=self.url)
-        json_response = json.loads(response)
-        if json_response["status"] == "OK":
-            return json_response
-        elif json_response["status"] == "ERROR":
-            return json_response
-        else:
-            raise Exception("status未返回OK或ERROR")
+        return self.__judge_response_status(json.loads(response))
 
-    def mobile_sso_third_login_weixin(self, code=None, deviceId=None, deviceType=None, authType=None, appId=None):
-        data = {'_tk_': self.passport.token, '_deviceId_': self.passport.device_id, 'code': code, 'deviceId': deviceId, 'deviceType': deviceType, 'authType': authType, 'appId': appId}
+    def _mobile_sso_third_login_weixin(self, code=None, deviceId=None, deviceType=None, authType=None, appId=None):
+        if self.user is None:
+            data = {'code': code, 'deviceId': deviceId, 'deviceType': deviceType, 'authType': authType, 'appId': appId, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code, 'deviceId': deviceId, 'deviceType': deviceType, 'authType': authType, 'appId': appId}
         response = self.request.post(url=self.url+'/mobile/sso/third-login-weixin', data=data, hosts=self.url)
-        json_response = json.loads(response)
-        if json_response["status"] == "OK":
-            return json_response
-        elif json_response["status"] == "ERROR":
-            return json_response
-        else:
-            raise Exception("status未返回OK或ERROR")
+        return self.__judge_response_status(json.loads(response))
 
-    def mobile_sso_verify_code_get(self, appId=None, mobile=None, bizType=None):
-        data = {'_tk_': self.passport.token, '_deviceId_': self.passport.device_id, 'appId': appId, 'mobile': mobile, 'bizType': bizType}
+    def _mobile_sso_verify_code_get(self, mobile=None, bizType=None):
+        if self.user is None:
+            data = {'mobile': mobile, 'bizType': bizType, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'mobile': mobile, 'bizType': bizType}
         response = self.request.post(url=self.url+'/mobile/sso/verify-code-get', data=data, hosts=self.url)
-        json_response = json.loads(response)
-        if json_response["status"] == "OK":
-            return json_response
-        elif json_response["status"] == "ERROR":
-            return json_response
-        else:
-            raise Exception("status未返回OK或ERROR")
+        return self.__judge_response_status(json.loads(response))
 
-    def sso_test_feign_test(self):
-        data = {'_tk_': self.passport.token, '_deviceId_': self.passport.device_id}
-        response = self.request.post(url=self.url+'/sso/test/feign-test', data=data, hosts=self.url)
-        json_response = json.loads(response)
-        if json_response["status"] == "OK":
-            return json_response
-        elif json_response["status"] == "ERROR":
-            return json_response
+    def _web_sso_check_account(self, email=None):
+        if self.user is None:
+            data = {'email': email, }
         else:
-            raise Exception("status未返回OK或ERROR")
-
-    def web_sso_check_account(self, email=None):
-        data = {'_tk_': self.passport.token, '_deviceId_': self.passport.device_id, 'email': email}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'email': email}
         response = self.request.post(url=self.url+'/web/sso/check-account', data=data, hosts=self.url)
-        json_response = json.loads(response)
-        if json_response["status"] == "OK":
-            return json_response
-        elif json_response["status"] == "ERROR":
-            return json_response
-        else:
-            raise Exception("status未返回OK或ERROR")
+        return self.__judge_response_status(json.loads(response))
 
-    def web_sso_email_login(self, appId=None, deviceType=None, deviceId=None, account=None, password=None):
-        data = {'_tk_': self.passport.token, '_deviceId_': self.passport.device_id, 'appId': appId, 'deviceType': deviceType, 'deviceId': deviceId, 'account': account, 'password': password}
+    def _web_sso_email_login(self, appId=None, deviceType=None, deviceId=None, account=None, password=None):
+        if self.user is None:
+            data = {'appId': appId, 'deviceType': deviceType, 'deviceId': deviceId, 'account': account, 'password': password, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'appId': appId, 'deviceType': deviceType, 'deviceId': deviceId, 'account': account, 'password': password}
         response = self.request.post(url=self.url+'/web/sso/email-login', data=data, hosts=self.url)
-        json_response = json.loads(response)
-        if json_response["status"] == "OK":
-            return json_response
-        elif json_response["status"] == "ERROR":
-            return json_response
-        else:
-            raise Exception("status未返回OK或ERROR")
+        return self.__judge_response_status(json.loads(response))
 
-    def web_sso_email_registe(self, token=None):
-        data = {'_tk_': self.passport.token, '_deviceId_': self.passport.device_id, 'token': token}
+    def _web_sso_email_registe(self, token=None):
+        if self.user is None:
+            data = {'token': token, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'token': token}
         response = self.request.post(url=self.url+'/web/sso/email-registe', data=data, hosts=self.url)
-        json_response = json.loads(response)
-        if json_response["status"] == "OK":
-            return json_response
-        elif json_response["status"] == "ERROR":
-            return json_response
-        else:
-            raise Exception("status未返回OK或ERROR")
+        return self.__judge_response_status(json.loads(response))
 
-    def web_sso_logout(self):
-        data = {'_tk_': self.passport.token, '_deviceId_': self.passport.device_id}
+    def _web_sso_logout(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
         response = self.request.post(url=self.url+'/web/sso/logout', data=data, hosts=self.url)
-        json_response = json.loads(response)
-        if json_response["status"] == "OK":
-            return json_response
-        elif json_response["status"] == "ERROR":
-            return json_response
-        else:
-            raise Exception("status未返回OK或ERROR")
+        return self.__judge_response_status(json.loads(response))
 
-    def web_sso_validate_email(self, appId=None, deviceType=None, deviceId=None, account=None, userName=None, headImg=None, password=None):
-        data = {'_tk_': self.passport.token, '_deviceId_': self.passport.device_id, 'appId': appId, 'deviceType': deviceType, 'deviceId': deviceId, 'account': account, 'userName': userName, 'headImg': headImg, 'password': password}
-        response = self.request.post(url=self.url+'/web/sso/validate-email', data=data, hosts=self.url)
-        json_response = json.loads(response)
-        if json_response["status"] == "OK":
-            return json_response
-        elif json_response["status"] == "ERROR":
-            return json_response
+    def _web_sso_validate_email(self, appId=None, deviceType=None, deviceId=None, account=None, userName=None, headImg=None, password=None):
+        if self.user is None:
+            data = {'appId': appId, 'deviceType': deviceType, 'deviceId': deviceId, 'account': account, 'userName': userName, 'headImg': headImg, 'password': password, }
         else:
-            raise Exception("status未返回OK或ERROR")
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'appId': appId, 'deviceType': deviceType, 'deviceId': deviceId, 'account': account, 'userName': userName, 'headImg': headImg, 'password': password}
+        response = self.request.post(url=self.url+'/web/sso/validate-email', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))

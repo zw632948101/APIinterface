@@ -6,7 +6,7 @@
 __author__: wei.zhang
 __remark__:
 """
-from .. import FarmQuery
+from testcase.worldFarm.sql.FarmQuery import FarmQuery
 
 
 class OtherQuery(FarmQuery):
@@ -20,7 +20,7 @@ class OtherQuery(FarmQuery):
         :return:
         """
         sql = "SELECT * FROM `world-koala`.t_app_version ta ORDER BY ta.id DESC LIMIT 1 ;"
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info == ():
             return
         return info[0]

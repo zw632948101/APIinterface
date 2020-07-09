@@ -11,9 +11,13 @@ from random import choice
 from testcase.worldFarm import testCase,CattleMap
 
 
-class CattleMapMain(testCase):
+class FarmSignal(testCase):
 
     fq = CattleMap()
+
+    def __init__(self, methodName='runTest'):
+        super(FarmSignal, self).__init__(methodName=methodName)
+        self.ka.set_user(mobile=self.email, password=self.password)
 
     def test_mobile_cattle_bind_semaphore(self):
         """
@@ -22,7 +26,7 @@ class CattleMapMain(testCase):
         """
         device_eui = choice(self.fq.query_device_eui_id()).get('device_eui')
         farmid = choice(self.fq.query_default_farm(self.email)).get("farm_id")
-        info = self.ka.mobile_cattle_bind_semaphore(farmId=farmid, deviceId=device_eui)
+        info = self.ka._mobile_cattle_bind_semaphore(farmId=farmid, deviceId=device_eui)
         self.assertEqual(info['status'], "OK")
         device = self.fq.query_bind_device_id(farmid=farmid, deviceid=device_eui)[0]
         self.assertEqual(device_eui, device.get('device_eui'))
@@ -34,7 +38,7 @@ class CattleMapMain(testCase):
         :return:
         """
         farm = choice(self.fq.query_default_farm(self.email))
-        register = self.ka.mobile_cattle_map_farm_signal(farmId=farm.get('farm_id'))
+        register = self.ka._mobile_cattle_map_farm_signal(farmId=farm.get('farm_id'))
         self.assertEqual(register['status'], 'OK')
         self.assertEqual(type(register.get('content')), list)
 
@@ -45,7 +49,7 @@ class CattleMapMain(testCase):
         """
         name = "接口测试%d" % int(time.time())
         devicedata = choice(self.fq.query_may_device_update(self.email))
-        register = self.ka.mobile_cattle_map_add_or_update_name(farmId=devicedata.get('farm_id'),
+        register = self.ka._mobile_cattle_map_add_or_update_name(farmId=devicedata.get('farm_id'),
                                                                 number=devicedata.get('device_eui'), type="10030",
                                                                 name=name)
         device = self.fq.query_device_remark(farmid=devicedata.get('farm_id'), deviceno=devicedata.get('device_eui'))[0]
@@ -58,7 +62,7 @@ class CattleMapMain(testCase):
         :return:
         """
         devicedata = choice(self.fq.query_may_device_update(self.email))
-        register = self.ka.mobile_cattle_map_signal_relay_del(farmId=devicedata.get('farm_id'),
+        register = self.ka._mobile_cattle_map_signal_relay_del(farmId=devicedata.get('farm_id'),
                                                               serialNo=devicedata.get('device_eui'))
         self.assertEqual(register['status'], 'OK')
         device = self.fq.query_bind_device_id(farmid=devicedata.get('farm_id'), deviceid=devicedata.get('device_eui'))
@@ -70,7 +74,7 @@ class CattleMapMain(testCase):
         :return:
         """
         farmid = choice(self.fq.query_default_farm(self.email)).get('farm_id')
-        register = self.ka.mobile_farm_signal_list(farmId=farmid)
+        register = self.ka._mobile_farm_signal_list(farmId=farmid)
         self.assertEqual(register.get('status'), 'OK')
         signal = self.fq.query_farm_device_bind_signal_relay(farmid=farmid)
         device_eui = self.tool.data_assemble('device_eui', signal)
@@ -84,5 +88,5 @@ class CattleMapMain(testCase):
         """
         farmid = choice(self.fq.query_default_farm(self.email)).get('farm_id')
         device_eui = choice(self.fq.query_farm_device_bind_signal_relay(farmid=farmid)).get('device_eui')
-        register = self.ka.mobile_farm_signal_del(farmId=farmid, deviceId=device_eui)
+        register = self.ka._mobile_farm_signal_del(farmId=farmid, deviceId=device_eui)
         self.assertEqual(register.get('status'), 'OK')

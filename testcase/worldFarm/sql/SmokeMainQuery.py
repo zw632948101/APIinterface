@@ -6,7 +6,7 @@
 __author__: wei.zhang
 
 """
-from .. import FarmQuery
+from testcase.worldFarm.sql.FarmQuery import FarmQuery
 
 class SmokeMainQuery(FarmQuery):
     def __init__(self):
@@ -27,7 +27,7 @@ class SmokeMainQuery(FarmQuery):
                 farm_id = %s 
                 AND role_id = 4 
                 AND is_delete = 0;""" % farm_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         return info
 
     def query_role_id_buy_farm_id(self, farm_id):
@@ -43,7 +43,7 @@ class SmokeMainQuery(FarmQuery):
             WHERE
                 farm_id = %s  
                 AND is_delete = 0;""" % farm_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         return info
 
     def query_role_not_farmer_id_buy_farm_id(self, farm_id):
@@ -60,7 +60,7 @@ class SmokeMainQuery(FarmQuery):
                 farm_id = %s 
                 AND role_id != 1 
                 AND is_delete = 0;""" % farm_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         return info
 
     def query_not_farm_role_user_id_buy_farm_id(self, farm_id):
@@ -77,7 +77,7 @@ class SmokeMainQuery(FarmQuery):
         WHERE
             tur.farm_id != %s 
             LIMIT 1;""" % farm_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         return info
 
     def query_invite_info(self, farm_id, creator_id):
@@ -94,7 +94,7 @@ class SmokeMainQuery(FarmQuery):
                 farm_id = %s
                 AND creator_id = %s
                 AND status = 0;""" % (farm_id, creator_id)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         return info
 
     def query_user_info_by_email(self, email):
@@ -107,6 +107,6 @@ class SmokeMainQuery(FarmQuery):
     def query_farm_info_by_uid(self, uid):
         sql = 'SELECT * FROM `world-koala`.t_farm WHERE is_delete = 0 AND farmer_id = %s' \
               ' ORDER BY create_time DESC;' % str(uid)
-        info = self.operate(self.hostip, 'world-koala', sql)
-        # info = self.operate('120.79.59.233', 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
+        # info = self.operate('120.79.59.233',  sql)
         return info[0]

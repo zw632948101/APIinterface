@@ -6,7 +6,7 @@
 __author__: wei.zhang
 __remark__: 任务计划
 """
-from .. import FarmQuery
+from testcase.worldFarm.sql.FarmQuery import FarmQuery
 
 
 class ScheduleQuery(FarmQuery):
@@ -26,7 +26,7 @@ class ScheduleQuery(FarmQuery):
                 WHERE
                     tft.farm_id = '%s'
                     AND tft.is_delete = 0;""" % farm_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -50,7 +50,7 @@ class ScheduleQuery(FarmQuery):
                     tft.id = '%s'  
                 ORDER BY
                     tft.id DESC;""" % task_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -74,7 +74,7 @@ class ScheduleQuery(FarmQuery):
                      AND tft.is_delete = 0 
                  ORDER BY
                      tft.id DESC;""" % task_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info[0]
         return
@@ -94,7 +94,7 @@ class ScheduleQuery(FarmQuery):
                     tft.is_delete = 0 
                 ORDER BY 
                     tft.end_time ASC;""" % farm_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -115,7 +115,7 @@ class ScheduleQuery(FarmQuery):
             ORDER BY
                 tft.end_time ASC;
               """ % farm_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -132,7 +132,7 @@ class ScheduleQuery(FarmQuery):
                 WHERE
                     tft.farm_id = '%s'
                     AND tft.is_delete = 0 ORDER BY tft.id DESC LIMIT 1;""" % farm_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info[0]
         return
@@ -162,7 +162,7 @@ class ScheduleQuery(FarmQuery):
                     tfr.id 
                 ORDER BY
                     id DESC;""" % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -182,7 +182,7 @@ class ScheduleQuery(FarmQuery):
                     AND tfgp.status = '10'
                     AND tfgp.plan_start_time >= DATE_FORMAT(NOW(),'%s')
                     AND tfgp.is_delete = 0""" % (regionid, datestr)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -200,7 +200,7 @@ class ScheduleQuery(FarmQuery):
                     tfgp.farm_id = '%s'
                     AND tfgp.status = '10'
                     AND tfgp.is_delete = 0""" % farmid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -216,7 +216,7 @@ class ScheduleQuery(FarmQuery):
                     `world-koala`.t_farm_graze_plan tfgp
                 WHERE
                     tfgp.id = '%s';""" % plan_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -240,7 +240,7 @@ class ScheduleQuery(FarmQuery):
                 GROUP BY tfgp.region_id
                 ORDER BY tfgp.id DESC
               """ % (farmid, status)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -267,7 +267,7 @@ class ScheduleQuery(FarmQuery):
                 AND ta.is_delete = 0
                 ORDER BY ta.id DESC;
               """ % taskid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return

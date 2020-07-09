@@ -14,6 +14,10 @@ from testcase.worldFarm import testCase, Statistics
 class StatisticsMain(testCase):
     fq = Statistics()
 
+    def __init__(self, methodName='runTest'):
+        super(StatisticsMain, self).__init__(methodName=methodName)
+        self.ka.set_user(mobile=self.email, password=self.password)
+
     # def test_mobile_statistics_count(self):
     #     """
     #     移动端-统计-牲畜数量,种类数量,异常数量统计 v1.2.3
@@ -30,8 +34,8 @@ class StatisticsMain(testCase):
         """
         farminfo = self.fq.query_default_farm(self.email)[0]
         positionStatus = choice([3, 5])
-        register = self.ka.mobile_statistics_stat_abnormal_list(farmId=farminfo.get('farm_id'),
-                                                                positionStatus=positionStatus)
+        register = self.ka._mobile_statistics_stat_abnormal_list(farmId=farminfo.get('farm_id'),
+                                                                 positionStatus=positionStatus)
         self.assertEqual(register['status'], 'OK')
         abnormallist = self.fq.query_statistics_cattle_intrude(farm_id=farminfo.get('farm_id'),
                                                                positionStatus=4 if positionStatus == 5 else None)
@@ -64,8 +68,8 @@ class StatisticsMain(testCase):
         """
         farminfo = self.fq.query_default_farm(self.email)[0]
         positionStatus = ([3, 5])
-        register = self.ka.mobile_statistics_stat_abnormal_map(farmId=farminfo.get('farm_id'),
-                                                               positionStatus=positionStatus)
+        register = self.ka._mobile_statistics_stat_abnormal_map(farmId=farminfo.get('farm_id'),
+                                                                positionStatus=positionStatus)
         self.assertEqual(register['status'], 'OK')
         content = register['content']
         cattleinfo = self.fq.query_statistics_cattle_intrude(farm_id=farminfo.get('farm_id'), devicetype=3,
@@ -98,9 +102,9 @@ class StatisticsMain(testCase):
             self.log.info("农场内没有活动异常的牲畜")
             return
         deviceEui = choice(abnormallist).get('device_eui')
-        register = self.ka.mobile_statistics_stat_abnormal_near(farmId=farminfo.get('farm_id'),
-                                                                positionStatus=positionStatus,
-                                                                deviceEui=deviceEui)
+        register = self.ka._mobile_statistics_stat_abnormal_near(farmId=farminfo.get('farm_id'),
+                                                                 positionStatus=positionStatus,
+                                                                 deviceEui=deviceEui)
 
         self.assertEqual(register['status'], 'OK')
         content = register.get('content')
@@ -138,7 +142,7 @@ class StatisticsMain(testCase):
         :return:
         """
         farminfo = self.fq.query_default_farm(self.email)[0]
-        register = self.ka.mobile_statistics_home_cattle_count(farminfo.get('farm_id'))
+        register = self.ka._mobile_statistics_home_cattle_count(farminfo.get('farm_id'))
         data = self.fq.query_cattle_list_statistics_number(farminfo.get('farm_id'))
         abnormal = self.fq.qyery_statistics_abnormal(farminfo.get('farm_id'))
         data = dict(data, **abnormal)
@@ -164,8 +168,8 @@ class StatisticsMain(testCase):
         else:
             cattle_type = choice(['1001', '1002', '1003,1005,1007', '1004,1006,1008', '1007,1008'])
 
-        info = self.ka.mobile_statistics_group_detail(farmId=farminfo.get('farm_id'), type=cattle_type,
-                                                      stage=cattle_stage)
+        info = self.ka._mobile_statistics_group_detail(farmId=farminfo.get('farm_id'), type=cattle_type,
+                                                       stage=cattle_stage)
         self.assertEqual(info["status"], "OK")
         statistics_group = self.fq.query_statistics_group_detail(farminfo.get('farm_id'), cattle_type, cattle_stage)
         self.assertEqual(info['content'].get('all'), int(statistics_group.get('cattle_num')))
@@ -183,8 +187,8 @@ class StatisticsMain(testCase):
             cattle_stage = choice(['10', '30,31,32,33', '40', '50'])
         else:
             cattle_type = choice(['1001', '1002', '1003,1005', '1004,1006'])
-        info = self.ka.mobile_statistics_group_location(farmId=farminfo.get('farm_id'), type=cattle_type,
-                                                        stage=cattle_stage)
+        info = self.ka._mobile_statistics_group_location(farmId=farminfo.get('farm_id'), type=cattle_type,
+                                                         stage=cattle_stage)
         self.assertEqual(info["status"], "OK")
         content = info.get('content')
         cattlemap = self.fq.query_farm_cattle_location_map_info(farmid=farminfo.get('farm_id'), type=cattle_type,
@@ -230,7 +234,7 @@ class StatisticsMain(testCase):
         :return:
         """
         famrid = choice(self.fq.query_default_farm(self.email)).get('farm_id')
-        info = self.ka.mobile_statistics_cattle_home(farmId=famrid)
+        info = self.ka._mobile_statistics_cattle_home(farmId=famrid)
         self.assertEqual(info["status"], "OK")
 
 

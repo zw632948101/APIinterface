@@ -35,7 +35,7 @@ class AdminOperationMain(unittest.TestCase):
         未登录创建账号
         :return:
         """
-        json_response = self.ua._fc_admin_user_add()
+        json_response = self.ua.__fc_admin_user_add()
         if json_response["status"] == "ERROR":
             self.assertEqual("Request parameter missing", json_response["errorMsg"])
         else:
@@ -47,8 +47,8 @@ class AdminOperationMain(unittest.TestCase):
         普通用户创建账号
         :return:
         """
-        self.ua.set_user('26632629@qq.com', '123456')
-        json_response = self.ua._fc_admin_user_add(email_='wenliang.wu@worldfarm.com', phone_='13558715792',
+        self.ua._set_user('26632629@qq.com', '123456')
+        json_response = self.ua.__fc_admin_user_add(email_='wenliang.wu@worldfarm.com', phone_='13558715792',
                                                    userName_='吴文亮')
         if json_response["status"] == "ERROR":
             self.assertEqual("抱歉,您没有相应的访问权限!", json_response["errorMsg"])
@@ -61,8 +61,8 @@ class AdminOperationMain(unittest.TestCase):
         邮箱重复, 创建账号
         :return:
         """
-        self.ua.set_user('admin@worldfarm.com', '123456', 'employee')
-        json_response = self.ua._fc_admin_user_add(email_='26632629@qq.com', phone_='19902832572',
+        self.ua._set_user('admin@worldfarm.com', '123456', 'employee')
+        json_response = self.ua.__fc_admin_user_add(email_='26632629@qq.com', phone_='19902832572',
                                                    userName_='QA测试鑫')
         if json_response["status"] == "ERROR":
             self.assertEqual("当前邮箱已注册，请重新输入", json_response["errorMsg"])
@@ -75,8 +75,8 @@ class AdminOperationMain(unittest.TestCase):
         邮箱格式错误, 创建账号
         :return:
         """
-        self.ua.set_user('admin@worldfarm.com', '123456', 'employee')
-        json_response = self.ua._fc_admin_user_add(email_='qq.com', phone_='19902832572',
+        self.ua._set_user('admin@worldfarm.com', '123456', 'employee')
+        json_response = self.ua.__fc_admin_user_add(email_='qq.com', phone_='19902832572',
                                                    userName_='QA测试鑫')
         if json_response["status"] == "ERROR":
             self.assertEqual("邮箱格式有误", json_response["errorMsg"])
@@ -89,8 +89,8 @@ class AdminOperationMain(unittest.TestCase):
         邮箱超过64位, 创建邮箱
         :return:
         """
-        self.ua.set_user('admin@worldfarm.com', '123456', 'employee')
-        json_response = self.ua._fc_admin_user_add(email_='abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz'
+        self.ua._set_user('admin@worldfarm.com', '123456', 'employee')
+        json_response = self.ua.__fc_admin_user_add(email_='abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz'
                                                           '@worldfarm.com',
                                                    phone_='19983286362', userName_='QA测试鑫')
         if json_response["status"] == "ERROR":
@@ -104,8 +104,8 @@ class AdminOperationMain(unittest.TestCase):
         手机号格式不正确, 创建邮箱
         :return:
         """
-        self.ua.set_user('admin@worldfarm.com', '123456', 'employee')
-        json_response = self.ua._fc_admin_user_add(email_='abcdefg@worldfarm.com',
+        self.ua._set_user('admin@worldfarm.com', '123456', 'employee')
+        json_response = self.ua.__fc_admin_user_add(email_='abcdefg@worldfarm.com',
                                                    phone_='11002832572', userName_='QA测试鑫')
         if json_response["status"] == "ERROR":
             self.assertEqual("手机号格式有误", json_response["errorMsg"])
@@ -118,8 +118,8 @@ class AdminOperationMain(unittest.TestCase):
         手机号小于11位, 创建邮箱
         :return:
         """
-        self.ua.set_user('admin@worldfarm.com', '123456', 'employee')
-        json_response = self.ua._fc_admin_user_add(email_=None,
+        self.ua._set_user('admin@worldfarm.com', '123456', 'employee')
+        json_response = self.ua.__fc_admin_user_add(email_=None,
                                                    phone_='18919028649', userName_=self.fake.name())
         if json_response["status"] == "ERROR":
             self.assertEqual("手机号格式有误", json_response["errorMsg"])
@@ -132,8 +132,8 @@ class AdminOperationMain(unittest.TestCase):
         手机号小于11位, 创建邮箱
         :return:
         """
-        self.ua.set_user('admin@worldfarm.com', '123456', 'employee')
-        json_response = self.ua._fc_admin_user_add(email_='abcdefg@worldfarm.com',
+        self.ua._set_user('admin@worldfarm.com', '123456', 'employee')
+        json_response = self.ua.__fc_admin_user_add(email_='abcdefg@worldfarm.com',
                                                    phone_='186028325722', userName_='QA测试鑫')
         if json_response["status"] == "ERROR":
             self.assertEqual("手机号格式有误", json_response["errorMsg"])
@@ -146,8 +146,8 @@ class AdminOperationMain(unittest.TestCase):
         手机号重复, 创建账号
         :return:
         """
-        self.ua.set_user('admin@worldfarm.com', '123456', 'employee')
-        json_response = self.ua._fc_admin_user_add(email_='18602832572@qq.com', phone_='18602832572',
+        self.ua._set_user('admin@worldfarm.com', '123456', 'employee')
+        json_response = self.ua.__fc_admin_user_add(email_='18602832572@qq.com', phone_='18602832572',
                                                    userName_='QA测试鑫')
         if json_response["status"] == "ERROR":
             self.assertEqual("该手机号已注册", json_response["errorMsg"])
@@ -160,8 +160,8 @@ class AdminOperationMain(unittest.TestCase):
         姓名为空, 创建账号
         :return:
         """
-        self.ua.set_user('admin@worldfarm.com', '123456', 'employee')
-        json_response = self.ua._fc_admin_user_add(email_='26632629@qq.com', phone_='18602832572',
+        self.ua._set_user('admin@worldfarm.com', '123456', 'employee')
+        json_response = self.ua.__fc_admin_user_add(email_='26632629@qq.com', phone_='18602832572',
                                                    userName_='')
         if json_response["status"] == "ERROR":
             self.assertEqual("姓名不能为空", json_response["errorMsg"])
@@ -174,8 +174,8 @@ class AdminOperationMain(unittest.TestCase):
         姓名超过20字, 创建账号
         :return:
         """
-        self.ua.set_user('admin@worldfarm.com', '123456', 'employee')
-        json_response = self.ua._fc_admin_user_add(email_='26632629@qq.com', phone_='18602832572',
+        self.ua._set_user('admin@worldfarm.com', '123456', 'employee')
+        json_response = self.ua.__fc_admin_user_add(email_='26632629@qq.com', phone_='18602832572',
                                                    userName_='姓名不能超过20字姓名不能超过20字姓名不能超过20字')
         if json_response["status"] == "ERROR":
             self.assertEqual("姓名不能超过20个字", json_response["errorMsg"])
@@ -188,7 +188,7 @@ class AdminOperationMain(unittest.TestCase):
         未登录编辑账号
         :return:
         """
-        json_response = self.ua._fc_admin_user_edit(email_='26632629@qq.com', phone_='18602832572',
+        json_response = self.ua.__fc_admin_user_edit(email_='26632629@qq.com', phone_='18602832572',
                                                     userName_='用户名')
         if json_response["status"] == "ERROR":
             self.assertEqual("Request parameter missing", json_response["errorMsg"])
@@ -201,8 +201,8 @@ class AdminOperationMain(unittest.TestCase):
         普通用户登录, 编辑账号
         :return:
         """
-        self.ua.set_user('26632629@qq.com', 123456)
-        json_response = self.ua._fc_admin_user_edit(email_='26632629@qq.com', phone_='18602832572',
+        self.ua._set_user('26632629@qq.com', 123456)
+        json_response = self.ua.__fc_admin_user_edit(email_='26632629@qq.com', phone_='18602832572',
                                                     userName_='用户名', userId_=407)
         if json_response["status"] == "ERROR":
             self.assertEqual("抱歉,您没有相应的访问权限!", json_response["errorMsg"])
@@ -215,8 +215,8 @@ class AdminOperationMain(unittest.TestCase):
         用户ID为空, 编辑账号
         :return:
         """
-        self.ua.set_user('admin@worldfarm.com', 123456, 'employee')
-        json_response = self.ua._fc_admin_user_edit(email_='26632629@qq.com', phone_='18602832572',
+        self.ua._set_user('admin@worldfarm.com', 123456, 'employee')
+        json_response = self.ua.__fc_admin_user_edit(email_='26632629@qq.com', phone_='18602832572',
                                                     userName_='用户名', userId_='')
         if json_response["status"] == "ERROR":
             self.assertEqual("用户ID不能为空", json_response["errorMsg"])
@@ -229,8 +229,8 @@ class AdminOperationMain(unittest.TestCase):
         用户ID不存在, 编辑账号
         :return:
         """
-        self.ua.set_user('admin@worldfarm.com', 123456, 'employee')
-        json_response = self.ua._fc_admin_user_edit(email_='1860283257226632629@qq.com', phone_='19908328636',
+        self.ua._set_user('admin@worldfarm.com', 123456, 'employee')
+        json_response = self.ua.__fc_admin_user_edit(email_='1860283257226632629@qq.com', phone_='19908328636',
                                                     userName_='用户名', userId_=0)
         if json_response["status"] == "ERROR":
             self.assertEqual("账号不存在", json_response["errorMsg"])
@@ -243,8 +243,8 @@ class AdminOperationMain(unittest.TestCase):
         用户名为空, 编辑账号
         :return:
         """
-        self.ua.set_user('admin@worldfarm.com', 123456, 'employee')
-        json_response = self.ua._fc_admin_user_edit(email_='26632629@qq.com', phone_='18602832572',
+        self.ua._set_user('admin@worldfarm.com', 123456, 'employee')
+        json_response = self.ua.__fc_admin_user_edit(email_='26632629@qq.com', phone_='18602832572',
                                                     userName_='', userId_=407)
         if json_response["status"] == "ERROR":
             self.assertEqual("姓名不能为空", json_response["errorMsg"])
@@ -257,8 +257,8 @@ class AdminOperationMain(unittest.TestCase):
         用户名超过20个字, 编辑账号
         :return:
         """
-        self.ua.set_user('admin@worldfarm.com', 123456, 'employee')
-        json_response = self.ua._fc_admin_user_edit(email_='26632629@qq.com', phone_='18602832572',
+        self.ua._set_user('admin@worldfarm.com', 123456, 'employee')
+        json_response = self.ua.__fc_admin_user_edit(email_='26632629@qq.com', phone_='18602832572',
                                                     userName_='26632629@qq.com26632629@qq.com', userId_=407)
         if json_response["status"] == "ERROR":
             self.assertEqual("姓名不能超过20个字", json_response["errorMsg"])
@@ -271,8 +271,8 @@ class AdminOperationMain(unittest.TestCase):
         邮箱格式不正确, 编辑账号
         :return:
         """
-        self.ua.set_user('admin@worldfarm.com', 123456, 'employee')
-        json_response = self.ua._fc_admin_user_edit(email_='qq.com', phone_='18602832572',
+        self.ua._set_user('admin@worldfarm.com', 123456, 'employee')
+        json_response = self.ua.__fc_admin_user_edit(email_='qq.com', phone_='18602832572',
                                                     userName_='用户名', userId_=407)
         if json_response["status"] == "ERROR":
             self.assertEqual("邮箱格式有误", json_response["errorMsg"])
@@ -285,8 +285,8 @@ class AdminOperationMain(unittest.TestCase):
         邮箱超过64位, 编辑账号
         :return:
         """
-        self.ua.set_user('admin@worldfarm.com', 123456, 'employee')
-        json_response = self.ua._fc_admin_user_edit(email_='2663262926632629266326292663262926632629266326292663262921'
+        self.ua._set_user('admin@worldfarm.com', 123456, 'employee')
+        json_response = self.ua.__fc_admin_user_edit(email_='2663262926632629266326292663262926632629266326292663262921'
                                                            '@qq.com',
                                                     phone_='18602832572', userName_='用户名', userId_=407)
         if json_response["status"] == "ERROR":
@@ -300,8 +300,8 @@ class AdminOperationMain(unittest.TestCase):
         手机号格式错误, 编辑账号
         :return:
         """
-        self.ua.set_user('admin@worldfarm.com', 123456, 'employee')
-        json_response = self.ua._fc_admin_user_edit(email_='26632629@qq.com',
+        self.ua._set_user('admin@worldfarm.com', 123456, 'employee')
+        json_response = self.ua.__fc_admin_user_edit(email_='26632629@qq.com',
                                                     phone_='12002832572', userName_='用户名', userId_=407)
         if json_response["status"] == "ERROR":
             self.assertEqual("手机号格式有误", json_response["errorMsg"])
@@ -314,8 +314,8 @@ class AdminOperationMain(unittest.TestCase):
         手机号超过11位, 编辑账号
         :return:
         """
-        self.ua.set_user('admin@worldfarm.com', 123456, 'employee')
-        json_response = self.ua._fc_admin_user_edit(email_='26632629@qq.com',
+        self.ua._set_user('admin@worldfarm.com', 123456, 'employee')
+        json_response = self.ua.__fc_admin_user_edit(email_='26632629@qq.com',
                                                     phone_='186028325723', userName_='用户名', userId_=407)
         if json_response["status"] == "ERROR":
             self.assertEqual("手机号格式有误", json_response["errorMsg"])
@@ -328,8 +328,8 @@ class AdminOperationMain(unittest.TestCase):
         手机号少于11位, 编辑账号
         :return:
         """
-        self.ua.set_user('admin@worldfarm.com', 123456, 'employee')
-        json_response = self.ua._fc_admin_user_edit(email_='26632629@qq.com',
+        self.ua._set_user('admin@worldfarm.com', 123456, 'employee')
+        json_response = self.ua.__fc_admin_user_edit(email_='26632629@qq.com',
                                                     phone_='1200283257', userName_='用户名', userId_=407)
         if json_response["status"] == "ERROR":
             self.assertEqual("手机号格式有误", json_response["errorMsg"])
@@ -346,15 +346,15 @@ class AdminOperationMain(unittest.TestCase):
         new_mail = self.fake.email()
         new_phone = self.fake.phone_number()
         new_name = self.fake.name()
-        self.ua.set_user('admin@worldfarm.com', 123456, 'employee')
-        json_response = self.ua._fc_admin_user_edit(email_=new_mail, phone_=new_phone,
+        self.ua._set_user('admin@worldfarm.com', 123456, 'employee')
+        json_response = self.ua.__fc_admin_user_edit(email_=new_mail, phone_=new_phone,
                                                     userName_=new_name, userId_=old_user["id"])
         if json_response["status"] == "OK":
             new_user = self.pis.query_earliest_user()[0]
             self.assertEqual(new_mail, new_user["email"])
             self.assertEqual(new_phone, new_user["phone"])
             self.assertEqual(new_name, new_user["username"])
-            self.ua._fc_admin_user_edit(email_='26632629@qq.com', phone_='18602832572',
+            self.ua.__fc_admin_user_edit(email_='26632629@qq.com', phone_='18602832572',
                                         userName_='QA测试鑫', userId_=old_user["id"])
         else:
             self.assertTrue(False, "信息合法编辑失败")

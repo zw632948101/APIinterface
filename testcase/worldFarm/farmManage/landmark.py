@@ -9,18 +9,15 @@ __date__ = '2019/ / '
 
 import json
 from random import choice, randint
-from testcase.worldFarm import testCase,FarmManage
+from testcase.worldFarm import testCase, FarmManage
 
 
 class LandmarkMain(testCase):
-
     fq = FarmManage()
-    category = [{'房屋及建筑': '10030'}, {'水资源': '10040'}, {'道路': '10050'}]
-    kinds = {'房屋及建筑': [{'房屋': '10060'}, {'干草棚': '10070'}, {'谷仓': '10080'}, {'棚子': '10090'},
-                       {'操作栏': '10100'}, {'门': '10110'}, {'太阳能电站': '10130'}],
-             '水资源': [{'水井': '10140'}, {'水坝': '10150'}, {'管道': '10160'}, {'水渠': '10170'},
-                     {'饮水槽': '10180'}, {'风车': '10190'}, {'水箱': '10200'}, {'水泵': '10210'}, {'蓄水池': '10240'}],
-             '道路': [{'道路': '10220'}]}
+
+    def __init__(self, methodName='runTest'):
+        super(LandmarkMain, self).__init__(methodName=methodName)
+        self.ka.set_user(mobile=self.email, password=self.password)
 
     def test_mobile_farm_search_condition(self):
         """
@@ -28,7 +25,7 @@ class LandmarkMain(testCase):
         :return:
         """
         farmid = choice(self.fq.query_default_farm(self.email)).get('farm_id')
-        register = self.ka.mobile_farm_search_condition(farmId=farmid)
+        register = self.ka._mobile_farm_search_condition(farmId=farmid)
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_landmark_add(self):
@@ -53,10 +50,10 @@ class LandmarkMain(testCase):
         if type2 in ['10180', '10240', '10200']:
             specs = '接口测试添加水资源地标%s' % self.tt.get_standardtime_timestamp()
             waterCapacity = randint(100, 999999)
-        register = self.ka.mobile_landmark_add(farmId=farmid, regionId=None, type1=type1, type2=type2,
-                                               name=name, buildDate=buildDate, buildPrice=buildPrice, remark=remark,
-                                               imageList=None, locations=locations, specs=specs,
-                                               waterCapacity=waterCapacity)
+        register = self.ka._mobile_landmark_add(farmId=farmid, regionId=None, type1=type1, type2=type2,
+                                                name=name, buildDate=buildDate, buildPrice=buildPrice, remark=remark,
+                                                imageList=None, locations=locations, specs=specs,
+                                                waterCapacity=waterCapacity)
         self.assertEqual(register['status'], "OK")
         landmarkId = register['content']['landmarkId']
         landmarkinfo = self.fq.query_farm_landmark_id(landmarkId)
@@ -74,7 +71,7 @@ class LandmarkMain(testCase):
         :return:
         """
         farm = choice(self.fq.query_farm_and_region(self.email))
-        register = self.ka.mobile_landmark_list(farmId=farm.get('farm_id'), types=None)
+        register = self.ka._mobile_landmark_list(farmId=farm.get('farm_id'), types=None)
         self.assertEqual(register['status'], "OK")
 
     def test_mobile_landmark_del(self):
@@ -85,7 +82,7 @@ class LandmarkMain(testCase):
         farmid = choice(self.fq.query_default_farm(self.email)).get('farm_id')
         landmarkId = choice(self.fq.query_landmark_info_farmid(farmid)).get('id')
         # landmarkId = 1844
-        register = self.ka.mobile_landmark_del(landmarkId=landmarkId)
+        register = self.ka._mobile_landmark_del(landmarkId=landmarkId)
         self.assertEqual(register['status'], "OK")
         landmarkinfo = self.fq.query_farm_landmark_id(landmarkId)
         self.assertEqual(1, landmarkinfo.get('is_delete'))
@@ -98,7 +95,7 @@ class LandmarkMain(testCase):
         """
         farmid = choice(self.fq.query_default_farm(self.email)).get('farm_id')
         landmarkid = choice(self.fq.query_landmark_info_farmid(farmid)).get('id')
-        register = self.ka.mobile_landmark_detail(landmarkId=landmarkid)
+        register = self.ka._mobile_landmark_detail(landmarkId=landmarkid)
         self.assertEqual(register['status'], "OK")
         landmark = self.fq.query_farm_landmark_id(landmarkid)
         self.assertEqual(register['content'].get('locations'), landmark.get('locations'))
@@ -122,7 +119,7 @@ class LandmarkMain(testCase):
         farminfo = choice(self.fq.query_default_farm(self.email))
         farmid = farminfo.get('farm_id')
         regionid = farminfo.get('region_id')
-        register = self.ka.mobile_landmark_type_count(farmId=farmid, regionId=regionid)
+        register = self.ka._mobile_landmark_type_count(farmId=farmid, regionId=regionid)
         self.assertEqual(register['status'], "OK")
 
     def test_mobile_landmark_update(self):
@@ -152,10 +149,10 @@ class LandmarkMain(testCase):
             specs = '接口测试编辑水资源地标%s' % self.tt.get_standardtime_timestamp()
             waterCapacity = randint(100, 999999)
 
-        register = self.ka.mobile_landmark_update(farmId=farmid, regionId=None, type1=type1, type2=type2,
-                                                  name=name, buildDate=buildDate, buildPrice=buildPrice, remark=remark,
-                                                  imageList=None, locations=locations, specs=specs,
-                                                  waterCapacity=waterCapacity, landmarkId=landmarkid)
+        register = self.ka._mobile_landmark_update(farmId=farmid, regionId=None, type1=type1, type2=type2,
+                                                   name=name, buildDate=buildDate, buildPrice=buildPrice, remark=remark,
+                                                   imageList=None, locations=locations, specs=specs,
+                                                   waterCapacity=waterCapacity, landmarkId=landmarkid)
         self.assertEqual(register['status'], "OK")
         landmarkinfo = self.fq.query_farm_landmark_id(landmarkid)
         self.assertEqual(locations, landmarkinfo.get('locations'))
@@ -173,7 +170,7 @@ class LandmarkMain(testCase):
         :return:
         """
         farmid = choice(self.fq.query_default_farm(self.email)).get('farm_id')
-        register = self.ka.mobile_water_resource_home_list(farmId=farmid)
+        register = self.ka._mobile_water_resource_home_list(farmId=farmid)
         self.assertEqual(register['status'], "OK")
         waterResourceGroup1Outputs = register['content']['waterResourceGroup1Outputs']
         waterResourceGroup2Outputs = register['content']['waterResourceGroup2Outputs']
@@ -191,7 +188,7 @@ class LandmarkMain(testCase):
         """
         farmid = choice(self.fq.query_default_farm(self.email)).get('farm_id')
         water_type = list(choice(self.kinds.get('水资源')).values())[0]
-        register = self.ka.mobile_water_resource_list(farmId=farmid, type=water_type)
+        register = self.ka._mobile_water_resource_list(farmId=farmid, type=water_type)
         self.assertEqual(register['status'], "OK")
         content = register.get('content')
         datas = content.get('datas')

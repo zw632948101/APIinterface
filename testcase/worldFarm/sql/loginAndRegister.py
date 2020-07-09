@@ -6,7 +6,7 @@
 __author__: wei.zhang
 __remark__: 登录与注册
 """
-from .. import FarmQuery
+from testcase.worldFarm.sql.FarmQuery import FarmQuery
 
 
 class LoginAndRegister(FarmQuery):

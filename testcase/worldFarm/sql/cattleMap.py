@@ -6,7 +6,7 @@
 __author__: wei.zhang
 __remark__: 牲畜地图
 """
-from .. import FarmQuery
+from testcase.worldFarm.sql.FarmQuery import FarmQuery
 
 
 class CattleMap(FarmQuery):
@@ -22,7 +22,7 @@ class CattleMap(FarmQuery):
         sql = """
             SELECT * FROM `world-koala`.t_cattle tc WHERE tc.device_id is not null AND tc.device_id != '' AND tc.is_delete = '0' AND tc.farm_id = '%s';
             """ % farmid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info == ():
             return
         return info
@@ -44,7 +44,7 @@ class CattleMap(FarmQuery):
           ORDER BY tdp.position_time DESC LIMIT 1) OR tdp1.device_eui = (SELECT tdp.device_eui 
           FROM `world-shark`.t_device_position tdp WHERE tdp.device_type = '2' AND tdp.farm_id IS NOT NULL 
           ORDER BY tdp.position_time DESC LIMIT 1));"""
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info == ():
             return
         return info
@@ -65,7 +65,7 @@ class CattleMap(FarmQuery):
           DESC ) as tdp ON tcf.farm_id = tdp.farm_id WHERE tcf.farm_id = tdp.farm_id 
           AND tcf.region_id = tdp.region_id;
          """
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info == ():
             return
         return info
@@ -85,7 +85,7 @@ class CattleMap(FarmQuery):
         ON tdpr.device_eui = tdp.device_eui WHERE tdpr.device_eui = tdp.device_eui 
         AND tdpr.lat IS NOT NULL AND tdpr.position_time IS NOT NULL %s;
         """ % group
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info == ():
             return
         return info
@@ -119,7 +119,7 @@ class CattleMap(FarmQuery):
                     AND td.device_eui is not NULL
                     %s
               """ % (email, devicetype)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -143,7 +143,7 @@ class CattleMap(FarmQuery):
                     AND tr.position_time <= '%s'
                     %s;
               """ % (farmid, starttime, endtime, num)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -170,7 +170,7 @@ class CattleMap(FarmQuery):
                     AND td.product_type = '耳标/LoRa耳标'
                     AND tdp.is_delete = '0';
               """ % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -192,7 +192,7 @@ class CattleMap(FarmQuery):
                     AND tr.device_no = '%s' 
                     AND tr.is_delete = '0'
               """ % (farmid, deviceno)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -214,7 +214,7 @@ class CattleMap(FarmQuery):
                     AND ts.device_eui = '%s' 
                     AND ts.is_delete = 0;
               """ % (farmid, deviceid)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -269,7 +269,7 @@ class CattleMap(FarmQuery):
                 AND t.region_id = '%s'
                 %s
              """ % (farmid, regionid, sqlstr)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -283,7 +283,7 @@ class CattleMap(FarmQuery):
         sql = """
             SELECT * FROM `world-shark`.t_device_position tdp WHERE tdp.farm_id = '%s' AND tdp.cattle_id IS NOT NULL;
              """ % farmid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -312,7 +312,7 @@ class CattleMap(FarmQuery):
                     AND tdpr1.cattle_id = (SELECT tdp.cattle_id FROM `world-shark`.t_device_position tdp WHERE tdp.device_eui = '%s')
                     AND tdpr1.id > IFNULL((SELECT tdpr.id FROM `world-shark`.t_device_position_record tdpr WHERE tdpr.device_eui = '%s' AND tdpr.farm_id IS NULL GROUP BY tdpr.id DESC LIMIT 1 ),0 );
               """ % (device_id, device_id, device_id, device_id)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -334,7 +334,7 @@ class CattleMap(FarmQuery):
                 AND ts.cattle_id IS NULL
                 ORDER BY ts.id DESC;
               """ % farmid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return

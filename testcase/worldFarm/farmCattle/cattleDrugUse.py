@@ -11,8 +11,12 @@ from random import choice
 from testcase.worldFarm import testCase, CattleManage
 
 
-class CattleDrugMain(testCase):
+class CattleDrugUse(testCase):
     fq = CattleManage()
+
+    def __init__(self, methodName='runTest'):
+        super(CattleDrugUse, self).__init__(methodName=methodName)
+        self.ka.set_user(mobile=self.email, password=self.password)
 
     def test_mobile_cattle_drug_use_add(self):
         """
@@ -28,8 +32,8 @@ class CattleDrugMain(testCase):
         drugName = "药物名称%s" % int(useDate / 1000)
         usageDose = random.randint(1, 9999)
         remark = "接口测试添加药物记录备注%s" % useDate
-        info = self.ka.mobile_cattle_drug_use_add(cattleIds=cattleid, type=drugType, useDate=useDate,
-                                                  drugName=drugName, usageDose=usageDose, remark=remark)
+        info = self.ka._mobile_cattle_drug_use_add(cattleIds=cattleid, type=drugType, useDate=useDate,
+                                                   drugName=drugName, usageDose=usageDose, remark=remark)
         self.assertEqual(info.get('status'), 'OK')
         druginfo = self.fq.query_cattle_drug_use_info(cattleIds=cattleid, usedate=useDate)
         cattleids = self.tool.data_assemble('cattle_id', druginfo)
@@ -47,7 +51,7 @@ class CattleDrugMain(testCase):
         """
         farmid = choice(self.fq.query_default_farm(self.email)).get('farm_id')
         drugUseId = choice(self.fq.query_default_farn_cattle_drug(farmid)).get('id')
-        info = self.ka.mobile_cattle_drug_use_del(drugUseId=drugUseId)
+        info = self.ka._mobile_cattle_drug_use_del(drugUseId=drugUseId)
         self.assertEqual(info.get('status'), 'OK')
 
     def test_mobile_cattle_drug_use_detail(self):
@@ -58,7 +62,7 @@ class CattleDrugMain(testCase):
         farmid = choice(self.fq.query_default_farm(self.email)).get('farm_id')
         druginfo = choice(self.fq.query_default_farn_cattle_drug(farmid))
         drugUseId = druginfo.get('id')
-        info = self.ka.mobile_cattle_drug_use_detail(drugUseId=drugUseId)
+        info = self.ka._mobile_cattle_drug_use_detail(drugUseId=drugUseId)
         self.assertEqual(info.get('status'), 'OK')
         content = info.get('content')
         self.assertEqual(content.get('cattleId'), druginfo.get('cattle_id'))
@@ -82,8 +86,8 @@ class CattleDrugMain(testCase):
         drugName = "药物名称%s" % int(useDate / 1000)
         usageDose = random.randint(1, 9999)
         remark = "接口测试添加药物记录备注%s" % useDate
-        info = self.ka.mobile_cattle_drug_use_edit(id=drugUseId, type=drugType, useDate=useDate,
-                                                   drugName=drugName, usageDose=usageDose, remark=remark)
+        info = self.ka._mobile_cattle_drug_use_edit(id=drugUseId, type=drugType, useDate=useDate,
+                                                    drugName=drugName, usageDose=usageDose, remark=remark)
         self.assertEqual(info.get('status'), 'OK')
         drug = self.fq.query_cattle_drug_use_info(druginfo.get('cattle_id'), useDate)[0]
         self.assertEqual(drugName, drug.get('drug_name'))
@@ -93,4 +97,4 @@ class CattleDrugMain(testCase):
 
 
 if __name__ == '__main__':
-    cdm = CattleDrugMain()
+    cdm = CattleDrugUse()

@@ -6,7 +6,7 @@
 __author__: wei.zhang
 __remark__: 农场管理
 """
-from .. import FarmQuery
+from testcase.worldFarm.sql.FarmQuery import FarmQuery
 
 
 class FarmManage(FarmQuery):
@@ -31,7 +31,7 @@ class FarmManage(FarmQuery):
                     AND tfu.is_delete = 0 
                     AND tfu.is_default = 1 
                     AND tfa.is_delete = 0;""" % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         return info
 
     def query_farm_default(self, eamil):
@@ -58,7 +58,7 @@ class FarmManage(FarmQuery):
         sql = """
                 SELECT * FROM `world-koala`.t_farm tf WHERE tf.id = '%s';
               """ % farmid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info[0]
         return
@@ -80,7 +80,7 @@ class FarmManage(FarmQuery):
                 AND tf.is_delete = 0
                 ORDER BY tf.id DESC;
               """ % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -100,7 +100,7 @@ class FarmManage(FarmQuery):
             WHERE
                 tf.id = '%s'
               """ % farmid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info[0]
         return
@@ -124,7 +124,7 @@ class FarmManage(FarmQuery):
                 AND tfu.is_delete = '0'
                 ORDER BY tfu.is_default DESC,tfu.id DESC
               """ % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -148,7 +148,7 @@ class FarmManage(FarmQuery):
                 AND tfu.is_delete = 0 
                 AND ta.is_delete = 0
               """ % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -173,7 +173,7 @@ class FarmManage(FarmQuery):
                 AND tfu.is_default = 1 
                 GROUP BY tl.id DESC
             """ % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -194,7 +194,7 @@ class FarmManage(FarmQuery):
                 AND ts.is_delete = '0'
                 ORDER BY ts.id DESC LIMIT 1;
               """ % farmid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info[0]
         return
@@ -214,7 +214,7 @@ class FarmManage(FarmQuery):
                 ts.farm_id = '%s'
                 AND ts.is_delete = '0';
               """ % farmid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info[0]
         return
@@ -233,7 +233,7 @@ class FarmManage(FarmQuery):
              WHERE
                  ts.id = '%s';
                """ % suppliesId
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info[0]
         return
@@ -255,7 +255,7 @@ class FarmManage(FarmQuery):
                 AND ts.is_delete = '0' 
                 ORDER BY ts.id DESC;
               """ % (farmid, suppliesType)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -288,7 +288,7 @@ class FarmManage(FarmQuery):
                 WHERE 
                     tl.id = '%s'
               """ % landmarkid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info[0]
         return
@@ -302,7 +302,7 @@ class FarmManage(FarmQuery):
         sql = """
         SELECT * FROM `world-koala`.t_landmark tl WHERE tl.farm_id = '%s' AND tl.is_delete = 0
             """ % farmid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -334,7 +334,7 @@ class FarmManage(FarmQuery):
                 AND tc.`code` = '10001'
                 GROUP BY tl.type2
               """ % farmid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -386,7 +386,7 @@ class FarmManage(FarmQuery):
                 LIMIT 0,
                 20;
               """ % (farmid, landmarkType, type1)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -414,7 +414,7 @@ class FarmManage(FarmQuery):
                 AND tl.is_delete = 0 
                 AND tc.is_delete = 0
               """ % farm_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return

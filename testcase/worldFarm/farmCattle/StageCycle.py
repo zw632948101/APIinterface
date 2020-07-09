@@ -10,12 +10,15 @@ import json
 import random
 import time
 from random import choice
-from testcase.worldFarm import testCase,CattleManage
+from testcase.worldFarm import testCase, CattleManage
 
 
-class Main(testCase):
-
+class StageCycle(testCase):
     fq = CattleManage()
+
+    def __init__(self, methodName='runTest'):
+        super(StageCycle, self).__init__(methodName=methodName)
+        self.ka.set_user(mobile=self.email, password=self.password)
 
     def test_mobile_cattle_weaning_add(self):
         """
@@ -33,8 +36,8 @@ class Main(testCase):
         cattleids = self.tool.data_assemble('id', weaningdata, random.randint(1, len(weaningdata)))
         weaningDate = int(time.time()) * 1000
         weaningWeight = random.randint(300, 1500)
-        info = self.ka.mobile_cattle_weaning_add(cattleIds=cattleids, weaningDate=weaningDate,
-                                                 weaningWeight=weaningWeight, regionId=regionid, farmId=farmid)
+        info = self.ka._mobile_cattle_weaning_add(cattleIds=cattleids, weaningDate=weaningDate,
+                                                  weaningWeight=weaningWeight, regionId=regionid, farmId=farmid)
         self.assertEqual(info['status'], 'OK')
         if len(cattleids) > 1:
             weaninginfo = self.fq.query_cattle_weaning_info(tuple(cattleids))
@@ -51,7 +54,7 @@ class Main(testCase):
         :return:
         """
         weaning_detail = self.fq.query_weaning_detail()
-        register = self.ka.mobile_cattle_weaning_detail(cattleWeaningId=weaning_detail.get('id'))
+        register = self.ka._mobile_cattle_weaning_detail(cattleWeaningId=weaning_detail.get('id'))
         self.assertEqual(register['status'], 'OK')
         # 判断查询断奶记录体重
         self.assertEqual(weaning_detail.get('weaning_weight'), register['content']['weaningWeight'])
@@ -67,8 +70,8 @@ class Main(testCase):
         weaning_detail = self.fq.query_weaning_detail()
         now = int(time.time()) * 1000
         weaning_weight = 200
-        self.ka.mobile_cattle_weaning_update(id=weaning_detail.get('id'), weaningDate=now,
-                                             weaningWeight=weaning_weight)
+        self.ka._mobile_cattle_weaning_update(id=weaning_detail.get('id'), weaningDate=now,
+                                              weaningWeight=weaning_weight)
         weaning_detail_sql = self.fq.query_weaning_detail_buy_id(weaning_id=weaning_detail.get('id'))
         weaning_date_sql = int(time.mktime(time.strptime(weaning_detail_sql[0]['weaning_date'],
                                                          "%Y-%m-%d %H:%M:%S")) * 1000)
@@ -82,7 +85,7 @@ class Main(testCase):
         """
         breeding_info = self.fq.query_new_cattle_breeding_date_buy_email(self.email)
         cattle_id = breeding_info[0]['cattle_id']
-        register = self.ka.mobile_cattle_breeding_list(cattleId=cattle_id)
+        register = self.ka._mobile_cattle_breeding_list(cattleId=cattle_id)
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_cattle_breeding_add(self):
@@ -111,9 +114,9 @@ class Main(testCase):
             bullIds = self.tool.data_assemble('id', bull_id_list, 3) if bull_id_list else None
         letter_list = [chr(i) for i in range(65, 91)] + [str(i) for i in range(10)]
         num = ''.join(self.tool.data_assemble(parameters_ld=letter_list, num=8)) if breedingType != 10 else None
-        register = self.ka.mobile_cattle_breeding_add(cattleIds=cowIds, bullIds=bullIds, startDate=start_date,
-                                                      endDate=end_date, breedingType=breedingType,
-                                                      remark=remark, isRegionSame=isRegionSame, num=num)
+        register = self.ka._mobile_cattle_breeding_add(cattleIds=cowIds, bullIds=bullIds, startDate=start_date,
+                                                       endDate=end_date, breedingType=breedingType,
+                                                       remark=remark, isRegionSame=isRegionSame, num=num)
 
         self.assertEqual(register.get('status'), 'OK')
         if len(cowIds) > 1:
@@ -155,9 +158,9 @@ class Main(testCase):
         letter_list = [chr(i) for i in range(65, 91)] + [str(i) for i in range(10)]
         num = ''.join(self.tool.data_assemble(parameters_ld=letter_list, num=8)) if breedingType != 10 else None
         isRegionSame = 1 if len(cowIds) == 1 else 0
-        register = self.ka.mobile_cattle_breeding_add(cattleIds=cowIds, startDate=start_date,
-                                                      endDate=end_date, breedingType=breedingType, num=num,
-                                                      remark=remark, isRegionSame=isRegionSame)
+        register = self.ka._mobile_cattle_breeding_add(cattleIds=cowIds, startDate=start_date,
+                                                       endDate=end_date, breedingType=breedingType, num=num,
+                                                       remark=remark, isRegionSame=isRegionSame)
 
         self.assertEqual(register.get('status'), 'OK')
         if len(cowIds) > 1:
@@ -199,9 +202,9 @@ class Main(testCase):
         bull_id_list = self.fq.query_bull_id_buy_email(email=self.email)
         bullIds = self.tool.data_assemble('id', bull_id_list, 3) if bull_id_list else None
 
-        register = self.ka.mobile_cattle_breeding_update(bullIds=bullIds, id=breeding_id, startDate=start_date,
-                                                         endDate=end_date, breedingType=breedingType,
-                                                         remark=remark, isRegionSame=isRegionSame)
+        register = self.ka._mobile_cattle_breeding_update(bullIds=bullIds, id=breeding_id, startDate=start_date,
+                                                          endDate=end_date, breedingType=breedingType,
+                                                          remark=remark, isRegionSame=isRegionSame)
 
         self.assertEqual(register.get('status'), 'OK')
         cowids_info = self.fq.query_cattle_breeding_id_info(breeding_id)
@@ -237,9 +240,9 @@ class Main(testCase):
         letter_list = [chr(i) for i in range(65, 91)] + [str(i) for i in range(10)]
         num = ''.join(self.tool.data_assemble(parameters_ld=letter_list, num=8))
 
-        register = self.ka.mobile_cattle_breeding_update(bullIds=bullIds, id=breeding_id, startDate=start_date,
-                                                         endDate=end_date, breedingType=breedingType,
-                                                         remark=remark, isRegionSame=isRegionSame, num=num)
+        register = self.ka._mobile_cattle_breeding_update(bullIds=bullIds, id=breeding_id, startDate=start_date,
+                                                          endDate=end_date, breedingType=breedingType,
+                                                          remark=remark, isRegionSame=isRegionSame, num=num)
 
         self.assertEqual(register.get('status'), 'OK')
         cowids_info = self.fq.query_cattle_breeding_id_info(breeding_id)
@@ -257,7 +260,7 @@ class Main(testCase):
         :return:
         """
         breeding_id = (self.fq.query_new_cattle_breeding_date_buy_email(self.email))[0]['id']
-        register = self.ka.mobile_cattle_breeding_detail(id=breeding_id)
+        register = self.ka._mobile_cattle_breeding_detail(id=breeding_id)
         breeding_detail = self.fq.query_breeding_detail_buy_id(breeding_id)
         if register['status'] == 'OK':
             self.assertEqual(register['content']['id'], breeding_detail[0]['id'])
@@ -310,10 +313,10 @@ class Main(testCase):
             breeding = self.fq.query_breeding_date_buy_cattle_id(cow_id[0])
             cattleBreedingId = breeding[0].get('id') if breeding else None
 
-        response = self.ka.mobile_cattle_preg_add(cattleIds=cow_id, checkDate=start_date,
-                                                  checkResult=check_result, checkType=checktype,
-                                                  remark=remark, farmId=farmId, regionId=regionId,
-                                                  cattleBreedingId=cattleBreedingId)
+        response = self.ka._mobile_cattle_preg_add(cattleIds=cow_id, checkDate=start_date,
+                                                   checkResult=check_result, checkType=checktype,
+                                                   remark=remark, farmId=farmId, regionId=regionId,
+                                                   cattleBreedingId=cattleBreedingId)
         self.assertEqual(response.get('status'), 'OK')
         if len(cow_id) > 1:
             cowids_info = self.fq.query_cattle_preg_date_info(tuple(cow_id), checktype,
@@ -337,7 +340,7 @@ class Main(testCase):
         """
         preg_info = self.fq.query_preg_date_buy_email(self.email)
         preg_id = preg_info[0]['id']
-        register = self.ka.mobile_cattle_preg_detail(id=preg_id)
+        register = self.ka._mobile_cattle_preg_detail(id=preg_id)
         preg_info_sql = self.fq.query_preg_info_buy_id(preg_id=preg_id)
         check_date = int(time.mktime(time.strptime(preg_info_sql[0]["check_date"],
                                                    "%Y-%m-%d %H:%M:%S")) * 1000)
@@ -383,16 +386,16 @@ class Main(testCase):
 
         if newest_breeding_info:
 
-            self.ka.mobile_cattle_preg_update(id=preg_id, cattleBreedingId=None,
-                                              checkDate=start_date,
-                                              checkResult=check_result, checkType=checktype,
-                                              remark=remark)
+            self.ka._mobile_cattle_preg_update(id=preg_id, cattleBreedingId=None,
+                                               checkDate=start_date,
+                                               checkResult=check_result, checkType=checktype,
+                                               remark=remark)
         else:
             breeding_id = newest_breeding_info[0]['id']
-            self.ka.mobile_cattle_preg_update(id=preg_id, cattleBreedingId=breeding_id,
-                                              checkDate=start_date,
-                                              checkResult=check_result, checkType=checktype,
-                                              remark=remark)
+            self.ka._mobile_cattle_preg_update(id=preg_id, cattleBreedingId=breeding_id,
+                                               checkDate=start_date,
+                                               checkResult=check_result, checkType=checktype,
+                                               remark=remark)
 
         cattle = (self.fq.query_preg_info_buy_id(preg_id=preg_id))[0]
         self.assertEqual(self.tt.str_time_timestamp(cattle.get('check_date')), start_date)
@@ -417,9 +420,9 @@ class Main(testCase):
             cattle_breeding_id = None
             if newest_breeding_info:
                 cattle_breeding_id = choice(newest_breeding_info).get('id')
-            self.ka.mobile_cattle_calving_add(cattleId=cattle_id, cattleBreedingId=cattle_breeding_id,
-                                              calvingResult=calving_result, calvingSex=calvingSex,
-                                              calvingDate=calving_date, calvingCount=calving_count)
+            self.ka._mobile_cattle_calving_add(cattleId=cattle_id, cattleBreedingId=cattle_breeding_id,
+                                               calvingResult=calving_result, calvingSex=calvingSex,
+                                               calvingDate=calving_date, calvingCount=calving_count)
             calving_detail = self.fq.query_calving_info_buy_cattle_id(cattle_id=cattle_id)
             calving_date_sql = int(time.mktime(time.strptime(calving_detail[0]["calving_date"],
                                                              "%Y-%m-%d %H:%M:%S")) * 1000)
@@ -444,9 +447,9 @@ class Main(testCase):
         calving_date = round(int(time.time()) * 1000)
         remark = '修改产犊记录备注'
         if len(newest_breeding_info) == 0:
-            self.ka.mobile_cattle_calving_update(id=calving_id, cattleBreedingId=None,
-                                                 calvingResult=calving_result, calvingDate=calving_date,
-                                                 remark=remark)
+            self.ka._mobile_cattle_calving_update(id=calving_id, cattleBreedingId=None,
+                                                  calvingResult=calving_result, calvingDate=calving_date,
+                                                  remark=remark)
             calving_detail = self.fq.query_calving_info_buy_cattle_id(cattle_id=cattle_id)
             calving_date_sql = int(time.mktime(time.strptime(calving_detail[0]["calving_date"],
                                                              "%Y-%m-%d %H:%M:%S")) * 1000)
@@ -455,9 +458,9 @@ class Main(testCase):
             self.assertEqual(remark, calving_detail[0]['remark'])
         if len(newest_breeding_info) != 0:
             cattle_breeding_id = newest_breeding_info[0]['id']
-            self.ka.mobile_cattle_calving_update(id=calving_id, cattleBreedingId=cattle_breeding_id,
-                                                 calvingResult=calving_result, calvingDate=calving_date,
-                                                 remark=remark)
+            self.ka._mobile_cattle_calving_update(id=calving_id, cattleBreedingId=cattle_breeding_id,
+                                                  calvingResult=calving_result, calvingDate=calving_date,
+                                                  remark=remark)
             calving_detail = self.fq.query_calving_info_buy_cattle_id(cattle_id=cattle_id)
             self.assertEqual(cattle_breeding_id, calving_detail[0]["cattle_breeding_id"])
 
@@ -476,7 +479,7 @@ class Main(testCase):
         cattle_id = cow_cattle[0]['id']
         calving_detail = self.fq.query_calving_info_buy_cattle_id(cattle_id=cattle_id)
         calving_id = calving_detail[0]['id']
-        register = self.ka.mobile_cattle_calving_detail(id=calving_id)
+        register = self.ka._mobile_cattle_calving_detail(id=calving_id)
         calving_detail = self.fq.query_calving_info_buy_cattle_id(cattle_id=cattle_id)
         self.assertEqual(register['content']['calvingCount'], calving_detail[0]['calving_count'])
         calving_date = int(time.mktime(time.strptime(calving_detail[0]['calving_date'], "%Y-%m-%d %H:%M:%S")) * 1000)
@@ -503,7 +506,7 @@ class Main(testCase):
         cattle_id = choice(cattle_list)
         # check = self.fq.query_cattle_detail_buy_cattle_id(cattle_id=cattle_id)
 
-        register = self.ka.mobile_cattle_calving_get_offspring(cattleId=cattle_id)
+        register = self.ka._mobile_cattle_calving_get_offspring(cattleId=cattle_id)
         if len(register["content"]) > 0:
             offspring_detail = self.fq.query_offspring_info_buy_cattle_id(cattle_id)
             for i in range(len(offspring_detail)):
@@ -526,12 +529,12 @@ class Main(testCase):
             cattle_detail = self.fq.query_cattle_detail_buy_cattle_id(cattle_id=cattle_id)
             if 'p_id' in cattle_detail[0].keys():
                 p_id = cattle_detail[0]['p_id']
-                self.ka.mobile_cattle_calving_del_offspring(calfId=cattle_id, cattleId=p_id)
+                self.ka._mobile_cattle_calving_del_offspring(calfId=cattle_id, cattleId=p_id)
                 cattle_detail_list = self.fq.query_cattle_detail_buy_cattle_id(cattle_id=cattle_id)
                 self.assertEqual(None, cattle_detail_list[0]['p_id'])
             if 'm_id' in cattle_detail[0].keys():
                 m_id = cattle_detail[0]["m_id"]
-                self.ka.mobile_cattle_calving_del_offspring(calfId=cattle_id, cattleId=m_id)
+                self.ka._mobile_cattle_calving_del_offspring(calfId=cattle_id, cattleId=m_id)
                 cattle_detail_list = self.fq.query_cattle_detail_buy_cattle_id(cattle_id=cattle_id)
                 self.assertEqual(None, cattle_detail_list[0]['m_id'])
         else:
@@ -549,12 +552,12 @@ class Main(testCase):
             cattle_detail = self.fq.query_cattle_detail_buy_cattle_id(cattle_id=cattle_id)
             if 'p_id' in cattle_detail[0].keys():
                 p_id = cattle_detail[0]['p_id']
-                self.ka.mobile_cattle_search_get_offspring(cattleId=p_id)
+                self.ka._mobile_cattle_search_get_offspring(cattleId=p_id)
                 cattle_detail_list = self.fq.query_cattle_detail_buy_cattle_id(cattle_id=cattle_id)
                 self.assertEqual(p_id, cattle_detail_list[0]['p_id'])
             if 'm_id' in cattle_detail[0].keys():
                 m_id = cattle_detail[0]["m_id"]
-                self.ka.mobile_cattle_search_get_offspring(cattleId=m_id)
+                self.ka._mobile_cattle_search_get_offspring(cattleId=m_id)
                 cattle_detail_list = self.fq.query_cattle_detail_buy_cattle_id(cattle_id=cattle_id)
                 self.assertEqual(m_id, cattle_detail_list[0]['m_id'])
 
@@ -567,7 +570,7 @@ class Main(testCase):
         cattle_detail_list = self.fq.query_breeding_cow_id_buy_email(self.email)
         cattle_id_list = self.tool.data_assemble("id", cattle_detail_list, 1)
         cattle_id = cattle_id_list[0]
-        self.ka.mobile_cattle_stage_cycle_list(cattleId=cattle_id)
+        self.ka._mobile_cattle_stage_cycle_list(cattleId=cattle_id)
 
     def test_mobile_cattle_stage_cycle_del(self):
         """
@@ -579,7 +582,7 @@ class Main(testCase):
             cattle_id = cattle_detail_list[0]["id"]
             cycle_info_list = self.fq.query_cattle_all_cycle(cattle_id=cattle_id, is_delete=0)
             cycle_id = cycle_info_list[0]['id']
-            self.ka.mobile_cattle_stage_cycle_del(id=cycle_id)
+            self.ka._mobile_cattle_stage_cycle_del(id=cycle_id)
             cycle_info_list = self.fq.query_cattle_all_cycle(cattle_id=cattle_id, is_delete=1)
             # self.assertEqual(1, cycle_info_list[0]["is_delete"])
         else:
@@ -614,12 +617,12 @@ class Main(testCase):
         end_date = self.tt.get_standardtime_timestamp(week=4, formats="%Y-%m-%d")
         breeding_remark = "修改牲畜生理阶段周期记录表备注"
         is_region_same = 0
-        self.ka.mobile_cattle_stage_cycle_update(bullIds=bullIds, id=cycle_id, breedingId=breeding_id,
-                                                 breedingStartDate=start_date, breedingEndDate=end_date,
-                                                 breedingRemark=breeding_remark, isRegionSame=is_region_same,
-                                                 pregId=None, pregCheckDate=None, pregCheckResult=None,
-                                                 calvingId=None, calvingResult=None, calvingDate=None,
-                                                 calvingCalfId=None)
+        self.ka._mobile_cattle_stage_cycle_update(bullIds=bullIds, id=cycle_id, breedingId=breeding_id,
+                                                  breedingStartDate=start_date, breedingEndDate=end_date,
+                                                  breedingRemark=breeding_remark, isRegionSame=is_region_same,
+                                                  pregId=None, pregCheckDate=None, pregCheckResult=None,
+                                                  calvingId=None, calvingResult=None, calvingDate=None,
+                                                  calvingCalfId=None)
 
     # def test_mobile_cattle_stage_cycle_updateHistory(self):
     #     """
@@ -652,4 +655,4 @@ class Main(testCase):
 
 
 if __name__ == '__main__':
-    m = Main()
+    m = StageCycle()

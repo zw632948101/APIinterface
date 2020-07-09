@@ -10,12 +10,15 @@ import json
 import time
 
 from random import choice
-from testcase.worldFarm import testCase,CattleMap
+from testcase.worldFarm import testCase, CattleMap
 
 
 class CattleMapMain(testCase):
-
     fq = CattleMap()
+
+    def __init__(self, methodName='runTest'):
+        super(CattleMapMain, self).__init__(methodName=methodName)
+        self.ka.set_user(mobile=self.email, password=self.password)
 
     def test_mobile_cattle_set_frequency_clever(self):
         """
@@ -24,8 +27,8 @@ class CattleMapMain(testCase):
         :return:
         """
         deviceEui = choice(self.fq.query_default_farm_cattle_info_list(self.email, '1,2'))
-        register = self.ka.mobile_cattle_set_frequency_clever(farmId=deviceEui.get('farm_id'),
-                                                              deviceEui=deviceEui.get('device_id'))
+        register = self.ka._mobile_cattle_set_frequency_clever(farmId=deviceEui.get('farm_id'),
+                                                               deviceEui=deviceEui.get('device_id'))
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_cattle_set_frequency_clever_batch(self):
@@ -34,8 +37,8 @@ class CattleMapMain(testCase):
         :return:
         """
         deviceEui = choice(self.fq.query_default_farm_cattle_info_list(self.email, '1,2'))
-        register = self.ka.mobile_cattle_set_frequency_clever_batch(farmId=deviceEui.get('farm_id'),
-                                                                    deviceEuis=[deviceEui.get('device_id')])
+        register = self.ka._mobile_cattle_set_frequency_clever_batch(farmId=deviceEui.get('farm_id'),
+                                                                     deviceEuis=[deviceEui.get('device_id')])
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_cattle_frequency_num(self):
@@ -45,7 +48,7 @@ class CattleMapMain(testCase):
         :return:
         """
         farmid = choice(self.fq.query_default_farm(self.email)).get('farm_id')
-        register = self.ka.mobile_cattle_frequency_num(farmId=farmid)
+        register = self.ka._mobile_cattle_frequency_num(farmId=farmid)
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_cattle_frequency_list(self):
@@ -54,7 +57,7 @@ class CattleMapMain(testCase):
         :return:
         """
         farmid = choice(self.fq.query_default_farm(self.email)).get('farm_id')
-        register = self.ka.mobile_cattle_frequency_list(farmId=farmid, status=choice([0, 1, 2, None]))
+        register = self.ka._mobile_cattle_frequency_list(farmId=farmid, status=choice([0, 1, 2, None]))
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_cattle_close_frequency(self):
@@ -63,7 +66,7 @@ class CattleMapMain(testCase):
         :return:
         """
         farmid = choice(self.fq.query_default_farm(self.email)).get('farm_id')
-        register = self.ka.mobile_cattle_close_frequency(farmId=farmid, deviceEui=None)
+        register = self.ka._mobile_cattle_close_frequency(farmId=farmid, deviceEui=None)
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_cattle_map_trace(self):
@@ -74,7 +77,7 @@ class CattleMapMain(testCase):
         :return:
         """
         device = choice(self.fq.query_cattle_trace(group=1))
-        register = self.ka.mobile_cattle_map_trace(farmId=device.get('farm_id'), deviceEui=device.get('device_eui'))
+        register = self.ka._mobile_cattle_map_trace(farmId=device.get('farm_id'), deviceEui=device.get('device_eui'))
         if register.get('status') == "ERROR":
             self.log.info(register.get("errorMsg"))
             return
@@ -88,8 +91,8 @@ class CattleMapMain(testCase):
         """
         farminfo = self.fq.query_default_farm(self.email)[0]
         cattleinfo = self.fq.query_cattle_info(farminfo.get('farm_id'))[0]
-        register = self.ka.mobile_cattle_map_cattle_card(farmId=cattleinfo.get('farm_id'),
-                                                         deviceEui=cattleinfo.get('device_id'))
+        register = self.ka._mobile_cattle_map_cattle_card(farmId=cattleinfo.get('farm_id'),
+                                                          deviceEui=cattleinfo.get('device_id'))
 
         self.assertEqual(register['status'], 'OK')
         # 判断农场ID
@@ -107,7 +110,7 @@ class CattleMapMain(testCase):
         farminfo = self.fq.query_default_farm(self.email)[0]
         cattleinfo = self.fq.query_cattle_info(farminfo.get('farm_id'))
         deviceEuis = self.tool.data_assemble('device_id', cattleinfo, 10)
-        register = self.ka.mobile_cattle_map_bluetooth_near_cattle_list(deviceEuis=deviceEuis)
+        register = self.ka._mobile_cattle_map_bluetooth_near_cattle_list(deviceEuis=deviceEuis)
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_cattle_map_frequency_trace(self):
@@ -115,7 +118,7 @@ class CattleMapMain(testCase):
         移动端-牲畜地图-开启临时频率后的轨迹
         :return:
         """
-        register = self.ka.mobile_cattle_map_frequency_trace(farmId='547', deviceEui='11020203f0000029')
+        register = self.ka._mobile_cattle_map_frequency_trace(farmId='547', deviceEui='11020203f0000029')
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_cattle_map_heat_map(self):
@@ -126,8 +129,8 @@ class CattleMapMain(testCase):
         endTime = int(time.time() * 1000)
         startTime = endTime - 5 * 24 * 60 * 60 * 1000
         farmId = choice(self.fq.query_default_farm(self.email))
-        register = self.ka.mobile_cattle_map_heat_map(farmId=farmId.get('farm_id'), positionTimeEnd=endTime,
-                                                      positionTimeStart=startTime)
+        register = self.ka._mobile_cattle_map_heat_map(farmId=farmId.get('farm_id'), positionTimeEnd=endTime,
+                                                       positionTimeStart=startTime)
         self.assertEqual(register['status'], 'OK')
         if register:
             return
@@ -154,8 +157,8 @@ class CattleMapMain(testCase):
         """
         cattlelist = self.fq.query_near_cattle_list()
 
-        register = self.ka.mobile_cattle_map_near_cattle_list(farmId=cattlelist[0].get('farm_id'),
-                                                              deviceEui=cattlelist[0].get('device_id'), deviceType=2)
+        register = self.ka._mobile_cattle_map_near_cattle_list(farmId=cattlelist[0].get('farm_id'),
+                                                               deviceEui=cattlelist[0].get('device_id'), deviceType=2)
         self.assertEqual(register['status'], 'OK')
         for reg in register['content']:
             for cattle in cattlelist:
@@ -177,7 +180,7 @@ class CattleMapMain(testCase):
         """
         # register = self.ko.mobile_cattle_map_position_list(farmId='607', fenceId='174', positionType=0) 1.2.3
         regionlist = self.fq.query_region_cattle_list()
-        register = self.ka.mobile_cattle_map_position_list(farmId=regionlist[0].get('farm_id'))
+        register = self.ka._mobile_cattle_map_position_list(farmId=regionlist[0].get('farm_id'))
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_cattle_map_position_type_num(self):
@@ -186,8 +189,8 @@ class CattleMapMain(testCase):
         :return:
         """
         farm = choice(self.fq.query_default_farm(self.email))
-        register = self.ka.mobile_cattle_map_position_type_num(farmId=farm.get('farm_id'),
-                                                               fenceId=farm.get('region_id'))
+        register = self.ka._mobile_cattle_map_position_type_num(farmId=farm.get('farm_id'),
+                                                                fenceId=farm.get('region_id'))
         self.assertEqual(register['status'], "OK")
 
     def test_mobile_cattle_map_region_cattle_list(self):
@@ -201,10 +204,10 @@ class CattleMapMain(testCase):
         activeStatus = choice([1, 2, '1,2', None])
         deviceType = choice([3, 1, '1,3', None])
         bindStatus = choice([0, 1, '1,0', None])
-        register = self.ka.mobile_cattle_map_region_cattle_list(activeStatus=activeStatus, deviceType=deviceType,
-                                                                bindStatus=bindStatus, farmId=farm.get('farm_id'),
-                                                                regionId=farm.get('region_id'), searchName=None,
-                                                                searchNameOrVisionNum=None)
+        register = self.ka._mobile_cattle_map_region_cattle_list(activeStatus=activeStatus, deviceType=deviceType,
+                                                                 bindStatus=bindStatus, farmId=farm.get('farm_id'),
+                                                                 regionId=farm.get('region_id'), searchName=None,
+                                                                 searchNameOrVisionNum=None)
         self.assertEqual(register['status'], 'OK')
         bindStatus = 1 if deviceType and activeStatus else bindStatus
         cattle = self.fq.query_farm_region_cattle_info_list(farmid=farm.get('farm_id'),
@@ -229,8 +232,8 @@ class CattleMapMain(testCase):
         deviceid = choice(self.fq.query_cattle_is_position(farmid=farmid)).get('device_eui')
         # deviceid ='0101020000001532'
 
-        register = self.ka.mobile_cattle_map_trace(farmId=farmid,
-                                                   deviceEui=deviceid)
+        register = self.ka._mobile_cattle_map_trace(farmId=farmid,
+                                                    deviceEui=deviceid)
         self.assertEqual(register['status'], 'OK')
         cattletrace = self.fq.query_cattle_histry_position(deviceid)
         cattletrace = self.tool.del_dict_value_null(cattletrace)
@@ -245,7 +248,7 @@ class CattleMapMain(testCase):
         """
         coordinate = '[{"lat":-25.018867511643137,"lng":147.58022623210945},{"lat":-25.340169074383184,"lng":147.62126079584834},{"lat":-25.3127543352156,"lng":147.93348030279174},{"lat":-24.988146260871247,"lng":147.89601396196292},{"lat":-25.018867511643137,"lng":147.58022623210945}]'
         coordinate_josn = json.dumps(json.loads(coordinate))
-        register = self.ka.common_calculate(coordinate=coordinate_josn)
+        register = self.ka._common_calculate(coordinate=coordinate_josn)
         self.assertEqual(register['status'], 'OK')
 
     def test_config_common_get_all_enum_list(self):
@@ -253,7 +256,7 @@ class CattleMapMain(testCase):
         公共接口-获取所有枚举字典列表
         :return:
         """
-        register = self.ka.config_common_get_all_enum_list()
+        register = self.ka._config_common_get_all_enum_list()
         self.assertEqual(register['status'], 'OK')
 
     def test_config_common_get_config_list(self):
@@ -261,7 +264,7 @@ class CattleMapMain(testCase):
         公共接口-字典配置-获取字典配置列表【model调整】
         :return:
         """
-        register = self.ka.config_common_get_config_list(codes=None)
+        register = self.ka._config_common_get_config_list(codes=None)
         self.assertEqual(register['status'], 'OK')
 
     def test_config_common_get_post_code_list(self):
@@ -269,7 +272,7 @@ class CattleMapMain(testCase):
         公共接口-字典配置-后模糊查询邮编列表
         :return:
         """
-        register = self.ka.config_common_get_post_code_list(code='')
+        register = self.ka._config_common_get_post_code_list(code='')
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_farm_right_list(self):
@@ -278,7 +281,7 @@ class CattleMapMain(testCase):
         :return:
         """
         farmid = choice(self.fq.query_default_farm(self.email)).get("farm_id")
-        register = self.ka.mobile_farm_right_list(farmId=farmid)
+        register = self.ka._mobile_farm_right_list(farmId=farmid)
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_farm_contacts_add(self):
@@ -287,8 +290,8 @@ class CattleMapMain(testCase):
         :return:
         """
         farmid = choice(self.fq.query_default_farm(self.email)).get("farm_id")
-        register = self.ka.mobile_farm_contacts_add(farmId=farmid, type=1, name="wei.zhang", region=None,
-                                                    phone='15388126072', email=None)
+        register = self.ka._mobile_farm_contacts_add(farmId=farmid, type=1, name="wei.zhang", region=None,
+                                                     phone='15388126072', email=None)
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_farm_contacts_change_farmer(self):
@@ -297,7 +300,7 @@ class CattleMapMain(testCase):
         :return:
         """
         farmid = choice(self.fq.query_default_farm(self.email)).get("farm_id")
-        register = self.ka.mobile_farm_contacts_change_farmer(farmId=farmid, farmerId=188)
+        register = self.ka._mobile_farm_contacts_change_farmer(farmId=farmid, farmerId=188)
         self.assertEqual(register['status'], 'ERROR')
         self.assertEqual(register['errorMsg'], '没有操作权限')
 
@@ -307,7 +310,7 @@ class CattleMapMain(testCase):
         :return:
         """
         farmid = choice(self.fq.query_default_farm(self.email)).get("farm_id")
-        register = self.ka.mobile_farm_contacts_list(farmId=farmid)
+        register = self.ka._mobile_farm_contacts_list(farmId=farmid)
 
         self.assertEqual(register['status'], 'OK')
 
@@ -317,7 +320,7 @@ class CattleMapMain(testCase):
         :return:
         """
         farmid = choice(self.fq.query_default_farm(self.email)).get("farm_id")
-        register = self.ka.mobile_farm_contacts_farmer(farmId=farmid)
+        register = self.ka._mobile_farm_contacts_farmer(farmId=farmid)
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_farm_contacts_update(self):
@@ -326,12 +329,12 @@ class CattleMapMain(testCase):
         :return:
         """
         farmid = choice(self.fq.query_default_farm(self.email)).get("farm_id")
-        register = self.ka.mobile_farm_contacts_list(farmId=farmid)
+        register = self.ka._mobile_farm_contacts_list(farmId=farmid)
         self.assertEqual(register['status'], 'OK')
         if register['content']['contactListOutput']:
             contactsid = register['content']['contactListOutput'][0]['contacts'][0]['id']
-            self.ka.mobile_farm_contacts_update(id=contactsid, name='baron.zhang', region=None,
-                                                phone='15388126073', email='632948101@qq.com')
+            self.ka._mobile_farm_contacts_update(id=contactsid, name='baron.zhang', region=None,
+                                                 phone='15388126073', email='632948101@qq.com')
 
     def test_mobile_farm_contacts_del(self):
         """
@@ -339,10 +342,10 @@ class CattleMapMain(testCase):
         :return:
         """
         farmid = choice(self.fq.query_default_farm(self.email)).get("farm_id")
-        register = self.ka.mobile_farm_contacts_list(farmId=farmid)
+        register = self.ka._mobile_farm_contacts_list(farmId=farmid)
         contactsid = register['content']['contactListOutput'][0]['contacts'][0]['id']
 
-        register = self.ka.mobile_farm_contacts_del(contactId=contactsid)
+        register = self.ka._mobile_farm_contacts_del(contactId=contactsid)
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_share_add(self):
@@ -350,7 +353,7 @@ class CattleMapMain(testCase):
         新增地图分享内容
         :return:
         """
-        register = self.ka.mobile_share_add(farmId=621, content={
+        register = self.ka._mobile_share_add(farmId=621, content={
             "landmarkType": "10060,10130,10110,10240,10080,10120,10170,10180,10220"})
         self.assertEqual(register['status'], 'OK')
 
@@ -359,8 +362,8 @@ class CattleMapMain(testCase):
         移动端-摄像头-添加或者修改摄像头名字
         :return:
         """
-        register = self.ka.mobile_camera_add_or_update_name(farmId=547, number='D75520582',
-                                                            name='接口测试%s' % int(time.time()))
+        register = self.ka._mobile_camera_add_or_update_name(farmId=547, number='D75520582',
+                                                             name='接口测试%s' % int(time.time()))
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_camera_list(self):
@@ -368,7 +371,7 @@ class CattleMapMain(testCase):
         移动端-摄像头-摄像头列表
         :return:
         """
-        register = self.ka.mobile_camera_list(farmId=547)
+        register = self.ka._mobile_camera_list(farmId=547)
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_camera_get_token(self):
@@ -376,7 +379,7 @@ class CattleMapMain(testCase):
         移动端-摄像头-摄像头列表
         :return:
         """
-        register = self.ka.mobile_camera_get_token(appKey='WAIRBL')
+        register = self.ka._mobile_camera_get_token(appKey='WAIRBL')
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_app_version_upload_app(self):

@@ -14,6 +14,10 @@ class Messages(testCase):
 
     fq = MessagesQuery()
 
+    def __init__(self, methodName='runTest'):
+        super(Messages, self).__init__(methodName=methodName)
+        self.ka.set_user(mobile=self.email, password=self.password)
+
     def test_mobile_message_cattle_warn_list(self):
         """
         查询牲畜预警消息列表
@@ -21,7 +25,7 @@ class Messages(testCase):
         """
         farmid = self.fq.query_default_farm(self.email)[0]
         parent = choice(['10', '20', '30'])
-        register = self.ka.mobile_message_cattle_warn_list(pn=None, ps=None, parentMsgType=parent, msgType=None,
+        register = self.ka._mobile_message_cattle_warn_list(pn=None, ps=None, parentMsgType=parent, msgType=None,
                                                            farmId=farmid.get('farm_id'))
         self.assertEqual(register['status'], 'OK')
 
@@ -33,7 +37,7 @@ class Messages(testCase):
         :return:
         """
         farmid = self.fq.query_default_farm(self.email)[0]
-        register = self.ka.mobile_message_home_list(farmId=farmid.get('farm_id'))
+        register = self.ka._mobile_message_home_list(farmId=farmid.get('farm_id'))
         self.assertEqual(register['status'], 'OK')
         mgs_k = register['content'].keys()
         self.assertEqual(list(mgs_k), ['messageCattleWarnOutputs', 'messageOtherTypeOutputs'])
@@ -45,7 +49,7 @@ class Messages(testCase):
         """
         farmid = self.fq.query_default_farm(self.email)[0]
         parent = choice(['10', '30'])
-        register = self.ka.mobile_message_page_list(pn=None, ps=None, parentMsgType=10, msgType=None,
+        register = self.ka._mobile_message_page_list(pn=None, ps=None, parentMsgType=10, msgType=None,
                                                     farmId=farmid.get('farm_id'))
         self.assertEqual(register['status'], 'OK')
 
@@ -54,7 +58,7 @@ class Messages(testCase):
         更新未读为已读消息
         :return:
         """
-        register = self.ka.mobile_message_read(msgId='607')
+        register = self.ka._mobile_message_read(msgId='607')
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_message_del(self):
@@ -62,7 +66,7 @@ class Messages(testCase):
         删除消息
         :return:
         """
-        register = self.ka.mobile_message_del(msgId='607')
+        register = self.ka._mobile_message_del(msgId='607')
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_message_read_all(self):
@@ -72,7 +76,7 @@ class Messages(testCase):
         """
         farmid = self.fq.query_default_farm(self.email)[0]
         parent = choice(['10', '20', '30'])
-        register = self.ka.mobile_message_read_all(parentMsgType=parent, msgType=None, title=None,
+        register = self.ka._mobile_message_read_all(parentMsgType=parent, msgType=None, title=None,
                                                    farmId=farmid.get('farm_id'))
         self.assertEqual(register['status'], 'OK')
 
@@ -82,5 +86,5 @@ class Messages(testCase):
         :return:
         """
         farmid = self.fq.query_default_farm(self.email)[0]
-        register = self.ka.mobile_message_unread(parentMsgType=None, farmId=farmid.get('farm_id'))
+        register = self.ka._mobile_message_unread(parentMsgType=None, farmId=farmid.get('farm_id'))
         self.assertEqual(register['status'], 'OK')

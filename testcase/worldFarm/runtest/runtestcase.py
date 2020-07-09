@@ -9,8 +9,7 @@ __date__ = '2019/ / '
 import unittest, os
 from BeautifulReport import BeautifulReport
 
-
-case_path = os.path.join(os.path.dirname("__file__"),os.path.pardir)
+case_path = os.path.join(os.path.dirname("__file__"), os.path.pardir)
 suite = unittest.defaultTestLoader.discover(case_path, pattern="*.py", top_level_dir=None)
 
 if __name__ == '__main__':

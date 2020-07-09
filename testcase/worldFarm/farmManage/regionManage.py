@@ -16,6 +16,10 @@ class RegionManage(testCase):
 
     fq = PaddockManage()
 
+    def __init__(self, methodName='runTest'):
+        super(RegionManage, self).__init__(methodName=methodName)
+        self.ka.set_user(mobile=self.email, password=self.password)
+
     def test_api_farm_region_add(self):
         """
         添加农场围栏或者林區
@@ -31,7 +35,7 @@ class RegionManage(testCase):
         soilPh = choice(list(range(1, 6)))
         pastureType = ",".join(map(str, sample(list(range(1001, 1012)), 3)))
         locations = '[{"lng": 104.03994443737503, "lat": 30.80169307208601}, {"lng": 104.03994443737503, "lat": 30.75629307208601}, {"lng": 104.01724443737503, "lat": 30.75629307208601}, {"lng": 104.01724443737503, "lat": 30.80169307208601}, {"lng": 104.03994443737503, "lat": 30.80169307208601}]'
-        register = self.ka.mobile_farm_region_add(farmId=farminfo.get('farm_id'), regionType=regionType, name=name,
+        register = self.ka._mobile_farm_region_add(farmId=farminfo.get('farm_id'), regionType=regionType, name=name,
                                                   perimeter=perimeter, area=area, colorType=colorType,
                                                   locations=locations, soilType=soilType, soilPh=soilPh,
                                                   pastureType=pastureType, remark=name)
@@ -59,7 +63,7 @@ class RegionManage(testCase):
         soilPh = choice(list(range(1, 6)))
         pastureType = ",".join(map(str, sample(list(range(1001, 1012)), 3)))
         locations = '[{"lng": 104.03994443737503, "lat": 30.80169307208601}, {"lng": 104.03994443737503, "lat": 30.75629307208601}, {"lng": 104.01724443737503, "lat": 30.75629307208601}, {"lng": 104.01724443737503, "lat": 30.80169307208601}, {"lng": 104.03994443737503, "lat": 30.80169307208601}]'
-        register = self.ka.mobile_farm_region_update(id=regioninfo.get('id'), name=name, perimeter=perimeter,
+        register = self.ka._mobile_farm_region_update(id=regioninfo.get('id'), name=name, perimeter=perimeter,
                                                      area=area, colorType=colorType, locations=locations,
                                                      soilType=soilType, soilPh=soilPh, remark=name,
                                                      pastureType=pastureType)
@@ -78,7 +82,7 @@ class RegionManage(testCase):
         :return:
         """
         regionId = self.fq.query_new_region(self.email)
-        register = self.ka.mobile_farm_region_del(regionId=regionId.get('id'))
+        register = self.ka._mobile_farm_region_del(regionId=regionId.get('id'))
         self.assertEqual(register['status'], "OK")
         regioninfo = self.fq.query_del_region_data_info(regionId.get('id'))
         self.assertEqual(regioninfo.get('is_delete'), 1)
@@ -93,7 +97,7 @@ class RegionManage(testCase):
         isNeedFilter = 1
         isNeedStoreNum = None
         isNeedNoPaddock = 1
-        register = self.ka.mobile_farm_region_list(farmId=547, types=types,
+        register = self.ka._mobile_farm_region_list(farmId=547, types=types,
                                                    isNeedFilter=isNeedFilter, isNeedStoreNum=isNeedStoreNum,
                                                    isNeedNoPaddock=isNeedNoPaddock)
         self.assertEqual(register['status'], "OK")
@@ -128,7 +132,7 @@ class RegionManage(testCase):
         :return:
         """
         farminfo = self.fq.query_default_farm(self.email)[0]
-        register = self.ka.mobile_farm_region_paddock_list(farmId=farminfo.get('farm_id'))
+        register = self.ka._mobile_farm_region_paddock_list(farmId=farminfo.get('farm_id'))
         self.assertEqual(register['status'], "OK")
         register = register.get('content')
         task = self.fq.query_farm_task_region_data(farminfo.get('farm_id'))
@@ -166,7 +170,7 @@ class RegionManage(testCase):
         :return:
         """
         regionId = self.fq.query_new_region(self.email)
-        register = self.ka.mobile_farm_region_get(regionId=regionId.get('id'))
+        register = self.ka._mobile_farm_region_get(regionId=regionId.get('id'))
         self.assertEqual(register['status'], "OK")
         regioninfo = self.fq.query_del_region_data_info(regionId.get('id'))
         cattle_statistics = self.fq.query_region_cattle_statistics(regionId.get('id'))
@@ -191,7 +195,7 @@ class RegionManage(testCase):
         paddockState = choice([10, 20])
         grassState = choice([10, 20])
         remark = "接口测试，设置围栏状态"
-        register = self.ka.mobile_farm_region_set_state(id=region_id, paddockState=paddockState, grassState=grassState,
+        register = self.ka._mobile_farm_region_set_state(id=region_id, paddockState=paddockState, grassState=grassState,
                                                         remark=remark)
         self.assertEqual(register['status'], "OK")
         time.sleep(3)

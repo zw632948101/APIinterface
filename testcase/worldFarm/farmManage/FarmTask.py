@@ -7,12 +7,15 @@ __date__ = '2019/10/30'
 农场任务
 """
 import random
-from testcase.worldFarm import testCase,ScheduleQuery
+from testcase.worldFarm import testCase, ScheduleQuery
 
 
-class Main(testCase):
-
+class FarmTask(testCase):
     fq = ScheduleQuery()
+
+    def __init__(self, methodName='runTest'):
+        super(FarmTask, self).__init__(methodName=methodName)
+        self.ka.set_user(mobile=self.email, password=self.password)
 
     def test_mobile_farm_task_add(self):
         """
@@ -25,8 +28,8 @@ class Main(testCase):
         task_name = description = "接口测试任务描述%s" % start_time
         userid_list = self.fq.query_farm_all_user_id(farmid=farm_id)
         userids = self.tool.data_assemble('user_id', userid_list, 3)
-        self.ka.mobile_farm_task_add(farmId=farm_id, taskName=task_name, startTime=start_time,
-                                     endTime=end_time, description=description, userIds=userids)
+        self.ka._mobile_farm_task_add(farmId=farm_id, taskName=task_name, startTime=start_time,
+                                      endTime=end_time, description=description, userIds=userids)
 
         task_list = self.fq.query_task_list_buy_farm_id_create_task_info(farm_id=farm_id)
         start_time_sql = self.tt.str_time_timestamp(task_list["start_time"])
@@ -53,8 +56,8 @@ class Main(testCase):
         userid_list = self.fq.query_farm_all_user_id(farmid=farmid)
         userids = self.tool.data_assemble('user_id', userid_list, 3)
 
-        self.ka.mobile_farm_task_update(farmId=farmid, taskName=task_name, startTime=start_time,
-                                        endTime=end_time, description=description, userIds=userids, id=taskid)
+        self.ka._mobile_farm_task_update(farmId=farmid, taskName=task_name, startTime=start_time,
+                                         endTime=end_time, description=description, userIds=userids, id=taskid)
 
         taskinfo = self.fq.query_task_info_buy_task_id(task_id=taskid)
         taskuserinfo = self.fq.query_farm_task_receiver_info(taskid=taskid)
@@ -79,7 +82,7 @@ class Main(testCase):
         farm_id = farm_id_list[0]['farm_id']
         task_list = self.fq.query_task_info_buy_farm_id(farm_id)
         task_id = task_list[0]["id"]
-        self.ka.mobile_farm_task_del(taskId=task_id)
+        self.ka._mobile_farm_task_del(taskId=task_id)
         task_list_update = self.fq.query_task_info_buy_task_id(task_id=task_id)
         self.assertEqual(1, task_list_update[0]["is_delete"])
 
@@ -90,7 +93,7 @@ class Main(testCase):
         """
         farm_id_list = self.fq.query_default_farm(email=self.email)
         farm_id = farm_id_list[0]['farm_id']
-        register = self.ka.mobile_farm_task_list(pn=None, ps=None, farmId=farm_id, status=None)
+        register = self.ka._mobile_farm_task_list(pn=None, ps=None, farmId=farm_id, status=None)
         task_list = self.fq.query_task_list_buy_farm_id_sort(farm_id=farm_id)
         content = register.get('content')
         if content:
@@ -122,7 +125,7 @@ class Main(testCase):
         """
         farm_id_list = self.fq.query_default_farm(email=self.email)
         farm_id = farm_id_list[0]['farm_id']
-        self.ka.mobile_farm_task_home(farmId=farm_id)
+        self.ka._mobile_farm_task_home(farmId=farm_id)
 
     def test_mobile_farm_task_update_status(self):
         """
@@ -134,7 +137,7 @@ class Main(testCase):
         task_list = self.fq.query_task_info_buy_farm_id(farm_id=farm_id)
         if len(task_list) > 0:
             task_id = task_list[0]["id"]
-            self.ka.mobile_farm_task_update_status(taskId=task_id)
+            self.ka._mobile_farm_task_update_status(taskId=task_id)
             task_info = self.fq.query_task_info_buy_task_id(task_id=task_id)
             self.assertEqual(30, task_info[0]["status"])
         else:
@@ -155,10 +158,10 @@ class Main(testCase):
         consume_rate = grow_rate
         expect_date = random.randint(1, 10)
         plan_type = 2 if expect_date <= 5 else 1
-        self.ka.mobile_farm_graze_plan_add(farmId=farm_id, regionId=region_id, planType=plan_type,
-                                           planStartTime=plan_start_time, currentQuality=current_quality,
-                                           endQuality=end_quality, growRate=grow_rate, consumeRate=consume_rate
-                                           , expectDate=expect_date)
+        self.ka._mobile_farm_graze_plan_add(farmId=farm_id, regionId=region_id, planType=plan_type,
+                                            planStartTime=plan_start_time, currentQuality=current_quality,
+                                            endQuality=end_quality, growRate=grow_rate, consumeRate=consume_rate
+                                            , expectDate=expect_date)
         plan_list = self.fq.query_graze_plan_buy_region_id(regionid=region_id)
         start_time_sql = self.tt.str_time_timestamp(plan_list[0].get('plan_start_time'))
         self.assertEqual(farm_id, plan_list[0]["farm_id"])
@@ -177,7 +180,7 @@ class Main(testCase):
         """
         farmid = random.choice(self.fq.query_default_farm(self.email)).get('farm_id')
         status = random.choice([10, 15, 20])
-        register = self.ka.mobile_farm_graze_plan_list(farmId=farmid, status=status)
+        register = self.ka._mobile_farm_graze_plan_list(farmId=farmid, status=status)
         self.assertEqual(register['status'], "OK")
 
     def test_mobile_farm_graze_plan_detail(self):
@@ -190,7 +193,7 @@ class Main(testCase):
         graze_list = self.fq.query_graze_plan_buy_farm_id(farmid=farmid)
         if graze_list:
             plan_id = graze_list[0]["id"]
-            self.ka.mobile_farm_graze_plan_detail(planId=plan_id)
+            self.ka._mobile_farm_graze_plan_detail(planId=plan_id)
         else:
             self.log.info("当前围栏暂无放牧计划！")
 
@@ -204,7 +207,7 @@ class Main(testCase):
         graze_list = self.fq.query_graze_plan_buy_farm_id(farmid=farmid)
         if graze_list:
             plan_id = random.choice(graze_list).get('id')
-            self.ka.mobile_farm_graze_plan_del(planId=plan_id)
+            self.ka._mobile_farm_graze_plan_del(planId=plan_id)
             graze_list_update = self.fq.query_plan_info_buy_plan_id(plan_id=plan_id)
             self.assertEqual(1, graze_list_update[0]["is_delete"])
         else:
@@ -229,7 +232,7 @@ class Main(testCase):
         if plan_id:
             self.log.info("当前农场没有在执行的放牧计划")
             return
-        self.ka.mobile_farm_graze_plan_update_status(planId=plan_id)
+        self.ka._mobile_farm_graze_plan_update_status(planId=plan_id)
         plan_info_list = self.fq.query_plan_info_buy_plan_id(plan_id=plan_id)
         self.assertEqual(20, plan_info_list[0]["status"])
 
@@ -240,7 +243,7 @@ class Main(testCase):
         """
         farmid = random.choice(self.fq.query_default_farm(self.email)).get('farm_id')
         taskid = random.choice(self.fq.query_task_list_buy_farm_id(farm_id=farmid)).get('id')
-        taskdetail = self.ka.mobile_farm_task_detail(taskId=taskid)
+        taskdetail = self.ka._mobile_farm_task_detail(taskId=taskid)
         taskinfo = self.fq.query_task_info_buy_task_id(task_id=taskid)[0]
         self.assertEqual(taskdetail.get('status'), 'OK')
         content = taskdetail.get('content')

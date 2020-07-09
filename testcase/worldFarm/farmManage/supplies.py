@@ -13,6 +13,9 @@ from testcase.worldFarm import testCase,FarmManage
 class SuppliesMain(testCase):
 
     fq = FarmManage()
+    def __init__(self, methodName='runTest'):
+        super(SuppliesMain, self).__init__(methodName=methodName)
+        self.ka.set_user(mobile=self.email, password=self.password)
 
     def test_mobile_farm_supplies_add(self):
         """
@@ -35,7 +38,7 @@ class SuppliesMain(testCase):
         expDate = self.tt.get_standardtime_timestamp(day=random.randint(1, 100))
         remark = "接口测试任务描述8"
         imgs = 'https://dss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1713274956,427129811&fm=26&gp=0.jpg'
-        register = self.ka.mobile_farm_supplies_add(farmId=farm_id, suppliesType=suppliesType,
+        register = self.ka._mobile_farm_supplies_add(farmId=farm_id, suppliesType=suppliesType,
                                                     suppliesName=suppliesName,
                                                     specs=specs, resource=resource, price=price, stock=stock, unit=unit,
                                                     acqDate=acqDate, expDate=expDate, remark=remark, imgs=imgs)
@@ -54,7 +57,7 @@ class SuppliesMain(testCase):
         :return:
         """
         farm_id = random.choice(self.fq.query_default_farm(email=self.email)).get('farm_id')
-        register = self.ka.mobile_farm_supplies_count(farmId=farm_id)
+        register = self.ka._mobile_farm_supplies_count(farmId=farm_id)
         self.assertEqual(register['status'], "OK")
         supplies_num = self.fq.query_farm_supplies_add_info_count(farm_id)
         self.assertEqual(register['content'], supplies_num.get('supplies_num'))
@@ -66,7 +69,7 @@ class SuppliesMain(testCase):
         """
         farm_id = random.choice(self.fq.query_default_farm(email=self.email)).get('farm_id')
         supplies = self.fq.query_farm_supplies_add_info(farmid=farm_id)
-        register = self.ka.mobile_farm_supplies_detail(suppliesId=supplies.get('id'))
+        register = self.ka._mobile_farm_supplies_detail(suppliesId=supplies.get('id'))
 
         self.assertEqual(register['status'], "OK")
         register = register.get('content')
@@ -84,7 +87,7 @@ class SuppliesMain(testCase):
         """
         farm_id = random.choice(self.fq.query_default_farm(email=self.email)).get('farm_id')
         suppliesType = random.choice(['10', '20', '30', '40'])
-        register = self.ka.mobile_farm_supplies_list(farmId=farm_id, suppliesType=suppliesType)
+        register = self.ka._mobile_farm_supplies_list(farmId=farm_id, suppliesType=suppliesType)
         self.assertEqual(register['status'], "OK")
         supplies_list = self.fq.query_farm_supplies_info_list(farm_id, suppliesType)
         register = register.get('content')
@@ -117,7 +120,7 @@ class SuppliesMain(testCase):
         remark = "接口测试任务描述-编辑"
         imgs = 'https://dss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1713274956,427129811&fm=26&gp=0.jpg'
 
-        register = self.ka.mobile_farm_supplies_update(id=suppliesid, farmId=farm_id, suppliesType=suppliesType,
+        register = self.ka._mobile_farm_supplies_update(id=suppliesid, farmId=farm_id, suppliesType=suppliesType,
                                                        suppliesName=suppliesName,
                                                        specs=specs, resource=resource, price=price, stock=stock,
                                                        unit=unit,
@@ -138,7 +141,7 @@ class SuppliesMain(testCase):
         """
         farm_id = random.choice(self.fq.query_default_farm(email=self.email)).get('farm_id')
         supplies = self.fq.query_farm_supplies_add_info(farmid=farm_id)
-        register = self.ka.mobile_farm_supplies_del(suppliesId=supplies.get('id'))
+        register = self.ka._mobile_farm_supplies_del(suppliesId=supplies.get('id'))
         self.assertEqual(register['status'], "OK")
         supplies_info = self.fq.query_farm_supplies_info(supplies.get('id'))
         self.assertEqual(supplies_info.get('is_delete'), 1)

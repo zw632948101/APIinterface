@@ -6,7 +6,7 @@
 __author__: wei.zhang
 __remark__: 消息
 """
-from .. import FarmQuery
+from testcase.worldFarm.sql.FarmQuery import FarmQuery
 
 
 class MessagesQuery(FarmQuery):

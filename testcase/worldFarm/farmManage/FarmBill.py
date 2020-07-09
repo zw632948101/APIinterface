@@ -11,9 +11,13 @@ from random import choice
 from testcase.worldFarm import testCase,Finance
 
 
-class Main(testCase):
+class FarmBill(testCase):
 
     fq = Finance()
+
+    def __init__(self, methodName='runTest'):
+        super(FarmBill, self).__init__(methodName=methodName)
+        self.ka.set_user(mobile=self.email, password=self.password)
 
     def test_mobile_farmBill_add(self):
         """
@@ -28,7 +32,7 @@ class Main(testCase):
         price = 500
         record_date = self.tt.get_timestamp()
         remark = "接口测试新增收入流水备注"
-        self.ka.mobile_farmBill_add(farmId=farm_id, bookId=book_id, budgetType=billtype.get("budget_type"),
+        self.ka._mobile_farmBill_add(farmId=farm_id, bookId=book_id, budgetType=billtype.get("budget_type"),
                                     billTypeId=billtype.get('id'), price=price, recordDate=record_date,
                                     remark=remark)
         bill_info_list = self.fq.query_bill_info(farm_id=farm_id, book_id=book_id,
@@ -52,7 +56,7 @@ class Main(testCase):
         budget_type = billtype.get('budget_type')
         bill_type_id = billtype.get('id')
         record_date = int(round(time.time() * 1000))
-        register = self.ka.mobile_farmBill_bill_count_page_list(bookId=book_id, budgetType=budget_type,
+        register = self.ka._mobile_farmBill_bill_count_page_list(bookId=book_id, budgetType=budget_type,
                                                                 billTypeId=bill_type_id, queryDate=record_date)
         income_list = self.fq.query_income_sum_buy_email(book_id, bill_type_id)
         expend_list = self.fq.query_expend_sum_buy_email(book_id, bill_type_id)
@@ -70,7 +74,7 @@ class Main(testCase):
         """
         bill_list = self.fq.query_bill_list_buy_email(self.email)
         bill_id = bill_list[0]["id"]
-        self.ka.mobile_farmBill_del(billId=bill_id)
+        self.ka._mobile_farmBill_del(billId=bill_id)
         delete_bill_list = self.fq.query_bill_info_buy_id(bill_id=bill_id)
         bill_id_sql = delete_bill_list.get("is_delete")
         self.assertEqual(1, bill_id_sql)
@@ -82,7 +86,7 @@ class Main(testCase):
         """
         bill_list = self.fq.query_bill_list_buy_email(self.email)
         bill_id = choice(bill_list).get("id")
-        register = self.ka.mobile_farmBill_detail(billId=bill_id)
+        register = self.ka._mobile_farmBill_detail(billId=bill_id)
         bill_info_list = self.fq.query_bill_info_buy_id(bill_id)
         self.assertEqual(register.get('status'), 'OK')
         content = register.get('content')
@@ -111,7 +115,7 @@ class Main(testCase):
         budget_type = 20
         bill_type_name = int(time.time())
         icon_url = "http://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com/data/farm/head/1530012097899.png"
-        self.ka.mobile_farmBillType_add(farmId=farm_id, budgetType=budget_type, billTypeName=bill_type_name,
+        self.ka._mobile_farmBillType_add(farmId=farm_id, budgetType=budget_type, billTypeName=bill_type_name,
                                         iconUrl=icon_url)
         bill_type_list = self.fq.query_bill_type_buy_email(self.email)
         self.assertEqual(farm_id, bill_type_list[0]["farm_id"])
@@ -126,7 +130,7 @@ class Main(testCase):
         """
         bill_type_list = self.fq.query_bill_type_buy_email(self.email)
         bill_type_id = bill_type_list[0]["id"]
-        self.ka.mobile_farmBillType_del(billTypeId=bill_type_id)
+        self.ka._mobile_farmBillType_del(billTypeId=bill_type_id)
         type_id_list = self.fq.query_bill_type_buy_id(bill_type_id)
         is_delete = type_id_list.get("is_delete")
         self.assertEqual(1, is_delete)
@@ -139,7 +143,7 @@ class Main(testCase):
         farm_id_list = self.fq.query_default_farm(email=self.email)
         farm_id = farm_id_list[0]['farm_id']
         budget_type = 10
-        register = self.ka.mobile_farmBillType_list(farmId=farm_id, budgetType=budget_type)
+        register = self.ka._mobile_farmBillType_list(farmId=farm_id, budgetType=budget_type)
         bill_type_list = self.fq.query_bill_type_buy_farm_id(farm_id=farm_id)
         if len(register["content"]) == len(bill_type_list):
             for i in range(len(register["content"])):
@@ -172,7 +176,7 @@ class Main(testCase):
         price = 700
         record_date = int(round(time.time()) * 1000)
         remark = "接口测试编辑流水备注"
-        self.ka.mobile_farmBill_update(id=bill_list.get('id'), farmId=farm_id, bookId=bill_list.get('book_id'),
+        self.ka._mobile_farmBill_update(id=bill_list.get('id'), farmId=farm_id, bookId=bill_list.get('book_id'),
                                        budgetType=bill_type_list.get('budget_type'),
                                        billTypeId=bill_type_list.get('id'), price=price,
                                        recordDate=record_date, remark=remark)

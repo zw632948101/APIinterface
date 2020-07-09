@@ -9,19 +9,22 @@ __date__ = '2019/ / '
 
 """
 
-
 from testcase.worldFarm import testCase
 
 
 class UserManagement(testCase):
     email1 = '632948101@qq.com'
 
+    def __init__(self, methodName='runTest'):
+        super(UserManagement, self).__init__(methodName=methodName)
+        # self.ua._set_user(mobile=self.email, password=self.password)
+
     def test_admin_user_user_list(self):
         """
         运营后台-用户管理-查询用户账号列表
         :return:
         """
-        register = self.ua.admin_user_user_list(pn=0, ps=20, status=1, userName=None, email=None)
+        register = self.ua._admin_user_user_list(pn=0, ps=20, status=1, userName=None, email=None)
         self.assertEqual(register['status'], 'OK')
         return register['content']['datas'][0]['id']
 
@@ -31,7 +34,7 @@ class UserManagement(testCase):
         :return:
         """
         userId = self.test_admin_user_user_list()
-        register = self.ua.admin_user_detail(userId=userId)
+        register = self.ua._admin_user_detail(userId=userId)
         self.assertEqual(register['status'], 'OK')
         self.assertEqual(register['content']['id'], userId)
 
@@ -40,7 +43,7 @@ class UserManagement(testCase):
         运营后台-用户管理-查询内部账号列表
         :return:
         """
-        register = self.ua.admin_user_inner_list(pn=0, ps=20, status=1, userName=None, email=None)
+        register = self.ua._admin_user_inner_list(pn=0, ps=20, status=1, userName=None, email=None)
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_user_detail(self):
@@ -48,7 +51,7 @@ class UserManagement(testCase):
         移动端-用户管理-获取用户个人信息
         :return:
         """
-        register = self.ua.mobile_user_detail()
+        register = self.ua._mobile_user_detail()
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_user_get_push_alias(self):
@@ -56,7 +59,7 @@ class UserManagement(testCase):
         移动端-用户管理-获取推送别名
         :return:
         """
-        register = self.ua.mobile_user_get_push_alias()
+        register = self.ua._mobile_user_get_push_alias()
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_user_send_pass_email(self):
@@ -64,7 +67,7 @@ class UserManagement(testCase):
         移动端-用户管理-发送找回密码邮件
         :return:
         """
-        register = self.ua.mobile_user_send_pass_email(email=self.email)
+        register = self.ua._mobile_user_send_pass_email(email=self.email)
         self.assertEqual(register['status'], 'OK')
 
     def test_mobile_user_upload_headImg(self):
@@ -73,7 +76,7 @@ class UserManagement(testCase):
         :return:
         """
         file = './../tempAttach/Screen.png'
-        register = self.ua.mobile_user_upload_headImg(headImgFile=file)
+        register = self.ua._mobile_user_upload_headImg(headImgFile=file)
         self.assertEqual(register['status'], 'OK')
 
 

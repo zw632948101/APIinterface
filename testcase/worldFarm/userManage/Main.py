@@ -12,6 +12,9 @@ from testcase.worldFarm import testCase
 
 class Main(testCase):
 
+    def __init__(self, methodName='runTest'):
+        super(Main, self).__init__(methodName=methodName)
+        self.pa.set_user(mobile=self.email, password=self.password)
 
     def test_mobile_sso_email_registe(self):
         """
@@ -19,10 +22,10 @@ class Main(testCase):
         :return:
         """
         email = str(int(time.time())) + '@qq.com'
-        register = self.pa.mobile_sso_email_registe(account=email, password='123456', userName='鑫美账号',
-                                                    headImg='https://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com'
-                                                            '/data/world-user/headImg/1560498735030.jpg',
-                                                    appId='WORLD_FARM', deviceType='IOS', deviceId='QaTeam')
+        register = self.pa._mobile_sso_email_registe(account=email, password='123456', userName='鑫美账号',
+                                                     headImg='https://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com'
+                                                             '/data/world-user/headImg/1560498735030.jpg',
+                                                     appId='WORLD_FARM', deviceType='IOS', deviceId='QaTeam')
         self.assertEqual(register['status'], "OK")
 
     def test5006(self):
@@ -30,7 +33,7 @@ class Main(testCase):
         姓名为空校验测试
         :return:
         """
-        register = self.pa.mobile_sso_email_registe(
+        register = self.pa._mobile_sso_email_registe(
             account='test1@qq.com',
             password='123456', userName=None,
             headImg='https://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com'
@@ -43,7 +46,7 @@ class Main(testCase):
     #     退出登录
     #     :return:
     #     """
-    #     register = self.pa.mobile_sso_logout()
+    #     register = self.pa._mobile_sso_logout()
     #     self.assertEqual(register['status'], "OK")
 
     # def test5013(self):
@@ -51,7 +54,7 @@ class Main(testCase):
     #     运营后台登出
     #     :return:
     #     """
-    #     register = self.pa.web_sso_logout()
+    #     register = self.pa._web_sso_logout()
     #     self.assertEqual(register['status'], "OK")
 
 

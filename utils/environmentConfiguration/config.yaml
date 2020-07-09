@@ -1,8 +1,8 @@
-which_project: &which_project flowerChaser
+which_project: &which_project worldFarm
 env: &env
   run: DEV
-  updateActionAPI: DEV_API
-  version: 2.3.0
+  updateActionAPI: QA_API
+  version: 1.2.8
   dataBaseURI: 5595ec6c66c0374940fb2d6919a487f9b500f8602951206c6f9b85cab245bd1e90a2c42c9b0fb3883c44aadb5235b9dc94d8411f761298d477315e878eb9a87f
   projectName: *which_project
 
@@ -17,6 +17,7 @@ flowerChaser:
     FC_PASSPORT: "Passport"
     FC_USER: "User"
     FC_BEE: "Bee"
+  accounttype: 'user'
   hosts:
     DEV:
       FC_BEE: 'http://dev-gateway.worldfarm.com/fc-bee'
@@ -46,26 +47,38 @@ worldFarm:
     QA:
       host_ip: 0e1570fb7aa32f677daffb5047982dbb
   urldict:
-    FC_PASSPORT: "Passport"
-    FC_USER: "User"
-    FC_BEE: "Bee"
+    WF_OFFLINE: "Offline"
+    WF_USER: "User"
+    WF_KOALA: "Koala"
+    WF_PASSPORT: "Passport"
+  accounttype: 'wf_account'
+  account:
+    username: 632948101@qq.com
+    password: 1234567
   hosts:
     DEV:
-      FC_BEE: 'http://dev-gateway.worldfarm.com/fc-bee'
-      FC_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
-      FC_USER: 'http://dev-gateway.worldfarm.com/world-user'
+      WF_OFFLINE: 'http://dev-gateway.worldfarm.com/world-offline'
+      WF_USER: 'http://dev-gateway.worldfarm.com/world-user'
+      WF_KOALA: 'http://dev-gateway.worldfarm.com/world-koala'
+      WF_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
+      WF_SSO: 'http://dev.sso.worldfarm.com'
+      WF_MGR: 'http://dev-mgr.agrrobot.com'
 
     DEV_API:
-      FC_BEE: 'http://dev-gateway.worldfarm.com/flowerChaser-bee'
-      FC_PASSPORT: 'http://dev-passport.worldfarm.com'
-      FC_USER: 'http://dev-user.worldfarm.com'
+      WF_OFFLINE: 'http://dev-offline.worldfarm.com'
+      WF_USER: 'http://dev-user.worldfarm.com'
+      WF_KOALA: 'http://dev-koala.worldfarm.com'
+      WF_PASSPORT: 'http://dev-passport.worldfarm.com'
 
     QA:
-      FC_BEE: 'http://qa-gateway.worldfarm.com/flowerChaser-bee'
-      FC_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
-      FC_USER: 'http://qa-gateway.worldfarm.com/world-user'
+      WF_OFFLINE: 'http://qa-gateway.worldfarm.com/world-offline'
+      WF_USER: 'http://qa-gateway.worldfarm.com/world-user'
+      WF_KOALA: 'http://qa-gateway.worldfarm.com/world-koala'
+      WF_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
 
     QA_API:
-      FC_BEE: 'http://dev-gateway.worldfarm.com/flowerChaser-bee'
-      FC_PASSPORT: 'http://dev-passport.worldfarm.com'
-      FC_USER: 'http://dev-user.worldfarm.com'
+      WF_USER: 'http://qa-user.worldfarm.com'
+      WF_KOALA: 'http://qa-koala.worldfarm.com'
+      WF_PASSPORT: 'http://qa-passport.worldfarm.com'
+      WF_OFFLINE: 'http://qa-offline.worldfarm.com'
+      WF_SSO: 'http://qa.sso.worldfarm.com'

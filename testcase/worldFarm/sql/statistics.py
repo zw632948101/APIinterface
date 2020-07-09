@@ -6,7 +6,7 @@
 __author__: wei.zhang
 __remark__: 统计
 """
-from .. import FarmQuery
+from testcase.worldFarm.sql.FarmQuery import FarmQuery
 
 
 class Statistics(FarmQuery):
@@ -95,7 +95,7 @@ class Statistics(FarmQuery):
         GROUP BY
             tc.farm_id
         """ % farm_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         return info
 
     def query_mobile_statistics_home_cattle_count(self, farm_id):
@@ -169,7 +169,7 @@ class Statistics(FarmQuery):
         GROUP BY
             tc.farm_id
                 """ % farm_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         return info
 
     def query_statistics_cattle_abnormal(self, farmid=None, devicetype=''):
@@ -199,7 +199,7 @@ class Statistics(FarmQuery):
                 AND ( tdp.device_status != 1 OR tdp.position_farm_id IS NULL OR tdp.position_farm_id != tdp.farm_id )
                 ORDER BY tdp.position_time DESC;
         """ % (farmid, devicetype)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info == ():
             return
         return info
@@ -244,7 +244,7 @@ class Statistics(FarmQuery):
                 ORDER BY
                     tdp.position_time DESC;
                 """ % (farm_id, positionStatus)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -286,7 +286,7 @@ class Statistics(FarmQuery):
                 %s
                 %s
             """ % (farmid, type, stage)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -321,7 +321,7 @@ class Statistics(FarmQuery):
             ORDER BY
                 tc.farm_id DESC;
                 """ % farmid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info[0]
         return
@@ -342,7 +342,7 @@ class Statistics(FarmQuery):
                 WHERE
                     tdp.farm_id = '%s';
               """ % (farmid, farmid)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info[0]
         return
@@ -378,7 +378,7 @@ class Statistics(FarmQuery):
                 ORDER BY
                     tc.farm_id DESC;                
               """ % (farmid, cattle_tyle, cattle_stagge)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info[0]
         return

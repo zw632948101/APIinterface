@@ -13,9 +13,13 @@ from random import choice, sample
 from testcase.worldFarm import testCase,CattleManage
 
 
-class Main(testCase):
+class ManageTest(testCase):
 
     fq = CattleManage()
+
+    def __init__(self, methodName='runTest'):
+        super(ManageTest, self).__init__(methodName=methodName)
+        self.ka.set_user(mobile=self.email, password=self.password)
 
     def dispose_cattle_data(self):
         """
@@ -41,7 +45,7 @@ class Main(testCase):
         """
         device_eui = choice(self.fq.query_device_eui_id()).get('device_eui')
         farmid = choice(self.fq.query_default_farm(self.email)).get("farm_id")
-        info = self.ka.mobile_cattle_bind_semaphore(farmId=farmid, deviceId=device_eui)
+        info = self.ka._mobile_cattle_bind_semaphore(farmId=farmid, deviceId=device_eui)
         self.assertEqual(info['status'], "OK")
         device = self.fq.query_bind_device_id(farmid=farmid, deviceid=device_eui)[0]
         self.assertEqual(device_eui, device.get('device_eui'))
@@ -53,7 +57,7 @@ class Main(testCase):
         :return:
         """
         device = choice(self.fq.query_may_device_update(self.email))
-        info = self.ka.mobile_cattle_bind_semaphore(farmId=device.get('farm_id'),
+        info = self.ka._mobile_cattle_bind_semaphore(farmId=device.get('farm_id'),
                                                     deviceId=device.get('device_eui'))
         self.assertEqual(info['errorMsg'], "设备已绑定,请不要重复绑定")
 
@@ -65,7 +69,7 @@ class Main(testCase):
         cattle_list = self.fq.query_cattle_detail_buy_email(self.email)
         if len(cattle_list) > 0:
             cattle_id = cattle_list[0]["id"]
-            register = self.ka.v126_mobile_cattle_search_detail(cattleId=cattle_id)
+            register = self.ka._v126_mobile_cattle_search_detail(cattleId=cattle_id)
             cattle_detail_list = self.fq.query_cattle_detail_buy_cattle_id(cattle_id=cattle_id)
             birth_date = int(time.mktime(time.strptime(cattle_detail_list[0]["birth_date"],
                                                        "%Y-%m-%d %H:%M:%S")) * 1000)
@@ -81,7 +85,7 @@ class Main(testCase):
         """
         cattleid = choice(self.fq.query_all_farm_not_bind_cattle(self.email))
         deviceEui = choice(self.fq.query_device_eui_id()).get('device_eui')
-        info = self.ka.mobile_cattle_rebind(id=cattleid.get('id'), deviceId=deviceEui)
+        info = self.ka._mobile_cattle_rebind(id=cattleid.get('id'), deviceId=deviceEui)
         self.assertEqual(info["status"], "OK")
         cattleinfo = self.fq.query_cattle_detail_buy_cattle_id(cattle_id=cattleid.get('id'))[0]
         self.assertEqual(deviceEui, cattleinfo.get('device_id'))
@@ -92,7 +96,7 @@ class Main(testCase):
         :return:
         """
         deviceid = choice(self.fq.query_device_eui_id()).get('device_eui')
-        info = self.ka.mobile_cattle_rich_scan(deviceEui=deviceid)
+        info = self.ka._mobile_cattle_rich_scan(deviceEui=deviceid)
         self.assertEqual(info["status"], "OK")
 
     def test_mobile_cattle_unbind(self):
@@ -102,7 +106,7 @@ class Main(testCase):
         :return:
         """
         cfrd = choice(self.fq.query_default_farm_cattle_info_list(self.email))
-        register = self.ka.mobile_cattle_unbind(farmId=cfrd.get('farm_id'), cattleId=cfrd.get('id'),
+        register = self.ka._mobile_cattle_unbind(farmId=cfrd.get('farm_id'), cattleId=cfrd.get('id'),
                                                 deviceId=[cfrd.get('device_id')])
         cfrd = self.fq.query_cattle_farm_region_id(cattleid=cfrd.get('id'))[0]
         self.assertEqual(register['status'], 'OK')
@@ -123,7 +127,7 @@ class Main(testCase):
         weaning_detail = self.fq.query_cattle_farm_region_id()
         cattleIds = self.tool.data_assemble('id', weaning_detail, 10)
 
-        register = self.ka.mobile_cattle_change_fence(cattleIds=cattleIds,
+        register = self.ka._mobile_cattle_change_fence(cattleIds=cattleIds,
                                                       farmId=farm_fegion.get('farm_id'),
                                                       regionId=farm_fegion.get('region_id'))
         self.assertEqual(register['status'], 'OK')
@@ -197,7 +201,7 @@ class Main(testCase):
         """
         cattle_type, blood, level, varietyId, farmId, regionId, sourceType, isHorn, bodyColor, now_birthDate, birthDate, mid, mname, pid, pname, supplier, supplierPic, nvdNo, sourceRemark, buyTime, buyWeight, device_id = self.cattle_add_bind_info()
         remark = '这是一个接口测试'
-        info = self.ka.v126_mobile_cattle_add_bind(farmId=farmId, regionId=regionId,
+        info = self.ka._v126_mobile_cattle_add_bind(farmId=farmId, regionId=regionId,
                                                    type=cattle_type.get('key'),
                                                    blood=blood.get('key'), level=level,
                                                    varietyId=varietyId.get('key'), birthDate=birthDate,
@@ -241,7 +245,7 @@ class Main(testCase):
         remark = '这是一个接口测试'
         sql_cattle_id = self.fq.query_all_bull_id_buy_email(email=self.email)
         cattleid = choice(sql_cattle_id).get('id')
-        info = self.ka.v126_mobile_cattle_update(id=cattleid, farmId=farmId, regionId=regionId,
+        info = self.ka._v126_mobile_cattle_update(id=cattleid, farmId=farmId, regionId=regionId,
                                                  type=cattle_type.get('key'), varietyId=varietyId.get('key'),
                                                  blood=blood.get('key'), level=level,
                                                  birthDate=birthDate, cattleName=now_birthDate,
@@ -278,7 +282,7 @@ class Main(testCase):
         """
         cattle_list = self.fq.query_relationship_buy_email(email=self.email)
         cattle_id = cattle_list[0]['id']
-        register = self.ka.v126_mobile_cattle_search_get_blood_relation(cattleId=cattle_id)
+        register = self.ka._v126_mobile_cattle_search_get_blood_relation(cattleId=cattle_id)
         m_id = cattle_list[0]['m_id']
         p_id = cattle_list[0]['p_id']
         if m_id is not None:
@@ -323,7 +327,7 @@ class Main(testCase):
         m_id = cow_list[0]['id']
         p_name = None
         m_name = None
-        self.ka.mobile_cattle_update_blood(cattleId=cattle_id, pid=p_id, mid=m_id,
+        self.ka._mobile_cattle_update_blood(cattleId=cattle_id, pid=p_id, mid=m_id,
                                            pname=p_name, mname=m_name)
         cattle_info = self.fq.query_cattle_detail_buy_cattle_id(cattle_id=cattle_id)
         self.assertEqual(p_id, cattle_info[0]['p_id'])
@@ -338,7 +342,7 @@ class Main(testCase):
         :return:
         """
         device_id = choice(self.fq.query_default_farm_cattle_info_list(self.email)).get('device_id')
-        info = self.ka.mobile_cattle_search_detail_by_device(device_id)
+        info = self.ka._mobile_cattle_search_detail_by_device(device_id)
         self.assertEqual(info["status"], "OK")
 
     def test_v126_mobile_cattle_detail_by_device(self):
@@ -347,7 +351,7 @@ class Main(testCase):
         :return:
         """
         device_id = choice(self.fq.query_default_farm_cattle_info_list(self.email)).get('device_id')
-        info = self.ka.v126_mobile_cattle_search_detail_by_device(device_id)
+        info = self.ka._v126_mobile_cattle_search_detail_by_device(device_id)
         self.assertEqual(info["status"], "OK")
 
     def test_mobile_cattle_search_list(self):
@@ -373,7 +377,7 @@ class Main(testCase):
         regionlist = self.fq.query_farm_region_list(farmid, isNeedFilter=1, isNeedNoPaddock=1)
         regionid = self.tool.data_assemble('region_id', regionlist, random.randint(0, len(regionlist)))
         regionid = [-1 if i == None else i for i in regionid] if regionid else None
-        info = self.ka.mobile_cattle_search_list(regionId=regionid, type=typelist, varietyId=variety_id,
+        info = self.ka._mobile_cattle_search_list(regionId=regionid, type=typelist, varietyId=variety_id,
                                                  sexId=sexId, farmId=farmid, level=level, stage=stage,
                                                  orderType="CREATE_DESC", isBindDevice=Bind)
         self.assertEqual(info["status"], "OK")
@@ -407,7 +411,7 @@ class Main(testCase):
         farmuser = choice(farmuserinfo)
         farm_id = farmuser.get('farm_id')
         user_id = farmuser.get('user_id')
-        info = self.ka.mobile_farm_user_detail(farm_id, user_id)
+        info = self.ka._mobile_farm_user_detail(farm_id, user_id)
         self.assertEqual(info["status"], "OK")
 
     def test_mobile_farm_user_list_by_farm(self):
@@ -416,7 +420,7 @@ class Main(testCase):
         :return:
         """
         farm_id = choice(self.fq.query_default_farm(self.email)).get('farm_id')
-        info = self.ka.mobile_farm_user_list_by_farm(farm_id)
+        info = self.ka._mobile_farm_user_list_by_farm(farm_id)
         self.assertEqual(info["status"], "OK")
 
     def test_mobile_farm_user_list_by_user(self):
@@ -424,7 +428,7 @@ class Main(testCase):
         移动端-农场成员-获取当前用户所在农场的所有成员列表 v1.2.4
         :return:
         """
-        info = self.ka.mobile_farm_user_list_by_user()
+        info = self.ka._mobile_farm_user_list_by_user()
         self.assertEqual(info["status"], "OK")
 
     def test_mobile_farm_detail(self):
@@ -433,7 +437,7 @@ class Main(testCase):
         :return:
         """
         farm_id = choice(self.fq.query_default_farm(self.email)).get('farm_id')
-        info = self.ka.mobile_farm_detail(farm_id)
+        info = self.ka._mobile_farm_detail(farm_id)
         self.assertEqual(info["status"], "OK")
 
     def test_mobile_cattle_whether_plan(self):
@@ -443,7 +447,7 @@ class Main(testCase):
         """
         cattle_list = self.fq.query_default_farm_cattle_info_list(self.email)
         cattleids = self.tool.data_assemble('id', cattle_list, random.randint(1, len(cattle_list)))
-        self.ka.mobile_cattle_search_whether_plan(cattleIds=cattleids)
+        self.ka._mobile_cattle_search_whether_plan(cattleIds=cattleids)
 
 
 if __name__ == '__main__':

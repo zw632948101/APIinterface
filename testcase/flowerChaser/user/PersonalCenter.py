@@ -82,8 +82,8 @@ class PersonalCenterMain(unittest.TestCase):
         :return:
         """
         # 上传接口未做校验
-        self.ua.set_user('19988776654')
-        json_response = self.ua._mobile_user_upload_headImg(headImgFile_='./headImg.jpg')
+        self.ua._set_user('19988776654')
+        json_response = self.ua.__mobile_user_upload_headImg(headImgFile_='./headImg.jpg')
         if json_response["status"] == "OK":
             self.assertTrue(json_response["content"].startswith("http"))
             self.assertTrue(json_response["content"].endswith("jpg"))
@@ -205,7 +205,7 @@ class PersonalCenterMain(unittest.TestCase):
     #     邮箱为空, 修改邮箱
     #     :return:
     #     """
-    #     json_response = self.ua._fc_mobile_user_update_email(email_=None)
+    #     json_response = self.ua.__fc_mobile_user_update_email(email_=None)
     #     if json_response["status"] == "ERROR":
     #         self.assertEqual("邮箱不能为空", json_response["errorMsg"])
     #     else:
@@ -217,7 +217,7 @@ class PersonalCenterMain(unittest.TestCase):
     #     邮箱格式错误, 修改邮箱
     #     :return:
     #     """
-    #     json_response = self.ua._fc_mobile_user_update_email(email_='qq.com')
+    #     json_response = self.ua.__fc_mobile_user_update_email(email_='qq.com')
     #     if json_response["status"] == "ERROR":
     #         self.assertEqual("邮箱格式有误", json_response["errorMsg"])
     #     else:
@@ -229,8 +229,8 @@ class PersonalCenterMain(unittest.TestCase):
     #     邮箱长度超过64位, 修改邮箱
     #     :return:
     #     """
-    #     self.ua.set_user("26632629@qq.com", 123456)
-    #     json_response = self.ua._fc_mobile_user_update_email(email_='0123456789012345678901234567890123456789'
+    #     self.ua._set_user("26632629@qq.com", 123456)
+    #     json_response = self.ua.__fc_mobile_user_update_email(email_='0123456789012345678901234567890123456789'
     #                                                                 '01234567890123456789@qq.com')
     #     if json_response["status"] == "ERROR":
     #         self.assertEqual("邮箱长度不能超过64位", json_response["errorMsg"])
@@ -243,8 +243,8 @@ class PersonalCenterMain(unittest.TestCase):
     #     已注册邮箱, 修改邮箱
     #     :return:
     #     """
-    #     self.ua.set_user('26632629@qq.com', 123456)
-    #     json_response = self.ua._fc_mobile_user_update_email(email_='26632629@qq.com')
+    #     self.ua._set_user('26632629@qq.com', 123456)
+    #     json_response = self.ua.__fc_mobile_user_update_email(email_='26632629@qq.com')
     #     if json_response["status"] == "ERROR":
     #         self.assertEqual("新邮箱不能与原邮箱相同", json_response["errorMsg"])
     #     else:
@@ -256,11 +256,11 @@ class PersonalCenterMain(unittest.TestCase):
     #     新邮箱, 修改邮箱
     #     :return:
     #     """
-    #     self.ua.set_user('26632629@qq.com', 123456)
-    #     json_response = self.ua._fc_mobile_user_update_email(email_='343260924@qq.com')
+    #     self.ua._set_user('26632629@qq.com', 123456)
+    #     json_response = self.ua.__fc_mobile_user_update_email(email_='343260924@qq.com')
     #     if json_response["status"] == "OK":
-    #         self.ua.set_user('343260924@qq.com', 123456)
-    #         self.ua._fc_mobile_user_update_email(email_='26632629@qq.com')
+    #         self.ua._set_user('343260924@qq.com', 123456)
+    #         self.ua.__fc_mobile_user_update_email(email_='26632629@qq.com')
     #     else:
     #         self.assertTrue(False, "新邮箱, 修改邮箱成功")
     #
@@ -270,8 +270,8 @@ class PersonalCenterMain(unittest.TestCase):
     #     密码为空, 修改密码
     #     :return:
     #     """
-    #     self.ua.set_user('26632629@qq.com', 123456)
-    #     json_response = self.ua._fc_mobile_user_update_password(newPassword_=None)
+    #     self.ua._set_user('26632629@qq.com', 123456)
+    #     json_response = self.ua.__fc_mobile_user_update_password(newPassword_=None)
     #     if json_response["status"] == "ERROR":
     #         self.assertEqual("新密码不能为空", json_response["errorMsg"])
     #     else:
@@ -283,8 +283,8 @@ class PersonalCenterMain(unittest.TestCase):
     #     密码小于6位, 修改密码
     #     :return:
     #     """
-    #     self.ua.set_user('26632629@qq.com', 123456)
-    #     json_response = self.ua._fc_mobile_user_update_password(newPassword_='12345')
+    #     self.ua._set_user('26632629@qq.com', 123456)
+    #     json_response = self.ua.__fc_mobile_user_update_password(newPassword_='12345')
     #     if json_response["status"] == "ERROR":
     #         self.assertEqual("请输入6-15数字、字母密码", json_response["errorMsg"])
     #     else:
@@ -296,8 +296,8 @@ class PersonalCenterMain(unittest.TestCase):
     #     密码大于15位, 修改密码
     #     :return:
     #     """
-    #     self.ua.set_user('26632629@qq.com', 123456)
-    #     json_response = self.ua._fc_mobile_user_update_password(newPassword_='0123456789012345')
+    #     self.ua._set_user('26632629@qq.com', 123456)
+    #     json_response = self.ua.__fc_mobile_user_update_password(newPassword_='0123456789012345')
     #     if json_response["status"] == "ERROR":
     #         self.assertEqual("请输入6-15数字、字母密码", json_response["errorMsg"])
     #     else:
@@ -309,8 +309,8 @@ class PersonalCenterMain(unittest.TestCase):
     #     密码含有非数字或非字母, 修改密码
     #     :return:
     #     """
-    #     self.ua.set_user('26632629@qq.com', 123456)
-    #     json_response = self.ua._fc_mobile_user_update_password(newPassword_='0123456_')
+    #     self.ua._set_user('26632629@qq.com', 123456)
+    #     json_response = self.ua.__fc_mobile_user_update_password(newPassword_='0123456_')
     #     if json_response["status"] == "ERROR":
     #         self.assertEqual("请输入6-15数字、字母密码", json_response["errorMsg"])
     #     else:
@@ -322,11 +322,11 @@ class PersonalCenterMain(unittest.TestCase):
     #     密码合法, 修改密码
     #     :return:
     #     """
-    #     self.ua.set_user('26632629@qq.com', 123456)
-    #     json_response = self.ua._fc_mobile_user_update_password(newPassword_='0123456')
+    #     self.ua._set_user('26632629@qq.com', 123456)
+    #     json_response = self.ua.__fc_mobile_user_update_password(newPassword_='0123456')
     #     if json_response["status"] == "OK":
-    #         self.ua.set_user('26632629@qq.com', '0123456')
-    #         self.ua._fc_mobile_user_update_password(newPassword_='123456')
+    #         self.ua._set_user('26632629@qq.com', '0123456')
+    #         self.ua.__fc_mobile_user_update_password(newPassword_='123456')
     #     else:
     #         self.assertTrue(False, "密码合法, 修改密码失败")
 
@@ -336,8 +336,8 @@ class PersonalCenterMain(unittest.TestCase):
         手机号为空, 发送验证码
         :return:
         """
-        self.ua.set_user('19988776654')
-        json_response = self.ua._fc_mobile_user_change_verify_code(mobile_=None)
+        self.ua._set_user('19988776654')
+        json_response = self.ua.__fc_mobile_user_change_verify_code(mobile_=None)
         if json_response["status"] == "ERROR":
             self.assertEqual("手机号不能为空", json_response["errorMsg"])
         else:
@@ -349,8 +349,8 @@ class PersonalCenterMain(unittest.TestCase):
         手机号格式错误, 发送验证码
         :return:
         """
-        self.ua.set_user('19988776654')
-        json_response = self.ua._fc_mobile_user_change_verify_code(mobile_='11602832572')
+        self.ua._set_user('19988776654')
+        json_response = self.ua.__fc_mobile_user_change_verify_code(mobile_='11602832572')
         if json_response["status"] == "ERROR":
             self.assertEqual("手机号格式有误", json_response["errorMsg"])
         else:
@@ -362,8 +362,8 @@ class PersonalCenterMain(unittest.TestCase):
         手机号小于11位, 发送验证码
         :return:
         """
-        self.ua.set_user('19988776654')
-        json_response = self.ua._fc_mobile_user_change_verify_code(mobile_='1860283257')
+        self.ua._set_user('19988776654')
+        json_response = self.ua.__fc_mobile_user_change_verify_code(mobile_='1860283257')
         if json_response["status"] == "ERROR":
             self.assertEqual("手机号格式有误", json_response["errorMsg"])
         else:
@@ -375,8 +375,8 @@ class PersonalCenterMain(unittest.TestCase):
         手机号大于11位, 发送验证码
         :return:
         """
-        self.ua.set_user('26632629@qq.com', 123456)
-        json_response = self.ua._fc_mobile_user_change_verify_code(mobile_='018602832572')
+        self.ua._set_user('26632629@qq.com', 123456)
+        json_response = self.ua.__fc_mobile_user_change_verify_code(mobile_='018602832572')
         if json_response["status"] == "ERROR":
             self.assertEqual("手机号格式有误", json_response["errorMsg"])
         else:
@@ -388,9 +388,9 @@ class PersonalCenterMain(unittest.TestCase):
         手机号已注册, 发送验证码
         :return:
         """
-        self.ua.set_user('19988776654')
+        self.ua._set_user('19988776654')
         self.redis.set('SmsVerifyCode:ReplaceMobile:19988776654:times', 1)
-        json_response = self.ua._fc_mobile_user_change_verify_code(mobile_='19988776654')
+        json_response = self.ua.__fc_mobile_user_change_verify_code(mobile_='19988776654')
         if json_response["status"] == "ERROR":
             self.assertEqual("新手机号不能与原手机号相同", json_response["errorMsg"])
         else:
@@ -402,9 +402,9 @@ class PersonalCenterMain(unittest.TestCase):
         手机号正确, 发送验证码
         :return:
         """
-        self.ua.set_user('19988776654')
+        self.ua._set_user('19988776654')
         self.redis.set('SmsVerifyCode:ReplaceMobile:%s:times' % str(mobile), 1)
-        json_response = self.ua._fc_mobile_user_change_verify_code(mobile_=mobile)
+        json_response = self.ua.__fc_mobile_user_change_verify_code(mobile_=mobile)
         if json_response["status"] == "OK":
             verify_code = json.loads(self.redis.get('SmsVerifyCode:ReplaceMobile:%s:code' % str(mobile)))['code']
             log.info('手机号 %s, 短信已发送, 验证码 %s' % (mobile, verify_code))
@@ -418,8 +418,8 @@ class PersonalCenterMain(unittest.TestCase):
         手机号为空, 修改手机号
         :return:
         """
-        self.ua.set_user('19988776654')
-        json_response = self.ua._fc_mobile_user_update_mobile(mobile_=None, verifyCode_=1234)
+        self.ua._set_user('19988776654')
+        json_response = self.ua.__fc_mobile_user_update_mobile(mobile_=None, verifyCode_=1234)
         if json_response["status"] == "ERROR":
             self.assertEqual("手机号不能为空", json_response["errorMsg"])
         else:
@@ -431,8 +431,8 @@ class PersonalCenterMain(unittest.TestCase):
         验证码为空, 修改手机号
         :return:
         """
-        self.ua.set_user('19988776654')
-        json_response = self.ua._fc_mobile_user_update_mobile(mobile_='19988776654', verifyCode_=None)
+        self.ua._set_user('19988776654')
+        json_response = self.ua.__fc_mobile_user_update_mobile(mobile_='19988776654', verifyCode_=None)
         if json_response["status"] == "ERROR":
             self.assertEqual("验证码不能为空", json_response["errorMsg"])
         else:
@@ -444,8 +444,8 @@ class PersonalCenterMain(unittest.TestCase):
         验证码错误, 修改手机号
         :return:
         """
-        self.ua.set_user('19988776654')
-        json_response = self.ua._fc_mobile_user_update_mobile(mobile_='19988776653', verifyCode_='0000')
+        self.ua._set_user('19988776654')
+        json_response = self.ua.__fc_mobile_user_update_mobile(mobile_='19988776653', verifyCode_='0000')
         if json_response["status"] == "ERROR":
             self.assertEqual("验证码错误", json_response["errorMsg"])
         else:
@@ -457,8 +457,8 @@ class PersonalCenterMain(unittest.TestCase):
         验证码大于4位, 修改手机号
         :return:
         """
-        self.ua.set_user('19988776654')
-        json_response = self.ua._fc_mobile_user_update_mobile(mobile_='19602832572', verifyCode_='12345')
+        self.ua._set_user('19988776654')
+        json_response = self.ua.__fc_mobile_user_update_mobile(mobile_='19602832572', verifyCode_='12345')
         if json_response["status"] == "ERROR":
             self.assertEqual("验证码错误", json_response["errorMsg"])
         else:
@@ -470,8 +470,8 @@ class PersonalCenterMain(unittest.TestCase):
         验证码小于4位, 修改手机号
         :return:
         """
-        self.ua.set_user('19988776654')
-        json_response = self.ua._fc_mobile_user_update_mobile(mobile_='19602832572', verifyCode_='123')
+        self.ua._set_user('19988776654')
+        json_response = self.ua.__fc_mobile_user_update_mobile(mobile_='19602832572', verifyCode_='123')
         if json_response["status"] == "ERROR":
             self.assertEqual("验证码错误", json_response["errorMsg"])
         else:
@@ -486,13 +486,13 @@ class PersonalCenterMain(unittest.TestCase):
         # new_mobile = 19988776654
         # old_mobile = 19988776652
         # new_verify_code = self.get_mobile_change_verify_code_success(new_mobile)
-        # self.ua.set_user('19988776600')
-        # self.ua._fc_mobile_user_update_mobile(mobile_='19988776601', verifyCode_=8888)
+        # self.ua._set_user('19988776600')
+        # self.ua.__fc_mobile_user_update_mobile(mobile_='19988776601', verifyCode_=8888)
         self.ba.set_user('19988776601')
         self.ba._mobile_fc_user_info()
         # if json_response["status"] == "OK":
         #     old_verify_code = self.get_mobile_change_verify_code_success(old_mobile)
-        #     self.ua._fc_mobile_user_update_mobile(mobile_=old_mobile, verifyCode_=old_verify_code)
+        #     self.ua.__fc_mobile_user_update_mobile(mobile_=old_mobile, verifyCode_=old_verify_code)
         # else:
         #     self.assertTrue(False, "手机号验证码正确, 修改手机号失败")
 
@@ -502,9 +502,9 @@ class PersonalCenterMain(unittest.TestCase):
         修改手机号前校验
         :return:
         """
-        self.ua.set_user('19988776654')
-        self.ua._fc_mobile_user_mobile_check(mobile_='19988776651')
-        # self.ua._fc_mobile_user_mobile_check(mobile_='15388126072')  # 已注册账号，弹窗提示
+        self.ua._set_user('19988776654')
+        self.ua.__fc_mobile_user_mobile_check(mobile_='19988776651')
+        # self.ua.__fc_mobile_user_mobile_check(mobile_='15388126072')  # 已注册账号，弹窗提示
 
     def test_mobile_fc_user_update(self):
         """

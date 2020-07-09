@@ -6,7 +6,7 @@
 __author__: wei.zhang
 __remark__: 财务
 """
-from .. import FarmQuery
+from testcase.worldFarm.sql.FarmQuery import FarmQuery
 
 
 class Finance(FarmQuery):
@@ -35,7 +35,7 @@ class Finance(FarmQuery):
                     AND tfab.farm_id = '%s'
                     %s
                     ORDER BY tfab.id DESC;""" % (farm_id, is_default)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -53,7 +53,7 @@ class Finance(FarmQuery):
                     tfb.farm_id = '%s'
                     AND tfb.book_id = '%s' 
                     AND budget_type = '%s' ORDER BY id DESC;""" % (farm_id, book_id, budget_type)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -80,7 +80,7 @@ class Finance(FarmQuery):
                     AND tfu.is_default = 1
                     AND tfab.is_default = 0
                     AND tfab.is_delete = 0;""" % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -107,7 +107,7 @@ class Finance(FarmQuery):
                     AND tfu.is_delete = 0 
                     AND tfu.is_default = 1
                     AND tfab.is_delete = 0;""" % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -123,7 +123,7 @@ class Finance(FarmQuery):
                     `world-koala`.t_farm_account_book tfab
                 WHERE
                     tfab.id = '%s';""" % book_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -148,7 +148,7 @@ class Finance(FarmQuery):
                     AND tfab.is_default = 1
                     AND tfab.is_delete = 0
                     AND tfb.is_delete = 0;""" % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -166,7 +166,7 @@ class Finance(FarmQuery):
                     LEFT JOIN `world-user`.t_user tu ON tu.id = tfb.creator_id
                 WHERE
                     tfb.id = '%s';""" % bill_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info[0]
         return
@@ -190,7 +190,7 @@ class Finance(FarmQuery):
                     AND tfb.is_delete = 0
                     %s
                     AND TO_DAYS(record_date) = TO_DAYS(NOW());""" % (book_id, bill_type_id)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -214,7 +214,7 @@ class Finance(FarmQuery):
                     AND tfb.is_delete = 0
                     %s
                     AND TO_DAYS(record_date) = TO_DAYS(NOW());""" % (book_id, bill_type_id)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -236,7 +236,7 @@ class Finance(FarmQuery):
                     AND tfu.is_delete = 0 
                     AND tfu.is_default = 1
                     AND tfbt.is_delete = 0 ORDER BY id DESC;""" % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -254,7 +254,7 @@ class Finance(FarmQuery):
                      tfbt.is_delete = 0
                      AND tfbt.budget_type =10
                      AND (tfbt.farm_id = 0 OR tfbt.farm_id = "%s");""" % farm_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -278,7 +278,7 @@ class Finance(FarmQuery):
                 AND tfbt.is_delete = 0
                 OR tfbt.farm_id = 0;
                """ % farmid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -296,7 +296,7 @@ class Finance(FarmQuery):
             WHERE
                 tb.id = '%s'
               """ % bill_type_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info[0]
         return
@@ -310,7 +310,7 @@ class Finance(FarmQuery):
         sql = """
         SELECT * FROM `world-koala`.t_farm_bill tb WHERE tb.farm_id = %s AND tb.is_delete = 0
               """ % farmid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return

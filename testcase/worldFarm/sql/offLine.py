@@ -6,7 +6,7 @@
 __author__: wei.zhang
 __remark__: 离线
 """
-from .. import FarmQuery
+from testcase.worldFarm.sql.FarmQuery import FarmQuery
 
 
 class OffLine(FarmQuery):

@@ -7,7 +7,8 @@ __date__ = '2019/ / '
 
 """
 __all__ = ['CattleManage', 'CattleMap', 'FarmManage', 'Finance', 'LoginAndRegister', 'MessagesQuery', 'OffLine',
-           'OtherQuery', 'PaddockManage', 'PersonnelManage', 'ScheduleQuery', 'SmokeMainQuery', 'Statistics','FarmQuery']
+           'OtherQuery', 'PaddockManage', 'PersonnelManage', 'ScheduleQuery', 'SmokeMainQuery', 'Statistics',
+           'FarmQuery']
 
 import unittest
 from interfaces.worldFarm.KoalaAction import KoalaAction
@@ -30,22 +31,29 @@ from .sql.schedulequery import ScheduleQuery
 from .sql.SmokeMainQuery import SmokeMainQuery
 from .sql.statistics import Statistics
 from .sql.FarmQuery import FarmQuery
-from tools.Session import UserSession
-from tools.Common import TimestampTransform, coordinateCalculate
-from tools.Tool import Tool
+from utils import DataConversion, coordinateCalculate, TimestampTransform
 
 
 class testCase(unittest.TestCase):
-    tool = Tool
+    tool = DataConversion
     email = config.get('account').get('username')
-    user = UserSession()
-    pa = PassportAction(user)
-    ua = UserAction(user)
-    oa = OfflineAction(user)
-    ka = KoalaAction(user)
+    password = config.get('account').get('password')
+    pa = PassportAction()
+    ua = UserAction()
+    oa = OfflineAction()
+    ka = KoalaAction()
     tt = TimestampTransform()
     cc = coordinateCalculate
     log = log
+    category = [{'房屋及建筑': '10030'}, {'水资源': '10040'}, {'道路': '10050'}]
+    kinds = {'房屋及建筑': [{'房屋': '10060'}, {'干草棚': '10070'}, {'谷仓': '10080'}, {'棚子': '10090'},
+                       {'操作栏': '10100'}, {'门': '10110'}, {'太阳能电站': '10130'}],
+             '水资源': [{'水井': '10140'}, {'水坝': '10150'}, {'管道': '10160'}, {'水渠': '10170'},
+                     {'饮水槽': '10180'}, {'风车': '10190'}, {'水箱': '10200'}, {'水泵': '10210'}, {'蓄水池': '10240'}],
+             '道路': [{'道路': '10220'}]}
+
+    def __init__(self, methodName='runTest'):
+        super(testCase, self).__init__(methodName=methodName)
 
     def tearDown(self):
         pass

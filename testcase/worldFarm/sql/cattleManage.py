@@ -6,7 +6,7 @@
 __author__: wei.zhang
 __remark__: 牲畜管理
 """
-from .. import FarmQuery
+from testcase.worldFarm.sql.FarmQuery import FarmQuery
 
 
 class CattleManage(FarmQuery):
@@ -34,7 +34,7 @@ class CattleManage(FarmQuery):
                     AND tc.is_delete = 0
                     AND tfu.is_default = 1
                     AND tc.type in('1004','1008');""" % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -59,7 +59,7 @@ class CattleManage(FarmQuery):
                     AND tc.is_delete = 0 
                     AND tfu.is_default = 1 
                     AND tc.type in('1004','1003','1008','1005','1006');""" % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -82,7 +82,7 @@ class CattleManage(FarmQuery):
                     AND tfu.is_default = 1 
                     AND tc.stage_status != 10
                     AND tc.type in('1002','1007');""" % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -109,7 +109,7 @@ class CattleManage(FarmQuery):
                     AND tc.stage_status != 30
                     AND tc.is_delete = 0
                     AND (tc.type = '1002' OR tc.type = '1007');""" % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -133,7 +133,7 @@ class CattleManage(FarmQuery):
                     AND tfu.is_default = 1 
                     AND tc.is_delete = 0
                     AND tc.type = '1002';""" % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -160,7 +160,7 @@ class CattleManage(FarmQuery):
                     AND tc.stage_status = 50
                     AND tfu.is_default = 1
                     AND tc.type = '1002';""" % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -189,7 +189,7 @@ class CattleManage(FarmQuery):
                     AND tfu.is_default = 1
                     AND (tc.p_id IS NOT NULL OR tc.m_id IS NOT NULL )
                     AND tc.is_delete = 0 ;""" % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -217,7 +217,7 @@ class CattleManage(FarmQuery):
                     AND tfu.is_default = 1
                     AND tc.is_delete = 0
                     AND tcsc.is_delete = 0;""" % (email, stage_status)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -239,7 +239,7 @@ class CattleManage(FarmQuery):
                         tcsc.cattle_id = '%s'
                         '%s'
                         """ % (cattle_id, is_delete)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -255,7 +255,7 @@ class CattleManage(FarmQuery):
                     `world-koala`.t_cattle_stage_cycle tcsc
                 WHERE
                     tcsc.id = '%s';""" % cycle_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -271,7 +271,7 @@ class CattleManage(FarmQuery):
                         `world-koala`.t_cattle_preg tcp 
                     WHERE
                         tcp.id = '%s';""" % preg_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -289,7 +289,7 @@ class CattleManage(FarmQuery):
                         tcc.is_delete = 0 
                         AND tcc.cattle_id = '%s'
                         ORDER BY tcc.id DESC ;""" % cattle_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -313,7 +313,7 @@ class CattleManage(FarmQuery):
                     AND tco.`code` = 10004 
                 ORDER BY
                     tc.id DESC;""" % (cattle_id, cattle_id)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -341,7 +341,7 @@ class CattleManage(FarmQuery):
                     AND tfu.is_default = 1
                     AND tc.stage_status %s 
                     AND tc.type = '1002';""" % (email, stagestatus)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -373,7 +373,7 @@ class CattleManage(FarmQuery):
                 ORDER BY
                     tcb.create_time DESC 
                     LIMIT 1;""" % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -418,7 +418,7 @@ class CattleManage(FarmQuery):
                 ORDER BY
                     tcb.create_time DESC
                     LIMIT %s;""" % (cattle_id, btype, sdate, num)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -439,7 +439,7 @@ class CattleManage(FarmQuery):
                     WHERE 
                         tcb.id = '%s' 
                         AND tcb.is_delete = 0;""" % breeding_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -458,7 +458,7 @@ class CattleManage(FarmQuery):
                 ON tcb.batch_no = tcbr.batch_no 
                 WHERE tcb.cattle_id = '%s';
               """ % cattleid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -488,7 +488,7 @@ class CattleManage(FarmQuery):
             %s
             ORDER BY tcp.id DESC
         """ % (cttleids, check_type, check_date, check_result)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -519,7 +519,7 @@ class CattleManage(FarmQuery):
                     AND tc.is_delete = 0
                     AND tcp.is_delete = 0
                     group by tcp.cattle_id;""" % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -537,7 +537,7 @@ class CattleManage(FarmQuery):
         sql = "SELECT tcw.cattle_id,tcw.weaning_date,tcw.weaning_weight FROM " \
               "`world-koala`.t_cattle_weaning tcw WHERE tcw.cattle_id %s " \
               "ORDER BY tcw.id DESC;" % cattleid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -562,7 +562,7 @@ class CattleManage(FarmQuery):
                         AND tc.is_delete = 0 
                         AND tfu.is_default = 1 
                         AND tc.type in(1002,1007);""" % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -573,7 +573,7 @@ class CattleManage(FarmQuery):
         :return:
         """
         sql = "select * from `world-koala`.`t_cattle_weaning` tcw order by tcw.id desc limit 1;"
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info[0]
         return
@@ -590,7 +590,7 @@ class CattleManage(FarmQuery):
                     `world-koala`.t_cattle_weaning tcw
                 WHERE
                      tcw.id = '%s';""" % weaning_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -608,7 +608,7 @@ class CattleManage(FarmQuery):
 
         sql = "SELECT tc.id,tc.farm_id,tc.region_id,tc.device_id FROM `world-koala`.t_cattle tc " \
               "WHERE tc.is_delete = '0' %s%s ORDER BY tc.id DESC;" % (cattleid, deviceid)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -623,7 +623,7 @@ class CattleManage(FarmQuery):
               "LEFT JOIN `world-user`.t_user tu ON tf.farmer_id = tu.id " \
               "LEFT JOIN `world-koala`.t_farm_region tg ON tf.id = tg.farm_id  " \
               "WHERE tu.email = '%s' AND tf.is_delete = '0' AND (tg.is_delete = '0' OR tg.is_delete IS NULL);" % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -649,7 +649,7 @@ class CattleManage(FarmQuery):
                     AND tc.cattle_name = '%s'
                     AND tc.nlis = '%s';
         """ % (farmid, regionid, cattlename, nlis)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info[0]
         return
@@ -670,7 +670,7 @@ class CattleManage(FarmQuery):
                     AND tfu.is_delete = 0
                     AND tfu.is_default = 1
                     AND tc.is_delete = 0 ORDER BY id DESC;""" % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -686,7 +686,7 @@ class CattleManage(FarmQuery):
                     `world-koala`.t_cattle tc
                 WHERE
                     tc.id = '%s' LIMIT 1;""" % cattle_id
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -721,7 +721,7 @@ class CattleManage(FarmQuery):
                     AND td.device_eui is not NULL
                     %s
               """ % (email, devicetype)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -749,7 +749,7 @@ class CattleManage(FarmQuery):
                 AND tc.device_type IS NULL
                 GROUP BY tc.id
               """ % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -776,7 +776,7 @@ class CattleManage(FarmQuery):
                     AND td.product_type = '耳标/LoRa耳标'
                     AND tdp.is_delete = '0';
               """ % email
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -798,7 +798,7 @@ class CattleManage(FarmQuery):
                     AND ts.device_eui = '%s' 
                     AND ts.is_delete = 0;
               """ % (farmid, deviceid)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -839,7 +839,7 @@ class CattleManage(FarmQuery):
                     ORDER BY tc.id DESC
               """ % sqlstr
 
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -861,7 +861,7 @@ class CattleManage(FarmQuery):
                     AND tc.type in(1003,1001,1005)
                     ORDER BY tc.id DESC
               """ % farmid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -888,7 +888,7 @@ class CattleManage(FarmQuery):
             WHERE
                 tcb.id = '%s'
               """ % bid
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
@@ -919,7 +919,7 @@ class CattleManage(FarmQuery):
                     AND tfu.is_delete = 0 
                     AND tfu.user_id <> ( SELECT t.id FROM `world-user`.t_user t WHERE t.email = '%s' );
               """ % (email, email)
-        info = self.operate(self.hostip, 'world-koala', sql)
+        info = self.operate(self.hostip,  sql)
         if info:
             return info
         return
