@@ -2,9 +2,9 @@
 # -*- coding: UTF-8 -*-
 
 import unittest
-from actions.BeeAction import BeeAction
-from tools.Config import Log
-from sql.Bee import StatisticsSql
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.log import log
+from testcase.flowerChaser.sql.Bee import StatisticsSql
 import random
 import json
 from faker import Faker
@@ -18,7 +18,6 @@ class NectarSourceMain(unittest.TestCase):
     """
     statistics = BeeAction()
     statistics_db = StatisticsSql()
-    log = Log('FarmInformationMain').logger
     log.info("开始执行统计接口测试用例")
     fake = Faker(locale="zh_CN")
     statistics.set_user('15388126072')
@@ -36,7 +35,7 @@ class NectarSourceMain(unittest.TestCase):
         """
         json_response = self.statistics._api_statistics_generate()
         if json_response["status"] == "OK":
-            self.log.info("实时数据刷新成功")
+            log.info("实时数据刷新成功")
         else:
             self.assertTrue(False, "实时数据刷新失败")
 

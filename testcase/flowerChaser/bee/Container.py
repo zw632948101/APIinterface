@@ -1,9 +1,9 @@
 #! /usr/bin/env python3
 # -*- coding: UTF-8 -*-
 import unittest
-from actions.BeeAction import BeeAction
-from tools.Config import Log
-from sql.Bee import ContainerInformationSql
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.log import log
+from testcase.flowerChaser.sql.Bee import ContainerInformationSql
 import random
 import json
 from faker import Faker
@@ -17,7 +17,6 @@ class ContainerMain(unittest.TestCase):
     """
     container = BeeAction()
     container_db = ContainerInformationSql()
-    log = Log('ContainerMain').logger
     log.info("开始执行平台管理接口测试用例")
     fake = Faker(locale="zh_CN")
     container.set_user('yaxin.guan@worldfarm.com', '123456')

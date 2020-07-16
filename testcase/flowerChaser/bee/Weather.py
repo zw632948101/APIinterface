@@ -2,24 +2,23 @@
 # -*- coding: UTF-8 -*-
 
 import unittest
-from actions.BeeAction import BeeAction
-from tools.Config import Log
-from sql.Bee import BeeClueSql
-from testCase.FakeLocation import FakeLocation
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.log import log
+from testcase.flowerChaser.sql.Bee import BeeClueSql
+from utils.fake.FakeLocation import FakeLocation
 import random
 import json
 from faker import Faker
 import re
-from tools.Tool import Tool
+from utils.dataConversion.dataConversion import DataConversion
 
 
-class WeatherMain(unittest.TestCase, Tool):
+class WeatherMain(unittest.TestCase, DataConversion):
     """
     接口文档:http://192.168.62.242:36054/swagger-ui.html
     """
     ba = BeeAction()
     ba_db = BeeClueSql()
-    log = Log('BeeClueMain', level='DEBUG').logger
     log.info("开始执行天气管理接口测试用例")
     fake = Faker(locale="zh_CN")
     fl = FakeLocation()

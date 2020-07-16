@@ -11,12 +11,12 @@ __author__: wei.zhang
 
 import unittest
 import random
-from actions.BeeAction import BeeAction
-from tools.Config import Log
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.log import log
 from faker import Faker
-from sql.Bee import CollectionStatisticsSQL, VisitRecordSql
-from sql.Passport import PassportInfoSql
-from tools.Common import TimestampTransform as tt
+from testcase.flowerChaser.sql.Bee import CollectionStatisticsSQL, VisitRecordSql
+from testcase.flowerChaser.sql.Passport import PassportInfoSql
+from utils.Timestamp.TimestampTransform import TimestampTransform as tt
 
 
 class CollectionStatistics(unittest.TestCase, tt):
@@ -28,7 +28,6 @@ class CollectionStatistics(unittest.TestCase, tt):
     ps = PassportInfoSql()
     vr = VisitRecordSql()
     mobile = '15388126080'
-    log = Log('CollectionStatistics').logger
     log.info("开始执行蜂友采集统计")
     fake = Faker(locale="zh_CN")
     ba.set_user(mobile)

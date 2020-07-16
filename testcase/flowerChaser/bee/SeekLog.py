@@ -10,13 +10,13 @@
 import unittest
 import random
 import time
-from actions.BeeAction import beeAction
-from actions.UserAction import userAction
-from tools.Config import Log
-from sql.Passport import PassportInfoSql
-from sql.Bee import ContainerInformationSql
-from sql.WorkRecord import WorkRecordSql
-from testCase.FakeLocation import FakeLocation
+from interfaces.flowerChaser.BeeAction import BeeAction
+from interfaces.flowerChaser.UserAction import UserAction
+from utils.log import log
+from testcase.flowerChaser.sql.Passport import PassportInfoSql
+from testcase.flowerChaser.sql.Bee import ContainerInformationSql
+from testcase.flowerChaser.sql.WorkRecord import WorkRecordSql
+from utils.fake.FakeLocation import FakeLocation
 from faker import Faker
 
 
@@ -24,11 +24,10 @@ class SeekLogMain(unittest.TestCase):
     """
     接口文档: http://192.168.62.242:36054/swagger-ui.html
     """
-    ua = userAction()
-    ba = beeAction()
+    ua = UserAction()
+    ba = BeeAction()
     email = '26632629@qq.com'
     ba.set_user(email, 123456)
-    log = Log('SeekLogMain').logger
     log.info("开始执行寻蜜日志接口测试用例")
     pis = PassportInfoSql()
     cis = ContainerInformationSql()

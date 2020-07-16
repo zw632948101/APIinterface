@@ -10,10 +10,10 @@
 import unittest
 import json
 from faker import Faker
-from actions.PassportAction import PassportAction
-from tools.Config import Log
-from tools.RedisOperate import Redis
-from sql.Passport import PassportInfoSql
+from interfaces.flowerChaser.PassportAction import PassportAction
+from utils.log import log
+from utils.databaseConnection.RedisOperate import Redis
+from testcase.flowerChaser.sql.Passport import PassportInfoSql
 
 
 class RegisterLoginMain(unittest.TestCase):
@@ -23,7 +23,6 @@ class RegisterLoginMain(unittest.TestCase):
     pa = PassportAction()
     pis = PassportInfoSql()
     mobile = '19988776655'
-    log = Log('FarmInformationMain').logger
     log.info("开始执行注册模块测试用例")
     fake = Faker()
     redis = Redis()
@@ -269,7 +268,7 @@ class RegisterLoginMain(unittest.TestCase):
         if json_response["status"] == "OK":
             token = self.pis.query_latest_token(email)[0]['token']
             self.assertEqual(token, json_response["content"]["token"])
-            self.log.info('邮箱方式登录成功')
+            log.info('邮箱方式登录成功')
         else:
             self.assertTrue(False, "账号密码正确, 登录失败")
 
@@ -321,7 +320,7 @@ class RegisterLoginMain(unittest.TestCase):
         json_response = self.pa._mobile_sso_verify_code_get(mobile_='18877665544',
                                                             bizType_='MS_LOGIN')
         if json_response["status"] == "OK":
-            self.log.info('未注册手机号验证码获取成功')
+            log.info('未注册手机号验证码获取成功')
         else:
             self.assertTrue(False, "手机号和验证码正确, 登录失败")
 
@@ -389,7 +388,7 @@ class RegisterLoginMain(unittest.TestCase):
                                                             bizType_='MS_LOGIN')
         if json_response["status"] == "OK":
             verify_code = json.loads(self.redis.get('SmsVerifyCode:MobileLogin:19988776655:code'))['code']
-            self.log.info('手机号 %s, 短信已发送, 验证码 %s' % (self.mobile, verify_code))
+            log.info('手机号 %s, 短信已发送, 验证码 %s' % (self.mobile, verify_code))
             return verify_code
         else:
             self.assertTrue(False, "正确手机号, 发送验证码失败")
@@ -494,7 +493,7 @@ class RegisterLoginMain(unittest.TestCase):
         json_response = self.pa._mobile_sso_sms_login(appId_='FLOWER_CHASERS', mobile_='19988776654', verifyCode_=8888,
                                                       deviceType_='ANDROID', deviceId_='')
         if json_response["status"] == "OK":
-            self.log.info('首次登录即注册，手机号验证码方式登录成功')
+            log.info('首次登录即注册，手机号验证码方式登录成功')
         else:
             self.assertTrue(False, "手机号未注册, 登录成功")
 
@@ -522,7 +521,7 @@ class RegisterLoginMain(unittest.TestCase):
                                                       verifyCode_=verify_code,
                                                       deviceType_='ANDROID', deviceId_='dwd')
         if json_response["status"] == "OK":
-            self.log.info('手机号验证码方式登录成功')
+            log.info('手机号验证码方式登录成功')
         else:
             self.assertTrue(False, "手机号和验证码正确, 登录失败")
 

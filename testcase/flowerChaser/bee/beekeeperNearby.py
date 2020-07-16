@@ -2,13 +2,12 @@
 # -*- coding: UTF-8 -*-
 import random
 from unittest import TestCase
-from tools.Config import Log
-from actions.BeeAction import BeeAction
-from sql.Bee import BeekeeperNearbySql
+from utils.log import log
+from interfaces.flowerChaser.BeeAction import BeeAction
+from testcase.flowerChaser.sql.Bee import BeekeeperNearbySql
 
 
 class BeekeeperNearby(TestCase):
-    log = Log('BeekeeperNearby', level='DEBUG').logger
     log.debug('周边蜂友接口测试')
 
     @staticmethod
@@ -53,7 +52,7 @@ class BeekeeperNearby(TestCase):
                                                                                   random.randint(0, len(store_content.get('mutual_labels_all'))))))
                 search_content.update(self.build_dict(intentions=random.sample([0, 1, 2], random.randint(0, 3))))
             else:
-                from testCase.FakeLocation import FakeLocation
+                from utils.fake.FakeLocation import FakeLocation
                 location = FakeLocation().fake_location()
                 search_content.update(self.build_dict(lng=location[4]))
                 search_content.update(self.build_dict(lat=location[5]))
@@ -115,7 +114,7 @@ class BeekeeperNearby(TestCase):
         附近蜂友列表(周边蜂友) mobile/nearby-bee-friend/nearby-list
         :return: None
         """
-        from testCase.FakeLocation import FakeLocation
+        from utils.fake.FakeLocation import FakeLocation
         store_content = self.db.sql_beekeeper_nearby_search_content_random()
         search_contents = dict()
         search_contents.update(self.build_dict(mutualLabels=random.sample([v.get("value") for v in store_content.get('mutual_labels_all')],
@@ -227,7 +226,7 @@ class BeekeeperNearby(TestCase):
         search_content = 505
         store_content = self.db.sql_mobile_swarm_get_by_user(search_content)
         api_content = self.api._mobile_swarm_get_by_user(userId_=search_content)
-        self.log.warning(api_content)
+        log.warning(api_content)
 
         if api_content.get('errorCode') == '10100363':
             self.assertEqual(len(store_content), 0)

@@ -6,13 +6,12 @@ from os.path import abspath, dirname
 from os import name as os_name
 
 
-def get_config():
-    if os_name == 'posix':
-        file = dirname(abspath('.')) + "/utils/environmentConfiguration/config.yaml"
-    else:
-        file = dirname(abspath('.')) + "\\\\environmentConfiguration\\\\config.yaml"
+def get_config(file_path=None):
+    if file_path is None:
+        file_path = dirname(abspath(__file__))
+        file_path = file_path + '/config.yaml'
 
-    with open(file, encoding='utf-8') as f:
+    with open(file_path, encoding='utf-8') as f:
         config = yaml.safe_load(f)
         if config.get('which_project') in config.keys():
             return config.get(config.get('which_project'))

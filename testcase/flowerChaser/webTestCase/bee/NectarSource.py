@@ -6,17 +6,17 @@
 @Author: xiujuan chen
 """
 
-
 import unittest
-from actions.BeeAction import BeeAction
-from tools.Config import Log
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.log import log
 from faker import Faker
-from sql.Bee import NectarSourceInformationSql, ConfigInformationSql, ContainerInformationSql, StaffSql
-from testCase.FakeLocation import FakeLocation
+from testcase.flowerChaser.sql.Bee import NectarSourceInformationSql, ConfigInformationSql, ContainerInformationSql, \
+    StaffSql
+from utils.fake.FakeLocation import FakeLocation
 import random
 import json
-import time,datetime
-from tools.Tool import Tool
+import time, datetime
+from utils.dataConversion.dataConversion import DataConversion
 
 
 class RegisterLoginMain(unittest.TestCase):
@@ -30,7 +30,6 @@ class RegisterLoginMain(unittest.TestCase):
     staff_db = StaffSql()
     fl = FakeLocation()
     mobile = '15200000003'
-    log = Log('BeeInformationMain').logger
     log.info("开始执行内部蜂场管理模块测试用例")
     fake = Faker(locale="zh_CN")
     nectar_source.set_user(mobile)
@@ -51,7 +50,7 @@ class RegisterLoginMain(unittest.TestCase):
         """
         name = self.fake.text(max_nb_chars=20)
         db_type = self.nectar_source_db.sql_random_nectar_source_type(random.randint(1, 5))
-        type_list = Tool.data_assemble('typeCode', db_type)
+        type_list = DataConversion.data_assemble('typeCode', db_type)
         type_str = ",".join(type_list)
         base_type = random.randint(1, 3)
         province_id, city_id, district_id, address, lng, lat = self.fl.fake_location()
@@ -84,7 +83,9 @@ class RegisterLoginMain(unittest.TestCase):
         water_pic = ["https://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com/data/fc-bee/attach/1577330419920.jpg"]
         water_pic = json.dumps(water_pic, ensure_ascii=False)
         response = self.nectar_source._admin_nectar_source_add(type_=type_list, name_=name, baseType_=base_type,
-                                                               province_=province_id, city_=city_id, county_=district_id, address_=address, lng_=lng, lat_=lat,
+                                                               province_=province_id, city_=city_id,
+                                                               county_=district_id, address_=address, lng_=lng,
+                                                               lat_=lat,
                                                                flowerStart_=flower_starts,
                                                                flowerEnd_=flower_ends, bloomStart_=bloom_starts,
                                                                bloomEnd_=bloom_ends,
@@ -95,7 +96,8 @@ class RegisterLoginMain(unittest.TestCase):
                                                                price_=price,
                                                                vehicleLength_=vehicle_length,
                                                                remark_=remark,
-                                                               prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                               prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                               sitePic_=site_pic, roadPic_=road_pic,
                                                                waterPic_=water_pic)
         if response["status"] == "OK":
             nectar_sources = self.nectar_source_db.sql_all_nectar_source()[0]
@@ -142,7 +144,7 @@ class RegisterLoginMain(unittest.TestCase):
             nectar_source_id = nectar_source[num]["id"]
             name = self.fake.text(max_nb_chars=20)
             db_type = self.nectar_source_db.sql_random_nectar_source_type(random.randint(1, 5))
-            type_list = Tool.data_assemble('typeCode', db_type)
+            type_list = DataConversion.data_assemble('typeCode', db_type)
             type_str = ",".join(type_list)
             base_type = random.randint(1, 3)
             province_id, city_id, district_id, address, lng, lat = self.fl.fake_location()
@@ -174,8 +176,11 @@ class RegisterLoginMain(unittest.TestCase):
             road_pic = json.dumps(road_pic, ensure_ascii=False)
             water_pic = ["https://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com/data/fc-bee/attach/1577330419920.jpg"]
             water_pic = json.dumps(water_pic, ensure_ascii=False)
-            response = self.nectar_source._admin_nectar_source_edit(type_=type_list, id_=nectar_source_id, name_=name, baseType_=base_type,
-                                                                    province_=province_id, city_=city_id, county_=district_id, address_=address, lng_=lng, lat_=lat,
+            response = self.nectar_source._admin_nectar_source_edit(type_=type_list, id_=nectar_source_id, name_=name,
+                                                                    baseType_=base_type,
+                                                                    province_=province_id, city_=city_id,
+                                                                    county_=district_id, address_=address, lng_=lng,
+                                                                    lat_=lat,
                                                                     flowerStart_=flower_starts,
                                                                     flowerEnd_=flower_ends, bloomStart_=bloom_starts,
                                                                     bloomEnd_=bloom_ends,
@@ -186,7 +191,8 @@ class RegisterLoginMain(unittest.TestCase):
                                                                     price_=price,
                                                                     vehicleLength_=vehicle_length,
                                                                     remark_=remark,
-                                                                    prospectPic_=prospect_pic, tentPic_=tent_pic, sitePic_=site_pic, roadPic_=road_pic,
+                                                                    prospectPic_=prospect_pic, tentPic_=tent_pic,
+                                                                    sitePic_=site_pic, roadPic_=road_pic,
                                                                     waterPic_=water_pic)
             if response["status"] == "OK":
                 nectar_sources = self.nectar_source_db.sql_nectar_source_by_id(nectar_source_id)
@@ -264,7 +270,7 @@ class RegisterLoginMain(unittest.TestCase):
         :return:
         """
         response = self.nectar_source._admin_nectar_source_list(searchFlowerStart_=1577116800000,
-                                                                 searchFlowerEnd_=1577203199000)
+                                                                searchFlowerEnd_=1577203199000)
         self.assertEqual(response['status'], "OK")
 
     def test_mobile_nectar_source_list_with_vehicle_length(self):
@@ -293,7 +299,7 @@ class RegisterLoginMain(unittest.TestCase):
         include_status_dict = {1: '待入驻', 2: '已入驻'}
         include_status = random.choice(list(include_status_dict))
         ct_order_type_list = ['ASC', 'DESC']
-        ct_order_type = ct_order_type_list[random.randint(0, (len(ct_order_type_list)-1))]
+        ct_order_type = ct_order_type_list[random.randint(0, (len(ct_order_type_list) - 1))]
         response = self.nectar_source._admin_excel_export_nectar_source(excludeStatus_=None, includeStatus_=None,
                                                                         includeProvince_=None, includeCity_=None,
                                                                         includeType_=None, searchName_=None,
@@ -348,14 +354,15 @@ class RegisterLoginMain(unittest.TestCase):
             seetle_time_db = self.nectar_source_db.sql_nectar_source_last_seetle_time(nectar_source_id=nectar_source_id)
             if seetle_time_db:
                 leave_time_start = seetle_time_db
-                leave_time_end = int(time.time()*1000)
+                leave_time_end = int(time.time() * 1000)
                 leave_time = random.randint(leave_time_start, leave_time_end)
             else:
                 start_date = datetime.datetime(year=2020, month=1, day=1)
                 end_data = datetime.datetime(year=2020, month=12, day=30)
                 leave_times = self.fake.date_time_between(start_date=start_date, end_date=end_data)
                 leave_time = int(leave_times.timestamp() * 1000)
-            response = self.nectar_source._admin_nectar_source_leave(nectarSourceId_=nectar_source_id, leaveTime_=leave_time)
+            response = self.nectar_source._admin_nectar_source_leave(nectarSourceId_=nectar_source_id,
+                                                                     leaveTime_=leave_time)
             self.assertEqual(response['status'], "OK")
         else:
             self.assertTrue(False, "暂无内部蜂场")
@@ -415,10 +422,10 @@ class RegisterLoginMain(unittest.TestCase):
         province_id, city_id, district_id, address, lng, lat = self.fl.fake_location()
         response = self.nectar_source._admin_bee_friend_own_list(province_=province_id, city_=city_id)
         if response["status"] == "OK":
-           staff_db = self.staff_db.sql_bee_friend_own_count_by_area(province=province_id, city=city_id)
-           if len(staff_db):
+            staff_db = self.staff_db.sql_bee_friend_own_count_by_area(province=province_id, city=city_id)
+            if len(staff_db):
                 self.assertEqual(response["content"]["tc"], len(staff_db))
-           else:
+            else:
                 self.assertTrue(False, "数据库未查询出数据")
         else:
             self.assertTrue(False, "查询失败")
@@ -434,3 +441,14 @@ class RegisterLoginMain(unittest.TestCase):
             self.assertEqual(response["content"]["total"], len(staff_db))
         else:
             self.assertTrue(False, "自有养蜂人总数查询失败")
+
+    def test_mobile_bee_friend_operator_list(self):
+        """
+        操作人列表
+        """
+        response = self.nectar_source._mobile_bee_friend_operator_list()
+        operator_list = self.nectar_source_db.query_all_operator_list()
+        operator_list = DataConversion.del_dict_value_null(operator_list)
+        self.assertEqual(response["status"], "OK")
+        content = response.get('content')
+        self.assertListEqual(operator_list, content)

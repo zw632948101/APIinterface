@@ -1,16 +1,16 @@
 #! /usr/bin/env python3
 # -*- coding: UTF-8 -*-
 import unittest
-from actions.BeeAction import BeeAction
-from testCase.FakeLocation import FakeLocation
-from tools.Config import Log
-from sql.Bee import ContainerInformationSql, ShuntSql
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.fake.FakeLocation import FakeLocation
+from utils.log import log
+from testcase.flowerChaser.sql.Bee import ContainerInformationSql, ShuntSql
 import random
 from faker import Faker
 import time, datetime
 import json
-from tools.Common import TimestampTransform as tt
-from tools.Tool import Tool as tl
+from utils.Timestamp.TimestampTransform import TimestampTransform as tt
+from utils.dataConversion.dataConversion import DataConversion as tl
 
 
 class ContainerMain(unittest.TestCase, tt, FakeLocation, tl):
@@ -20,15 +20,15 @@ class ContainerMain(unittest.TestCase, tt, FakeLocation, tl):
     container = BeeAction()
     container_db = ContainerInformationSql()
     shunt_db = ShuntSql()
-    log = Log('ContainerMain').logger
+
     fake = Faker(locale="zh_CN")
     container.set_user('19982917912')
 
     def setUp(self) -> None:
-        self.log.info("开始执行调车接口测试用例")
+        log.info("开始执行调车接口测试用例")
 
     def tearDown(self) -> None:
-        self.log.info("结束执行调车接口测试用例")
+        log.info("结束执行调车接口测试用例")
 
     def test_mobile_shunt_add(self):
         """
@@ -139,7 +139,7 @@ class ContainerMain(unittest.TestCase, tt, FakeLocation, tl):
         for i in range(len(datas)):
             self.assertDictEqual(datas[i], shunt_info_list[i])
 
-    def test__mobile_shunt_detail(self):
+    def test_mobile_shunt_detail(self):
         """
         POST /mobile/shunt/detail
         调车详情 new 2.0
@@ -149,7 +149,7 @@ class ContainerMain(unittest.TestCase, tt, FakeLocation, tl):
         userid = self.container.user.user_id
         shunt_id_list = self.shunt_db.sql_shunt_buy_status(shunt_status=shunt_status, user_id=userid)
         if len(shunt_id_list) == 0:
-            self.log.info("未获取到调车记录ID")
+            log.info("未获取到调车记录ID")
         else:
             shunt_id = shunt_id_list[0].get('id')
             self.container._mobile_shunt_detail(shuntId_=shunt_id)
@@ -164,7 +164,7 @@ class ContainerMain(unittest.TestCase, tt, FakeLocation, tl):
         userid = self.container.user.user_id
         shunt_id_list = self.shunt_db.sql_shunt_buy_status(shunt_status=shunt_status, user_id=userid)
         if len(shunt_id_list) == 0:
-            self.log.info("未获取到状态为调车中的调车记录ID")
+            log.info("未获取到状态为调车中的调车记录ID")
         else:
             shunt_id = shunt_id_list[0].get('id')
             driver_name = "接口测试司机姓名" + self.fake.name()
@@ -187,7 +187,7 @@ class ContainerMain(unittest.TestCase, tt, FakeLocation, tl):
         userid = self.container.user.user_id
         shunt_id_list = self.shunt_db.sql_shunt_buy_status(shunt_status=shunt_status, user_id=userid)
         if len(shunt_id_list) == 0:
-            self.log.info("未获取到状态为已调车的调车记录ID")
+            log.info("未获取到状态为已调车的调车记录ID")
         else:
             shunt_id = shunt_id_list[0].get('id')
             now_time = int((time.time()) * 1000)
@@ -205,7 +205,7 @@ class ContainerMain(unittest.TestCase, tt, FakeLocation, tl):
         userid = self.container.user.user_id
         shunt_id_list = self.shunt_db.sql_shunt_buy_status(shunt_status=shunt_status, user_id=userid)
         if len(shunt_id_list) == 0:
-            self.log.info("未获取到状态为调车中/已调车的调车记录ID")
+            log.info("未获取到状态为调车中/已调车的调车记录ID")
         else:
             shunt_id = shunt_id_list[0].get('id')
             cancel_type = random.choice([1, 2, 3, 99])

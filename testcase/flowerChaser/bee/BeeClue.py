@@ -2,10 +2,10 @@
 # -*- coding: UTF-8 -*-
 
 import unittest
-from actions.BeeAction import BeeAction
-from tools.Config import Log
-from sql.Bee import BeeClueSql
-from testCase.FakeLocation import FakeLocation
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.log import log
+from testcase.flowerChaser.sql.Bee import BeeClueSql
+from utils.fake.FakeLocation import FakeLocation
 import random
 from faker import Faker
 
@@ -16,7 +16,6 @@ class BeeClueMain(unittest.TestCase):
     """
     beeclue = BeeAction()
     beeclue_db = BeeClueSql()
-    log = Log('BeeClueMain').logger
     log.info("开始执行卖蜂线索管理接口测试用例")
     fake = Faker(locale="zh_CN")
     fl = FakeLocation()
@@ -32,7 +31,7 @@ class BeeClueMain(unittest.TestCase):
         province_id, city_id, district_id, address, lng, lat = self.fl.fake_location()
         sale_num = self.fake.random_number(digits=6)
         spleen_num = self.fake.random_number(digits=6)
-        intention_price = random.choice([-1, self.fake.random_number(digits=6)*100])
+        intention_price = random.choice([-1, self.fake.random_number(digits=6) * 100])
         response = self.beeclue._mobile_bee_clue_add(keeperName_=keeper_name,
                                                      contactNumber_=contact_number,
                                                      province_=province_id,

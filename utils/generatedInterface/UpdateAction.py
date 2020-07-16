@@ -24,7 +24,6 @@ class UpdateAction(object):
         self.interfaces_path = '../../interfaces/%s/' % config.get('projectName')
         self.template_path = './template/'
 
-
     def get_edit_api(self):
         """
         检查接口变动，记录变动接口
@@ -123,7 +122,7 @@ class UpdateAction(object):
             fun_template = open(self.template_path + 'fun_get_template.txt', 'r').read()
 
         param_rep = {'func_param': param_data, 'lower_action': lower_action, 'fun_name': fun_name, 'key': api,
-                     'functions': fun_data , 'fun_params': param_datas}
+                     'functions': fun_data, 'fun_params': param_datas}
         param_rep = dict((re.escape(k), v) for k, v in param_rep.items())
         pattern = re.compile("|".join(param_rep.keys()))
         fun_str = pattern.sub(lambda m: param_rep[re.escape(m.group(0))], fun_template)
@@ -147,12 +146,14 @@ class UpdateAction(object):
         """
         urldict = config.get('urldict')
         # 生成类和构造方法
+        account_type = config.get('accounttype')
         action_name = urldict.get(url_host)
         lower_action = action_name.lower()
         url_host = url_host
         # 读取模板文件，替换相应的字段
         action_template = open(self.template_path + 'action_template.txt', 'r', encoding='utf-8').read()
-        rep = {'lower_action': lower_action, 'action_name': action_name, 'url_host': url_host}
+        rep = {'lower_action': lower_action, 'action_name': action_name, 'url_host': url_host,
+               'accounttype': account_type}
         rep = dict((re.escape(k), v) for k, v in rep.items())
         pattern = re.compile("|".join(rep.keys()))
         action_template = pattern.sub(lambda m: rep[re.escape(m.group(0))], action_template)
@@ -179,9 +180,14 @@ class UpdateAction(object):
                         paramlist = list(value[2].keys())
                         for param in paramlist:
                             param = re.sub('[\.\-]', '_', param)
-                            fun_data += ", " + param + '_=None'
-                            param_data += ", '%s': %s" % (param, param + '_')
-                            param_datas += "'%s': %s, " % (param, param + '_')
+                            if account_type == 'wf_account':
+                                param_data += ", '%s': %s" % (param, param)
+                                param_datas += "'%s': %s, " % (param, param)
+                                fun_data += ", " + param + '=None'
+                            else:
+                                param_data += ", '%s': %s" % (param, param + '_')
+                                param_datas += "'%s': %s, " % (param, param + '_')
+                                fun_data += ", " + param + '_=None'
                     fun_str = self.constitute_request_method(request_method=value[1], param_data=param_data,
                                                              lower_action=lower_action, fun_name=fun_name,
                                                              param_datas=param_datas, fun_data=fun_data, api=api)
@@ -213,7 +219,6 @@ class UpdateAction(object):
 
 
 if __name__ == '__main__':
-
     update_action = UpdateAction()
     update_action.add_latest_action()
     # update_action.add_latest_yaml()

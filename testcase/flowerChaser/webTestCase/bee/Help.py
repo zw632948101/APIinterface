@@ -8,12 +8,12 @@
 
 
 import unittest
-from actions.BeeAction import BeeAction
-from testCase.FakeLocation import FakeLocation
-from sql.Bee import HelpSql
-from tools.Config import Log
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.fake.FakeLocation import FakeLocation
+from testcase.flowerChaser.sql.Bee import HelpSql
+from utils.log import log
 from faker import Faker
-from sql.Passport import PassportInfoSql
+from testcase.flowerChaser.sql.Passport import PassportInfoSql
 import random
 
 
@@ -26,7 +26,6 @@ class RegisterLoginMain(unittest.TestCase):
     fl = FakeLocation()
     help_db = HelpSql()
     mobile = '19982917912'
-    log = Log('BeeInformationMain').logger
     log.info("开始执行蜂友互助模块测试用例")
     fake = Faker(locale="zh_CN")
     ba.set_user(mobile)

@@ -1,15 +1,15 @@
-from tools.DataBaseOperate import DataBaseOperate
-from tools.Config import Config, Log
+from utils.databaseConnection.DataBaseOperate import DataBaseOperate
+from utils.log import log
+from utils.environmentConfiguration import config
 import random
 import os
 import time
 
-host_ip = Config('config').data['database'][Config('config').data['run']]['host_ip']
+host_ip = config.get('database').get(config.get('run')).get('host_ip')
 
 
 
 class ShuntingRecordsSql(object):
-    L = Log("ShuntingRecordsSql")
     db = DataBaseOperate()
 
     def sql_all_shunt_records(self):

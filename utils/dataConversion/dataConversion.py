@@ -7,7 +7,7 @@ __date__ = '2018/3/28'
 """
 
 
-from random import choice, sample
+from random import sample
 
 
 class DataConversion(object):

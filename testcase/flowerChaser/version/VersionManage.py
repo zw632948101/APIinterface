@@ -8,11 +8,11 @@
 
 
 import unittest
-from actions.BeeAction import beeAction
-from actions.PassportAction import userAction
-from tools.Config import Log
-from sql.Version import VersionInfoSql
-from testCase.FakeLocation import FakeLocation
+from interfaces.flowerChaser.BeeAction import BeeAction
+from interfaces.flowerChaser.UserAction import UserAction
+from utils.log import log
+from testcase.flowerChaser.sql.Version import VersionInfoSql
+from utils.fake.FakeLocation import FakeLocation
 from faker import Faker
 
 
@@ -20,11 +20,10 @@ class VersionManageMain(unittest.TestCase):
     """
     接口文档: http://192.168.62.242:36054/swagger-ui.html
     """
-    ua = userAction()
-    ba = beeAction()
+    ua = UserAction()
+    ba = BeeAction()
     email = '26632629@qq.com'
     ba.set_user(email, 123456)
-    log = Log('VersionManageMain').logger
     log.info("版本管理接口测试用例")
     vis = VersionInfoSql()
     fake = Faker(locale="zh_CN")

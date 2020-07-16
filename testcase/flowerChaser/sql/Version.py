@@ -7,15 +7,13 @@
 """
 
 
-from tools.DataBaseOperate import DataBaseOperate
-from tools.Config import Config, Log
-import time
+from utils.databaseConnection.DataBaseOperate import DataBaseOperate
+from utils.environmentConfiguration import config
 
-host_ip = Config('config').data['database'][Config('config').data['run']]['host_ip']
+host_ip = config.get('database').get(config.get('run')).get('host_ip')
 
 
 class VersionInfoSql(object):
-    L = Log("VersionInfoSql")
     db = DataBaseOperate()
 
     def query_latest_update_version(self):

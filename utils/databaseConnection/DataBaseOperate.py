@@ -20,7 +20,7 @@ class DataBaseOperate(object):
 
     def operate(self, host, sql):
         connection_config = decrypt(getenv('INTERFACE_CIPHER'))
-
+        host = decrypt(host)
         if connection_config.get(host, None) is None:
             log.error("IP域名错误")
             exit(0)

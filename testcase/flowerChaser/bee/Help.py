@@ -7,19 +7,17 @@
 """
 
 import unittest
-from actions.BeeAction import BeeAction
-from testCase.FakeLocation import FakeLocation
-from tools.Config import Log
-from sql.Bee import VisitRecordSql, HelpSql
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.fake.FakeLocation import FakeLocation
+from utils.log import log
+from testcase.flowerChaser.sql.Bee import VisitRecordSql, HelpSql
 from faker import Faker
-from random import choice
-from tools.Tool import Tool
-import datetime, time
+from utils.dataConversion.dataConversion import DataConversion
+
 import random
-import json
 
 
-class HelpMain(unittest.TestCase, VisitRecordSql, FakeLocation, Tool, HelpSql):
+class HelpMain(unittest.TestCase, VisitRecordSql, FakeLocation, DataConversion, HelpSql):
     """
     接口文档:http://192.168.62.242:36054/swagger-ui.html
     """
@@ -27,7 +25,6 @@ class HelpMain(unittest.TestCase, VisitRecordSql, FakeLocation, Tool, HelpSql):
     config_db = VisitRecordSql()
     help_db = HelpSql()
     fl = FakeLocation()
-    log = Log('HelpMain').logger
     fake = Faker(locale="zh_CN")
     help.set_user("19999999990")
 

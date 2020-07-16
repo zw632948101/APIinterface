@@ -2,10 +2,10 @@
 # -*- coding: UTF-8 -*-
 
 import unittest
-from actions.BeeAction import beeAction
-from tools.Config import Log
-from sql.WorkRecord import WorkRecordSql
-from sql.LogComment import LogCommentSql
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.log import log
+from testcase.flowerChaser.sql.WorkRecord import WorkRecordSql
+from testcase.flowerChaser.sql.LogComment import LogCommentSql
 import random
 from faker import Faker
 import time
@@ -15,10 +15,9 @@ class CommentMain(unittest.TestCase):
     """
     接口文档:http://192.168.62.242:36054/swagger-ui.html
     """
-    comment = beeAction()
+    comment = BeeAction()
     comment_db = WorkRecordSql()
     lcs = LogCommentSql()
-    log = Log('ContainerMain').logger
     log.info("开始执行日志评论管理接口测试用例")
     fake = Faker(locale="zh_CN")
     comment.set_user('26632629@qq.com', '123456')

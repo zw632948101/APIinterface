@@ -3,9 +3,9 @@
 
 
 from unittest import TestCase
-from actions.BeeAction import beeAction
-from tools.Config import Log
-from sql.Bee import BeeSettleInRecordSql
+from interfaces.flowerChaser.BeeAction import BeeAction
+from utils.log import log
+from testcase.flowerChaser.sql.Bee import BeeSettleInRecordSql
 import random
 import json
 from faker import Faker
@@ -14,12 +14,11 @@ import requests
 
 
 class BeeSettleInRecord(TestCase):
-    api = beeAction()
+    api = BeeAction()
     sql = BeeSettleInRecordSql()
-    log = Log('BeeSettleInRecord').logger
     log.info("开始执行蜜蜂入驻记录接口测试用例")
     fake = Faker(locale="zh_CN")
-    api.set_user('26632629@qq.com', '123456')
+    api.set_user('15388126080')
 
     def test_mobile_purchase_enter_save(self):
         """

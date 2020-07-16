@@ -9,10 +9,10 @@
 
 import unittest
 from faker import Faker
-from actions.PassportAction import PassportAction
-from tools.Config import Log
-from tools.RedisOperate import Redis
-from sql.Passport import PassportInfoSql
+from interfaces.flowerChaser.PassportAction import PassportAction
+from utils.log import log
+from utils.databaseConnection.RedisOperate import Redis
+from testcase.flowerChaser.sql.Passport import PassportInfoSql
 
 
 class RegisterLoginMain(unittest.TestCase):
@@ -22,7 +22,6 @@ class RegisterLoginMain(unittest.TestCase):
     pa = PassportAction()
     pis = PassportInfoSql()
     mobile = '19982917912'
-    log = Log('BeeInformationMain').logger
     log.info("开始执行注册模块测试用例")
     fake = Faker()
     redis = Redis()

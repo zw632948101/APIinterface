@@ -9,13 +9,13 @@
 
 import unittest
 import time
-from actions.BeeAction import BeeAction
-from actions.UserAction import UserAction
-from tools.Config import Log
-from sql.Passport import PassportInfoSql
-from sql.Bee import ContainerInformationSql
-from sql.WorkRecord import WorkRecordSql
-from testCase.FakeLocation import FakeLocation
+from interfaces.flowerChaser.BeeAction import BeeAction
+from interfaces.flowerChaser.UserAction import UserAction
+from utils.log import log
+from testcase.flowerChaser.sql.Passport import PassportInfoSql
+from testcase.flowerChaser.sql.Bee import ContainerInformationSql
+from testcase.flowerChaser.sql.WorkRecord import WorkRecordSql
+from utils.fake.FakeLocation import FakeLocation
 from faker import Faker
 import random
 
@@ -28,7 +28,6 @@ class KeepLogMain(unittest.TestCase):
     ba = BeeAction()
     email = '26632629@qq.com'
     ba.set_user(email, 123456)
-    log = Log('WorkLogMain').logger
     log.info("开始执行工作日志接口测试用例")
     pis = PassportInfoSql()
     cis = ContainerInformationSql()
