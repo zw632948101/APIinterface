@@ -40,6 +40,7 @@ class CattleMapMain(testCase):
         register = self.ka._mobile_cattle_set_frequency_clever_batch(farmId=deviceEui.get('farm_id'),
                                                                      deviceEuis=[deviceEui.get('device_id')])
         self.assertEqual(register['status'], 'OK')
+        
 
     def test_mobile_cattle_frequency_num(self):
         """
