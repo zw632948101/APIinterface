@@ -1,4 +1,7 @@
-from Crypto.Cipher import AES
+try:
+    from crypto.Cipher import AES
+except ModuleNotFoundError:
+    from Crypto.Cipher import AES
 from binascii import a2b_hex
 from os import getenv
 import json
