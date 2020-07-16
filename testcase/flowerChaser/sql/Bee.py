@@ -1431,7 +1431,6 @@ class NectarSourcePlant(DataBaseOperate):
                   FROM `fc-bee`.t_nectar_source_plant tp WHERE tp.is_delete = 0;"""
         return self.operate(host_ip, sql)
 
-
 if __name__ == '__main__':
     d = NectarSourcePlant()
     print(d.query_nectar_source_plant_all())
