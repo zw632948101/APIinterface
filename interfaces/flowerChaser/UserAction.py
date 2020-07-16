@@ -12,11 +12,11 @@ class UserAction(object):
         self.request = Request()
         self.url = config.get('hosts').get(config.get('run')).get('FC_USER')
 
-    def set_user(self, mobile=None, account_type='user'):
+    def set_user(self, mobile=None, account_type='user', password=None):
         if mobile is None:
             self.user = None
         else:
-            self.user = User(mobile, account_type)
+            self.user = User(mobile, account_type, password=password)
             self.request.headers.update({"_Device-Id_": self.user.device_id})
             self.request.headers.update({"_Token_": self.user.token})
         return self.user
