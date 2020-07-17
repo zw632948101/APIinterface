@@ -683,13 +683,13 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/admin/nectar-source/list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    # def _admin_platform_bee_container_add(self, containerInfoList[0]_cameraNo_=None, containerInfoList[0]_gatewayNo_=None, mobilePhone_=None, containerInfo_=None):
-    #     if self.user is None:
-    #         data = {'containerInfoList[0]_cameraNo': containerInfoList[0]_cameraNo_, 'containerInfoList[0]_gatewayNo': containerInfoList[0]_gatewayNo_, 'mobilePhone': mobilePhone_, 'containerInfo': containerInfo_, }
-    #     else:
-    #         data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'containerInfoList[0]_cameraNo': containerInfoList[0]_cameraNo_, 'containerInfoList[0]_gatewayNo': containerInfoList[0]_gatewayNo_, 'mobilePhone': mobilePhone_, 'containerInfo': containerInfo_}
-    #     response = self.request.post(url=self.url+'/admin/platform/bee-container/add', data=data, hosts=self.url)
-    #     return self.__judge_response_status(json.loads(response))
+    def _admin_platform_bee_container_add(self, mobilePhone_=None, containerInfo_=None):
+        if self.user is None:
+            data = {'mobilePhone': mobilePhone_, 'containerInfo': containerInfo_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'mobilePhone': mobilePhone_, 'containerInfo': containerInfo_}
+        response = self.request.post(url=self.url+'/admin/platform/bee-container/add', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
 
     def _admin_platform_bee_container_camera_list(self):
         if self.user is None:
