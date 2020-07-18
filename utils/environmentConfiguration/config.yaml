@@ -1,7 +1,7 @@
 which_project: &which_project flowerChaser
 env: &env
   run: DEV
-  updateActionAPI: QA_API
+  updateActionAPI: DEV_API
   version: 2.3.1
   dataBaseURI: 5595ec6c66c0374940fb2d6919a487f9b500f8602951206c6f9b85cab245bd1e90a2c42c9b0fb3883c44aadb5235b9dc94d8411f761298d477315e878eb9a87f
   projectName: *which_project

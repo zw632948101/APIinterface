@@ -683,13 +683,29 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/admin/nectar-source/list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    # def _admin_platform_bee_container_add(self, containerInfoList[0]_cameraNo_=None, containerInfoList[0]_gatewayNo_=None, mobilePhone_=None, containerInfo_=None):
-    #     if self.user is None:
-    #         data = {'containerInfoList[0]_cameraNo': containerInfoList[0]_cameraNo_, 'containerInfoList[0]_gatewayNo': containerInfoList[0]_gatewayNo_, 'mobilePhone': mobilePhone_, 'containerInfo': containerInfo_, }
-    #     else:
-    #         data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'containerInfoList[0]_cameraNo': containerInfoList[0]_cameraNo_, 'containerInfoList[0]_gatewayNo': containerInfoList[0]_gatewayNo_, 'mobilePhone': mobilePhone_, 'containerInfo': containerInfo_}
-    #     response = self.request.post(url=self.url+'/admin/platform/bee-container/add', data=data, hosts=self.url)
-    #     return self.__judge_response_status(json.loads(response))
+    def _admin_platform_bee_container_add(self, mobilePhone_=None, containerInfo_=None):
+        if self.user is None:
+            data = {'mobilePhone': mobilePhone_, 'containerInfo': containerInfo_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'mobilePhone': mobilePhone_, 'containerInfo': containerInfo_}
+        response = self.request.post(url=self.url+'/admin/platform/bee-container/add', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_platform_bee_container_camera_list(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/admin/platform/bee-container/camera-list', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_platform_bee_container_gateway_list(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/admin/platform/bee-container/gateway-list', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
 
     def _admin_platform_bee_container_list(self, userId_=None):
         if self.user is None:
@@ -707,12 +723,36 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/admin/platform/bee-container/remove', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
+    def _admin_platform_bee_container_user_record(self, userId_=None):
+        if self.user is None:
+            data = {'userId': userId_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'userId': userId_}
+        response = self.request.post(url=self.url+'/admin/platform/bee-container/user-record', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_platform_bee_friend_detail(self, userId_=None):
+        if self.user is None:
+            data = {'userId': userId_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'userId': userId_}
+        response = self.request.post(url=self.url+'/admin/platform/bee-friend/detail', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
     def _admin_platform_bee_friend_list(self, pn_=None, ps_=None, search_=None, status_=None):
         if self.user is None:
             data = {'pn': pn_, 'ps': ps_, 'search': search_, 'status': status_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'search': search_, 'status': status_}
         response = self.request.post(url=self.url+'/admin/platform/bee-friend/list', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_platform_bee_friend_mobile_phone_exist(self, mobilePhone_=None):
+        if self.user is None:
+            data = {'mobilePhone': mobilePhone_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'mobilePhone': mobilePhone_}
+        response = self.request.post(url=self.url+'/admin/platform/bee-friend/mobile-phone-exist', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _admin_platform_bee_friend_total(self, status_=None):
@@ -1123,11 +1163,11 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/mobile/app-version/upload-app', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_bee_friend_follow_follow(self):
+    def _mobile_bee_friend_follow_follow(self, followFriendId_=None, optType_=None):
         if self.user is None:
-            data = {}
+            data = {'followFriendId': followFriendId_, 'optType': optType_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'followFriendId': followFriendId_, 'optType': optType_}
         response = self.request.post(url=self.url+'/mobile/bee-friend-follow/follow', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -1675,11 +1715,11 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/mobile/message/unread', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_nearby_bee_friend_associate(self, searchKey_=None):
+    def _mobile_nearby_bee_friend_associate(self, pn_=None, ps_=None, searchKey_=None):
         if self.user is None:
-            data = {'searchKey': searchKey_, }
+            data = {'pn': pn_, 'ps': ps_, 'searchKey': searchKey_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'searchKey': searchKey_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'searchKey': searchKey_}
         response = self.request.post(url=self.url+'/mobile/nearby-bee-friend/associate', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
