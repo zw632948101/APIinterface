@@ -27,10 +27,14 @@ def logger(name=None, level="DEBUG"):
     console_handler = logging.StreamHandler()
 
     # 文件日志
-    # current_path = os.path.dirname(os.path.abspath(__file__))
-    if not os.path.exists("../logFiles"):
-        os.makedirs("../logFiles")
-    file_handler = logging.FileHandler(filename='../logFiles/%s.log' % name, mode='w', encoding='utf-8')
+    current_path = os.path.dirname(__file__) + '/logFiles/'
+    try:
+        current_path = current_path.split('utils')[0] + '/logFiles/'
+    except Exception:
+            pass
+    if not os.path.exists(current_path):
+        os.makedirs(current_path)
+    file_handler = logging.FileHandler(filename=current_path + '%s.log' % name, mode='w', encoding='utf-8')
 
     # 指定logger输出格式
     formatter = logging.Formatter('%(asctime)s - %(filename)s - line:%(lineno)d - %(name)s - '

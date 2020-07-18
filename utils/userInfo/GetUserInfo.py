@@ -47,10 +47,12 @@ class SessionTool(object):
                 "mobile": mobile,
                 "verifyCode": 8888}
         if account_type == 'user':
-            session = Request().post(url="http://dev-passport.worldfarm.com/mobile/sso/sms-login",
+            host = config.get('hosts').get(config.get('run')).get('FC_PASSPORT')
+            session = Request().post(url=host+"/mobile/sso/sms-login",
                                      data=data)
         elif account_type == 'employee':
-            session = Request().post(url="http://dev-gateway.worldfarm.com/world-passport/admin/sso/email-login",
+            host = config.get('hosts').get(config.get('run')).get('FC_PASSPORT')
+            session = Request().post(url=host+"/admin/sso/email-login",
                                      data=data)
         elif account_type == 'wf_account':
             datas = {'appId': 'WORLD_FARM', 'deviceType': 'IOS', 'deviceId': 'qaTeam', 'account': mobile,
