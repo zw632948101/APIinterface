@@ -23,6 +23,8 @@ class OwnFarmMain(unittest.TestCase):
 
     def test_mobile_apiary_overview(self):
         """
-
+        POST /mobile/apiary/overview 我的蜂场信息预览
         :return:
         """
+        province, city, county, address, lng, lat = self.fl.fake_location()
+        self.own_bee_farm._mobile_apiary_overview(lat_=lat, lng_=lng)
