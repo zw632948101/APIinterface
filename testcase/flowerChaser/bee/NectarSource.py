@@ -57,16 +57,6 @@ class NectarSourceMain(unittest.TestCase):
         price = self.fake.random_int(min=1, max=999999) * 100
         vehicle_length = random.randint(1001, 1018)
         remark = self.fake.text(max_nb_chars=200)
-        prospect_pic = ["http://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com/data/fc-bee/attach/1592186431321.jpg"]
-        prospect_pic = json.dumps(prospect_pic, ensure_ascii=False)
-        tent_pic = ["http://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com/data/fc-bee/attach/1592186460148.jpg"]
-        tent_pic = json.dumps(tent_pic, ensure_ascii=False)
-        site_pic = ["http://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com/data/fc-bee/attach/1592186528062.jpg"]
-        site_pic = json.dumps(site_pic, ensure_ascii=False)
-        road_pic = ["http://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com/data/fc-bee/attach/1592186565033.jpg"]
-        road_pic = json.dumps(road_pic, ensure_ascii=False)
-        water_pic = ["https://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com/data/fc-bee/attach/1577330419920.jpg"]
-        water_pic = json.dumps(water_pic, ensure_ascii=False)
         response = self.nectar_source._mobile_nectar_source_add(type_=type_list, name_=name, baseType_=base_type,
                                                                 province_=province_id, city_=city_id,
                                                                 county_=district_id, address_=address, lng_=lng,
@@ -81,10 +71,7 @@ class NectarSourceMain(unittest.TestCase):
                                                                 expectHiveNum_=expect_ive_num,
                                                                 price_=price,
                                                                 vehicleLength_=vehicle_length,
-                                                                remark_=remark,
-                                                                prospectPic_=prospect_pic, tentPic_=tent_pic,
-                                                                sitePic_=site_pic, roadPic_=road_pic,
-                                                                waterPic_=water_pic)
+                                                                remark_=remark)
         if response["status"] == "OK":
             nectar_sources = self.nectar_source_db.sql_all_nectar_source()[0]
             nectar_source_detail = nectar_sources

@@ -82,7 +82,7 @@ class OwnFarmMain(unittest.TestCase):
         integrated_num = random.randint(1, 999999)
         queen_bee_type = random.randint(1, 3)
         queen_bee_species = random.randint(1, 11)
-        response = self.apiary._mobile_apiary_edit(products_=products, majorNectar_=major_nectar, remark_=remark,
+        response = self.own_bee_farm._mobile_apiary_edit(products_=products, majorNectar_=major_nectar, remark_=remark,
                                                    swarmNum_=swarm_num, integratedNum_=integrated_num,
                                                    queenBeeSpecies_=queen_bee_species, queenBeeType_=queen_bee_type,id_='')
         self.assertEqual("OK", response["status"])
@@ -93,5 +93,5 @@ class OwnFarmMain(unittest.TestCase):
         v2.3.1 新增
         :return:
         """
-        response = self.apiary._mobile_apiary_detail()
+        response = self.own_bee_farm._mobile_apiary_detail()
         self.assertEqual("OK", response["status"])
