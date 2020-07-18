@@ -1432,6 +1432,8 @@ class NectarSourcePlant(DataBaseOperate):
         return self.operate(host_ip, sql)
 
 
+
+
 if __name__ == '__main__':
     d = NectarSourcePlant()
     print(d.query_nectar_source_plant_all())
