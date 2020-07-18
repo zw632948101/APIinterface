@@ -59,6 +59,15 @@ class OwnFarmMain(unittest.TestCase):
         self.own_bee_farm._mobile_bee_friend_follow_follow(followFriendId_=follow_friend_id,
                                                            optType_=opt_type)
 
+    def test_mobile_apiary_overview(self):
+        """
+        POST /mobile/apiary/overview 我的蜂场信息预览
+        :return:
+        """
+        province, city, county, address, lng, lat = self.fl.fake_location()
+        self.own_bee_farm._mobile_apiary_overview(lat_=lat, lng_=lng)
+
+
 
     def test_mobile_apiary_edit(self):
         """
