@@ -1,7 +1,7 @@
 which_project: &which_project flowerChaser
 env: &env
   run: QA
-  updateActionAPI: DEV_API
+  updateActionAPI: QA_API
   version: 2.3.1
   dataBaseURI: 5595ec6c66c0374940fb2d6919a487f9b500f8602951206c6f9b85cab245bd1e90a2c42c9b0fb3883c44aadb5235b9dc94d8411f761298d477315e878eb9a87f
   projectName: *which_project
@@ -17,6 +17,7 @@ flowerChaser:
     FC_PASSPORT: "Passport"
     FC_USER: "User"
     FC_BEE: "Bee"
+    FC_TRADE: "Trade"
   accounttype: 'user'
   hosts:
     DEV:
@@ -32,10 +33,12 @@ flowerChaser:
     QA:
       FC_BEE: 'http://qa-gateway.worldfarm.com/fc-bee'
       FC_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
+      FC_TRADE: 'http://qa-gateway.worldfarm.com/fc-trade'
       FC_USER: 'http://qa-gateway.worldfarm.com/world-user'
 
     QA_API:
-      FC_BEE: 'http://dev-gateway.worldfarm.com/fc-bee'
+      FC_BEE: 'http://qa-gateway.worldfarm.com/fc-bee'
+      FC_TRADE: 'http://qa-gateway.worldfarm.com/fc-trade'
       FC_PASSPORT: 'http://dev-passport.worldfarm.com'
       FC_USER: 'http://dev-user.worldfarm.com'
 

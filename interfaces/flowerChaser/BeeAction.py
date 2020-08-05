@@ -27,11 +27,35 @@ class BeeAction(object):
         else:
             raise Exception('status未返回OK或ERROR')
 
-    def _admin_bee_friend_add(self, curNectarType_=None, labelType_=None, regularSource_=None, intention_=None, province_=None, city_=None, county_=None, address_=None, lng_=None, lat_=None, vehicleLength_=None, expectHiveNum_=None, pics_=None, scale_=None, hiveNum_=None, standardNum_=None, smallNum_=None, queenType_=None, queenNum2_=None, queenNum1_=None, queenNum_=None, ekeNum_=None, platNum_=None, babyNum_=None, honeyNum_=None, remark_=None, nextNectarSource_=None, nextSourceEnterTime_=None, joinDate_=None, leaveDate_=None, contactNumber_=None, realName_=None, age_=None, gender_=None, nativeProvince_=None, nativeCity_=None, nativeCounty_=None, seniority_=None, regularRoute_=None, studyFrom_=None, heir_=None, yield_=None, income_=None, breedTime1_=None, breedPlace1_=None, breedTime2_=None, breedPlace2_=None, saleNum_=None, intentionPrice_=None, saleTime_=None, saleProvince_=None, saleCity_=None, saleCounty_=None, altitude_=None, distantPic_=None, tentPic_=None, sitePic_=None, roadPic_=None):
+    def _admin_apiary_detail(self, userId_=None):
         if self.user is None:
-            data = {'curNectarType': curNectarType_, 'labelType': labelType_, 'regularSource': regularSource_, 'intention': intention_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'vehicleLength': vehicleLength_, 'expectHiveNum': expectHiveNum_, 'pics': pics_, 'scale': scale_, 'hiveNum': hiveNum_, 'standardNum': standardNum_, 'smallNum': smallNum_, 'queenType': queenType_, 'queenNum2': queenNum2_, 'queenNum1': queenNum1_, 'queenNum': queenNum_, 'ekeNum': ekeNum_, 'platNum': platNum_, 'babyNum': babyNum_, 'honeyNum': honeyNum_, 'remark': remark_, 'nextNectarSource': nextNectarSource_, 'nextSourceEnterTime': nextSourceEnterTime_, 'joinDate': joinDate_, 'leaveDate': leaveDate_, 'contactNumber': contactNumber_, 'realName': realName_, 'age': age_, 'gender': gender_, 'nativeProvince': nativeProvince_, 'nativeCity': nativeCity_, 'nativeCounty': nativeCounty_, 'seniority': seniority_, 'regularRoute': regularRoute_, 'studyFrom': studyFrom_, 'heir': heir_, 'yield': yield_, 'income': income_, 'breedTime1': breedTime1_, 'breedPlace1': breedPlace1_, 'breedTime2': breedTime2_, 'breedPlace2': breedPlace2_, 'saleNum': saleNum_, 'intentionPrice': intentionPrice_, 'saleTime': saleTime_, 'saleProvince': saleProvince_, 'saleCity': saleCity_, 'saleCounty': saleCounty_, 'altitude': altitude_, 'distantPic': distantPic_, 'tentPic': tentPic_, 'sitePic': sitePic_, 'roadPic': roadPic_, }
+            data = {'userId': userId_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'curNectarType': curNectarType_, 'labelType': labelType_, 'regularSource': regularSource_, 'intention': intention_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'vehicleLength': vehicleLength_, 'expectHiveNum': expectHiveNum_, 'pics': pics_, 'scale': scale_, 'hiveNum': hiveNum_, 'standardNum': standardNum_, 'smallNum': smallNum_, 'queenType': queenType_, 'queenNum2': queenNum2_, 'queenNum1': queenNum1_, 'queenNum': queenNum_, 'ekeNum': ekeNum_, 'platNum': platNum_, 'babyNum': babyNum_, 'honeyNum': honeyNum_, 'remark': remark_, 'nextNectarSource': nextNectarSource_, 'nextSourceEnterTime': nextSourceEnterTime_, 'joinDate': joinDate_, 'leaveDate': leaveDate_, 'contactNumber': contactNumber_, 'realName': realName_, 'age': age_, 'gender': gender_, 'nativeProvince': nativeProvince_, 'nativeCity': nativeCity_, 'nativeCounty': nativeCounty_, 'seniority': seniority_, 'regularRoute': regularRoute_, 'studyFrom': studyFrom_, 'heir': heir_, 'yield': yield_, 'income': income_, 'breedTime1': breedTime1_, 'breedPlace1': breedPlace1_, 'breedTime2': breedTime2_, 'breedPlace2': breedPlace2_, 'saleNum': saleNum_, 'intentionPrice': intentionPrice_, 'saleTime': saleTime_, 'saleProvince': saleProvince_, 'saleCity': saleCity_, 'saleCounty': saleCounty_, 'altitude': altitude_, 'distantPic': distantPic_, 'tentPic': tentPic_, 'sitePic': sitePic_, 'roadPic': roadPic_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'userId': userId_}
+        response = self.request.post(url=self.url+'/admin/apiary/detail', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_app_version_add(self, appId_=None, updateType_=None, downloadUrl_=None, appCode_=None, appName_=None, versionMilepost_=None, versionNum_=None, versionCode_=None, versionNumBefore_=None, versionBig_=None, updateTitle_=None, updateTitleEn_=None, updateMessage_=None, updateMessageEn_=None, status_=None):
+        if self.user is None:
+            data = {'appId': appId_, 'updateType': updateType_, 'downloadUrl': downloadUrl_, 'appCode': appCode_, 'appName': appName_, 'versionMilepost': versionMilepost_, 'versionNum': versionNum_, 'versionCode': versionCode_, 'versionNumBefore': versionNumBefore_, 'versionBig': versionBig_, 'updateTitle': updateTitle_, 'updateTitleEn': updateTitleEn_, 'updateMessage': updateMessage_, 'updateMessageEn': updateMessageEn_, 'status': status_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'appId': appId_, 'updateType': updateType_, 'downloadUrl': downloadUrl_, 'appCode': appCode_, 'appName': appName_, 'versionMilepost': versionMilepost_, 'versionNum': versionNum_, 'versionCode': versionCode_, 'versionNumBefore': versionNumBefore_, 'versionBig': versionBig_, 'updateTitle': updateTitle_, 'updateTitleEn': updateTitleEn_, 'updateMessage': updateMessage_, 'updateMessageEn': updateMessageEn_, 'status': status_}
+        response = self.request.post(url=self.url+'/admin/app-version/add', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_app_version_upload_app(self, file_=None, type_=None):
+        if self.user is None:
+            data = {'file': file_, 'type': type_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'file': file_, 'type': type_}
+        response = self.request.post(url=self.url+'/admin/app-version/upload-app', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_bee_friend_add(self, curNectarType_=None, labelType_=None, regularSource_=None, intention_=None, province_=None, city_=None, county_=None, address_=None, lng_=None, lat_=None, vehicleLength_=None, expectHiveNum_=None, scale_=None, hiveNum_=None, standardNum_=None, smallNum_=None, queenType_=None, queenNum2_=None, queenNum1_=None, queenNum_=None, ekeNum_=None, platNum_=None, babyNum_=None, honeyNum_=None, remark_=None, nextNectarSource_=None, nextSourceEnterTime_=None, joinDate_=None, leaveDate_=None, contactNumber_=None, realName_=None, age_=None, gender_=None, nativeProvince_=None, nativeCity_=None, nativeCounty_=None, seniority_=None, regularRoute_=None, studyFrom_=None, heir_=None, yield_=None, income_=None, breedTime1_=None, breedPlace1_=None, breedTime2_=None, breedPlace2_=None, saleNum_=None, intentionPrice_=None, saleTime_=None, saleProvince_=None, saleCity_=None, saleCounty_=None, altitude_=None, distantPic_=None, tentPic_=None, sitePic_=None, roadPic_=None):
+        if self.user is None:
+            data = {'curNectarType': curNectarType_, 'labelType': labelType_, 'regularSource': regularSource_, 'intention': intention_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'vehicleLength': vehicleLength_, 'expectHiveNum': expectHiveNum_, 'scale': scale_, 'hiveNum': hiveNum_, 'standardNum': standardNum_, 'smallNum': smallNum_, 'queenType': queenType_, 'queenNum2': queenNum2_, 'queenNum1': queenNum1_, 'queenNum': queenNum_, 'ekeNum': ekeNum_, 'platNum': platNum_, 'babyNum': babyNum_, 'honeyNum': honeyNum_, 'remark': remark_, 'nextNectarSource': nextNectarSource_, 'nextSourceEnterTime': nextSourceEnterTime_, 'joinDate': joinDate_, 'leaveDate': leaveDate_, 'contactNumber': contactNumber_, 'realName': realName_, 'age': age_, 'gender': gender_, 'nativeProvince': nativeProvince_, 'nativeCity': nativeCity_, 'nativeCounty': nativeCounty_, 'seniority': seniority_, 'regularRoute': regularRoute_, 'studyFrom': studyFrom_, 'heir': heir_, 'yield': yield_, 'income': income_, 'breedTime1': breedTime1_, 'breedPlace1': breedPlace1_, 'breedTime2': breedTime2_, 'breedPlace2': breedPlace2_, 'saleNum': saleNum_, 'intentionPrice': intentionPrice_, 'saleTime': saleTime_, 'saleProvince': saleProvince_, 'saleCity': saleCity_, 'saleCounty': saleCounty_, 'altitude': altitude_, 'distantPic': distantPic_, 'tentPic': tentPic_, 'sitePic': sitePic_, 'roadPic': roadPic_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'curNectarType': curNectarType_, 'labelType': labelType_, 'regularSource': regularSource_, 'intention': intention_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'vehicleLength': vehicleLength_, 'expectHiveNum': expectHiveNum_, 'scale': scale_, 'hiveNum': hiveNum_, 'standardNum': standardNum_, 'smallNum': smallNum_, 'queenType': queenType_, 'queenNum2': queenNum2_, 'queenNum1': queenNum1_, 'queenNum': queenNum_, 'ekeNum': ekeNum_, 'platNum': platNum_, 'babyNum': babyNum_, 'honeyNum': honeyNum_, 'remark': remark_, 'nextNectarSource': nextNectarSource_, 'nextSourceEnterTime': nextSourceEnterTime_, 'joinDate': joinDate_, 'leaveDate': leaveDate_, 'contactNumber': contactNumber_, 'realName': realName_, 'age': age_, 'gender': gender_, 'nativeProvince': nativeProvince_, 'nativeCity': nativeCity_, 'nativeCounty': nativeCounty_, 'seniority': seniority_, 'regularRoute': regularRoute_, 'studyFrom': studyFrom_, 'heir': heir_, 'yield': yield_, 'income': income_, 'breedTime1': breedTime1_, 'breedPlace1': breedPlace1_, 'breedTime2': breedTime2_, 'breedPlace2': breedPlace2_, 'saleNum': saleNum_, 'intentionPrice': intentionPrice_, 'saleTime': saleTime_, 'saleProvince': saleProvince_, 'saleCity': saleCity_, 'saleCounty': saleCounty_, 'altitude': altitude_, 'distantPic': distantPic_, 'tentPic': tentPic_, 'sitePic': sitePic_, 'roadPic': roadPic_}
         response = self.request.post(url=self.url+'/admin/bee-friend/add', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -73,6 +97,14 @@ class BeeAction(object):
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'regularSource': regularSource_, 'labelType': labelType_, 'intention': intention_, 'id': id_, 'realName': realName_, 'contactNumber': contactNumber_, 'gender': gender_, 'nativeProvince': nativeProvince_, 'nativeCity': nativeCity_, 'nativeCounty': nativeCounty_, 'age': age_, 'seniority': seniority_, 'regularRoute': regularRoute_, 'studyFrom': studyFrom_, 'heir': heir_, 'yield': yield_, 'income': income_, 'breedTime1': breedTime1_, 'breedPlace1': breedPlace1_, 'breedTime2': breedTime2_, 'breedPlace2': breedPlace2_, 'saleNum': saleNum_, 'intentionPrice': intentionPrice_, 'saleTime': saleTime_, 'saleProvince': saleProvince_, 'saleCity': saleCity_, 'saleCounty': saleCounty_}
         response = self.request.post(url=self.url+'/admin/bee-friend/edit', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_bee_friend_extract_list(self, searchKey_=None):
+        if self.user is None:
+            data = {'searchKey': searchKey_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'searchKey': searchKey_}
+        response = self.request.post(url=self.url+'/admin/bee-friend/extract-list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _admin_bee_friend_friend_add(self, labelType_=None, regularSource_=None, intention_=None, contactNumber_=None, realName_=None, age_=None, gender_=None, nativeProvince_=None, nativeCity_=None, nativeCounty_=None, seniority_=None, regularRoute_=None, studyFrom_=None, heir_=None, yield_=None, income_=None, breedTime1_=None, breedPlace1_=None, breedTime2_=None, breedPlace2_=None, saleNum_=None, intentionPrice_=None, saleTime_=None, saleProvince_=None, saleCity_=None, saleCounty_=None):
@@ -225,6 +257,54 @@ class BeeAction(object):
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'userId': userId_}
         response = self.request.post(url=self.url+'/admin/contract/page-list', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_cooperation_current_info(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/admin/cooperation/current-info', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_cooperation_nectar_list(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/admin/cooperation/nectar-list', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_cooperation_position_data(self, dataTypes_=None, stDate_=None, edDate_=None, vehicle_=None, stHiveNum_=None, edHiveNum_=None, nectarType_=None, address_=None):
+        if self.user is None:
+            data = {'dataTypes': dataTypes_, 'stDate': stDate_, 'edDate': edDate_, 'vehicle': vehicle_, 'stHiveNum': stHiveNum_, 'edHiveNum': edHiveNum_, 'nectarType': nectarType_, 'address': address_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'dataTypes': dataTypes_, 'stDate': stDate_, 'edDate': edDate_, 'vehicle': vehicle_, 'stHiveNum': stHiveNum_, 'edHiveNum': edHiveNum_, 'nectarType': nectarType_, 'address': address_}
+        response = self.request.post(url=self.url+'/admin/cooperation/position-data', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_cooperation_swarm_count(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/admin/cooperation/swarm-count', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_cooperation_swarm_data(self, swarmId_=None, dataType_=None):
+        if self.user is None:
+            data = {'swarmId': swarmId_, 'dataType': dataType_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'swarmId': swarmId_, 'dataType': dataType_}
+        response = self.request.post(url=self.url+'/admin/cooperation/swarm-data', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_cooperation_swarm_location(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/admin/cooperation/swarm-location', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _admin_enter_enter_check(self, containerIds_=None, nectarSourceId_=None):
@@ -491,11 +571,11 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/admin/hot-nectar-source/list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_index_position_data(self, dataTypes_=None, stDate_=None, edDate_=None, vehicle_=None, stHiveNum_=None, edHiveNum_=None, nectarType_=None, provinces_=None, cities_=None, counties_=None, address_=None):
+    def _admin_index_position_data(self, dataTypes_=None, stDate_=None, edDate_=None, vehicle_=None, stHiveNum_=None, edHiveNum_=None, nectarType_=None, address_=None):
         if self.user is None:
-            data = {'dataTypes': dataTypes_, 'stDate': stDate_, 'edDate': edDate_, 'vehicle': vehicle_, 'stHiveNum': stHiveNum_, 'edHiveNum': edHiveNum_, 'nectarType': nectarType_, 'provinces': provinces_, 'cities': cities_, 'counties': counties_, 'address': address_, }
+            data = {'dataTypes': dataTypes_, 'stDate': stDate_, 'edDate': edDate_, 'vehicle': vehicle_, 'stHiveNum': stHiveNum_, 'edHiveNum': edHiveNum_, 'nectarType': nectarType_, 'address': address_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'dataTypes': dataTypes_, 'stDate': stDate_, 'edDate': edDate_, 'vehicle': vehicle_, 'stHiveNum': stHiveNum_, 'edHiveNum': edHiveNum_, 'nectarType': nectarType_, 'provinces': provinces_, 'cities': cities_, 'counties': counties_, 'address': address_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'dataTypes': dataTypes_, 'stDate': stDate_, 'edDate': edDate_, 'vehicle': vehicle_, 'stHiveNum': stHiveNum_, 'edHiveNum': edHiveNum_, 'nectarType': nectarType_, 'address': address_}
         response = self.request.post(url=self.url+'/admin/index/position-data', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -555,11 +635,11 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/admin/nectar-source-plant/list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_nectar_source_point_add(self, province_=None, city_=None, county_=None, lng_=None, lat_=None, plantCode_=None, floweringStartDate_=None, nectarFlow_=None, nectarSourceArea_=None, apiaryDensity_=None, entryDate_=None, departureDate_=None, purpose_=None, secondPlantCode_=None, pesticideCondition_=None, mainIntensively_=None, remark_=None, nectarSourceFlowInputs_=None, nectarSourcePointAttachInputs_=None):
+    def _admin_nectar_source_point_add(self, province_=None, city_=None, county_=None, lng_=None, lat_=None, plantCode_=None, floweringStartDate_=None, floweringEndDate_=None, nectarFlow_=None, nectarSourceArea_=None, apiaryDensity_=None, entryDate_=None, departureDate_=None, purpose_=None, secondPlantCode_=None, pesticideCondition_=None, mainIntensively_=None, remark_=None, nectarSourceFlowInputs_=None, nectarSourcePointAttachInputs_=None):
         if self.user is None:
-            data = {'province': province_, 'city': city_, 'county': county_, 'lng': lng_, 'lat': lat_, 'plantCode': plantCode_, 'floweringStartDate': floweringStartDate_, 'nectarFlow': nectarFlow_, 'nectarSourceArea': nectarSourceArea_, 'apiaryDensity': apiaryDensity_, 'entryDate': entryDate_, 'departureDate': departureDate_, 'purpose': purpose_, 'secondPlantCode': secondPlantCode_, 'pesticideCondition': pesticideCondition_, 'mainIntensively': mainIntensively_, 'remark': remark_, 'nectarSourceFlowInputs': nectarSourceFlowInputs_, 'nectarSourcePointAttachInputs': nectarSourcePointAttachInputs_, }
+            data = {'province': province_, 'city': city_, 'county': county_, 'lng': lng_, 'lat': lat_, 'plantCode': plantCode_, 'floweringStartDate': floweringStartDate_, 'floweringEndDate': floweringEndDate_, 'nectarFlow': nectarFlow_, 'nectarSourceArea': nectarSourceArea_, 'apiaryDensity': apiaryDensity_, 'entryDate': entryDate_, 'departureDate': departureDate_, 'purpose': purpose_, 'secondPlantCode': secondPlantCode_, 'pesticideCondition': pesticideCondition_, 'mainIntensively': mainIntensively_, 'remark': remark_, 'nectarSourceFlowInputs': nectarSourceFlowInputs_, 'nectarSourcePointAttachInputs': nectarSourcePointAttachInputs_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'province': province_, 'city': city_, 'county': county_, 'lng': lng_, 'lat': lat_, 'plantCode': plantCode_, 'floweringStartDate': floweringStartDate_, 'nectarFlow': nectarFlow_, 'nectarSourceArea': nectarSourceArea_, 'apiaryDensity': apiaryDensity_, 'entryDate': entryDate_, 'departureDate': departureDate_, 'purpose': purpose_, 'secondPlantCode': secondPlantCode_, 'pesticideCondition': pesticideCondition_, 'mainIntensively': mainIntensively_, 'remark': remark_, 'nectarSourceFlowInputs': nectarSourceFlowInputs_, 'nectarSourcePointAttachInputs': nectarSourcePointAttachInputs_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'province': province_, 'city': city_, 'county': county_, 'lng': lng_, 'lat': lat_, 'plantCode': plantCode_, 'floweringStartDate': floweringStartDate_, 'floweringEndDate': floweringEndDate_, 'nectarFlow': nectarFlow_, 'nectarSourceArea': nectarSourceArea_, 'apiaryDensity': apiaryDensity_, 'entryDate': entryDate_, 'departureDate': departureDate_, 'purpose': purpose_, 'secondPlantCode': secondPlantCode_, 'pesticideCondition': pesticideCondition_, 'mainIntensively': mainIntensively_, 'remark': remark_, 'nectarSourceFlowInputs': nectarSourceFlowInputs_, 'nectarSourcePointAttachInputs': nectarSourcePointAttachInputs_}
         response = self.request.post(url=self.url+'/admin/nectar-source-point/add', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -595,11 +675,11 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/admin/nectar-source-point/detail', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_nectar_source_point_edit(self, id_=None, province_=None, city_=None, county_=None, lng_=None, lat_=None, plantCode_=None, floweringStartDate_=None, nectarFlow_=None, nectarSourceArea_=None, apiaryDensity_=None, entryDate_=None, departureDate_=None, purpose_=None, secondPlantCode_=None, pesticideCondition_=None, mainIntensively_=None, remark_=None, nectarSourceFlowInputs_=None, nectarSourcePointAttachInputs_=None):
+    def _admin_nectar_source_point_edit(self, id_=None, province_=None, city_=None, county_=None, lng_=None, lat_=None, plantCode_=None, floweringStartDate_=None, floweringEndDate_=None, nectarFlow_=None, nectarSourceArea_=None, apiaryDensity_=None, entryDate_=None, departureDate_=None, purpose_=None, secondPlantCode_=None, pesticideCondition_=None, mainIntensively_=None, remark_=None, nectarSourceFlowInputs_=None, nectarSourcePointAttachInputs_=None):
         if self.user is None:
-            data = {'id': id_, 'province': province_, 'city': city_, 'county': county_, 'lng': lng_, 'lat': lat_, 'plantCode': plantCode_, 'floweringStartDate': floweringStartDate_, 'nectarFlow': nectarFlow_, 'nectarSourceArea': nectarSourceArea_, 'apiaryDensity': apiaryDensity_, 'entryDate': entryDate_, 'departureDate': departureDate_, 'purpose': purpose_, 'secondPlantCode': secondPlantCode_, 'pesticideCondition': pesticideCondition_, 'mainIntensively': mainIntensively_, 'remark': remark_, 'nectarSourceFlowInputs': nectarSourceFlowInputs_, 'nectarSourcePointAttachInputs': nectarSourcePointAttachInputs_, }
+            data = {'id': id_, 'province': province_, 'city': city_, 'county': county_, 'lng': lng_, 'lat': lat_, 'plantCode': plantCode_, 'floweringStartDate': floweringStartDate_, 'floweringEndDate': floweringEndDate_, 'nectarFlow': nectarFlow_, 'nectarSourceArea': nectarSourceArea_, 'apiaryDensity': apiaryDensity_, 'entryDate': entryDate_, 'departureDate': departureDate_, 'purpose': purpose_, 'secondPlantCode': secondPlantCode_, 'pesticideCondition': pesticideCondition_, 'mainIntensively': mainIntensively_, 'remark': remark_, 'nectarSourceFlowInputs': nectarSourceFlowInputs_, 'nectarSourcePointAttachInputs': nectarSourcePointAttachInputs_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'id': id_, 'province': province_, 'city': city_, 'county': county_, 'lng': lng_, 'lat': lat_, 'plantCode': plantCode_, 'floweringStartDate': floweringStartDate_, 'nectarFlow': nectarFlow_, 'nectarSourceArea': nectarSourceArea_, 'apiaryDensity': apiaryDensity_, 'entryDate': entryDate_, 'departureDate': departureDate_, 'purpose': purpose_, 'secondPlantCode': secondPlantCode_, 'pesticideCondition': pesticideCondition_, 'mainIntensively': mainIntensively_, 'remark': remark_, 'nectarSourceFlowInputs': nectarSourceFlowInputs_, 'nectarSourcePointAttachInputs': nectarSourcePointAttachInputs_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'id': id_, 'province': province_, 'city': city_, 'county': county_, 'lng': lng_, 'lat': lat_, 'plantCode': plantCode_, 'floweringStartDate': floweringStartDate_, 'floweringEndDate': floweringEndDate_, 'nectarFlow': nectarFlow_, 'nectarSourceArea': nectarSourceArea_, 'apiaryDensity': apiaryDensity_, 'entryDate': entryDate_, 'departureDate': departureDate_, 'purpose': purpose_, 'secondPlantCode': secondPlantCode_, 'pesticideCondition': pesticideCondition_, 'mainIntensively': mainIntensively_, 'remark': remark_, 'nectarSourceFlowInputs': nectarSourceFlowInputs_, 'nectarSourcePointAttachInputs': nectarSourcePointAttachInputs_}
         response = self.request.post(url=self.url+'/admin/nectar-source-point/edit', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -683,11 +763,11 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/admin/nectar-source/list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_platform_bee_container_add(self, mobilePhone_=None, containerInfo_=None):
+    def _admin_platform_bee_container_add(self, mobilePhone_=None, realName_=None, containerInfo_=None):
         if self.user is None:
-            data = {'mobilePhone': mobilePhone_, 'containerInfo': containerInfo_, }
+            data = {'mobilePhone': mobilePhone_, 'realName': realName_, 'containerInfo': containerInfo_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'mobilePhone': mobilePhone_, 'containerInfo': containerInfo_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'mobilePhone': mobilePhone_, 'realName': realName_, 'containerInfo': containerInfo_}
         response = self.request.post(url=self.url+'/admin/platform/bee-container/add', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -761,6 +841,14 @@ class BeeAction(object):
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'status': status_}
         response = self.request.post(url=self.url+'/admin/platform/bee-friend/total', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_show_permission_check(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/admin/show/permission-check', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _admin_shunt_statistics_overview(self):
@@ -875,11 +963,11 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/admin/swarm/detail', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_swarm_edit(self, curNectarType_=None, id_=None, vehicleLength_=None, expectHiveNum_=None, pics_=None, scale_=None, province_=None, city_=None, county_=None, address_=None, lng_=None, lat_=None, queenType_=None, hiveNum_=None, standardNum_=None, smallNum_=None, queenNum2_=None, queenNum1_=None, queenNum_=None, ekeNum_=None, platNum_=None, babyNum_=None, honeyNum_=None, colony_=None, mite_=None, chalkbrood_=None, poisoning_=None, nextNectarSource_=None, nextSourceEnterTime_=None, remark_=None, distantPic_=None, tentPic_=None, sitePic_=None, roadPic_=None, altitude_=None, joinDate_=None, leaveDate_=None):
+    def _admin_swarm_edit(self, curNectarType_=None, id_=None, vehicleLength_=None, expectHiveNum_=None, scale_=None, province_=None, city_=None, county_=None, address_=None, lng_=None, lat_=None, queenType_=None, hiveNum_=None, standardNum_=None, smallNum_=None, queenNum2_=None, queenNum1_=None, queenNum_=None, ekeNum_=None, platNum_=None, babyNum_=None, honeyNum_=None, colony_=None, mite_=None, chalkbrood_=None, poisoning_=None, nextNectarSource_=None, nextSourceEnterTime_=None, remark_=None, distantPic_=None, tentPic_=None, sitePic_=None, roadPic_=None, altitude_=None, joinDate_=None, leaveDate_=None):
         if self.user is None:
-            data = {'curNectarType': curNectarType_, 'id': id_, 'vehicleLength': vehicleLength_, 'expectHiveNum': expectHiveNum_, 'pics': pics_, 'scale': scale_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'queenType': queenType_, 'hiveNum': hiveNum_, 'standardNum': standardNum_, 'smallNum': smallNum_, 'queenNum2': queenNum2_, 'queenNum1': queenNum1_, 'queenNum': queenNum_, 'ekeNum': ekeNum_, 'platNum': platNum_, 'babyNum': babyNum_, 'honeyNum': honeyNum_, 'colony': colony_, 'mite': mite_, 'chalkbrood': chalkbrood_, 'poisoning': poisoning_, 'nextNectarSource': nextNectarSource_, 'nextSourceEnterTime': nextSourceEnterTime_, 'remark': remark_, 'distantPic': distantPic_, 'tentPic': tentPic_, 'sitePic': sitePic_, 'roadPic': roadPic_, 'altitude': altitude_, 'joinDate': joinDate_, 'leaveDate': leaveDate_, }
+            data = {'curNectarType': curNectarType_, 'id': id_, 'vehicleLength': vehicleLength_, 'expectHiveNum': expectHiveNum_, 'scale': scale_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'queenType': queenType_, 'hiveNum': hiveNum_, 'standardNum': standardNum_, 'smallNum': smallNum_, 'queenNum2': queenNum2_, 'queenNum1': queenNum1_, 'queenNum': queenNum_, 'ekeNum': ekeNum_, 'platNum': platNum_, 'babyNum': babyNum_, 'honeyNum': honeyNum_, 'colony': colony_, 'mite': mite_, 'chalkbrood': chalkbrood_, 'poisoning': poisoning_, 'nextNectarSource': nextNectarSource_, 'nextSourceEnterTime': nextSourceEnterTime_, 'remark': remark_, 'distantPic': distantPic_, 'tentPic': tentPic_, 'sitePic': sitePic_, 'roadPic': roadPic_, 'altitude': altitude_, 'joinDate': joinDate_, 'leaveDate': leaveDate_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'curNectarType': curNectarType_, 'id': id_, 'vehicleLength': vehicleLength_, 'expectHiveNum': expectHiveNum_, 'pics': pics_, 'scale': scale_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'queenType': queenType_, 'hiveNum': hiveNum_, 'standardNum': standardNum_, 'smallNum': smallNum_, 'queenNum2': queenNum2_, 'queenNum1': queenNum1_, 'queenNum': queenNum_, 'ekeNum': ekeNum_, 'platNum': platNum_, 'babyNum': babyNum_, 'honeyNum': honeyNum_, 'colony': colony_, 'mite': mite_, 'chalkbrood': chalkbrood_, 'poisoning': poisoning_, 'nextNectarSource': nextNectarSource_, 'nextSourceEnterTime': nextSourceEnterTime_, 'remark': remark_, 'distantPic': distantPic_, 'tentPic': tentPic_, 'sitePic': sitePic_, 'roadPic': roadPic_, 'altitude': altitude_, 'joinDate': joinDate_, 'leaveDate': leaveDate_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'curNectarType': curNectarType_, 'id': id_, 'vehicleLength': vehicleLength_, 'expectHiveNum': expectHiveNum_, 'scale': scale_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'queenType': queenType_, 'hiveNum': hiveNum_, 'standardNum': standardNum_, 'smallNum': smallNum_, 'queenNum2': queenNum2_, 'queenNum1': queenNum1_, 'queenNum': queenNum_, 'ekeNum': ekeNum_, 'platNum': platNum_, 'babyNum': babyNum_, 'honeyNum': honeyNum_, 'colony': colony_, 'mite': mite_, 'chalkbrood': chalkbrood_, 'poisoning': poisoning_, 'nextNectarSource': nextNectarSource_, 'nextSourceEnterTime': nextSourceEnterTime_, 'remark': remark_, 'distantPic': distantPic_, 'tentPic': tentPic_, 'sitePic': sitePic_, 'roadPic': roadPic_, 'altitude': altitude_, 'joinDate': joinDate_, 'leaveDate': leaveDate_}
         response = self.request.post(url=self.url+'/admin/swarm/edit', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -899,12 +987,44 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/admin/swarm/page-list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
+    def _api_apiary_detail(self, input_=None):
+        if self.user is None:
+            data = {'input': input_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+        response = self.request.post(url=self.url+'/api/apiary/detail', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
     def _api_bee_friend_list(self, input_=None):
         if self.user is None:
             data = {'input': input_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
         response = self.request.post(url=self.url+'/api/bee-friend/list', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _api_bee_friend_list_info(self, input_=None):
+        if self.user is None:
+            data = {'input': input_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+        response = self.request.post(url=self.url+'/api/bee-friend/list-info', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _api_bee_friend_list_purchase(self, input_=None):
+        if self.user is None:
+            data = {'input': input_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+        response = self.request.post(url=self.url+'/api/bee-friend/list-purchase', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _api_bee_friend_search(self, input_=None):
+        if self.user is None:
+            data = {'input': input_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+        response = self.request.post(url=self.url+'/api/bee-friend/search', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _api_common_config_map_by_code(self, input_=None):
@@ -1099,12 +1219,20 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/config/common/get-config-list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _config_common_icon_upload(self, file_=None):
+    def _config_common_pic_upload(self, file_=None, type_=None):
         if self.user is None:
-            data = {'file': file_, }
+            data = {'file': file_, 'type': type_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'file': file_}
-        response = self.request.post(url=self.url+'/config/common/icon-upload', data=data, hosts=self.url)
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'file': file_, 'type': type_}
+        response = self.request.post(url=self.url+'/config/common/pic-upload', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _config_common_url_fix(self, type_=None):
+        if self.user is None:
+            data = {'type': type_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'type': type_}
+        response = self.request.post(url=self.url+'/config/common/url-fix', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _menu_common_list(self, parentId_=None):
@@ -1139,28 +1267,12 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/mobile/apiary/overview', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_app_version_add(self, appId_=None, updateType_=None, downloadUrl_=None, appCode_=None, appName_=None, versionMilepost_=None, versionNum_=None, versionCode_=None, versionNumBefore_=None, versionBig_=None, updateTitle_=None, updateTitleEn_=None, updateMessage_=None, updateMessageEn_=None, status_=None):
-        if self.user is None:
-            data = {'appId': appId_, 'updateType': updateType_, 'downloadUrl': downloadUrl_, 'appCode': appCode_, 'appName': appName_, 'versionMilepost': versionMilepost_, 'versionNum': versionNum_, 'versionCode': versionCode_, 'versionNumBefore': versionNumBefore_, 'versionBig': versionBig_, 'updateTitle': updateTitle_, 'updateTitleEn': updateTitleEn_, 'updateMessage': updateMessage_, 'updateMessageEn': updateMessageEn_, 'status': status_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'appId': appId_, 'updateType': updateType_, 'downloadUrl': downloadUrl_, 'appCode': appCode_, 'appName': appName_, 'versionMilepost': versionMilepost_, 'versionNum': versionNum_, 'versionCode': versionCode_, 'versionNumBefore': versionNumBefore_, 'versionBig': versionBig_, 'updateTitle': updateTitle_, 'updateTitleEn': updateTitleEn_, 'updateMessage': updateMessage_, 'updateMessageEn': updateMessageEn_, 'status': status_}
-        response = self.request.post(url=self.url+'/mobile/app-version/add', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
     def _mobile_app_version_get(self, appId_=None):
         if self.user is None:
             data = {'appId': appId_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'appId': appId_}
         response = self.request.post(url=self.url+'/mobile/app-version/get', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _mobile_app_version_upload_app(self, file_=None):
-        if self.user is None:
-            data = {'file': file_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'file': file_}
-        response = self.request.post(url=self.url+'/mobile/app-version/upload-app', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _mobile_bee_friend_follow_follow(self, followFriendId_=None, optType_=None):
@@ -1177,6 +1289,14 @@ class BeeAction(object):
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'searchKey': searchKey_}
         response = self.request.post(url=self.url+'/mobile/bee-friend/charge-man-list', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _mobile_bee_friend_info_by_mobile(self, mobile_=None):
+        if self.user is None:
+            data = {'mobile': mobile_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'mobile': mobile_}
+        response = self.request.post(url=self.url+'/mobile/bee-friend/info-by-mobile', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _mobile_bee_friend_operator_list(self, searchKey_=None):
@@ -1963,11 +2083,11 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/mobile/swarm/detail', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_swarm_edit(self, curNectarType_=None, id_=None, vehicleLength_=None, expectHiveNum_=None, pics_=None, scale_=None, province_=None, city_=None, county_=None, address_=None, lng_=None, lat_=None, queenType_=None, hiveNum_=None, standardNum_=None, smallNum_=None, queenNum2_=None, queenNum1_=None, queenNum_=None, ekeNum_=None, platNum_=None, babyNum_=None, honeyNum_=None, colony_=None, mite_=None, chalkbrood_=None, poisoning_=None, nextNectarSource_=None, nextSourceEnterTime_=None, remark_=None, distantPic_=None, tentPic_=None, sitePic_=None, roadPic_=None, altitude_=None, joinDate_=None, leaveDate_=None):
+    def _mobile_swarm_edit(self, curNectarType_=None, id_=None, vehicleLength_=None, expectHiveNum_=None, scale_=None, province_=None, city_=None, county_=None, address_=None, lng_=None, lat_=None, queenType_=None, hiveNum_=None, standardNum_=None, smallNum_=None, queenNum2_=None, queenNum1_=None, queenNum_=None, ekeNum_=None, platNum_=None, babyNum_=None, honeyNum_=None, colony_=None, mite_=None, chalkbrood_=None, poisoning_=None, nextNectarSource_=None, nextSourceEnterTime_=None, remark_=None, distantPic_=None, tentPic_=None, sitePic_=None, roadPic_=None, altitude_=None, joinDate_=None, leaveDate_=None):
         if self.user is None:
-            data = {'curNectarType': curNectarType_, 'id': id_, 'vehicleLength': vehicleLength_, 'expectHiveNum': expectHiveNum_, 'pics': pics_, 'scale': scale_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'queenType': queenType_, 'hiveNum': hiveNum_, 'standardNum': standardNum_, 'smallNum': smallNum_, 'queenNum2': queenNum2_, 'queenNum1': queenNum1_, 'queenNum': queenNum_, 'ekeNum': ekeNum_, 'platNum': platNum_, 'babyNum': babyNum_, 'honeyNum': honeyNum_, 'colony': colony_, 'mite': mite_, 'chalkbrood': chalkbrood_, 'poisoning': poisoning_, 'nextNectarSource': nextNectarSource_, 'nextSourceEnterTime': nextSourceEnterTime_, 'remark': remark_, 'distantPic': distantPic_, 'tentPic': tentPic_, 'sitePic': sitePic_, 'roadPic': roadPic_, 'altitude': altitude_, 'joinDate': joinDate_, 'leaveDate': leaveDate_, }
+            data = {'curNectarType': curNectarType_, 'id': id_, 'vehicleLength': vehicleLength_, 'expectHiveNum': expectHiveNum_, 'scale': scale_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'queenType': queenType_, 'hiveNum': hiveNum_, 'standardNum': standardNum_, 'smallNum': smallNum_, 'queenNum2': queenNum2_, 'queenNum1': queenNum1_, 'queenNum': queenNum_, 'ekeNum': ekeNum_, 'platNum': platNum_, 'babyNum': babyNum_, 'honeyNum': honeyNum_, 'colony': colony_, 'mite': mite_, 'chalkbrood': chalkbrood_, 'poisoning': poisoning_, 'nextNectarSource': nextNectarSource_, 'nextSourceEnterTime': nextSourceEnterTime_, 'remark': remark_, 'distantPic': distantPic_, 'tentPic': tentPic_, 'sitePic': sitePic_, 'roadPic': roadPic_, 'altitude': altitude_, 'joinDate': joinDate_, 'leaveDate': leaveDate_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'curNectarType': curNectarType_, 'id': id_, 'vehicleLength': vehicleLength_, 'expectHiveNum': expectHiveNum_, 'pics': pics_, 'scale': scale_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'queenType': queenType_, 'hiveNum': hiveNum_, 'standardNum': standardNum_, 'smallNum': smallNum_, 'queenNum2': queenNum2_, 'queenNum1': queenNum1_, 'queenNum': queenNum_, 'ekeNum': ekeNum_, 'platNum': platNum_, 'babyNum': babyNum_, 'honeyNum': honeyNum_, 'colony': colony_, 'mite': mite_, 'chalkbrood': chalkbrood_, 'poisoning': poisoning_, 'nextNectarSource': nextNectarSource_, 'nextSourceEnterTime': nextSourceEnterTime_, 'remark': remark_, 'distantPic': distantPic_, 'tentPic': tentPic_, 'sitePic': sitePic_, 'roadPic': roadPic_, 'altitude': altitude_, 'joinDate': joinDate_, 'leaveDate': leaveDate_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'curNectarType': curNectarType_, 'id': id_, 'vehicleLength': vehicleLength_, 'expectHiveNum': expectHiveNum_, 'scale': scale_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'queenType': queenType_, 'hiveNum': hiveNum_, 'standardNum': standardNum_, 'smallNum': smallNum_, 'queenNum2': queenNum2_, 'queenNum1': queenNum1_, 'queenNum': queenNum_, 'ekeNum': ekeNum_, 'platNum': platNum_, 'babyNum': babyNum_, 'honeyNum': honeyNum_, 'colony': colony_, 'mite': mite_, 'chalkbrood': chalkbrood_, 'poisoning': poisoning_, 'nextNectarSource': nextNectarSource_, 'nextSourceEnterTime': nextSourceEnterTime_, 'remark': remark_, 'distantPic': distantPic_, 'tentPic': tentPic_, 'sitePic': sitePic_, 'roadPic': roadPic_, 'altitude': altitude_, 'joinDate': joinDate_, 'leaveDate': leaveDate_}
         response = self.request.post(url=self.url+'/mobile/swarm/edit', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -2139,11 +2259,11 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/mobile/work-log/page-list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_workbench_bee_friend_add(self, curNectarType_=None, labelType_=None, regularSource_=None, intention_=None, province_=None, city_=None, county_=None, address_=None, lng_=None, lat_=None, vehicleLength_=None, expectHiveNum_=None, pics_=None, scale_=None, hiveNum_=None, standardNum_=None, smallNum_=None, queenType_=None, queenNum2_=None, queenNum1_=None, queenNum_=None, ekeNum_=None, platNum_=None, babyNum_=None, honeyNum_=None, remark_=None, nextNectarSource_=None, nextSourceEnterTime_=None, joinDate_=None, leaveDate_=None, contactNumber_=None, realName_=None, age_=None, gender_=None, nativeProvince_=None, nativeCity_=None, nativeCounty_=None, seniority_=None, regularRoute_=None, studyFrom_=None, heir_=None, yield_=None, income_=None, breedTime1_=None, breedPlace1_=None, breedTime2_=None, breedPlace2_=None, saleNum_=None, intentionPrice_=None, saleTime_=None, saleProvince_=None, saleCity_=None, saleCounty_=None, altitude_=None, distantPic_=None, tentPic_=None, sitePic_=None, roadPic_=None):
+    def _mobile_workbench_bee_friend_add(self, curNectarType_=None, labelType_=None, regularSource_=None, intention_=None, province_=None, city_=None, county_=None, address_=None, lng_=None, lat_=None, vehicleLength_=None, expectHiveNum_=None, scale_=None, hiveNum_=None, standardNum_=None, smallNum_=None, queenType_=None, queenNum2_=None, queenNum1_=None, queenNum_=None, ekeNum_=None, platNum_=None, babyNum_=None, honeyNum_=None, remark_=None, nextNectarSource_=None, nextSourceEnterTime_=None, joinDate_=None, leaveDate_=None, contactNumber_=None, realName_=None, age_=None, gender_=None, nativeProvince_=None, nativeCity_=None, nativeCounty_=None, seniority_=None, regularRoute_=None, studyFrom_=None, heir_=None, yield_=None, income_=None, breedTime1_=None, breedPlace1_=None, breedTime2_=None, breedPlace2_=None, saleNum_=None, intentionPrice_=None, saleTime_=None, saleProvince_=None, saleCity_=None, saleCounty_=None, altitude_=None, distantPic_=None, tentPic_=None, sitePic_=None, roadPic_=None):
         if self.user is None:
-            data = {'curNectarType': curNectarType_, 'labelType': labelType_, 'regularSource': regularSource_, 'intention': intention_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'vehicleLength': vehicleLength_, 'expectHiveNum': expectHiveNum_, 'pics': pics_, 'scale': scale_, 'hiveNum': hiveNum_, 'standardNum': standardNum_, 'smallNum': smallNum_, 'queenType': queenType_, 'queenNum2': queenNum2_, 'queenNum1': queenNum1_, 'queenNum': queenNum_, 'ekeNum': ekeNum_, 'platNum': platNum_, 'babyNum': babyNum_, 'honeyNum': honeyNum_, 'remark': remark_, 'nextNectarSource': nextNectarSource_, 'nextSourceEnterTime': nextSourceEnterTime_, 'joinDate': joinDate_, 'leaveDate': leaveDate_, 'contactNumber': contactNumber_, 'realName': realName_, 'age': age_, 'gender': gender_, 'nativeProvince': nativeProvince_, 'nativeCity': nativeCity_, 'nativeCounty': nativeCounty_, 'seniority': seniority_, 'regularRoute': regularRoute_, 'studyFrom': studyFrom_, 'heir': heir_, 'yield': yield_, 'income': income_, 'breedTime1': breedTime1_, 'breedPlace1': breedPlace1_, 'breedTime2': breedTime2_, 'breedPlace2': breedPlace2_, 'saleNum': saleNum_, 'intentionPrice': intentionPrice_, 'saleTime': saleTime_, 'saleProvince': saleProvince_, 'saleCity': saleCity_, 'saleCounty': saleCounty_, 'altitude': altitude_, 'distantPic': distantPic_, 'tentPic': tentPic_, 'sitePic': sitePic_, 'roadPic': roadPic_, }
+            data = {'curNectarType': curNectarType_, 'labelType': labelType_, 'regularSource': regularSource_, 'intention': intention_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'vehicleLength': vehicleLength_, 'expectHiveNum': expectHiveNum_, 'scale': scale_, 'hiveNum': hiveNum_, 'standardNum': standardNum_, 'smallNum': smallNum_, 'queenType': queenType_, 'queenNum2': queenNum2_, 'queenNum1': queenNum1_, 'queenNum': queenNum_, 'ekeNum': ekeNum_, 'platNum': platNum_, 'babyNum': babyNum_, 'honeyNum': honeyNum_, 'remark': remark_, 'nextNectarSource': nextNectarSource_, 'nextSourceEnterTime': nextSourceEnterTime_, 'joinDate': joinDate_, 'leaveDate': leaveDate_, 'contactNumber': contactNumber_, 'realName': realName_, 'age': age_, 'gender': gender_, 'nativeProvince': nativeProvince_, 'nativeCity': nativeCity_, 'nativeCounty': nativeCounty_, 'seniority': seniority_, 'regularRoute': regularRoute_, 'studyFrom': studyFrom_, 'heir': heir_, 'yield': yield_, 'income': income_, 'breedTime1': breedTime1_, 'breedPlace1': breedPlace1_, 'breedTime2': breedTime2_, 'breedPlace2': breedPlace2_, 'saleNum': saleNum_, 'intentionPrice': intentionPrice_, 'saleTime': saleTime_, 'saleProvince': saleProvince_, 'saleCity': saleCity_, 'saleCounty': saleCounty_, 'altitude': altitude_, 'distantPic': distantPic_, 'tentPic': tentPic_, 'sitePic': sitePic_, 'roadPic': roadPic_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'curNectarType': curNectarType_, 'labelType': labelType_, 'regularSource': regularSource_, 'intention': intention_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'vehicleLength': vehicleLength_, 'expectHiveNum': expectHiveNum_, 'pics': pics_, 'scale': scale_, 'hiveNum': hiveNum_, 'standardNum': standardNum_, 'smallNum': smallNum_, 'queenType': queenType_, 'queenNum2': queenNum2_, 'queenNum1': queenNum1_, 'queenNum': queenNum_, 'ekeNum': ekeNum_, 'platNum': platNum_, 'babyNum': babyNum_, 'honeyNum': honeyNum_, 'remark': remark_, 'nextNectarSource': nextNectarSource_, 'nextSourceEnterTime': nextSourceEnterTime_, 'joinDate': joinDate_, 'leaveDate': leaveDate_, 'contactNumber': contactNumber_, 'realName': realName_, 'age': age_, 'gender': gender_, 'nativeProvince': nativeProvince_, 'nativeCity': nativeCity_, 'nativeCounty': nativeCounty_, 'seniority': seniority_, 'regularRoute': regularRoute_, 'studyFrom': studyFrom_, 'heir': heir_, 'yield': yield_, 'income': income_, 'breedTime1': breedTime1_, 'breedPlace1': breedPlace1_, 'breedTime2': breedTime2_, 'breedPlace2': breedPlace2_, 'saleNum': saleNum_, 'intentionPrice': intentionPrice_, 'saleTime': saleTime_, 'saleProvince': saleProvince_, 'saleCity': saleCity_, 'saleCounty': saleCounty_, 'altitude': altitude_, 'distantPic': distantPic_, 'tentPic': tentPic_, 'sitePic': sitePic_, 'roadPic': roadPic_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'curNectarType': curNectarType_, 'labelType': labelType_, 'regularSource': regularSource_, 'intention': intention_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'vehicleLength': vehicleLength_, 'expectHiveNum': expectHiveNum_, 'scale': scale_, 'hiveNum': hiveNum_, 'standardNum': standardNum_, 'smallNum': smallNum_, 'queenType': queenType_, 'queenNum2': queenNum2_, 'queenNum1': queenNum1_, 'queenNum': queenNum_, 'ekeNum': ekeNum_, 'platNum': platNum_, 'babyNum': babyNum_, 'honeyNum': honeyNum_, 'remark': remark_, 'nextNectarSource': nextNectarSource_, 'nextSourceEnterTime': nextSourceEnterTime_, 'joinDate': joinDate_, 'leaveDate': leaveDate_, 'contactNumber': contactNumber_, 'realName': realName_, 'age': age_, 'gender': gender_, 'nativeProvince': nativeProvince_, 'nativeCity': nativeCity_, 'nativeCounty': nativeCounty_, 'seniority': seniority_, 'regularRoute': regularRoute_, 'studyFrom': studyFrom_, 'heir': heir_, 'yield': yield_, 'income': income_, 'breedTime1': breedTime1_, 'breedPlace1': breedPlace1_, 'breedTime2': breedTime2_, 'breedPlace2': breedPlace2_, 'saleNum': saleNum_, 'intentionPrice': intentionPrice_, 'saleTime': saleTime_, 'saleProvince': saleProvince_, 'saleCity': saleCity_, 'saleCounty': saleCounty_, 'altitude': altitude_, 'distantPic': distantPic_, 'tentPic': tentPic_, 'sitePic': sitePic_, 'roadPic': roadPic_}
         response = self.request.post(url=self.url+'/mobile/workbench-bee-friend/add', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -2201,6 +2321,30 @@ class BeeAction(object):
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'baseVersion': baseVersion_}
         response = self.request.post(url=self.url+'/region/common/update', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _show_nectar_source_point_detail(self, id_=None):
+        if self.user is None:
+            data = {'id': id_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'id': id_}
+        response = self.request.post(url=self.url+'/show/nectar-source-point/detail', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _show_nectar_source_point_list(self, plantCodes_=None, purpose_=None, floweringStartDateBegin_=None, floweringStartDateEnd_=None, entryDateBegin_=None, entryDateEnd_=None, nectarSourceAreaMin_=None, nectarSourceAreaMax_=None, apiaryDensityMin_=None, apiaryDensityMax_=None):
+        if self.user is None:
+            data = {'plantCodes': plantCodes_, 'purpose': purpose_, 'floweringStartDateBegin': floweringStartDateBegin_, 'floweringStartDateEnd': floweringStartDateEnd_, 'entryDateBegin': entryDateBegin_, 'entryDateEnd': entryDateEnd_, 'nectarSourceAreaMin': nectarSourceAreaMin_, 'nectarSourceAreaMax': nectarSourceAreaMax_, 'apiaryDensityMin': apiaryDensityMin_, 'apiaryDensityMax': apiaryDensityMax_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'plantCodes': plantCodes_, 'purpose': purpose_, 'floweringStartDateBegin': floweringStartDateBegin_, 'floweringStartDateEnd': floweringStartDateEnd_, 'entryDateBegin': entryDateBegin_, 'entryDateEnd': entryDateEnd_, 'nectarSourceAreaMin': nectarSourceAreaMin_, 'nectarSourceAreaMax': nectarSourceAreaMax_, 'apiaryDensityMin': apiaryDensityMin_, 'apiaryDensityMax': apiaryDensityMax_}
+        response = self.request.post(url=self.url+'/show/nectar-source-point/list', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _show_nectar_source_point_stat(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/show/nectar-source-point/stat', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _web_help_comment_list(self, pn_=None, ps_=None, helpInfoId_=None):

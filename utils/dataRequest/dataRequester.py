@@ -6,6 +6,8 @@ import mimetypes
 from utils.environmentConfiguration import config
 from utils.log import log
 import urllib
+
+
 # from .recordExecuteAPI import RecordExecuteAPI as rea
 
 
@@ -20,6 +22,15 @@ class Request(object):
                "_Device-Type_": "iOS",
                "region": "online"
                }
+    api_headers = {
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+        "Accept-Encoding": "gzip, deflate",
+        "Accept-Language": "zh-CN,zh;q=0.9",
+        "Cache-Control": "max-age=0",
+        "Connection": "keep-alive",
+        "Host": "qa-gateway.worldfarm.com",
+        "Upgrade-Insecure-Requests": "1",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36"}
 
     @staticmethod
     def url_encode(string):
@@ -43,7 +54,7 @@ class Request(object):
         try:
             response_json = json.loads(response)
             log.debug("\n" + json.dumps(response_json, ensure_ascii=False,
-                                                  sort_keys=True, indent=2, separators=(',', ': ')))
+                                        sort_keys=True, indent=2, separators=(',', ': ')))
         except ValueError:
             log.debug(response)
         # rea().reload_data(host_name=hosts, url=url)
@@ -52,7 +63,11 @@ class Request(object):
 
     def get(self, url, hosts=None, params=None):
         client = requests.session()
-        response = client.get(url=url, headers=self.headers, params=params).content
+        if url.find('/v2/api-docs'):
+            headers = self.api_headers
+        else:
+            headers = self.headers
+        response = client.get(url=url, headers=headers, params=params).content
         try:
             log.debug('\n\trequest: %s\n\tresponse: %s\n\t' % (url, response.decode("utf-8")))
             response_json = json.loads(response.decode("utf-8"))
@@ -79,7 +94,7 @@ class Request(object):
         try:
             response_json = json.loads(response)
             log.debug("\n" + json.dumps(response_json, ensure_ascii=False,
-                                                  sort_keys=True, indent=2, separators=(',', ': ')))
+                                        sort_keys=True, indent=2, separators=(',', ': ')))
         except ValueError:
             log.debug(response)
         # rea().reload_data(host_name=hosts, url=url)
