@@ -12,7 +12,7 @@ flowerChaser:
     DEV:
       host_ip: 00cd6c8916486ff3b8c4180bbe5902f8
     QA:
-      host_ip: 0e1570fb7aa32f677daffb5047982dbb
+      host_ip: 38decc2956f8bcf5731227852dd4d5bd
   urldict:
     FC_PASSPORT: "Passport"
     FC_USER: "User"
@@ -39,8 +39,8 @@ flowerChaser:
     QA_API:
       FC_BEE: 'http://qa-gateway.worldfarm.com/fc-bee'
       FC_TRADE: 'http://qa-gateway.worldfarm.com/fc-trade'
-      FC_PASSPORT: 'http://dev-passport.worldfarm.com'
-      FC_USER: 'http://dev-user.worldfarm.com'
+      FC_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
+      FC_USER: 'http://qa-gateway.worldfarm.com/world-user'
 
 worldFarm:
   <<: *env
