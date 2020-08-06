@@ -98,7 +98,8 @@ class CooperationBeeFriendsSql(DataBaseOperate):
         """
         sql = """
                 SELECT
-                    tu.phone 
+                    tu.phone,
+                    tu.username
                 FROM
                     `world-user`.t_user tu
                     LEFT JOIN `fc-bee`.t_bee_container tbc ON tbc.user_id = tu.id 
