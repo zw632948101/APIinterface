@@ -95,7 +95,7 @@ class ConfigProductSql(object):
         if len(info) == 0:
             return None
         else:
-            i = random.randint(0, len(info))
+            i = random.randrange(0, len(info))
             info = info[i]
             return info
 
@@ -107,13 +107,32 @@ class ConfigProductSql(object):
         sql = """SELECT
                     p.*,
                     c.`value`,
-                    c.`key`
+                    c.`parent_key`
                 FROM `fc-trade`.t_product p LEFT JOIN `fc-bee`.t_config c ON p.variety = c.`key` 
                 WHERE p.is_delete = 0 AND p.seller_id = '%s' AND p.`status` = 1;""" % seller_id
         info = self.db.operate(host_ip, sql)
         if len(info) == 0:
             return None
         else:
-            i = random.randint(0, len(info))
+            i = random.randrange(0, len(info))
             info = info[i]
             return info
+
+    def query_purchase_order_status_count(self):
+        """
+        查询订单的各个状态
+        :return:
+        """
+        sql = """SELECT
+            count(1) AS '全部',
+            count( IF ( `status` = 10, 1, NULL ) ) AS '待审核',
+            count( IF ( `status` = 20, 1, NULL ) ) AS '待质检',
+            count( IF ( `status` = 30, 1, NULL ) ) AS '待确认',
+            count( IF ( `status` = 40, 1, NULL ) ) AS '待结算尾款',
+            count( IF ( `status` = 50, 1, NULL ) ) AS '已完成' 
+        FROM
+            `fc-trade`.t_purchase_order 
+        WHERE
+            is_delete = 0;"""
+        return self.db.operate(host_ip, sql)
+
