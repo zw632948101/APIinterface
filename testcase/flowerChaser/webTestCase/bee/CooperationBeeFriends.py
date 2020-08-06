@@ -137,7 +137,9 @@ class CollectionStatistics(unittest.TestCase, DataConversion):
         containerInfo = json.dumps(containerInfo)
         mobilePhone = self.db.query_bee_container_add_repetition()
         moblie = random.choice(mobilePhone).get('contact_number')
-        response = self.ba._admin_platform_bee_container_add(mobilePhone_=moblie, containerInfo_=containerInfo)
+
+        response = self.ba._admin_platform_bee_container_add(mobilePhone_=moblie, containerInfo_=containerInfo,
+                                                             realName_='张云明')
         self.assertEqual(response.get('status'), "ERROR")
         self.assertEqual(response.get('errorMsg'), "航吊摄像头编号不能重复")
 
@@ -154,9 +156,13 @@ class CollectionStatistics(unittest.TestCase, DataConversion):
             for i in gatway_list]
         containerInfo = json.dumps(containerInfo_list)
         mobilePhone = self.db.query_bee_container_add_mobile()
-        mobilePhone = random.choice(self.del_dict_value_null(mobilePhone)).get('phone')
-        mobilePhone = 19999999991
-        response = self.ba._admin_platform_bee_container_add(mobilePhone_=mobilePhone, containerInfo_=containerInfo)
+        mobilePhone = random.choice(self.del_dict_value_null(mobilePhone))
+        Phone = mobilePhone.get('phone')
+        username = mobilePhone.get('username')
+        username = 'wangjue'
+        Phone = 18612345678
+        response = self.ba._admin_platform_bee_container_add(mobilePhone_=Phone, containerInfo_=containerInfo,
+                                                             realName_=username)
         self.assertEqual(response.get('status'), "OK")
         userid = self.db.query_user_id(mobilePhone)[0].get('id')
         devices = self.db.query_bee_container_add_devices(userid, len(containerInfo))
