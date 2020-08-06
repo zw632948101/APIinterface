@@ -27,6 +27,54 @@ class TradeAction(object):
         else:
             raise Exception('status未返回OK或ERROR')
 
+    def _admin_extract_apply_allot(self, applyId_=None, chargeId_=None):
+        if self.user is None:
+            data = {'applyId': applyId_, 'chargeId': chargeId_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'applyId': applyId_, 'chargeId': chargeId_}
+        response = self.request.post(url=self.url+'/admin/extract-apply/allot', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_extract_apply_close(self, applyId_=None, reasonType_=None):
+        if self.user is None:
+            data = {'applyId': applyId_, 'reasonType': reasonType_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'applyId': applyId_, 'reasonType': reasonType_}
+        response = self.request.post(url=self.url+'/admin/extract-apply/close', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_extract_apply_detail(self, applyId_=None):
+        if self.user is None:
+            data = {'applyId': applyId_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'applyId': applyId_}
+        response = self.request.post(url=self.url+'/admin/extract-apply/detail', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_extract_apply_edit(self, id_=None, status_=None, extractDate_=None, province_=None, city_=None, county_=None, address_=None, lng_=None, lat_=None):
+        if self.user is None:
+            data = {'id': id_, 'status': status_, 'extractDate': extractDate_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'id': id_, 'status': status_, 'extractDate': extractDate_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_}
+        response = self.request.post(url=self.url+'/admin/extract-apply/edit', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_extract_apply_list(self, pn_=None, ps_=None, applyNo_=None, status_=None, province_=None, city_=None, county_=None, creatorKeyWord_=None, chargeKeyWord_=None, extractDateStart_=None, extractDateEnd_=None, createDateStart_=None, createDateEnd_=None):
+        if self.user is None:
+            data = {'pn': pn_, 'ps': ps_, 'applyNo': applyNo_, 'status': status_, 'province': province_, 'city': city_, 'county': county_, 'creatorKeyWord': creatorKeyWord_, 'chargeKeyWord': chargeKeyWord_, 'extractDateStart': extractDateStart_, 'extractDateEnd': extractDateEnd_, 'createDateStart': createDateStart_, 'createDateEnd': createDateEnd_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'applyNo': applyNo_, 'status': status_, 'province': province_, 'city': city_, 'county': county_, 'creatorKeyWord': creatorKeyWord_, 'chargeKeyWord': chargeKeyWord_, 'extractDateStart': extractDateStart_, 'extractDateEnd': extractDateEnd_, 'createDateStart': createDateStart_, 'createDateEnd': createDateEnd_}
+        response = self.request.post(url=self.url+'/admin/extract-apply/list', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_extract_apply_stat(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/admin/extract-apply/stat', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
     def _admin_invoice_apply_comfirm(self, applyId_=None, comfirmDate_=None, realAmount_=None):
         if self.user is None:
             data = {'applyId': applyId_, 'comfirmDate': comfirmDate_, 'realAmount': realAmount_, }
@@ -115,52 +163,76 @@ class TradeAction(object):
         response = self.request.post(url=self.url+'/admin/pay-apply/page-list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_purchase_base_info(self, orderNo_=None):
+    def _admin_purchase_order_base_info(self, orderNo_=None):
         if self.user is None:
             data = {'orderNo': orderNo_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'orderNo': orderNo_}
-        response = self.request.post(url=self.url+'/admin/purchase/base-info', data=data, hosts=self.url)
+        response = self.request.post(url=self.url+'/admin/purchase-order/base-info', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_purchase_opt_log(self, orderNo_=None):
+    def _admin_purchase_order_confirm_grade(self, orderNo_=None):
         if self.user is None:
             data = {'orderNo': orderNo_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'orderNo': orderNo_}
-        response = self.request.post(url=self.url+'/admin/purchase/opt-log', data=data, hosts=self.url)
+        response = self.request.post(url=self.url+'/admin/purchase-order/confirm-grade', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_purchase_page_list(self, pn_=None, ps_=None, createDate_=None, status_=None, province_=None, city_=None, county_=None):
+    def _admin_purchase_order_edit_grade(self, productId_=None, grade_=None, price_=None):
         if self.user is None:
-            data = {'pn': pn_, 'ps': ps_, 'createDate': createDate_, 'status': status_, 'province': province_, 'city': city_, 'county': county_, }
+            data = {'productId': productId_, 'grade': grade_, 'price': price_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'createDate': createDate_, 'status': status_, 'province': province_, 'city': city_, 'county': county_}
-        response = self.request.post(url=self.url+'/admin/purchase/page-list', data=data, hosts=self.url)
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'productId': productId_, 'grade': grade_, 'price': price_}
+        response = self.request.post(url=self.url+'/admin/purchase-order/edit-grade', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_purchase_pay_apply(self, orderNo_=None):
-        if self.user is None:
-            data = {'orderNo': orderNo_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'orderNo': orderNo_}
-        response = self.request.post(url=self.url+'/admin/purchase/pay-apply', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _admin_purchase_product_info(self, orderNo_=None):
+    def _admin_purchase_order_opt_log(self, orderNo_=None):
         if self.user is None:
             data = {'orderNo': orderNo_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'orderNo': orderNo_}
-        response = self.request.post(url=self.url+'/admin/purchase/product-info', data=data, hosts=self.url)
+        response = self.request.post(url=self.url+'/admin/purchase-order/opt-log', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_purchase_status_count(self):
+    def _admin_purchase_order_page_list(self, status_=None, pn_=None, ps_=None, startDate_=None, endDate_=None, location_=None, orderNo_=None, userInfo_=None, provence_=None, city_=None, county_=None):
+        if self.user is None:
+            data = {'status': status_, 'pn': pn_, 'ps': ps_, 'startDate': startDate_, 'endDate': endDate_, 'location': location_, 'orderNo': orderNo_, 'userInfo': userInfo_, 'provence': provence_, 'city': city_, 'county': county_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'status': status_, 'pn': pn_, 'ps': ps_, 'startDate': startDate_, 'endDate': endDate_, 'location': location_, 'orderNo': orderNo_, 'userInfo': userInfo_, 'provence': provence_, 'city': city_, 'county': county_}
+        response = self.request.post(url=self.url+'/admin/purchase-order/page-list', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_purchase_order_pay_apply(self, orderNo_=None):
+        if self.user is None:
+            data = {'orderNo': orderNo_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'orderNo': orderNo_}
+        response = self.request.post(url=self.url+'/admin/purchase-order/pay-apply', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_purchase_order_product_info(self, orderNo_=None):
+        if self.user is None:
+            data = {'orderNo': orderNo_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'orderNo': orderNo_}
+        response = self.request.post(url=self.url+'/admin/purchase-order/product-info', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_purchase_order_quality_commit(self, orderNo_=None):
+        if self.user is None:
+            data = {'orderNo': orderNo_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'orderNo': orderNo_}
+        response = self.request.post(url=self.url+'/admin/purchase-order/quality-commit', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_purchase_order_status_count(self):
         if self.user is None:
             data = {}
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
-        response = self.request.post(url=self.url+'/admin/purchase/status-count', data=data, hosts=self.url)
+        response = self.request.post(url=self.url+'/admin/purchase-order/status-count', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _admin_quality_add(self, images_=None, orderNo_=None, type_=None, remark_=None, deductPrice_=None):
@@ -275,12 +347,20 @@ class TradeAction(object):
         response = self.request.post(url=self.url+'/mobile/product/add', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_product_del(self, applyId_=None):
+    def _mobile_product_del(self, productId_=None):
         if self.user is None:
-            data = {'applyId': applyId_, }
+            data = {'productId': productId_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'applyId': applyId_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'productId': productId_}
         response = self.request.post(url=self.url+'/mobile/product/del', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _mobile_product_detail(self, productId_=None):
+        if self.user is None:
+            data = {'productId': productId_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'productId': productId_}
+        response = self.request.post(url=self.url+'/mobile/product/detail', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _mobile_product_edit(self, pics_=None, id_=None, sellerId_=None, category_=None, variety_=None, weight_=None, purity_=None, consistence_=None, humidity_=None, province_=None, city_=None, county_=None, manufactureDate_=None, remark_=None):
@@ -291,178 +371,114 @@ class TradeAction(object):
         response = self.request.post(url=self.url+'/mobile/product/edit', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_product_list(self, variety_=None, pn_=None, ps_=None, manufactureDate_=None, province_=None, city_=None, county_=None, category_=None, status_=None, searchKey_=None):
+    def _mobile_product_list(self, province_=None, city_=None, county_=None, category_=None, variety_=None, status_=None, pn_=None, ps_=None, manufactureDateStart_=None, manufactureDateEnd_=None, searchKey_=None):
         if self.user is None:
-            data = {'variety': variety_, 'pn': pn_, 'ps': ps_, 'manufactureDate': manufactureDate_, 'province': province_, 'city': city_, 'county': county_, 'category': category_, 'status': status_, 'searchKey': searchKey_, }
+            data = {'province': province_, 'city': city_, 'county': county_, 'category': category_, 'variety': variety_, 'status': status_, 'pn': pn_, 'ps': ps_, 'manufactureDateStart': manufactureDateStart_, 'manufactureDateEnd': manufactureDateEnd_, 'searchKey': searchKey_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'variety': variety_, 'pn': pn_, 'ps': ps_, 'manufactureDate': manufactureDate_, 'province': province_, 'city': city_, 'county': county_, 'category': category_, 'status': status_, 'searchKey': searchKey_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'province': province_, 'city': city_, 'county': county_, 'category': category_, 'variety': variety_, 'status': status_, 'pn': pn_, 'ps': ps_, 'manufactureDateStart': manufactureDateStart_, 'manufactureDateEnd': manufactureDateEnd_, 'searchKey': searchKey_}
         response = self.request.post(url=self.url+'/mobile/product/list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    # def _mobile_purchase_add(self, products[0]_productId_=None, products[0]_grade_=None, products[0]_price_=None, userId_=None, province_=None, city_=None, county_=None, address_=None, lng_=None, lat_=None, remark_=None):
-    #     if self.user is None:
-    #         data = {'products[0]_productId': products[0]_productId_, 'products[0]_grade': products[0]_grade_, 'products[0]_price': products[0]_price_, 'userId': userId_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'remark': remark_, }
-    #     else:
-    #         data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'products[0]_productId': products[0]_productId_, 'products[0]_grade': products[0]_grade_, 'products[0]_price': products[0]_price_, 'userId': userId_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'remark': remark_}
-    #     response = self.request.post(url=self.url+'/mobile/purchase/add', data=data, hosts=self.url)
-    #     return self.__judge_response_status(json.loads(response))
+    def _mobile_purchase_order_add(self, userId_=None, province_=None, city_=None, county_=None, address_=None, lng_=None, lat_=None, remark_=None, productJson_=None):
+        if self.user is None:
+            data = {'userId': userId_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'remark': remark_, 'productJson': productJson_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'userId': userId_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'remark': remark_, 'productJson': productJson_}
+        response = self.request.post(url=self.url+'/mobile/purchase-order/add', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
 
-    def _mobile_purchase_base_info(self, orderNo_=None):
+    def _mobile_purchase_order_base_info(self, orderNo_=None):
         if self.user is None:
             data = {'orderNo': orderNo_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'orderNo': orderNo_}
-        response = self.request.post(url=self.url+'/mobile/purchase/base-info', data=data, hosts=self.url)
+        response = self.request.post(url=self.url+'/mobile/purchase-order/base-info', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_purchase_confirm_grade(self, orderNo_=None):
-        if self.user is None:
-            data = {'orderNo': orderNo_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'orderNo': orderNo_}
-        response = self.request.post(url=self.url+'/mobile/purchase/confirm-grade', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _mobile_purchase_deduction_confirm(self, orderId_=None):
+    def _mobile_purchase_order_deduction_confirm(self, orderId_=None):
         if self.user is None:
             data = {'orderId': orderId_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'orderId': orderId_}
-        response = self.request.post(url=self.url+'/mobile/purchase/deduction-confirm', data=data, hosts=self.url)
+        response = self.request.post(url=self.url+'/mobile/purchase-order/deduction-confirm', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_purchase_del(self, orderId_=None):
+    def _mobile_purchase_order_del(self, orderId_=None):
         if self.user is None:
             data = {'orderId': orderId_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'orderId': orderId_}
-        response = self.request.post(url=self.url+'/mobile/purchase/del', data=data, hosts=self.url)
+        response = self.request.post(url=self.url+'/mobile/purchase-order/del', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    # def _mobile_purchase_edit(self, products[0]_productId_=None, products[0]_grade_=None, products[0]_price_=None, orderId_=None, province_=None, city_=None, county_=None, address_=None, lng_=None, lat_=None, remark_=None):
-    #     if self.user is None:
-    #         data = {'products[0]_productId': products[0]_productId_, 'products[0]_grade': products[0]_grade_, 'products[0]_price': products[0]_price_, 'orderId': orderId_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'remark': remark_, }
-    #     else:
-    #         data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'products[0]_productId': products[0]_productId_, 'products[0]_grade': products[0]_grade_, 'products[0]_price': products[0]_price_, 'orderId': orderId_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'remark': remark_}
-    #     response = self.request.post(url=self.url+'/mobile/purchase/edit', data=data, hosts=self.url)
-    #     return self.__judge_response_status(json.loads(response))
-
-    def _mobile_purchase_edit_grade(self, productId_=None, grade_=None, price_=None):
+    def _mobile_purchase_order_edit(self, orderId_=None, province_=None, city_=None, county_=None, address_=None, lng_=None, lat_=None, remark_=None, productJson_=None):
         if self.user is None:
-            data = {'productId': productId_, 'grade': grade_, 'price': price_, }
+            data = {'orderId': orderId_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'remark': remark_, 'productJson': productJson_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'productId': productId_, 'grade': grade_, 'price': price_}
-        response = self.request.post(url=self.url+'/mobile/purchase/edit-grade', data=data, hosts=self.url)
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'orderId': orderId_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'remark': remark_, 'productJson': productJson_}
+        response = self.request.post(url=self.url+'/mobile/purchase-order/edit', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_purchase_friend_list(self, lat_=None, lng_=None):
+    def _mobile_purchase_order_friend_list(self, lat_=None, lng_=None):
         if self.user is None:
             data = {'lat': lat_, 'lng': lng_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'lat': lat_, 'lng': lng_}
-        response = self.request.post(url=self.url+'/mobile/purchase/friend-list', data=data, hosts=self.url)
+        response = self.request.post(url=self.url+'/mobile/purchase-order/friend-list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_purchase_page_list(self, pn_=None, ps_=None, createDate_=None, status_=None, province_=None, city_=None, county_=None):
+    def _mobile_purchase_order_page_list(self, status_=None, pn_=None, ps_=None, startDate_=None, endDate_=None, location_=None, orderNo_=None, userInfo_=None, provence_=None, city_=None, county_=None):
         if self.user is None:
-            data = {'pn': pn_, 'ps': ps_, 'createDate': createDate_, 'status': status_, 'province': province_, 'city': city_, 'county': county_, }
+            data = {'status': status_, 'pn': pn_, 'ps': ps_, 'startDate': startDate_, 'endDate': endDate_, 'location': location_, 'orderNo': orderNo_, 'userInfo': userInfo_, 'provence': provence_, 'city': city_, 'county': county_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'createDate': createDate_, 'status': status_, 'province': province_, 'city': city_, 'county': county_}
-        response = self.request.post(url=self.url+'/mobile/purchase/page-list', data=data, hosts=self.url)
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'status': status_, 'pn': pn_, 'ps': ps_, 'startDate': startDate_, 'endDate': endDate_, 'location': location_, 'orderNo': orderNo_, 'userInfo': userInfo_, 'provence': provence_, 'city': city_, 'county': county_}
+        response = self.request.post(url=self.url+'/mobile/purchase-order/page-list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_purchase_product_grade_list(self, catagory_=None):
+    def _mobile_purchase_order_product_grade_list(self, catagory_=None):
         if self.user is None:
             data = {'catagory': catagory_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'catagory': catagory_}
-        response = self.request.post(url=self.url+'/mobile/purchase/product-grade-list', data=data, hosts=self.url)
+        response = self.request.post(url=self.url+'/mobile/purchase-order/product-grade-list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_purchase_product_list(self, orderNo_=None):
+    def _mobile_purchase_order_product_list(self, orderNo_=None):
         if self.user is None:
             data = {'orderNo': orderNo_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'orderNo': orderNo_}
-        response = self.request.post(url=self.url+'/mobile/purchase/product-list', data=data, hosts=self.url)
+        response = self.request.post(url=self.url+'/mobile/purchase-order/product-list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_purchase_product_sale_list(self, sellerId_=None):
+    def _mobile_purchase_order_product_sale_list(self, sellerId_=None):
         if self.user is None:
             data = {'sellerId': sellerId_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'sellerId': sellerId_}
-        response = self.request.post(url=self.url+'/mobile/purchase/product-sale-list', data=data, hosts=self.url)
+        response = self.request.post(url=self.url+'/mobile/purchase-order/product-sale-list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_purchase_quality_commit(self, orderNo_=None):
-        if self.user is None:
-            data = {'orderNo': orderNo_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'orderNo': orderNo_}
-        response = self.request.post(url=self.url+'/mobile/purchase/quality-commit', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _web_extract_apply_add(self, userId_=None, extractDate_=None, province_=None, city_=None, county_=None, address_=None, lng_=None, lat_=None):
-        if self.user is None:
-            data = {'userId': userId_, 'extractDate': extractDate_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'userId': userId_, 'extractDate': extractDate_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_}
-        response = self.request.post(url=self.url+'/web/extract-apply/add', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _web_extract_apply_allot(self, applyId_=None, chargeId_=None):
-        if self.user is None:
-            data = {'applyId': applyId_, 'chargeId': chargeId_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'applyId': applyId_, 'chargeId': chargeId_}
-        response = self.request.post(url=self.url+'/web/extract-apply/allot', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _web_extract_apply_close(self, applyId_=None, reasonType_=None):
-        if self.user is None:
-            data = {'applyId': applyId_, 'reasonType': reasonType_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'applyId': applyId_, 'reasonType': reasonType_}
-        response = self.request.post(url=self.url+'/web/extract-apply/close', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _web_extract_apply_detail(self, applyId_=None):
-        if self.user is None:
-            data = {'applyId': applyId_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'applyId': applyId_}
-        response = self.request.post(url=self.url+'/web/extract-apply/detail', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _web_extract_apply_edit(self, id_=None, status_=None, extractDate_=None, province_=None, city_=None, county_=None, address_=None, lng_=None, lat_=None):
-        if self.user is None:
-            data = {'id': id_, 'status': status_, 'extractDate': extractDate_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'id': id_, 'status': status_, 'extractDate': extractDate_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_}
-        response = self.request.post(url=self.url+'/web/extract-apply/edit', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _web_extract_apply_list(self, pn_=None, ps_=None, applyNo_=None, status_=None, province_=None, city_=None, county_=None, creatorKeyWord_=None, chargeKeyWord_=None, extractDateStart_=None, extractDateEnd_=None, createDateStart_=None, createDateEnd_=None):
-        if self.user is None:
-            data = {'pn': pn_, 'ps': ps_, 'applyNo': applyNo_, 'status': status_, 'province': province_, 'city': city_, 'county': county_, 'creatorKeyWord': creatorKeyWord_, 'chargeKeyWord': chargeKeyWord_, 'extractDateStart': extractDateStart_, 'extractDateEnd': extractDateEnd_, 'createDateStart': createDateStart_, 'createDateEnd': createDateEnd_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'applyNo': applyNo_, 'status': status_, 'province': province_, 'city': city_, 'county': county_, 'creatorKeyWord': creatorKeyWord_, 'chargeKeyWord': chargeKeyWord_, 'extractDateStart': extractDateStart_, 'extractDateEnd': extractDateEnd_, 'createDateStart': createDateStart_, 'createDateEnd': createDateEnd_}
-        response = self.request.post(url=self.url+'/web/extract-apply/list', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _web_extract_apply_my_extract_apply(self, userId_=None):
-        if self.user is None:
-            data = {'userId': userId_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'userId': userId_}
-        response = self.request.post(url=self.url+'/web/extract-apply/my-extract-apply', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _web_extract_apply_stat(self):
+    def _mobile_purchase_order_status_list(self):
         if self.user is None:
             data = {}
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
-        response = self.request.post(url=self.url+'/web/extract-apply/stat', data=data, hosts=self.url)
+        response = self.request.post(url=self.url+'/mobile/purchase-order/status-list', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _web_extract_apply_add(self, extractDate_=None, province_=None, city_=None, county_=None, address_=None, lng_=None, lat_=None):
+        if self.user is None:
+            data = {'extractDate': extractDate_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'extractDate': extractDate_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_}
+        response = self.request.post(url=self.url+'/web/extract-apply/add', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _web_extract_apply_my_extract_apply(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/web/extract-apply/my-extract-apply', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
