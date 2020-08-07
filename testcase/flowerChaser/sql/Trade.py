@@ -136,3 +136,45 @@ class ConfigProductSql(object):
             is_delete = 0;"""
         return self.db.operate(host_ip, sql)
 
+    def query_purchase_order(self):
+        """
+        查询所有订单
+        :return:
+        """
+        sql = """SELECT
+            * 
+        FROM
+            `fc-trade`.t_purchase_order 
+        WHERE
+            is_delete = 0;"""
+        info = self.db.operate(host_ip, sql)
+        if len(info) == 0:
+            return None
+        else:
+            i = random.randrange(0, len(info))
+            info = info[i]
+            return info
+
+    def query_product_by_status(self):
+        """
+        查询待审核待质检状态的商品
+        :return:
+        """
+        sql = """SELECT
+            tp.* 
+        FROM
+            `fc-trade`.t_product tp
+            LEFT JOIN `fc-trade`.t_purchase_order AS tpo ON tpo.order_no = tp.order_no 
+        WHERE
+            tp.`status` = 2 
+            AND tp.is_delete = 0 
+            AND tpo.`status` IN ( 10, 20 );"""
+        info = self.db.operate(host_ip, sql)
+        if len(info) == 0:
+            return None
+        else:
+            i = random.randrange(0, len(info))
+            info = info[i]
+            return info
+
+

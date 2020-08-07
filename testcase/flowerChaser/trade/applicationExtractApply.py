@@ -57,3 +57,14 @@ class applicationExtractApply(TestCase):
         # userid = '6812'
         response = self.ta._web_extract_apply_my_extract_apply(userId_=userid)
         self.assertEqual(response.get('status'), "OK")
+
+    def test_admin_extract_apply_allot(self):
+        """
+        POST /admin/extract-apply/allot 分配摇蜜专员
+        new V2.4.0
+        :return:
+        """
+        apply_id = 32
+        charge_id = 18331
+        response = self.ta._admin_extract_apply_allot(applyId_=apply_id, chargeId_=charge_id)
+        self.assertEqual("OK", response["status"])
