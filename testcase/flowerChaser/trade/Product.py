@@ -40,20 +40,41 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         :return:
         """
         pics = "http://a0.att.hudong.com/78/52/01200000123847134434529793168.jpg"
-        user_id = self.pr_db.query_user_id().get('user_id')
-        category_dict = {'1001401': '蜂蜜', '1001402': '蜂花粉', '1001403': '蜂王浆'}
-        category = random.choice(list(category_dict))
-        variety = self.pr_db.query_variety(category).get('key')
-        weight_range = random.uniform(0.10, 999999.99)
+        user_id = 1315
+        category_dict = {1001401: '蜂蜜', 1001402: '蜂花粉', 1001403: '蜂王浆'}
+        # category_list = [1001401, 1001402, 1001403]
+        category = random.choice((list(category_dict)))
+        variety = self.pr_db.query_variety(category)['key']
+        weight_range = self.fake.pyfloat(left_digits=random.randint(1, 6), right_digits=2, positive=True)
+            # random.uniform(0.10, 999999.99)
         weight = round(weight_range, 2)
         purity_dict = {'1001501': '纯度<60%', '1001502': '70%纯度', '1001503': '80%纯度', '1001504': '90%纯度',
                        '1001505': '95%纯度'}
         purity = random.choice(list(purity_dict))
-        province = self.pr_db.query_province().get('id')
-        city = self.pr_db.query_city(province).get('id')
+        if category == 1001401:
+            consistence = random.randint(50, 99)
+            humidity = None
+        elif category == 1001402:
+            consistence = None
+            humidity = random.randint(20, 60)
+        elif category == 1001403:
+            consistence = None
+            humidity = None
+        province, city, county, address, lng, lat = self.fl.fake_location()
+        remark = self.fake.text(max_nb_chars=200)
         response = self.trad._mobile_product_add(pics_=pics, sellerId_=user_id, category_=category, variety_=variety,
-                                                 weight_=weight, purity_=purity, province_=province, city_=city,
-                                                 manufactureDate_=1596643200)
+                                                 weight_=weight, purity_=purity, consistence_=consistence, humidity_=humidity,
+                                                 province_=province, city_=city,
+                                                 county_=county, manufactureDate_=1596607200000, remark_=remark)
+        self.assertEqual("OK", response["status"])
+
+    def test_mobile_purchase_order_product_grade_list(self):
+        """
+        POST /mobile/purchase-order/product-grade-list 定价标准列表
+        :return:
+        """
+        cataegory = 1001403
+        response = self.trad._mobile_purchase_order_product_grade_list(category_=cataegory)
         self.assertEqual("OK", response["status"])
 
     def test_mobile_product_list(self):
@@ -71,20 +92,34 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         :param self:
         :return:
         """
-        province = self.pr_db.query_province().get('id')
-        city = self.pr_db.query_city(province).get('id')
-        county = self.pr_db.query_county(city).get('id')
-        address = '接口测试详细地址'
-        lng = '104.063469'
-        lat = '30.537849'
+
         remark = '接口测试备注'
+        province, city, county, address, lng, lat = self.fl.fake_location()
         seller_id = self.pr_db.query_product_seller_id().get('seller_id')
         product_info = self.pr_db.query_product_info_by_seller_id(seller_id)
-        grade = product_info[0].get('key')
-        price = random.randint(1, 99)
-        product = {}
-        self.trad._mobile_purchase_order_add(userId_=seller_id, province_=province, city_=city, county_=county,
-                                             address_=address, lng_=lng, lat_=lat, remark_=remark, productJson_='')
+        category = product_info['parent_key']
+        product_p = self.trad._mobile_purchase_order_product_grade_list(category_=cateegory)
+        i = random.randrange(0, 3)
+        grade = product_p["content"][i]["grade"]
+        price = product_p["content"][i]["price"]*100
+        product_id = product_info['id']
+        product_json = [{"grade": grade, "price": price, "productId": product_id}]
+        product_json = json.dumps(product_json)
+        response = self.trad._mobile_purchase_order_add(userId_=seller_id, province_=province, city_=city, county_=county,
+                                                        address_=address, lng_=lng, lat_=lat, remark_=remark,
+                                                        productJson_=product_json)
+        self.assertEqual("OK", response["status"])
+
+    def test_admin_purchase_order_product_info(self):
+        """
+        订单详情-商品信息
+        :return:
+        """
+        order_no = 2008061337539221600802
+        response = self.trad._admin_purchase_order_product_info(orderNo_=order_no)
+        self.assertEqual("OK", response["status"])
+
+
 
 
 
