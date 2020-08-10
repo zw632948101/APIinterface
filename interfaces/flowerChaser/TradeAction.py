@@ -131,12 +131,12 @@ class TradeAction(object):
         response = self.request.post(url=self.url+'/admin/pay-apply/audit', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_pay_apply_comfirm(self, applyId_=None):
+    def _admin_pay_apply_confirm(self, applyId_=None):
         if self.user is None:
             data = {'applyId': applyId_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'applyId': applyId_}
-        response = self.request.post(url=self.url+'/admin/pay-apply/comfirm', data=data, hosts=self.url)
+        response = self.request.post(url=self.url+'/admin/pay-apply/confirm', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _admin_pay_apply_count(self):

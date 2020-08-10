@@ -47,7 +47,8 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         grade = product_p["content"][i]["grade"]
         price = product_p["content"][i]["price"]*100
         product_id = product_info['id']
-        product_json = [{"grade": grade, "price": price, "productId": 27}]
+        product_id = 34
+        product_json = [{"grade": grade, "price": price, "productId": product_id}]
         product_json = json.dumps(product_json)
         response = self.trad._mobile_purchase_order_add(userId_=1315, province_=province, city_=city, county_=county,
                                                         address_=address, lng_=lng, lat_=lat, remark_=remark,
@@ -70,7 +71,7 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         :return:
         """
         order_no = self.pr_db.query_purchase_order()['order_no']
-        order_no = 2008070943344301600802
+        order_no = 2008071510343650100302
         response = self.trad._mobile_purchase_order_product_list(orderNo_=order_no)
         self.assertEqual("OK", response["status"])
 
@@ -149,7 +150,7 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         i = random.randrange(0, 3)
         grade = product_c["content"][i]["grade"]
         price = product_c["content"][i]["price"] * 100
-        response = self.trad._admin_purchase_order_edit_grade(productId_=27, grade_=grade, price_=price)
+        response = self.trad._admin_purchase_order_edit_grade(productId_=29, grade_=grade, price_=price)
         self.assertEqual("OK", response["status"])
 
     def test_admin_purchase_order_confirm_grade(self):
@@ -157,7 +158,7 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         POST /admin/purchase-order/confirm-grade 确认收购价
         :return:
         """
-        order_no = 2008071038390690100502
+        order_no = 2008071510343650100302
         response = self.trad._admin_purchase_order_confirm_grade(orderNo_=order_no)
         self.assertEqual("OK", response["status"])
 
@@ -176,7 +177,7 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         :return:
         """
         images = 'https://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com/data/fc-user/headImg/1596765774337.jpeg'
-        order_no = 2008071038390690100502
+        order_no = 2008071510343650100302
         type = random.choice([1, 2])
         type = 2
         remark = None
@@ -194,13 +195,13 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         :return:
         """
         images = 'https://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com/data/fc-user/headImg/1596765774337.jpeg'
-        quality_id = 12
+        quality_id = 20
         type = random.choice([1, 2])
-        type = 2
+        type = 1
         remark = None
         deduct_price = None
         if type == 2:
-            remark = remark = self.fake.text(max_nb_chars=100)
+            remark = self.fake.text(max_nb_chars=100)
             deduct_price = random.randint(100, 100000)
         response = self.trad._admin_quality_edit(images_=images, qualityId_=quality_id, type_=type, remark_=remark,
                                                  deductPrice_=deduct_price)
@@ -220,7 +221,7 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         POST /admin/purchase-order/quality-commit 确认质检结果
         :return:
         """
-        order_no = 2008071038390690100502
+        order_no = 2008071510343650100302
         response = self.trad._admin_purchase_order_quality_commit(orderNo_=order_no)
         self.assertEqual("OK", response["status"])
 
@@ -231,6 +232,51 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         """
         order_no = 2008071038390690100502
         response = self.trad._admin_quality_info(orderNo_=order_no)
+        self.assertEqual("OK", response["status"])
+
+    def test_mobile_purchase_order_deduction_confirm(self):
+        """
+        POST /mobile/purchase-order/deduction-confirm 确认扣款/确认收购价格
+        :return:
+        """
+        order_id = 28
+        response = self.trad._mobile_purchase_order_deduction_confirm(orderId_=order_id)
+        self.assertEqual("OK", response["status"])
+
+    def test_admin_pay_apply_add(self):
+        """
+        POST /admin/pay-apply/add 新建打款申请单
+        :return:
+        """
+        order_no = 2008071510343650100302
+        amount = 300
+        type = 2
+        payee_id = 1315
+        remark = self.fake.text(max_nb_chars=100)
+        response = self.trad._admin_pay_apply_add(orderNo_=order_no, amount_=amount, type_=type, payeeId_=payee_id,
+                                                  remark_=remark)
+        self.assertEqual("OK", response["status"])
+
+    def test_admin_pay_apply_audit(self):
+        """
+        POST /admin/pay-apply/audit 审核打款申请单
+        :return:
+        """
+        apply_id = 12
+        type = 30
+        reason = None
+        if type == 20:
+            reason = self.fake.text(max_nb_chars=100)
+        response = self.trad._admin_pay_apply_audit(applyId_=apply_id, type_=type, reason_=reason)
+        self.assertEqual("OK", response["status"])
+
+    def test_admin_pay_apply_confirm(self):
+        """
+        POST /admin/pay-apply/confirm 确认打款
+        :return:
+        """
+        apply_id = 12
+        response = self.trad._admin_pay_apply_confirm(applyId_=apply_id)
         self.assertEqual("OK", response["status"])
 
 

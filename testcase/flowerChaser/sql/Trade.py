@@ -43,7 +43,7 @@ class ConfigProductSql(object):
                     AND c.`code` = 10014 
                     AND c.parent_key = '%s';""" % parent_key
         info = self.db.operate(host_ip, sql)
-        i = random.randint(0, len(info))
+        i = random.randrange(0, len(info))
         info = info[i]
         return info
 
