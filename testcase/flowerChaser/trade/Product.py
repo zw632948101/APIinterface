@@ -56,6 +56,15 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
                                                  manufactureDate_=1596643200)
         self.assertEqual("OK", response["status"])
 
+    def test_mobile_product_list(self):
+        """
+         V2.4.0POST /mobile/product/list  商品列表
+        :return:
+        """
+        self.trad._mobile_product_list(province_=None, city_=None, county_=None, category_=None, variety_=None,
+                                       status_=None, pn_=None, ps_=None, manufactureDateStart_=None,
+                                       manufactureDateEnd_=None, searchKey_=None)
+
     def test_mobile_purchase_order_add(self):
         """
         V2.4.0 POST /mobile/purchase-order/add  订单生成
@@ -76,7 +85,6 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         product = {}
         self.trad._mobile_purchase_order_add(userId_=seller_id, province_=province, city_=city, county_=county,
                                              address_=address, lng_=lng, lat_=lat, remark_=remark, productJson_='')
-
 
 
 
