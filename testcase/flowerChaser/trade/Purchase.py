@@ -47,7 +47,7 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         grade = product_p["content"][i]["grade"]
         price = product_p["content"][i]["price"]*100
         product_id = product_info['id']
-        product_id = 34
+        product_id = 36
         product_json = [{"grade": grade, "price": price, "productId": product_id}]
         product_json = json.dumps(product_json)
         response = self.trad._mobile_purchase_order_add(userId_=1315, province_=province, city_=city, county_=county,
@@ -150,7 +150,7 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         i = random.randrange(0, 3)
         grade = product_c["content"][i]["grade"]
         price = product_c["content"][i]["price"] * 100
-        response = self.trad._admin_purchase_order_edit_grade(productId_=29, grade_=grade, price_=price)
+        response = self.trad._admin_purchase_order_edit_grade(productId_=32, grade_=grade, price_=price)
         self.assertEqual("OK", response["status"])
 
     def test_admin_purchase_order_confirm_grade(self):
@@ -158,7 +158,7 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         POST /admin/purchase-order/confirm-grade 确认收购价
         :return:
         """
-        order_no = 2008071510343650100302
+        order_no = 2008071719290591600702
         response = self.trad._admin_purchase_order_confirm_grade(orderNo_=order_no)
         self.assertEqual("OK", response["status"])
 
@@ -177,9 +177,9 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         :return:
         """
         images = 'https://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com/data/fc-user/headImg/1596765774337.jpeg'
-        order_no = 2008071510343650100302
+        order_no = 2008071719290591600702
         type = random.choice([1, 2])
-        type = 2
+        type = 1
         remark = None
         deduct_price = None
         if type == 2:
@@ -221,7 +221,7 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         POST /admin/purchase-order/quality-commit 确认质检结果
         :return:
         """
-        order_no = 2008071510343650100302
+        order_no = 2008071719290591600702
         response = self.trad._admin_purchase_order_quality_commit(orderNo_=order_no)
         self.assertEqual("OK", response["status"])
 
@@ -239,7 +239,7 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         POST /mobile/purchase-order/deduction-confirm 确认扣款/确认收购价格
         :return:
         """
-        order_id = 28
+        order_id = 32
         response = self.trad._mobile_purchase_order_deduction_confirm(orderId_=order_id)
         self.assertEqual("OK", response["status"])
 
