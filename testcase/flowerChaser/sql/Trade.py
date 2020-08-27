@@ -177,4 +177,29 @@ class ConfigProductSql(object):
             info = info[i]
             return info
 
+    def query_product_in_order_by_order_id(self, order_id):
+        """
+        通过订单id查询订单下的商品信息
+        :param order_id: 订单id
+        :return:
+        """
+        sql = """SELECT
+                    p.*,
+                    c.`value`,
+                    c.`parent_key`
+                FROM
+                    `fc-trade`.t_purchase_order po
+                    LEFT JOIN `fc-trade`.t_product p ON po.order_no = p.order_no 
+                    LEFT JOIN `fc-bee`.t_config c ON p.variety = c.`key` 
+                WHERE
+                    po.is_delete = 0 
+                    AND po.id = '%s';""" % order_id
+        info = self.db.operate(host_ip, sql)
+        if len(info) == 0:
+            return None
+        else:
+            i = random.randrange(0, len(info))
+            info = info[i]
+            return info
+
 

@@ -31,7 +31,7 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
     user_id = 630
     mobile = (vr.query_contact_number_buy_user(user_id=user_id))[0].get('contact_number')
     fake = Faker(locale="zh_CN")
-    # workbench.set_user('15200000033')
+    # workbench.set_user('15200000003')
     trad.set_user(mobile)
 
     def test_mobile_product_add(self):
@@ -64,7 +64,7 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
             humidity = None
         province, city, county, address, lng, lat = self.fl.fake_location()
         remark = self.fake.text(max_nb_chars=200)
-        response = self.trad._mobile_product_add(pics_=pics, sellerId_=user_id, category_=category, variety_=variety,
+        response = self.trad._mobile_product_add(pics_=pics, sellerId_=647, category_=1001401, variety_=1001401001,
                                                  weight_=weight, purity_=purity, consistence_=consistence, humidity_=humidity,
                                                  province_=province, city_=city,
                                                  county_=county, manufactureDate_=1596607200000, remark_=remark)
@@ -196,16 +196,24 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         seller_id = self.pr_db.query_product_seller_id().get('seller_id')
         self.trad._mobile_purchase_order_product_sale_list(sellerId_=seller_id)
 
-    def test_admin_purchase_order_product_info(self):
+    def test_mobile_purchase_order_page_list(self):
         """
-        订单详情-商品信息
+         V 2.4.0 POST /mobile/purchase-order/page-list  管理端-订单列表
         :return:
         """
-        order_no = 2008061337539221600802
-        response = self.trad._admin_purchase_order_product_info(orderNo_=2008061048509061600905)
-        self.assertEqual("OK", response["status"])
-
-
+        status_dict = {10: '待审核', 20: '待质检', 30: '待客户确认', 40: '待尾款结算', 50: '已完成'}
+        status = random.choice(list(status_dict))
+        province, city, county, address, lng, lat = self.fl.fake_location()
+        location = str(str(province) + '-' + str(city) + '-' + str(county))
+        order_no = '2008071719290591600702'
+        user_info = 199
+        seller_id = self.pr_db.query_product_seller_id().get('seller_id')
+        sort_dict = {'ASC': '升序', 'DESC': '降序'}
+        sort = random.choice(list(sort_dict))
+        self.trad._mobile_purchase_order_page_list(status_=None, pn_=1, ps_=20, startDate_=None,
+                                                   endDate_=None, location_=None, orderNo_=order_no,
+                                                   userInfo_=None, provence_=None, city_=None, county_=None,
+                                                   sellerId_=None)
 
 
 
