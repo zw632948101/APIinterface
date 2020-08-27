@@ -27,14 +27,6 @@ class PassportAction(object):
         else:
             raise Exception('status未返回OK或ERROR')
 
-    def _admin_sso_account_exist(self, appId_=None, mobile_=None):
-        if self.user is None:
-            data = {'appId': appId_, 'mobile': mobile_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'appId': appId_, 'mobile': mobile_}
-        response = self.request.post(url=self.url+'/admin/sso/account-exist', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
     def _admin_sso_automatic_login(self, token_=None, encryptedPwd_=None, deviceId_=None):
         if self.user is None:
             data = {'token': token_, 'encryptedPwd': encryptedPwd_, 'deviceId': deviceId_, }
@@ -89,38 +81,6 @@ class PassportAction(object):
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'mobile': mobile_, 'bizType': bizType_}
         response = self.request.post(url=self.url+'/admin/sso/verify-code-get', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _api_sso_check_token(self, loginCheckInput_=None):
-        if self.user is None:
-            data = {'loginCheckInput': loginCheckInput_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'loginCheckInput': loginCheckInput_}
-        response = self.request.post(url=self.url+'/api/sso/check-token', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _api_sso_frozen_id(self, input_=None):
-        if self.user is None:
-            data = {'input': input_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
-        response = self.request.post(url=self.url+'/api/sso/frozen-id', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _api_sso_kick(self, input_=None):
-        if self.user is None:
-            data = {'input': input_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
-        response = self.request.post(url=self.url+'/api/sso/kick', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _api_sso_logout(self, input_=None):
-        if self.user is None:
-            data = {'input': input_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
-        response = self.request.post(url=self.url+'/api/sso/logout', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _mobile_sso_automatic_login(self, token_=None, encryptedPwd_=None, deviceId_=None):
