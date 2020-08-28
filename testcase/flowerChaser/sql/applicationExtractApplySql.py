@@ -77,3 +77,70 @@ class applicationExtractApplySql(DataBaseOperate):
                     tea.create_time DESC;
               """
         return self.operate_db(sql=sql)
+
+    def query_my_extractionOfHoney_info(self,userid):
+        """
+        根据userID查询摇蜜详情
+        """
+        sql = """
+                SELECT
+                    tea.address,
+                    tea.province,
+                    tea.city,
+                    tea.county,
+                    tea.lng,
+                    tea.lat,
+                    tea.remark,
+                    tea.reason,
+                    tea.id,
+                    tea.`status`,
+                    tea.apply_no AS applyNo,
+                    tea.charge_id AS chargeId,
+                    UNIX_TIMESTAMP(tea.extract_date)*1000 AS extractDate,
+                    UNIX_TIMESTAMP(tea.create_time)*1000 AS createTime,
+                    tbf.contact_number AS chargeMobile,
+                    IF(tbf.real_name IS NOT NULL,tbf.real_name,tbf.user_name) AS chargeName,
+                    (SELECT tc.value_en FROM `fc-bee`.t_config tc WHERE tc.`code` = '10001' AND tc.`key` = tur.role_code) AS chargeRole,
+                    CASE tea.`status` WHEN 10 THEN '待处理' WHEN 20 THEN '待审核' WHEN 10 THEN '待摇蜜' END statusDesc
+                FROM
+                    `fc-trade`.t_extract_apply tea 
+                    LEFT JOIN `fc-bee`.t_bee_friend tbf ON tbf.user_id = tea.charge_id AND tbf.is_delete = 0 AND tbf.`status` = 1 AND tbf.user_id IS NOT NULL
+                    LEFT JOIN `fc-bee`.t_user_role tur ON tur.user_id = tea.charge_id AND tur.is_delete = 0
+                WHERE
+                    tea.creator_id = %s 
+                    AND tea.is_delete = 0 
+                    AND tea.`status` IN ( 10, 20, 30);
+              """ % userid
+        info = self.operate_db(sql=sql)
+        if info:
+            return info[0]
+        return
+
+    def query_userInfo_containerCount(self,userid):
+        """
+        查询用户信息和航吊数量
+        """
+        sql = """
+                SELECT
+                    tbf.province,
+                    tbf.city,
+                    tbf.county,
+                    tbf.address,
+                    tbf.lat,
+                    tbf.lng,
+                    tbf.user_name AS userName,
+                    IF(tbf.real_name IS NOT NULL,tbf.real_name,'') AS realName,
+                    COUNT(tbc.gateway_no) AS beeContainerCount
+                FROM
+                    `fc-bee`.t_bee_friend tbf 
+                    LEFT JOIN `fc-bee`.t_bee_container tbc ON tbf.user_id = tbc.user_id AND tbc.is_delete = 0 AND tbc.`status` = 0
+                WHERE
+                    tbf.user_id = %s 
+                    AND tbf.is_delete = 0 
+                    AND tbf.`status` = 1
+                    GROUP BY tbf.user_id ;
+              """ % userid
+        info = self.operate_db(sql=sql)
+        if info:
+            return info[0]
+        return

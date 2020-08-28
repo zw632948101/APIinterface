@@ -1431,8 +1431,68 @@ class NectarSourcePlant(DataBaseOperate):
                   FROM `fc-bee`.t_nectar_source_plant tp WHERE tp.is_delete = 0;"""
         return self.operate(host_ip, sql)
 
+    def query_nectar_source_plant_info(self, plantName):
+        """
+        查询单个蜜源植物信息
+        """
+        sql = "SELECT *  FROM `fc-bee`.t_nectar_source_plant tp  WHERE tp.plant_name = '%s';" % plantName
+        return self.operate(host_ip, sql)
 
+    def query_nectar_source_plant_attach(self, plantCode):
+        """
+        根据植物code查询植物附件
+        """
+        sql = """
+                SELECT
+                    ta.id,
+                    ta.plant_code AS plantCode,
+                IF
+                    ( ta.url IS NULL, '', ta.url ) AS url,
+                IF
+                    ( ta.remark IS NULL, '', ta.remark ) AS remark,
+                IF
+                    ( ta.tag IS NULL, '', ta.tag ) AS tag 
+                FROM
+                    `fc-bee`.t_nectar_source_plant_attach ta 
+                WHERE
+                    ta.plant_code = '%s'
+              """ % plantCode
+        return self.operate(host_ip, sql)
 
+    def query_nectar_source_plant_count(self):
+        """
+        查询蜜源植物统计
+        """
+        sql = """
+                SELECT
+                    COUNT(DISTINCT tnsp.id) AS 'allCount',
+                    COUNT(DISTINCT IF(tnsp.type = '1',tnsp.id,NULL)) AS 'mainCount',
+                    COUNT(DISTINCT IF(tnsp.type = '2',tnsp.id,NULL)) AS 'auxiliaryCount',
+                    COUNT(DISTINCT IF((tsi.id IS NOT NULL OR tns.id IS NOT NULL)AND tnsp.type = '2',tnsp.id,NULL)) AS 'coveredAuxiliaryCount',
+                    COUNT(DISTINCT IF((tsi.id IS NOT NULL OR tns.id IS NOT NULL)AND tnsp.type = '1' ,tnsp.id,NULL)) AS 'coveredMainCount'
+                FROM
+                    `fc-bee`.t_nectar_source_plant tnsp
+                    LEFT JOIN `fc-bee`.t_swarm_info tsi ON tsi.cur_nectar_type LIKE CONCAT( '%', tnsp.`code`, '%' )	AND tsi.is_delete = 0
+                    LEFT JOIN `fc-bee`.t_nectar_source tns ON tns.type LIKE CONCAT( '%', tnsp.`code`, '%' )	AND tns.is_delete = 0
+                WHERE
+                    tnsp.is_delete = 0;
+              """
+        return self.operate(host_ip, sql)[0]
+
+class NectarSourcePointSql(object):
+    db = DataBaseOperate()
+
+    def query_nectar_source_point(self):
+        sql = "SELECT * FROM `fc-bee`.t_nectar_source_point WHERE is_delete=0;"
+        return self.db.operate(host_ip, sql)
+
+    def query_nectar_source_point_attach(self):
+        sql = """SELECT * FROM `fc-bee`.t_nectar_source_point_attach WHERE is_delete=0;"""
+        return self.db.operate(host_ip, sql)
+
+    def query_nectar_source_point_attach_by_point_id(self, point_id):
+        sql = """SELECT * FROM `fc-bee`.t_nectar_source_point_attach WHERE point_id=%s AND is_delete =0;""" % point_id
+        return self.db.operate(host_ip, sql)
 
 if __name__ == '__main__':
     d = NectarSourcePlant()
