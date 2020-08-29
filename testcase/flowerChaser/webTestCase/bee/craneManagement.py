@@ -2,33 +2,28 @@
 # -*- coding: UTF-8 -*-
 # @Time : 2020/8/28 16:07 
 # @Author : wei.zhang
-# @File : craneManagementSQL.py
+# @File : NectarSourcePoint.py
 # @Software: PyCharm
 
 
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
 from utils.log import log
-from faker import Faker
 from testcase.flowerChaser.sql.craneManagementSQL import CraneManagementSQL
-from utils.fake.FakeLocation import FakeLocation
 import random
 import json
-import time, datetime
 from utils.dataConversion.dataConversion import DataConversion as dc
 from utils.Timestamp.TimestampTransform import TimestampTransform as tt
 
 
 class CraneManagement(unittest.TestCase):
     """
-    接口文档: http://192.168.62.242:36054/swagger-ui.html
+    接口文档: http://qa-gateway.worldfarm.com/swagger-ui.html#/
     """
     ba = BeeAction()
     db = CraneManagementSQL()
-    fl = FakeLocation()
     mobile = '15388126082'
-    log.info("开始执行蜜源植物管理模块测试用例")
-    fake = Faker(locale="zh_CN")
+    log.info("开始执行航吊设备管理模块测试用例")
     ba.set_user(mobile)
 
     def test_admin_crane_overview(self):
@@ -92,10 +87,10 @@ class CraneManagement(unittest.TestCase):
         # gatewayNo = None
         # gpsNo = '0201010000000089'
         # gatewayNo = '0201010000000089'
-        user_dict = [{"serialNo": deviceID, "joinDate": tt().get_standardtime_timestamp(formats="%Y-%m-%d"),
-                      "mobile": i.get('contact_number'), "realName": i.get('real_name') + "接口测试添加航吊"} for i in userinfo]
         # user_dict = [{"serialNo": deviceID, "joinDate": tt().get_standardtime_timestamp(formats="%Y-%m-%d"),
-        #               "mobile": '15388126044', "realName": "接口测试添加航吊"}]
+        #               "mobile": i.get('contact_number'), "realName": i.get('real_name') + "接口测试添加航吊"} for i in userinfo]
+        user_dict = [{"serialNo": deviceID, "joinDate": tt().get_standardtime_timestamp(formats="%Y-%m-%d"),
+                      "mobile": '13666666666', "realName": "接口测试添加航吊"}]
         response = self.ba._admin_crane_binding(serialNo_=deviceID, hiveNum_=hiveNum, gatewayNo_=gatewayNo,
                                                 cameraNo_=cameraNo, gpsNo_=gpsNo, users_=json.dumps(user_dict))
         self.assertEqual(response["status"], "OK")
@@ -156,8 +151,8 @@ class CraneManagement(unittest.TestCase):
         # deviceID = 'HD0100075'
         userinfo = random.choice(self.db.query_bee_fried_user_info())
         mobile = userinfo.get('contact_number')
-        # mobile = '18904419415'
-        realName = userinfo.get('real_name') + "接口测试编辑航吊"
+        mobile = '15200000003'
+        realName = userinfo.get('real_name')
         joinDate = tt().get_standardtime_timestamp(type=-1, day=1, formats="%Y-%m-%d")
         response = self.ba._admin_crane_binding_user(serialNo_=deviceID, mobile_=mobile, realName_=realName,
                                                      joinDate_=joinDate)

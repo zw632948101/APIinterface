@@ -51,4 +51,4 @@ class FakeLocation(object):
 
 if __name__ == '__main__':
     fake_location = FakeLocation()
-    fake_location.fake_location()
+    print(fake_location.fake_location())

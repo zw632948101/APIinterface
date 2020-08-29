@@ -36,6 +36,16 @@ class ConfigInformationSql(object):
             return info[0]
         return
 
+    def query_attach_all(self):
+        """
+        查询表中全部的URL链接
+        """
+        sql = """SELECT tb.url FROM `fc-bee`.t_bee_reserve_attach tb ;"""
+        info = self.db.operate(host_ip, sql)
+        if info:
+            return info
+        return
+
 
 class NectarSourceInformationSql(object):
     db = DataBaseOperate()
@@ -1478,6 +1488,7 @@ class NectarSourcePlant(DataBaseOperate):
                     tnsp.is_delete = 0;
               """
         return self.operate(host_ip, sql)[0]
+
 
 class NectarSourcePointSql(object):
     db = DataBaseOperate()

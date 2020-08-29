@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 # @Time : 2020/8/28 16:11 
 # @Author : wei.zhang
-# @File : craneManagementSQL.py
+# @File : NectarSourcePoint.py
 # @Software: PyCharm
 from utils.databaseConnection.DataBaseOperate import DataBaseOperate
 from utils.environmentConfiguration import config
@@ -125,4 +125,19 @@ class CraneManagementSQL(DataBaseOperate):
                 tcr.serial_no = '%s' 
                 AND tcr.`status` = 0;
               """ % serial_no
+        return self.operate(host=host_ip, sql=sql)
+
+    def query_user_id_serial_on_list(self, userid):
+        """
+        根据用户ID查询绑定的设备信息
+        """
+        sql = """
+            SELECT
+                *
+            FROM
+                `fc-bee`.t_crane_relation tcr
+            WHERE
+                tcr.user_id = '%s' 
+                AND tcr.`status` = 0;
+              """ % userid
         return self.operate(host=host_ip, sql=sql)
