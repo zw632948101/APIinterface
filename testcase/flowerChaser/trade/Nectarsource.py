@@ -6,7 +6,7 @@ import pymysql
 import random
 import unittest
 
-class MYtest(unittest.TestCase):
+class Nectarsource_auth(unittest.TestCase):
 
     """
     FC2.5.0接口
