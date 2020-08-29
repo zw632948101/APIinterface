@@ -1494,6 +1494,7 @@ class NectarSourcePointSql(object):
         sql = """SELECT * FROM `fc-bee`.t_nectar_source_point_attach WHERE point_id=%s AND is_delete =0;""" % point_id
         return self.db.operate(host_ip, sql)
 
+
 if __name__ == '__main__':
     d = NectarSourcePlant()
     print(d.query_nectar_source_plant_all())
