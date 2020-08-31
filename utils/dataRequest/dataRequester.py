@@ -20,7 +20,8 @@ class Request(object):
                              "Chrome/68.0.3440.106 Safari/537.36",
                "_App-Version_": version,
                "_Device-Type_": "iOS",
-               "region": "online"
+               "region": "online",
+               "Accept_Language": "zh"
                }
     api_headers = {
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",

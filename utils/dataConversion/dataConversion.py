@@ -6,8 +6,7 @@ __author__ = 'Heng Xin'
 __date__ = '2018/3/28'
 """
 
-
-from random import sample
+from random import sample, choices
 
 
 class DataConversion(object):
@@ -72,3 +71,16 @@ class DataConversion(object):
             split_end += size
             while_count -= 1
         return new_list
+
+    @staticmethod
+    def assemble_picture_dictionary(num, **kwargs):
+        """
+        用于组装图片字典
+        :param int num:
+        :return:
+        """
+        from testcase.flowerChaser.sql.Bee import ConfigInformationSql
+        import json
+        c = ConfigInformationSql()
+        urllist = choices(c.query_attach_all(), k=num)
+        return json.dumps([dict(i, **kwargs) for i in urllist])

@@ -8,6 +8,7 @@ __date__ = '2019/ / '
 """
 import datetime
 import time
+from random import random
 
 
 class TimestampTransform(object):
@@ -80,3 +81,19 @@ class TimestampTransform(object):
         t = TimestampTransform.get_standardtime_by_offset(type=type, week=week, day=day, hour=hour, minute=minute,
                                                           second=second, formats=formats)
         return TimestampTransform.str_time_timestamp(t, formats=formats)
+
+    @staticmethod
+    def get_random_date():
+        """
+        生成随机的月日
+        """
+        year = int(datetime.datetime.now().year)
+        status_date = time.mktime((year, 1, 1, 0, 0, 0, 0, 0, 0))
+        end_date = time.mktime((year, 12, 31, 0, 0, 0, 0, 0, 0))
+        date = status_date + random() * (end_date - status_date)
+        return TimestampTransform.timestamp_formatting(date, formats="%m%d")
+
+
+if __name__ == '__main__':
+    t = TimestampTransform()
+    t.get_random_date()
