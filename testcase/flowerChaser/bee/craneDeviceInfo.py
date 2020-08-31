@@ -18,7 +18,7 @@ class CraneDevice(unittest.TestCase):
     """
     ba = BeeAction()
     db = CraneManagementSQL()
-    mobile = '13666666666'
+    mobile = '18919028649'
     log.info("开始执行设备信息模块测试用例")
     ba.set_user(mobile)
 

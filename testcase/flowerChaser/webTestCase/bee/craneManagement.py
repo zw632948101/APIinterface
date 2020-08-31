@@ -151,7 +151,7 @@ class CraneManagement(unittest.TestCase):
         # deviceID = 'HD0100075'
         userinfo = random.choice(self.db.query_bee_fried_user_info())
         mobile = userinfo.get('contact_number')
-        mobile = '15200000003'
+        mobile = '18919028649'
         realName = userinfo.get('real_name')
         joinDate = tt().get_standardtime_timestamp(type=-1, day=1, formats="%Y-%m-%d")
         response = self.ba._admin_crane_binding_user(serialNo_=deviceID, mobile_=mobile, realName_=realName,
