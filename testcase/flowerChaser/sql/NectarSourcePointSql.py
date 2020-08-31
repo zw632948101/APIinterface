@@ -27,5 +27,25 @@ class NectarSourcePointSql(DataBaseOperate):
         查询蜜源点信息
         """
         sql = """SELECT * FROM `fc-bee`.t_nectar_source_point WHERE province=%s AND city=%s AND county=%s AND plant_code=%s ;""" % (
-        province, city, county, plantCode)
+            province, city, county, plantCode)
+        return self.operate(host=host_ip, sql=sql)
+
+    def query_nectar_source_point_all(self):
+        """
+        查询全部的蜜源点 V2.5
+        """
+        sql = """
+            SELECT * FROM `fc-bee`.t_nectar_source_point tp WHERE tp.is_delete = 0;
+              """
+        return self.operate(host=host_ip, sql=sql)
+
+    def query_current_user_creation_point(self, userid, usertype=1):
+        """
+        根据type类型组装查询，1查询当前用户，2查询非当前用户
+        """
+        if usertype == 1:
+            user = "tp.creator_id = %s" % userid
+        else:
+            user = "tp.creator_id != %s" % userid
+        sql = """SELECT * FROM `fc-bee`.t_nectar_source_point tp WHERE tp.is_delete = 0 AND %s;""" % user
         return self.operate(host=host_ip, sql=sql)

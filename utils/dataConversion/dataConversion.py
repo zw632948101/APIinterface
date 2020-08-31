@@ -76,13 +76,11 @@ class DataConversion(object):
     def assemble_picture_dictionary(num, **kwargs):
         """
         用于组装图片字典
+        :param int num:
+        :return:
         """
         from testcase.flowerChaser.sql.Bee import ConfigInformationSql
         import json
         c = ConfigInformationSql()
         urllist = choices(c.query_attach_all(), k=num)
         return json.dumps([dict(i, **kwargs) for i in urllist])
-
-
-if __name__ == '__main__':
-    print(DataConversion.assemble_picture_dictionary(2, plant=1299, remak='dsdsd'))
