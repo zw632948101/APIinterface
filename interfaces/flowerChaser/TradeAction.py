@@ -203,11 +203,11 @@ class TradeAction(object):
         response = self.request.post(url=self.url+'/admin/price/on-off', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_price_page_list(self, pn_=None, ps_=None, category_=None, variety_=None, status_=None, ctOrderType_=None):
+    def _admin_price_page_list(self, category_=None, variety_=None, pn_=None, ps_=None, status_=None, ctOrderType_=None):
         if self.user is None:
-            data = {'pn': pn_, 'ps': ps_, 'category': category_, 'variety': variety_, 'status': status_, 'ctOrderType': ctOrderType_, }
+            data = {'category': category_, 'variety': variety_, 'pn': pn_, 'ps': ps_, 'status': status_, 'ctOrderType': ctOrderType_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'category': category_, 'variety': variety_, 'status': status_, 'ctOrderType': ctOrderType_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'category': category_, 'variety': variety_, 'pn': pn_, 'ps': ps_, 'status': status_, 'ctOrderType': ctOrderType_}
         response = self.request.post(url=self.url+'/admin/price/page-list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -339,6 +339,14 @@ class TradeAction(object):
         response = self.request.post(url=self.url+'/admin/supplier/add', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
+    def _admin_supplier_count(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/admin/supplier/count', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
     def _admin_supplier_del(self, supplierId_=None):
         if self.user is None:
             data = {'supplierId': supplierId_, }
@@ -355,11 +363,11 @@ class TradeAction(object):
         response = self.request.post(url=self.url+'/admin/supplier/detail', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_supplier_edit(self, pics_=None, id_=None, name_=None, mainBusiness_=None, province_=None, city_=None, county_=None, intro_=None):
+    def _admin_supplier_edit(self, pics_=None, name_=None, mainBusiness_=None, province_=None, city_=None, county_=None, intro_=None, id_=None):
         if self.user is None:
-            data = {'pics': pics_, 'id': id_, 'name': name_, 'mainBusiness': mainBusiness_, 'province': province_, 'city': city_, 'county': county_, 'intro': intro_, }
+            data = {'pics': pics_, 'name': name_, 'mainBusiness': mainBusiness_, 'province': province_, 'city': city_, 'county': county_, 'intro': intro_, 'id': id_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pics': pics_, 'id': id_, 'name': name_, 'mainBusiness': mainBusiness_, 'province': province_, 'city': city_, 'county': county_, 'intro': intro_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pics': pics_, 'name': name_, 'mainBusiness': mainBusiness_, 'province': province_, 'city': city_, 'county': county_, 'intro': intro_, 'id': id_}
         response = self.request.post(url=self.url+'/admin/supplier/edit', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -369,6 +377,14 @@ class TradeAction(object):
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'name': name_, 'addProduct': addProduct_, 'productOnline': productOnline_}
         response = self.request.post(url=self.url+'/admin/supplier/list', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_supplier_product_list(self, supplierId_=None):
+        if self.user is None:
+            data = {'supplierId': supplierId_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'supplierId': supplierId_}
+        response = self.request.post(url=self.url+'/admin/supplier/product-list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _admin_supplier_product_add(self, label_=None, productListImgUrl_=None, productImgUrl_=None, productParamImgUrl_=None, productDetailImgUrl_=None, supplierId_=None, name_=None, category_=None, title_=None, brand_=None, price_=None, sortNo_=None):
@@ -435,20 +451,28 @@ class TradeAction(object):
         response = self.request.post(url=self.url+'/admin/supplier/product/purchase/list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_supplier_product_stock_list(self, pn_=None, ps_=None, supplierName_=None, name_=None, status_=None):
-        if self.user is None:
-            data = {'pn': pn_, 'ps': ps_, 'supplierName': supplierName_, 'name': name_, 'status': status_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'supplierName': supplierName_, 'name': name_, 'status': status_}
-        response = self.request.post(url=self.url+'/admin/supplier/product/stock-list', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
     def _admin_supplier_product_stock_add(self, productId_=None, assignorId_=None, assigneeId_=None, transferStock_=None):
         if self.user is None:
             data = {'productId': productId_, 'assignorId': assignorId_, 'assigneeId': assigneeId_, 'transferStock': transferStock_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'productId': productId_, 'assignorId': assignorId_, 'assigneeId': assigneeId_, 'transferStock': transferStock_}
         response = self.request.post(url=self.url+'/admin/supplier/product/stock/add', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_supplier_product_stock_assignee_list(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/admin/supplier/product/stock/assignee-list', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_supplier_product_stock_assignor_list(self, productId_=None):
+        if self.user is None:
+            data = {'productId': productId_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'productId': productId_}
+        response = self.request.post(url=self.url+'/admin/supplier/product/stock/assignor-list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _admin_supplier_product_stock_list(self, productId_=None):
@@ -459,12 +483,28 @@ class TradeAction(object):
         response = self.request.post(url=self.url+'/admin/supplier/product/stock/list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
+    def _admin_supplier_product_stock_product_list(self, pn_=None, ps_=None, supplierName_=None, name_=None, status_=None):
+        if self.user is None:
+            data = {'pn': pn_, 'ps': ps_, 'supplierName': supplierName_, 'name': name_, 'status': status_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'supplierName': supplierName_, 'name': name_, 'status': status_}
+        response = self.request.post(url=self.url+'/admin/supplier/product/stock/product-list', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
     def _admin_supplier_product_stock_record_list(self, productId_=None):
         if self.user is None:
             data = {'productId': productId_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'productId': productId_}
         response = self.request.post(url=self.url+'/admin/supplier/product/stock/record/list', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_supplier_product_supplier_list(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/admin/supplier/product/supplier-list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _admin_supplier_product_update(self, label_=None, productListImgUrl_=None, productImgUrl_=None, productParamImgUrl_=None, productDetailImgUrl_=None, supplierId_=None, name_=None, category_=None, title_=None, brand_=None, price_=None, sortNo_=None, id_=None):
@@ -827,11 +867,11 @@ class TradeAction(object):
         response = self.request.post(url=self.url+'/web/price/detail', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _web_price_list(self, priceCodes_=None, category_=None):
+    def _web_price_list(self, category_=None):
         if self.user is None:
-            data = {'priceCodes': priceCodes_, 'category': category_, }
+            data = {'category': category_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'priceCodes': priceCodes_, 'category': category_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'category': category_}
         response = self.request.post(url=self.url+'/web/price/list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 

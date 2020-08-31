@@ -27,14 +27,6 @@ class BeeAction(object):
         else:
             raise Exception('status未返回OK或ERROR')
 
-    def _admin_apiary_detail(self):
-        if self.user is None:
-            data = {}
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
-        response = self.request.post(url=self.url+'/admin/apiary/detail', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
     def _admin_app_version_add(self, appId_=None, updateType_=None, downloadUrl_=None, appCode_=None, appName_=None, versionMilepost_=None, versionNum_=None, versionCode_=None, versionNumBefore_=None, versionBig_=None, updateTitle_=None, updateTitleEn_=None, updateMessage_=None, updateMessageEn_=None, status_=None):
         if self.user is None:
             data = {'appId': appId_, 'updateType': updateType_, 'downloadUrl': downloadUrl_, 'appCode': appCode_, 'appName': appName_, 'versionMilepost': versionMilepost_, 'versionNum': versionNum_, 'versionCode': versionCode_, 'versionNumBefore': versionNumBefore_, 'versionBig': versionBig_, 'updateTitle': updateTitle_, 'updateTitleEn': updateTitleEn_, 'updateMessage': updateMessage_, 'updateMessageEn': updateMessageEn_, 'status': status_, }
@@ -161,6 +153,14 @@ class BeeAction(object):
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'labelType': labelType_, 'regularSource': regularSource_, 'intention': intention_, 'contactNumber': contactNumber_, 'realName': realName_, 'age': age_, 'gender': gender_, 'nativeProvince': nativeProvince_, 'nativeCity': nativeCity_, 'nativeCounty': nativeCounty_, 'seniority': seniority_, 'regularRoute': regularRoute_, 'studyFrom': studyFrom_, 'heir': heir_, 'yield': yield_, 'income': income_, 'breedTime1': breedTime1_, 'breedPlace1': breedPlace1_, 'breedTime2': breedTime2_, 'breedPlace2': breedPlace2_, 'saleNum': saleNum_, 'intentionPrice': intentionPrice_, 'saleTime': saleTime_, 'saleProvince': saleProvince_, 'saleCity': saleCity_, 'saleCounty': saleCounty_}
         response = self.request.post(url=self.url+'/admin/bee-friend/friend-add', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_bee_friend_get_by_mobile(self, mobile_=None):
+        if self.user is None:
+            data = {'mobile': mobile_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'mobile': mobile_}
+        response = self.request.post(url=self.url+'/admin/bee-friend/get-by-mobile', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _admin_bee_friend_mobile_check(self, userId_=None, mobile_=None):
@@ -843,6 +843,14 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/admin/nectar-source-point/list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
+    def _admin_nectar_source_point_stat(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/admin/nectar-source-point/stat', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
     def _admin_nectar_source_add(self, type_=None, name_=None, baseType_=None, province_=None, city_=None, county_=None, address_=None, lng_=None, lat_=None, altitude_=None, flowerStart_=None, flowerEnd_=None, bloomStart_=None, bloomEnd_=None, contacts_=None, contactNumber_=None, siteArea_=None, nectarSourceArea_=None, expectHiveNum_=None, price_=None, vehicleLength_=None, amNum_=None, acNum_=None, remark_=None, prospectPic_=None, tentPic_=None, sitePic_=None, roadPic_=None, waterPic_=None):
         if self.user is None:
             data = {'type': type_, 'name': name_, 'baseType': baseType_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'lng': lng_, 'lat': lat_, 'altitude': altitude_, 'flowerStart': flowerStart_, 'flowerEnd': flowerEnd_, 'bloomStart': bloomStart_, 'bloomEnd': bloomEnd_, 'contacts': contacts_, 'contactNumber': contactNumber_, 'siteArea': siteArea_, 'nectarSourceArea': nectarSourceArea_, 'expectHiveNum': expectHiveNum_, 'price': price_, 'vehicleLength': vehicleLength_, 'amNum': amNum_, 'acNum': acNum_, 'remark': remark_, 'prospectPic': prospectPic_, 'tentPic': tentPic_, 'sitePic': sitePic_, 'roadPic': roadPic_, 'waterPic': waterPic_, }
@@ -1299,14 +1307,6 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/api/statistics/friend-swarm', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _api_statistics_generate(self):
-        if self.user is None:
-            data = {}
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
-        response = self.request.post(url=self.url+'/api/statistics/generate', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
     def _api_statistics_incr_friend_phone(self, cond_=None):
         if self.user is None:
             data = {'cond': cond_, }
@@ -1449,14 +1449,6 @@ class BeeAction(object):
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'lat': lat_, 'lng': lng_}
         response = self.request.post(url=self.url+'/mobile/apiary/overview', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _mobile_apiary_set_major(self, majorNectar_=None):
-        if self.user is None:
-            data = {'majorNectar': majorNectar_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'majorNectar': majorNectar_}
-        response = self.request.post(url=self.url+'/mobile/apiary/set-major', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _mobile_app_version_get(self, appId_=None):
@@ -2083,11 +2075,11 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/mobile/nearby-bee-friend/list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_nectar_source_plant_detail(self, id_=None):
+    def _mobile_nectar_source_plant_detail(self, plantCode_=None):
         if self.user is None:
-            data = {'id': id_, }
+            data = {'plantCode': plantCode_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'id': id_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'plantCode': plantCode_}
         response = self.request.post(url=self.url+'/mobile/nectar-source-plant/detail', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -2195,6 +2187,14 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/mobile/nectar-source/list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
+    def _mobile_nectar_source_share_param(self, id_=None):
+        if self.user is None:
+            data = {'id': id_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'id': id_}
+        response = self.request.post(url=self.url+'/mobile/nectar-source/share-param', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
     def _mobile_share_app(self):
         if self.user is None:
             data = {}
@@ -2289,54 +2289,6 @@ class BeeAction(object):
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'lng': lng_, 'lat': lat_}
         response = self.request.post(url=self.url+'/mobile/shunt/nearby-list', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _mobile_statistics_container(self):
-        if self.user is None:
-            data = {}
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
-        response = self.request.post(url=self.url+'/mobile/statistics/container', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _mobile_statistics_hive(self):
-        if self.user is None:
-            data = {}
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
-        response = self.request.post(url=self.url+'/mobile/statistics/hive', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _mobile_statistics_nectar(self):
-        if self.user is None:
-            data = {}
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
-        response = self.request.post(url=self.url+'/mobile/statistics/nectar', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _mobile_statistics_nectar_source(self):
-        if self.user is None:
-            data = {}
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
-        response = self.request.post(url=self.url+'/mobile/statistics/nectar-source', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _mobile_statistics_nectar_source_type(self):
-        if self.user is None:
-            data = {}
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
-        response = self.request.post(url=self.url+'/mobile/statistics/nectar-source-type', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _mobile_statistics_nectar_type(self):
-        if self.user is None:
-            data = {}
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
-        response = self.request.post(url=self.url+'/mobile/statistics/nectar-type', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _mobile_swarm_detail(self, id_=None):
@@ -2617,6 +2569,14 @@ class BeeAction(object):
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
         response = self.request.post(url=self.url+'/web/apiary/detail', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _web_apiary_set_major(self, majorNectar_=None):
+        if self.user is None:
+            data = {'majorNectar': majorNectar_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'majorNectar': majorNectar_}
+        response = self.request.post(url=self.url+'/web/apiary/set-major', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _web_help_comment_list(self, pn_=None, ps_=None, helpInfoId_=None):
