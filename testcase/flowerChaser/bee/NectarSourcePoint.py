@@ -70,7 +70,9 @@ class CraneManagement(unittest.TestCase):
         Abee = [nectar_dict(infoType=1) for i in range(9)]
         Bbee = [nectar_dict(infoType=2) for i in range(9)]
         nectarSourceFlowInputs = json.dumps(Abee + Bbee)
+        # nectarSourceFlowInputs =None
         nectarSourcePointAttachInputs = dc.assemble_picture_dictionary(20, remark="接口测试")
+        # nectarSourcePointAttachInputs = None
         result = self.action._mobile_nectar_source_point_add(province_=province, city_=city, county_=county,
                                                              plantCode_=plantCode, lng_=lng, lat_=lat,
                                                              floweringStartDate_=tt.get_random_date(),
@@ -102,6 +104,7 @@ class CraneManagement(unittest.TestCase):
         nectarSourceArea = random.randint(100, 99999)
         apiaryDensity = random.randint(10, 99999)
         purpose = random.randint(1, 6)
+        # purpose = 'd'
         pesticideCondition = '接口测试农药情况'
 
         def nectar_dict(infoType):
@@ -115,7 +118,9 @@ class CraneManagement(unittest.TestCase):
         Abee = [nectar_dict(infoType=1) for i in range(9)]
         Bbee = [nectar_dict(infoType=2) for i in range(9)]
         nectarSourceFlowInputs = json.dumps(Abee + Bbee)
+        # nectarSourceFlowInputs =None
         nectarSourcePointAttachInputs = dc.assemble_picture_dictionary(20, remark="接口测试")
+        # nectarSourcePointAttachInputs = None
         result = self.action._mobile_nectar_source_point_edit(province_=province, city_=city, county_=county,
                                                               plantCode_=plantCode, lng_=lng, lat_=lat,
                                                               floweringStartDate_=tt.get_random_date(),

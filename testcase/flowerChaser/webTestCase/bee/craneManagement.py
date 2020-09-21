@@ -34,7 +34,7 @@ class CraneManagement(unittest.TestCase):
         self.assertEqual(response["status"], "OK")
         count = self.db.query_crane_binding_count()
         content = response.get('content')
-        self.assertDictEqual(content, count)
+        self.assertDictEqual(content, count[0])
 
     def test_admin_crane_un_binding_list(self):
         """
@@ -78,14 +78,14 @@ class CraneManagement(unittest.TestCase):
         deviceID = random.choice(un_binding_list).get('serial_no')
         hiveNum = random.randint(1, 99999)
         gatewayNo = random.choice(gateway_list).get('gateway_no') if gateway_list else None
-        cameraNo = None
+        cameraNo = 'None'
         gpsNo = random.choice(gps_list).get('device_eui') if gps_list else None
         if random.randint(1, 2) == 1 and gpsNo is not None:
             gatewayNo = None
         elif gatewayNo is not None:
             gpsNo = None
         # gatewayNo = None
-        # gpsNo = '0201010000000089'
+        # gpsNo = None
         # gatewayNo = '0201010000000089'
         # user_dict = [{"serialNo": deviceID, "joinDate": tt().get_standardtime_timestamp(formats="%Y-%m-%d"),
         #               "mobile": i.get('contact_number'), "realName": i.get('real_name') + "接口测试添加航吊"} for i in userinfo]
@@ -124,7 +124,7 @@ class CraneManagement(unittest.TestCase):
         gateway_list = self.db.query_age_gateway_on_all()
         gps_list = self.db.query_agr_gps_un_binding_all()
         deviceID = random.choice(un_binding_list).get('serial_no')
-        deviceID = 'HD0100081'
+        deviceID = 'HD0100119'
         hiveNum = random.randint(1, 99999)
         gatewayNo = random.choice(gateway_list).get('gateway_no') if gateway_list else None
         cameraNo = None
@@ -151,7 +151,7 @@ class CraneManagement(unittest.TestCase):
         # deviceID = 'HD0100075'
         userinfo = random.choice(self.db.query_bee_fried_user_info())
         mobile = userinfo.get('contact_number')
-        mobile = '18919028649'
+        mobile = '18394133373'
         realName = userinfo.get('real_name')
         joinDate = tt().get_standardtime_timestamp(type=-1, day=1, formats="%Y-%m-%d")
         response = self.ba._admin_crane_binding_user(serialNo_=deviceID, mobile_=mobile, realName_=realName,
@@ -168,6 +168,6 @@ class CraneManagement(unittest.TestCase):
         bindinginfo = self.db.query_bind_users_by_device(serial_no=deviceID)
         bindingid = random.choice(bindinginfo).get('id')
         # bindingid = 71
-        quitReason =None
+        quitReason =' '
         response = self.ba._admin_crane_exit(serialNo_=deviceID, id_=bindingid, quitReason_=quitReason)
         self.assertEqual(response["status"], "OK")
