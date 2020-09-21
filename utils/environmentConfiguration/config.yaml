@@ -24,6 +24,7 @@ flowerChaser:
       FC_BEE: 'http://dev-gateway.worldfarm.com/fc-bee'
       FC_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
       FC_USER: 'http://dev-gateway.worldfarm.com/world-user'
+      FC_TRADE: 'http://dev-gateway.worldfarm.com/fc-trade'
 
     DEV_API:
       FC_BEE: 'http://dev-gateway.worldfarm.com/fc-bee'

@@ -5,17 +5,13 @@
 @Time: 2020 2020/8/06 17:10
 收购单流程
 """
-import json
 import unittest
 from interfaces.flowerChaser.TradeAction import TradeAction
 from testcase.flowerChaser.sql.Bee import VisitRecordSql
 from utils.fake.FakeLocation import FakeLocation
-from utils.log import log
 from testcase.flowerChaser.sql.Trade import ConfigProductSql
 from faker import Faker
-from random import choice
 from utils.dataConversion.dataConversion import DataConversion
-import datetime, time
 import random
 import json
 
@@ -42,17 +38,16 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         seller_id = self.pr_db.query_product_seller_id().get('seller_id')
         product_info = self.pr_db.query_product_info_by_seller_id(seller_id)
         category = product_info['parent_key']
-        product_p = self.trad._mobile_purchase_order_product_grade_list(category_=category)
-        i = random.randrange(0, 3)
-        grade = product_p["content"][i]["grade"]
-        price = product_p["content"][i]["price"]*100
-        product_id = product_info['id']
-        product_id = 36
+        userinfo_p = self.trad._mobile_manager_purchase_order_friend_list(searchKey_=category)
+        userinfo = random.choice(userinfo_p.get('content'))
+        userid = userinfo.get('userId')
+        product_i = self.trad._mobile_manager_purchase_order_product_sale_list(sellerId_=userid)
+
         product_json = [{"grade": grade, "price": price, "productId": product_id}]
         product_json = json.dumps(product_json)
-        response = self.trad._mobile_purchase_order_add(userId_=1315, province_=province, city_=city, county_=county,
-                                                        address_=address, lng_=lng, lat_=lat, remark_=remark,
-                                                        productJson_=product_json)
+        response = self.trad._mobile_manager_purchase_order_add(userId_='', province_=province, city_=city,
+                                                                county_=county, address_=address, lng_=lng, lat_=lat,
+                                                                remark_=remark, productIds_=product_json)
         self.assertEqual("OK", response["status"])
 
     def test_mobile_purchase_order_base_info(self):
@@ -278,16 +273,3 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         apply_id = 12
         response = self.trad._admin_pay_apply_confirm(applyId_=apply_id)
         self.assertEqual("OK", response["status"])
-
-
-
-
-
-
-
-
-
-
-
-
-
