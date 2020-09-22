@@ -87,7 +87,7 @@ class WorkbenchMain(unittest.TestCase, VisitRecordSql, FakeLocation, DataConvers
         nectar_type = random.randint(1001, 1047)
         nectar_province, nectar_city, nectar_county, address2, lng2, lat2 = self.fl.fake_location()
         next_nectar_source = [{"nectarType": nectar_type, "province": nectar_province, "city": nectar_city,
-                              "county": nectar_county}]
+                               "county": nectar_county}]
         next_nectar_source = json.dumps(next_nectar_source)
         regular_province, regular_city, regular_county, address3, lng3, lat3 = self.fl.fake_location()
         regular_route = [{"province": regular_province, "city": regular_city, "county": regular_county}]
@@ -95,7 +95,7 @@ class WorkbenchMain(unittest.TestCase, VisitRecordSql, FakeLocation, DataConvers
         study_from = random.choice([1, 2, 3, 4])
         heir = random.choice([1, 2, 3])
         yiel = self.fake.random_int(min=1, max=99999999)
-        income = self.fake.random_int(min=1, max=99999999)*100
+        income = self.fake.random_int(min=1, max=99999999) * 100
         cur_nectar_type = random.randint(1001, 1047)
         queen_type = random.choice([1, 2])
         response = self.workbench._mobile_workbench_bee_friend_add(labelType_=label_type, regularSource_=regular_source,
@@ -111,8 +111,10 @@ class WorkbenchMain(unittest.TestCase, VisitRecordSql, FakeLocation, DataConvers
                                                                    platNum_=plat_num, babyNum_=baby_num,
                                                                    honeyNum_=honey_num, remark_=remark,
                                                                    nextNectarSource_=next_nectar_source,
-                                                                   contactNumber_=contact_number, keeperName_=keeper_name,
-                                                                   age_=age, gender_=gender, nativeProvince_=native_province,
+                                                                   contactNumber_=contact_number,
+                                                                   keeperName_=keeper_name,
+                                                                   age_=age, gender_=gender,
+                                                                   nativeProvince_=native_province,
                                                                    nativeCounty_=native_county, nativeCity_=native_city,
                                                                    seniority_=seniority, regularRoute_=regular_route,
                                                                    studyFrom_=study_from, heir_=heir, yield_=yiel,
@@ -268,21 +270,30 @@ class WorkbenchMain(unittest.TestCase, VisitRecordSql, FakeLocation, DataConvers
         response = self.workbench._mobile_workbench_bee_friend_add_check(userId_=None, mobile_=mobile)
         self.assertEqual(response['status'], "OK")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    def test_mobile_workbench_bee_friend_register(self):
+        """
+        管理版注册蜂友
+        """
+        contactNumber = '18782489119'
+        realName = '刘丽'
+        nativeProvince = 510000
+        nativeCity = 510700
+        nativeCounty = 510722
+        idCardNo = '513029199204034955'
+        identityFront = 'http://dnkj-world-farm-prd.oss-ap-southeast-1.aliyuncs.com/data/fc-user/headImg/1587350624672.jpg'
+        identityBack = 'http://dnkj-world-farm-prd.oss-ap-southeast-1.aliyuncs.com/data/fc-bee/attach/1587376234224.jpg'
+        cardholderName = realName
+        bankName = '中国建设银行'
+        branchName = '四川省成都市崇州市支行'
+        cardNo = '6217003810006337706'
+        bankBack = "http://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com/data/agr-mgr/gateway/software/1600153808528bank_f.png"
+        bankFront = "http://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com/data/agr-mgr/gateway/software/1600153798492bank_b.png"
+        editorId = self.workbench.user.user_id
+        self.workbench._mobile_workbench_bee_friend_register(contactNumber_=contactNumber, realName_=realName,
+                                                             nativeProvince_=nativeProvince, nativeCity_=nativeCity,
+                                                             nativeCounty_=nativeCounty, idCardNo_=idCardNo,
+                                                             identityFront_=identityFront, identityBack_=identityBack,
+                                                             cardholderName_=cardholderName, bankName_=bankName,
+                                                             branchName_=branchName, cardNo_=cardNo,
+                                                             bankFront_=bankFront, bankBack_=bankBack,
+                                                             editorId_=editorId)

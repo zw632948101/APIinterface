@@ -6,7 +6,6 @@
 @Author: xiujuan chen
 """
 
-
 import unittest
 from interfaces.flowerChaser.BeeAction import BeeAction
 from utils.log import log
@@ -159,7 +158,8 @@ class RegisterLoginMain(unittest.TestCase):
         regular_source = None
         response = self.ba._admin_bee_friend_edit(regularSource_=regular_source, labelType_=label_type, intention_=None,
                                                   id_=friend_id,
-                                                  keeperName_=keeper_name, contactNumber_=contact_number, gender_=gender,
+                                                  keeperName_=keeper_name, contactNumber_=contact_number,
+                                                  gender_=gender,
                                                   nativeProvince_=None, nativeCity_=None, nativeCounty_=None, age_=age,
                                                   seniority_=seniority, regularRoute_=None, studyFrom_=None, heir_=None,
                                                   yield_=None, income_=None, breedTime1_=None, breedPlace1_=None,
@@ -315,5 +315,17 @@ class RegisterLoginMain(unittest.TestCase):
         response = self.ba._admin_swarm_count()
         self.assertEqual(response['status'], "OK")
 
-
-
+    def test_admin_fc_user_asve_bankinfo(self):
+        """
+        用户管理-编辑银行卡信息
+        """
+        userid = 1637
+        realName = '张三'
+        bankName = '中国建设银行'
+        branchName = '四川省成都市崇州市建设支行'
+        cardNo = '6217003810006337706'
+        bankBack = "http://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com/data/agr-mgr/gateway/software/1600153808528bank_f.png"
+        bankFront = "http://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com/data/agr-mgr/gateway/software/1600153798492bank_b.png"
+        self.ba._admin_fc_user_save_bankinfo(userId_=userid, realName_=realName, bankName_=bankName,
+                                             branchName_=branchName, cardNo_=cardNo, bankBack_=bankBack,
+                                             bankFront_=bankFront)

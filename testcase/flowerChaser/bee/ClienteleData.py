@@ -519,3 +519,4 @@ class CommentrMain(unittest.TestCase, ClinteleSql, FakeLocation, DataConversion)
             self.assertEqual(response['status'], "OK")
         else:
             self.assertTrue(False, "暂无客户")
+

@@ -40,7 +40,7 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         :return:
         """
         pics = "http://a0.att.hudong.com/78/52/01200000123847134434529793168.jpg"
-        user_id = 1315
+        user_id = 1637
         category_dict = {1001401: '蜂蜜', 1001402: '蜂花粉', 1001403: '蜂王浆'}
         # category_list = [1001401, 1001402, 1001403]
         category = random.choice((list(category_dict)))
@@ -64,11 +64,21 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
             humidity = None
         province, city, county, address, lng, lat = self.fl.fake_location()
         remark = self.fake.text(max_nb_chars=200)
-        response = self.trad._mobile_product_add(pics_=pics, sellerId_=647, category_=1001401, variety_=1001401001,
-                                                 weight_=weight, purity_=purity, consistence_=consistence, humidity_=humidity,
-                                                 province_=province, city_=city,
-                                                 county_=county, manufactureDate_=1596607200000, remark_=remark)
+
+        response = self.trad._mobile_manager_product_add(pics_=pics, sellerId_=user_id, category_=1,
+                                                         variety_=1062, weight_=weight, purity_=purity,
+                                                         consistence_=37, humidity_=humidity,
+                                                         province_=province, city_=city, county_=county,
+                                                         manufactureDate_=1596607200000, remark_=remark,
+                                                         purchaseDate_=1596607200000, grade_=1, price_=50,
+                                                         otherAmount_=5000, type_=1, strategyId_=1)
         self.assertEqual("OK", response["status"])
+
+    def test_mobile_manager_product_varieties(self):
+        """
+        获取指定种类已配置价格的商品品种
+        """
+        self.trad._mobile_manager_product_varieties(category_=1)
 
     def test_mobile_purchase_order_product_grade_list(self):
         """
@@ -87,9 +97,10 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         manufactureDateStart = 1596211200
         manufactureDateEnd = 1596988800
         searchKey = 199
-        response = self.trad._mobile_product_list(province_=None, city_=None, county_=None, category_=1001403, variety_=1001402001,
-                                       status_=2, pn_=1, ps_=20, manufactureDateStart_=None,
-                                       manufactureDateEnd_=None, searchKey_=199)
+        response = self.trad._mobile_product_list(province_=None, city_=None, county_=None, category_=1001403,
+                                                  variety_=1001402001,
+                                                  status_=2, pn_=1, ps_=20, manufactureDateStart_=None,
+                                                  manufactureDateEnd_=None, searchKey_=199)
         self.assertEqual("OK", response["status"])
 
     def test_mobile_product_edit(self):
@@ -150,11 +161,12 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         product_p = self.trad._mobile_purchase_order_product_grade_list(category_=category)
         i = random.randrange(0, 3)
         grade = product_p["content"][i]["grade"]
-        price = product_p["content"][i]["price"]*100
+        price = product_p["content"][i]["price"] * 100
         product_id = product_info['id']
         product_json = [{"grade": grade, "price": price, "productId": product_id}]
         product_json = json.dumps(product_json)
-        response = self.trad._mobile_purchase_order_add(userId_=seller_id, province_=province, city_=city, county_=county,
+        response = self.trad._mobile_purchase_order_add(userId_=seller_id, province_=province, city_=city,
+                                                        county_=county,
                                                         address_=address, lng_=lng, lat_=lat, remark_=remark,
                                                         productJson_=product_json)
         self.assertEqual("OK", response["status"])
@@ -214,20 +226,3 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
                                                    endDate_=None, location_=None, orderNo_=order_no,
                                                    userInfo_=None, provence_=None, city_=None, county_=None,
                                                    sellerId_=None)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

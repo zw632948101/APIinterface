@@ -12,6 +12,7 @@ from utils.fake.FakeLocation import FakeLocation
 from testcase.flowerChaser.sql.Trade import ConfigProductSql
 from faker import Faker
 from utils.dataConversion.dataConversion import DataConversion
+from utils.Timestamp.TimestampTransform import TimestampTransform as tt
 import random
 import json
 
@@ -40,14 +41,26 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         category = product_info['parent_key']
         userinfo_p = self.trad._mobile_manager_purchase_order_friend_list(searchKey_=category)
         userinfo = random.choice(userinfo_p.get('content'))
+        province = 510000
+        city = 510700
+        address = '四川省绵阳市三台县官桥镇'
+        county = 510722
+        lng = 105.075328
+        lat = 30.857039
         userid = userinfo.get('userId')
+        # userid = 1207  # 签约蜂场为空
+        userid = 1637
+        swarmId = 1351
         product_i = self.trad._mobile_manager_purchase_order_product_sale_list(sellerId_=userid)
-
-        product_json = [{"grade": grade, "price": price, "productId": product_id}]
-        product_json = json.dumps(product_json)
-        response = self.trad._mobile_manager_purchase_order_add(userId_='', province_=province, city_=city,
+        product = random.choice(product_i.get('content'))
+        acquisitionDate = tt.get_standardtime_timestamp()
+        product_id = product.get('productId')
+        isTail = 1
+        response = self.trad._mobile_manager_purchase_order_add(userId_=userid, province_=province, city_=city,
                                                                 county_=county, address_=address, lng_=lng, lat_=lat,
-                                                                remark_=remark, productIds_=product_json)
+                                                                remark_=remark, productIds_=product_id,
+                                                                acquisitionDate_=acquisitionDate, isTail_=isTail,
+                                                                swarmId_=swarmId)
         self.assertEqual("OK", response["status"])
 
     def test_mobile_purchase_order_base_info(self):
@@ -56,7 +69,7 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         :return:
         """
         order_no = self.pr_db.query_purchase_order()['order_no']
-        order_no = 2008061756196901600502
+        order_no = 2009211610306974001502
         response = self.trad._mobile_purchase_order_base_info(orderNo_=order_no)
         self.assertEqual("OK", response["status"])
 
@@ -121,7 +134,7 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         POST /admin/purchase-order/page-list 订单-分页列表
         :return:
         """
-        response = self.trad._admin_purchase_order_page_list()
+        response = self.trad._admin_purchase_order_page_list(status_='10,20')
         self.assertEqual("OK", response["status"])
 
     def test_admin_purchase_order_product_info(self):
