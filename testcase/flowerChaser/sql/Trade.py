@@ -203,3 +203,7 @@ class ConfigProductSql(object):
             return info
 
 
+    def query_product(self, usr_id):
+        sql = """SELECT id FROM `fc-trade`.t_product tp WHERE tp.seller_id ={} AND is_delete=0 ORDER BY id DESC LIMIT 1;""".format(usr_id)
+        info = self.db.operate(host_ip, sql)
+        return info[0].get('id')

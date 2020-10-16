@@ -5,12 +5,15 @@
 @Time: 2020 2020/8/06 17:10
 收购单流程
 """
+import json
 import unittest
 from interfaces.flowerChaser.TradeAction import TradeAction
 from testcase.flowerChaser.sql.Bee import VisitRecordSql
 from utils.fake.FakeLocation import FakeLocation
+from utils.log import log
 from testcase.flowerChaser.sql.Trade import ConfigProductSql
 from faker import Faker
+from random import choice
 from utils.dataConversion.dataConversion import DataConversion
 from utils.Timestamp.TimestampTransform import TimestampTransform as tt
 import random
@@ -39,28 +42,17 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         seller_id = self.pr_db.query_product_seller_id().get('seller_id')
         product_info = self.pr_db.query_product_info_by_seller_id(seller_id)
         category = product_info['parent_key']
-        userinfo_p = self.trad._mobile_manager_purchase_order_friend_list(searchKey_=category)
-        userinfo = random.choice(userinfo_p.get('content'))
-        province = 510000
-        city = 510700
-        address = '四川省绵阳市三台县官桥镇'
-        county = 510722
-        lng = 105.075328
-        lat = 30.857039
-        userid = userinfo.get('userId')
-        # userid = 1207  # 签约蜂场为空
-        userid = 1637
-        swarmId = 1351
-        product_i = self.trad._mobile_manager_purchase_order_product_sale_list(sellerId_=userid)
-        product = random.choice(product_i.get('content'))
-        acquisitionDate = tt.get_standardtime_timestamp()
-        product_id = product.get('productId')
-        isTail = 1
-        response = self.trad._mobile_manager_purchase_order_add(userId_=userid, province_=province, city_=city,
-                                                                county_=county, address_=address, lng_=lng, lat_=lat,
-                                                                remark_=remark, productIds_=product_id,
-                                                                acquisitionDate_=acquisitionDate, isTail_=isTail,
-                                                                swarmId_=swarmId)
+        product_p = self.trad._mobile_purchase_order_product_grade_list(category_=category)
+        i = random.randrange(0, 3)
+        grade = product_p["content"][i]["grade"]
+        price = product_p["content"][i]["price"]*100
+        product_id = product_info['id']
+        product_id = 34
+        product_json = [{"grade": grade, "price": price, "productId": product_id}]
+        product_json = json.dumps(product_json)
+        response = self.trad._mobile_purchase_order_add(userId_=1315, province_=province, city_=city, county_=county,
+                                                        address_=address, lng_=lng, lat_=lat, remark_=remark,
+                                                        productJson_=product_json)
         self.assertEqual("OK", response["status"])
 
     def test_mobile_purchase_order_base_info(self):
@@ -69,7 +61,7 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         :return:
         """
         order_no = self.pr_db.query_purchase_order()['order_no']
-        order_no = 2009211610306974001502
+        order_no = 2008061756196901600502
         response = self.trad._mobile_purchase_order_base_info(orderNo_=order_no)
         self.assertEqual("OK", response["status"])
 
@@ -134,7 +126,7 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         POST /admin/purchase-order/page-list 订单-分页列表
         :return:
         """
-        response = self.trad._admin_purchase_order_page_list(status_='10,20')
+        response = self.trad._admin_purchase_order_page_list()
         self.assertEqual("OK", response["status"])
 
     def test_admin_purchase_order_product_info(self):
@@ -158,7 +150,7 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         i = random.randrange(0, 3)
         grade = product_c["content"][i]["grade"]
         price = product_c["content"][i]["price"] * 100
-        response = self.trad._admin_purchase_order_edit_grade(productId_=32, grade_=grade, price_=price)
+        response = self.trad._admin_purchase_order_edit_grade(productId_=29, grade_=grade, price_=price)
         self.assertEqual("OK", response["status"])
 
     def test_admin_purchase_order_confirm_grade(self):
@@ -166,7 +158,7 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         POST /admin/purchase-order/confirm-grade 确认收购价
         :return:
         """
-        order_no = 2008071719290591600702
+        order_no = 2008071510343650100302
         response = self.trad._admin_purchase_order_confirm_grade(orderNo_=order_no)
         self.assertEqual("OK", response["status"])
 
@@ -185,9 +177,9 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         :return:
         """
         images = 'https://zyp-farm-2.oss-ap-southeast-1.aliyuncs.com/data/fc-user/headImg/1596765774337.jpeg'
-        order_no = 2008071719290591600702
+        order_no = 2008071510343650100302
         type = random.choice([1, 2])
-        type = 1
+        type = 2
         remark = None
         deduct_price = None
         if type == 2:
@@ -229,7 +221,7 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         POST /admin/purchase-order/quality-commit 确认质检结果
         :return:
         """
-        order_no = 2008071719290591600702
+        order_no = 2008071510343650100302
         response = self.trad._admin_purchase_order_quality_commit(orderNo_=order_no)
         self.assertEqual("OK", response["status"])
 
@@ -247,7 +239,7 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         POST /mobile/purchase-order/deduction-confirm 确认扣款/确认收购价格
         :return:
         """
-        order_id = 32
+        order_id = 28
         response = self.trad._mobile_purchase_order_deduction_confirm(orderId_=order_id)
         self.assertEqual("OK", response["status"])
 
@@ -286,3 +278,16 @@ class WorkbenchMain(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         apply_id = 12
         response = self.trad._admin_pay_apply_confirm(applyId_=apply_id)
         self.assertEqual("OK", response["status"])
+
+
+
+
+
+
+
+
+
+
+
+
+
