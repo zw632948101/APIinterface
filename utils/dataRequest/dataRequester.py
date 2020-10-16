@@ -65,7 +65,7 @@ class Request(object):
     def get(self, url, hosts=None, params=None):
         client = requests.session()
         if url.find('/v2/api-docs'):
-            headers = self.api_headers
+            headers = None
         else:
             headers = self.headers
         response = client.get(url=url, headers=headers, params=params).content

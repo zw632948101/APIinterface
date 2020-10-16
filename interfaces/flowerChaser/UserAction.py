@@ -251,6 +251,22 @@ class UserAction(object):
         response = self.request.post(url=self.url+'/mobile/bee/im/get-seller-accid', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
+    def _mobile_flower_user_get_push_alias(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/mobile/flower-user/get-push-alias', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _mobile_flower_user_get_user_push_alias(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/mobile/flower-user/get-user-push-alias', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
     def _mobile_user_detail(self):
         if self.user is None:
             data = {}
