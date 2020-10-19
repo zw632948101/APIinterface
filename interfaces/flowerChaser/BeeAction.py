@@ -323,11 +323,11 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/admin/cooperation/nectar-list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_cooperation_position_data(self, dataTypes_=None, stDate_=None, edDate_=None, vehicle_=None, stHiveNum_=None, edHiveNum_=None, nectarType_=None, address_=None):
+    def _admin_cooperation_position_data(self, dataTypes_=None, stDate_=None, edDate_=None, vehicle_=None, stHiveNum_=None, edHiveNum_=None, nectarType_=None, address_=None, searchKey_=None):
         if self.user is None:
-            data = {'dataTypes': dataTypes_, 'stDate': stDate_, 'edDate': edDate_, 'vehicle': vehicle_, 'stHiveNum': stHiveNum_, 'edHiveNum': edHiveNum_, 'nectarType': nectarType_, 'address': address_, }
+            data = {'dataTypes': dataTypes_, 'stDate': stDate_, 'edDate': edDate_, 'vehicle': vehicle_, 'stHiveNum': stHiveNum_, 'edHiveNum': edHiveNum_, 'nectarType': nectarType_, 'address': address_, 'searchKey': searchKey_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'dataTypes': dataTypes_, 'stDate': stDate_, 'edDate': edDate_, 'vehicle': vehicle_, 'stHiveNum': stHiveNum_, 'edHiveNum': edHiveNum_, 'nectarType': nectarType_, 'address': address_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'dataTypes': dataTypes_, 'stDate': stDate_, 'edDate': edDate_, 'vehicle': vehicle_, 'stHiveNum': stHiveNum_, 'edHiveNum': edHiveNum_, 'nectarType': nectarType_, 'address': address_, 'searchKey': searchKey_}
         response = self.request.post(url=self.url+'/admin/cooperation/position-data', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -523,11 +523,11 @@ class BeeAction(object):
         response = self.request.get(url=self.url+'/admin/excel-export/swarm', params=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_excel_export_user(self, pn_=None, ps_=None, roleType_=None, role_=None, userInfo_=None, userStatus_=None, rgStartTime_=None, rgEndTime_=None, rgOrderType_=None, loStartTime_=None, loEndTime_=None, loOrderType_=None):
+    def _admin_excel_export_user(self, pn_=None, ps_=None, roleType_=None, role_=None, userInfo_=None, userStatus_=None, rgStartTime_=None, rgEndTime_=None, rgOrderType_=None, loStartTime_=None, loEndTime_=None, loOrderType_=None, isBlack_=None):
         if self.user is None:
-            data = {'pn': pn_, 'ps': ps_, 'roleType': roleType_, 'role': role_, 'userInfo': userInfo_, 'userStatus': userStatus_, 'rgStartTime': rgStartTime_, 'rgEndTime': rgEndTime_, 'rgOrderType': rgOrderType_, 'loStartTime': loStartTime_, 'loEndTime': loEndTime_, 'loOrderType': loOrderType_, }
+            data = {'pn': pn_, 'ps': ps_, 'roleType': roleType_, 'role': role_, 'userInfo': userInfo_, 'userStatus': userStatus_, 'rgStartTime': rgStartTime_, 'rgEndTime': rgEndTime_, 'rgOrderType': rgOrderType_, 'loStartTime': loStartTime_, 'loEndTime': loEndTime_, 'loOrderType': loOrderType_, 'isBlack': isBlack_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'roleType': roleType_, 'role': role_, 'userInfo': userInfo_, 'userStatus': userStatus_, 'rgStartTime': rgStartTime_, 'rgEndTime': rgEndTime_, 'rgOrderType': rgOrderType_, 'loStartTime': loStartTime_, 'loEndTime': loEndTime_, 'loOrderType': loOrderType_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'roleType': roleType_, 'role': role_, 'userInfo': userInfo_, 'userStatus': userStatus_, 'rgStartTime': rgStartTime_, 'rgEndTime': rgEndTime_, 'rgOrderType': rgOrderType_, 'loStartTime': loStartTime_, 'loEndTime': loEndTime_, 'loOrderType': loOrderType_, 'isBlack': isBlack_}
         response = self.request.get(url=self.url+'/admin/excel-export/user', params=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -587,11 +587,11 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/admin/fc-user/log/page-list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_fc_user_page_list(self, pn_=None, ps_=None, roleType_=None, role_=None, userInfo_=None, userStatus_=None, rgStartTime_=None, rgEndTime_=None, rgOrderType_=None, loStartTime_=None, loEndTime_=None, loOrderType_=None):
+    def _admin_fc_user_page_list(self, pn_=None, ps_=None, roleType_=None, role_=None, userInfo_=None, userStatus_=None, rgStartTime_=None, rgEndTime_=None, rgOrderType_=None, loStartTime_=None, loEndTime_=None, loOrderType_=None, isBlack_=None):
         if self.user is None:
-            data = {'pn': pn_, 'ps': ps_, 'roleType': roleType_, 'role': role_, 'userInfo': userInfo_, 'userStatus': userStatus_, 'rgStartTime': rgStartTime_, 'rgEndTime': rgEndTime_, 'rgOrderType': rgOrderType_, 'loStartTime': loStartTime_, 'loEndTime': loEndTime_, 'loOrderType': loOrderType_, }
+            data = {'pn': pn_, 'ps': ps_, 'roleType': roleType_, 'role': role_, 'userInfo': userInfo_, 'userStatus': userStatus_, 'rgStartTime': rgStartTime_, 'rgEndTime': rgEndTime_, 'rgOrderType': rgOrderType_, 'loStartTime': loStartTime_, 'loEndTime': loEndTime_, 'loOrderType': loOrderType_, 'isBlack': isBlack_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'roleType': roleType_, 'role': role_, 'userInfo': userInfo_, 'userStatus': userStatus_, 'rgStartTime': rgStartTime_, 'rgEndTime': rgEndTime_, 'rgOrderType': rgOrderType_, 'loStartTime': loStartTime_, 'loEndTime': loEndTime_, 'loOrderType': loOrderType_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'roleType': roleType_, 'role': role_, 'userInfo': userInfo_, 'userStatus': userStatus_, 'rgStartTime': rgStartTime_, 'rgEndTime': rgEndTime_, 'rgOrderType': rgOrderType_, 'loStartTime': loStartTime_, 'loEndTime': loEndTime_, 'loOrderType': loOrderType_, 'isBlack': isBlack_}
         response = self.request.post(url=self.url+'/admin/fc-user/page-list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -627,12 +627,28 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/admin/fc-user/save-bankinfo', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
+    def _admin_fc_user_set_blacklist(self, userId_=None, reason_=None):
+        if self.user is None:
+            data = {'userId': userId_, 'reason': reason_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'userId': userId_, 'reason': reason_}
+        response = self.request.post(url=self.url+'/admin/fc-user/set-blacklist', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
     def _admin_fc_user_set_role(self, userId_=None, key_=None, joinDate_=None):
         if self.user is None:
             data = {'userId': userId_, 'key': key_, 'joinDate': joinDate_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'userId': userId_, 'key': key_, 'joinDate': joinDate_}
         response = self.request.post(url=self.url+'/admin/fc-user/set-role', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_fc_user_unlock_blacklist(self, userId_=None):
+        if self.user is None:
+            data = {'userId': userId_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'userId': userId_}
+        response = self.request.post(url=self.url+'/admin/fc-user/unlock-blacklist', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _admin_help_comment_del(self, helpCommentId_=None):
@@ -723,11 +739,11 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/admin/hot-nectar-source/list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_index_position_data(self, dataTypes_=None, stDate_=None, edDate_=None, vehicle_=None, stHiveNum_=None, edHiveNum_=None, nectarType_=None, address_=None):
+    def _admin_index_position_data(self, dataTypes_=None, stDate_=None, edDate_=None, vehicle_=None, stHiveNum_=None, edHiveNum_=None, nectarType_=None, address_=None, searchKey_=None):
         if self.user is None:
-            data = {'dataTypes': dataTypes_, 'stDate': stDate_, 'edDate': edDate_, 'vehicle': vehicle_, 'stHiveNum': stHiveNum_, 'edHiveNum': edHiveNum_, 'nectarType': nectarType_, 'address': address_, }
+            data = {'dataTypes': dataTypes_, 'stDate': stDate_, 'edDate': edDate_, 'vehicle': vehicle_, 'stHiveNum': stHiveNum_, 'edHiveNum': edHiveNum_, 'nectarType': nectarType_, 'address': address_, 'searchKey': searchKey_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'dataTypes': dataTypes_, 'stDate': stDate_, 'edDate': edDate_, 'vehicle': vehicle_, 'stHiveNum': stHiveNum_, 'edHiveNum': edHiveNum_, 'nectarType': nectarType_, 'address': address_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'dataTypes': dataTypes_, 'stDate': stDate_, 'edDate': edDate_, 'vehicle': vehicle_, 'stHiveNum': stHiveNum_, 'edHiveNum': edHiveNum_, 'nectarType': nectarType_, 'address': address_, 'searchKey': searchKey_}
         response = self.request.post(url=self.url+'/admin/index/position-data', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -1289,6 +1305,14 @@ class BeeAction(object):
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
         response = self.request.post(url=self.url+'/api/bee-friend/info-by-mobile', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _api_bee_friend_join_platform(self, input_=None):
+        if self.user is None:
+            data = {'input': input_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+        response = self.request.post(url=self.url+'/api/bee-friend/join-platform', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _api_bee_friend_list(self, input_=None):
@@ -2235,11 +2259,11 @@ class BeeAction(object):
         response = self.request.post(url=self.url+'/mobile/hot-nectar-source/list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_index_position_data(self):
+    def _mobile_index_position_data(self, province_=None):
         if self.user is None:
-            data = {}
+            data = {'province': province_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'province': province_}
         response = self.request.post(url=self.url+'/mobile/index/position-data', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -2329,6 +2353,46 @@ class BeeAction(object):
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'mobile': mobile_}
         response = self.request.post(url=self.url+'/mobile/login/verify-code-get', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _mobile_manager_message_del(self, messageId_=None):
+        if self.user is None:
+            data = {'messageId': messageId_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'messageId': messageId_}
+        response = self.request.post(url=self.url+'/mobile/manager/message/del', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _mobile_manager_message_list(self, messageTypes_=None, status_=None, pn_=None, ps_=None):
+        if self.user is None:
+            data = {'messageTypes': messageTypes_, 'status': status_, 'pn': pn_, 'ps': ps_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'messageTypes': messageTypes_, 'status': status_, 'pn': pn_, 'ps': ps_}
+        response = self.request.post(url=self.url+'/mobile/manager/message/list', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _mobile_manager_message_read(self, messageId_=None):
+        if self.user is None:
+            data = {'messageId': messageId_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'messageId': messageId_}
+        response = self.request.post(url=self.url+'/mobile/manager/message/read', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _mobile_manager_message_read_all(self, messageTypes_=None, bizId_=None, title_=None):
+        if self.user is None:
+            data = {'messageTypes': messageTypes_, 'bizId': bizId_, 'title': title_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'messageTypes': messageTypes_, 'bizId': bizId_, 'title': title_}
+        response = self.request.post(url=self.url+'/mobile/manager/message/read-all', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _mobile_manager_message_unread(self, messageTypes_=None):
+        if self.user is None:
+            data = {'messageTypes': messageTypes_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'messageTypes': messageTypes_}
+        response = self.request.post(url=self.url+'/mobile/manager/message/unread', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _mobile_menu_catalog(self):
