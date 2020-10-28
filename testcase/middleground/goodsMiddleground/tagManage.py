@@ -27,8 +27,8 @@ class tagMdata(object):
         ldata = [None, self.faker.text(21), self.faker.text(20), self.faker.text(20), self.faker.text(20)]
         ltype = [1, 1, '1', None, self.faker.text(10)]
         label_data = [list(i) for i in zip(ldata, ltype)]
-        log.info(label_data)
         return label_data
+
 
 
 @ddt
