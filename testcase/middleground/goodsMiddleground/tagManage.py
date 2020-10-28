@@ -8,7 +8,7 @@
 from utils.log import log
 from interfaces.middleground.ProductAction import ProductAction
 from testcase.middleground.sql.goodsMP import mp_label
-from utils import runlevel
+from utils import runlevel,timestamp
 import unittest
 
 
@@ -22,15 +22,15 @@ class tagManage(unittest.TestCase):
         self.api.set_user(mobile=15388126072)
         self.db = mp_label()
 
-    @unittest.skipIf(runlevel(4), '')
+    @unittest.skipIf(runlevel(1), '主流程执行用例，设置等级为2时跳过该用例')
     def test_admin_label_add(self):
         """
         添加标签
         :return:
         """
-        name = '测试标签5'
+        name = '测试标签'+str(timestamp.get_timestamp())
         _type = 1
         resp = self.api._admin_label_add(name_=name, type_=_type)
         self.assertEqual(resp.get('status'), 'OK', resp.get('errorMsg'))
         info = self.db.query_mp_label_info(label_name=name, label_type=_type)
-        self.assertEqual(info[0].get('creator_id'), self.api.user.user_id)
+        self.assertEqual(str(info[0].get('creator_id')), self.api.user.user_id)
