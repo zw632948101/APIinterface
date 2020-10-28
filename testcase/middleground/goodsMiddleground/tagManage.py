@@ -5,13 +5,14 @@
 # @File : tagManage.py
 # @Software: PyCharm
 
-from unittest import TestCase
 from utils.log import log
 from interfaces.middleground.ProductAction import ProductAction
 from testcase.middleground.sql.goodsMP import mp_label
+from utils import runlevel
 import unittest
 
-class tagManage(TestCase):
+
+class tagManage(unittest.TestCase):
     def setUp(self) -> None:
         """
         测试前数据准备
@@ -21,7 +22,7 @@ class tagManage(TestCase):
         self.api.set_user(mobile=15388126072)
         self.db = mp_label()
 
-
+    @unittest.skipIf(runlevel(4), '')
     def test_admin_label_add(self):
         """
         添加标签

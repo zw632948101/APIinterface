@@ -2,5 +2,5 @@
 # -*- coding: UTF-8 -*-
 from .Config import *
 import os
-print(os.path.abspath('.'))
+# print(os.path.abspath('.'))
 config = get_config()
