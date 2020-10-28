@@ -10,7 +10,7 @@ import json
 class PassportAction(object):
     def __init__(self):
         self.request = Request()
-        self.url = config.get('hosts').get(config.get('run')).get('FC_PASSPORT')
+        self.url = config.get('hosts').get(config.get('run')).get('MP_PASSPORT')
 
     def set_user(self, mobile=None, account_type='user', password=None):
         if mobile is None:

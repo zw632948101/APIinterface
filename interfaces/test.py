@@ -6,4 +6,3 @@ from utils.log import log
 
 def query():
     log.warning(os.path)
-

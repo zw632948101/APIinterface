@@ -1,7 +1,7 @@
-which_project: &which_project flowerChaser
+which_project: &which_project middleground
 env: &env
-  run: QA
-  updateActionAPI: QA_API
+  run: DEV
+  updateActionAPI: DEV_API
   version: 2.3.1
   dataBaseURI: 5595ec6c66c0374940fb2d6919a487f9b500f8602951206c6f9b85cab245bd1e90a2c42c9b0fb3883c44aadb5235b9dc94d8411f761298d477315e878eb9a87f
   projectName: *which_project
@@ -85,3 +85,31 @@ worldFarm:
       WF_PASSPORT: 'http://qa-passport.worldfarm.com'
       WF_OFFLINE: 'http://qa-offline.worldfarm.com'
       WF_SSO: 'http://qa.sso.worldfarm.com'
+
+middleground:
+  <<: *env
+  database:
+    DEV:
+      host_ip: 00cd6c8916486ff3b8c4180bbe5902f8
+    QA:
+      host_ip: 38decc2956f8bcf5731227852dd4d5bd
+  urldict:
+    MP_PASSPORT: "Passport"
+    MP_PRODUCT: "Product"
+  accounttype: 'user'
+  hosts:
+    DEV:
+      MP_PRODUCT: 'http://dev-gateway.worldfarm.com/mp-product'
+      FC_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
+
+    DEV_API:
+      MP_PRODUCT: 'http://dev-gateway.worldfarm.com/mp-product'
+      MP_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
+
+    QA:
+      MP_PRODUCT: 'http://qa-gateway.worldfarm.com/fc-bee'
+      MP_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
+
+    QA_API:
+      MP_PRODUCT: 'http://qa-gateway.worldfarm.com/fc-bee'
+      MP_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
