@@ -10,14 +10,14 @@
 
 from interfaces.middleground.ProductAction import ProductAction
 from testcase.middleground.sql.goodsMP import mp_label
-from utils import runlevel, timestamp
-from ddt import data, unpack, ddt
+from utils import runlevel
+from ddt import data, ddt
 from faker import Faker
 import unittest
 import random
 import os
 from utils.excelRead import excelRead
-from testcase.middleground.goodsMiddleground.test import changData
+from utils.changData import changData
 
 filepath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 excelpath = os.path.join(os.path.join(filepath, "caseData"), "caseData_sectionAdd.xlsx")  # 获取excel的测试用例数据文件路径
