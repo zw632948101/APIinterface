@@ -26,19 +26,18 @@ class mp_label(DataBaseOperate):
         """
         sql = "SELECT tl.id,tl.name,tl.type,tl.creator_id FROM `mp-product`.t_label tl WHERE tl.name = '%s' AND  tl.type = '%s';" % (label_name, label_type)
         return self.operate_db(sql=sql)
-    def query_mp_section_info(self,section_prefix=None,section_bizId=None,id=None,infoSum=None,pn=None,ps=None):
+    def query_mp_section_info(self,id=None,all=None,pn=None,ps=None,lastOne=None):
         """
         查询商品属性:不传参数查询所有数据默认返回最新一条数据
         ：param section_prefix
         ：param section_bizId
         ：param section_num
         """
-        if section_prefix and section_bizId:
-            sql = "select * from `mp-product`.t_section_no where biz_id={0} and prefix='{1}';"\
-                .format(section_bizId,section_prefix)
-        elif id:
+        if id:
             sql = "select * from `mp-product`.t_section_no where id={0};".format(id)
-        elif infoSum:
+        elif lastOne:
+            sql = "select * from `mp-product`.t_section_no order by id desc limit 1;"
+        elif all:
             sql = "select * from `mp-product`.t_section_no;"
         elif pn == "" or pn == 0 or pn == " ":
             sql = "select * from `mp-product`.t_section_no order by id desc limit 0,{0};".format(ps)
@@ -48,8 +47,7 @@ class mp_label(DataBaseOperate):
             sql = "select * from `mp-product`.t_section_no order by id desc limit {0},{1};".format((pn - 1) * ps, ps)
         elif not pn and not ps:
             sql = "select * from `mp-product`.t_section_no order by id desc limit 1,20;"
-        else:
-            sql = "select * from `mp-product`.t_section_no order by id desc limit 1;"
+
         return self.operate_db(sql=sql)
 
 

@@ -3,7 +3,7 @@
 -*- coding: UTF-8 -*-
 @Time:2020/10/29 9:30
 @Author: he.chao
-@File : setionManage.py
+@File : sectionManage.py
 @Software: PyCharm
 @modular:号段管理
 """
@@ -21,7 +21,7 @@ from utils.changData import changData
 from jsonpath import jsonpath
 
 filepath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-excelpath = os.path.join(os.path.join(filepath, "caseData"), "caseData_sectionAdd.xlsx")  # 获取excel的测试用例数据文件路径
+excelpath = os.path.join(os.path.join(filepath, "caseData"), "caseData_section.xlsx")  # 获取excel的测试用例数据文件路径
 sectionAdd_data = excelRead(excelpath, "sectionAdd")
 sectionPageList_data = excelRead(excelpath, "sectionPageList")
 
@@ -52,7 +52,7 @@ class TestSectionManage(unittest.TestCase):
         resp = self.api._admin_section_add(prefix_=case_data["prefix"], bizId_=case_data["bizId"],
                                            num_=case_data["num"])
         self.assertEqual(resp.get('status'), 'OK', resp.get('errorMsg'))
-        db_info = self.db.query_mp_section_info()
+        db_info = self.db.query_mp_section_info(lastOne=1)
         db_num = db_info[0].get("end_serial") - db_info[0].get("start_serial") + 1  # 根据db中截止编码和起始编码计算分配数量
         self.assertEqual(db_info[0].get("prefix"), case_except["prefix"])
         self.assertEqual(db_info[0].get("biz_id"), case_except["bizId"])
@@ -75,7 +75,7 @@ class TestSectionManage(unittest.TestCase):
                                            num_=case_data["num"])
         try:
             self.assertEqual(resp.get('status'), 'OK', resp.get('errorMsg'))
-            db_info = self.db.query_mp_section_info()
+            db_info = self.db.query_mp_section_info(lastOne=1)
             db_num = db_info[0].get("end_serial") - db_info[0].get("start_serial") + 1  # 根据db中截止编码和起始编码计算分配数量
             self.assertEqual(str(case_except["prefix"]), db_info[0].get("prefix"), "前缀断言失败：{}"
                              .format(resp.get('errorMsg')))
@@ -96,7 +96,7 @@ class TestSectionManage(unittest.TestCase):
         """
         resp = self.api._admin_section_list_all()
         self.assertEqual("OK", resp.get("status"), "status状态断言失败")
-        db_info = self.db.query_mp_section_info(infoSum=1)
+        db_info = self.db.query_mp_section_info(all=1)
         self.assertEqual(len(resp.get("content")), len(db_info), "回传号段数量与db数量不一致")
 
     @data(sectionPageList_data[0])
