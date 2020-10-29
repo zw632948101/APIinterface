@@ -42,7 +42,7 @@ class mp_label(DataBaseOperate):
 
 class MPcategory(DataBaseOperate):
     """
-    商品类目使用SQL
+    商品类目使用SQL 是
     """
 
     def __init__(self):
