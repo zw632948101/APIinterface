@@ -1,4 +1,4 @@
-which_project: &which_project middleground
+which_project: &which_project wxshop
 env: &env
   run: DEV
   updateActionAPI: DEV_API
@@ -114,3 +114,36 @@ middleground:
     QA_API:
       MP_PRODUCT: 'http://qa-gateway.worldfarm.com/fc-bee'
       MP_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
+
+wxshop:
+  <<: *env
+  database:
+    DEV:
+      host_ip: 00cd6c8916486ff3b8c4180bbe5902f8
+    QA:
+      host_ip: 38decc2956f8bcf5731227852dd4d5bd
+  urldict:
+    WX_PASSPORT: "Passport"
+    WX_PRODUCT: "Product"
+    WX_MALL: "Mall"
+  accounttype: 'user'
+  hosts:
+    DEV:
+      WX_PRODUCT: 'http://dev-gateway.worldfarm.com/wx-product'
+      WX_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
+      WX_MALL: 'http://dev-gateway.worldfarm.com/wx-mall'
+
+    DEV_API:
+      WX_PRODUCT: 'http://dev-gateway.worldfarm.com/wx-product'
+      WX_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
+      WX_MALL: 'http://dev-gateway.worldfarm.com/wx-mall'
+
+    QA:
+      WX_PRODUCT: 'http://qa-gateway.worldfarm.com/wx-product'
+      WX_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
+      WX_MALL: 'http://qa-gateway.worldfarm.com/wx-mall'
+
+    QA_API:
+      WX_PRODUCT: 'http://qa-gateway.worldfarm.com/wx-product'
+      WX_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
+      WX_MALL: 'http://qa-gateway.worldfarm.com/wx-mall'
