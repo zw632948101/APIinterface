@@ -166,7 +166,6 @@ class ProductAction(object):
 if __name__ == '__main__':
     test = ProductAction()
     test.set_user(mobile=15388126072)
-    res = test._admin_section_list_all()
+    res = test._admin_section_page_list(pn_=2)
     print(res)
-    len1 = len(res.get("content"))
-    print(len1)
+
