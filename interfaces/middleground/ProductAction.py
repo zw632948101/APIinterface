@@ -162,3 +162,11 @@ class ProductAction(object):
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_}
         response = self.request.post(url=self.url+'/admin/section/page-list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
+
+if __name__ == '__main__':
+    test = ProductAction()
+    test.set_user(mobile=15388126072)
+    res = test._admin_section_list_all()
+    print(res)
+    len1 = len(res.get("content"))
+    print(len1)
