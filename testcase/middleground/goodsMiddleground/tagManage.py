@@ -4,6 +4,9 @@
 # @Author: wei.zhang
 # @File : tagManage.py
 # @Software: PyCharm
+"""
+标签管理 测试用例
+"""
 
 from utils.log import log
 from interfaces.middleground.ProductAction import ProductAction
