@@ -39,6 +39,37 @@ class mp_label(DataBaseOperate):
             sql = "select * from `mp-product`.t_section_no order by id desc limit 1;"
         return self.operate_db(sql=sql)
 
+    def git_label_list(self):
+        '''
+        查询所有标签
+        '''
+        sql = "SELECT * FROM `mp-product`.t_label where id != '';"
+        return self.operate_db(sql=sql)
+
+    def git_admin_label_page_list(self):
+        '''
+        查询倒序的五条数据
+
+        :return:
+        '''
+        sql = "select * from `mp-product`.t_label   order by id desc LIMIT 5;"
+        return self.operate_db(sql=sql)
+    def git_admin_label_change_status(self):
+        '''
+        查询标签的启用禁用状态
+
+        :return:
+        '''
+        sql = "select * from `mp-product`.t_label where id = 50 ;"
+        return self.operate_db(sql=sql)
+
+    def git_admin_label_list_by_type(self,type = None,status = None):
+        '''
+        查询类型列表
+        :return:
+        '''
+        sql = "select * from `mp-product`.t_label where type={} and status={} ;".format(type,status)
+        return self.operate_db(sql=sql)
 
 class MPcategory(DataBaseOperate):
     """
@@ -51,6 +82,11 @@ class MPcategory(DataBaseOperate):
 
 
 if __name__ == '__main__':
-    sql = mp_label()
-    a = sql.query_mp_section_info("T",1)
-    print(a)
+    # sql = mp_label()
+    # a = sql.query_mp_section_info("T",1)
+    # print(a)
+
+
+    t = mp_label()
+    result = t.git_admin_label_change_status()
+    print(result[0]['status'])

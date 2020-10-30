@@ -266,3 +266,6 @@ class PassportAction(object):
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'appId': appId_, 'deviceType': deviceType_, 'deviceId': deviceId_, 'account': account_, 'userName': userName_, 'headImg': headImg_, 'password': password_}
         response = self.request.post(url=self.url+'/web/sso/validate-email', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
+
+if __name__ == '__main__':
+    pass
