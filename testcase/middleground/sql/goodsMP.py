@@ -26,43 +26,19 @@ class mp_label(DataBaseOperate):
         """
         sql = "SELECT tl.id,tl.name,tl.type,tl.creator_id FROM `mp-product`.t_label tl WHERE tl.name = '%s' AND  tl.type = '%s';" % (label_name, label_type)
         return self.operate_db(sql=sql)
-    def query_mp_section_info(self,id=None,all=None,pn=None,ps=None,lastOne=None):
+
+    def query_mp_section_info(self, section_prefix=None, section_bizId=None):
         """
-        查询商品属性:
+        查询商品属性
+        ：param section_prefix
+        ：param section_bizId
+        ：param section_num
         """
-        if id:
-            sql = "select * from `mp-product`.t_section_no where id={0};".format(id)
-        elif lastOne:
-            sql = "select * from `mp-product`.t_section_no order by id desc limit 1;"
-        elif all:
-            sql = "select * from `mp-product`.t_section_no;"
-        elif pn == "" or pn == 0 or pn == " ":
-            sql = "select * from `mp-product`.t_section_no order by id desc limit 0,{0};".format(ps)
-        elif ps == "" or ps == 0 or ps == " ":
-            sql = "select * from `mp-product`.t_section_no order by id desc limit {},20;".format(pn)
-        elif pn and ps:
-            sql = "select * from `mp-product`.t_section_no order by id desc limit {0},{1};".format((pn - 1) * ps, ps)
-        elif not pn and not ps:
-            sql = "select * from `mp-product`.t_section_no order by id desc limit 1,20;"
-        return self.operate_db(sql=sql)
-    def query_mp_brand_info(self,all=None,enable=None,pn=None,ps=None):
-        """
-        查询品牌:
-        """
-        if all:
-            sql = "select * from `mp-product`.t_brand order by id desc;"
-        elif enable:
-            sql = "select * from `mp-product`.t_brand where status = 1 order by id desc;"
-        elif pn == "" or pn == 0 or pn == " ":
-            sql = "select * from `mp-product`.t_brand order by id desc limit 0,{0};".format(ps)
-        elif ps == "" or ps == 0 or ps == " ":
-            sql = "select * from `mp-product`.t_brand order by id desc limit {},20;".format(pn)
-        elif pn and ps:
-            sql = "select * from `mp-product`.t_brand order by id desc limit {0},{1};".format((pn - 1) * ps, ps)
-        elif not pn and not ps:
-            sql = "select * from `mp-product`.t_brand order by id desc limit 1,20;"
+        if section_prefix and section_bizId:
+            sql = "select * from `mp-product`.t_section_no where biz_id={0} and prefix='{1}';"\
+                .format(section_bizId,section_prefix)
         else:
-            sql = "select * from `mp-product`.t_brand order by id desc limit 1;"
+            sql = "select * from `mp-product`.t_section_no order by id desc limit 1;"
         return self.operate_db(sql=sql)
 
 
@@ -74,6 +50,80 @@ class MPcategory(DataBaseOperate):
     def __init__(self):
         super(MPcategory, self).__init__()
         self.operate_db = lambda sql: self.operate(host=host_ip, sql=sql)
+
+    def query_category_add_info(self, bizid='', name='', isSale='', remark='', pcode=None):
+        """
+        查询新建的商品类目
+        :param bizid:
+        :param name:
+        :param isSale:
+        :param remark:
+        :param pcode:
+        :return:
+        """
+        pcode = '' if pcode is None else "AND tc.pcode = " + pcode
+        sql = """
+            SELECT *
+            FROM `mp-product`.t_product_category tc
+            WHERE tc.name = '%s'
+              AND tc.is_sale = '%s'
+              AND tc.biz_id = '%s'
+              AND tc.remark = '%s'
+              %s;
+              """ % (name, isSale, bizid, remark, pcode)
+        return self.operate_db(sql=sql)
+
+    def query_category_edit_info(self, code, isSale):
+        """
+        编辑商品类目查询
+        :param code:
+        :param isSale:
+        :return:
+        """
+        sql = """
+            SELECT *
+            FROM `mp-product`.t_product_category tc
+            WHERE tc.is_sale = '%s'
+              AND tc.code = '%s';
+              """ % (isSale, code)
+        return self.operate_db(sql=sql)
+
+    def query_category_status_info(self, id_):
+        """
+        编辑商品类目查询
+        :param code:
+        :param isSale:
+        :return:
+        """
+        sql = """
+            SELECT *
+            FROM `mp-product`.t_product_category tc
+            WHERE tc.id = '%s';
+              """ % (id_)
+        return self.operate_db(sql=sql)
+
+    def query_category_page_list(self, pn=1, ps=20):
+        """
+        分页查询类目列表
+        :param pn:
+        :param ps:
+        :return:
+        """
+        if pn >= 1:
+            ps1 = pn * ps
+            pn = ps1 - ps
+            ps = ps1
+
+        sql = """
+            SELECT tc.code AS code,
+                   tc.name ,
+                   tc.status AS status,
+                   tc.id
+            FROM `mp-product`.t_product_category tc
+            ORDER BY tc.id DESC
+            LIMIT %s,%s;
+              """ % (pn, ps)
+        return self.operate_db(sql=sql)
 
 
 

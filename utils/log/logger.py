@@ -44,7 +44,7 @@ def logger(name=None, level="DEBUG"):
 
     # 为logger添加的日志处理器
     logger_object.addHandler(console_handler)
-    logger_object.addHandler(file_handler)
+    # logger_object.addHandler(file_handler)
 
     return logger_object
 
