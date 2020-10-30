@@ -188,7 +188,7 @@ class categoryManage(unittest.TestCase):
         self.assertEqual(self.api.user.user_id, str(dbinfo[0].get('creator_id')))
 
     @data(*categoryData().category_status_data())
-    @unittest.skipIf(runlevel(1), '主流程用例，商品类目  启用/禁用')
+    @unittest.skipIf(runlevel(3), '主流程用例，商品类目  启用/禁用')
     def test_admin_category_change_status_check(self, statusdict):
         """
         商品类目  启用/禁用
