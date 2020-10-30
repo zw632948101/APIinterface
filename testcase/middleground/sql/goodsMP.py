@@ -24,9 +24,11 @@ class mp_label(DataBaseOperate):
         :param label_type:
         :return:
         """
-        sql = "SELECT tl.id,tl.name,tl.type,tl.creator_id FROM `mp-product`.t_label tl WHERE tl.name = '%s' AND  tl.type = '%s';" % (label_name, label_type)
+        sql = "SELECT tl.id,tl.name,tl.type,tl.creator_id FROM `mp-product`.t_label tl WHERE tl.name = '%s' AND  tl.type = '%s';" % (
+            label_name, label_type)
         return self.operate_db(sql=sql)
-    def query_mp_section_info(self,id=None,all=None,pn=None,ps=None,lastOne=None):
+
+    def query_mp_section_info(self, id=None, all=None, pn=None, ps=None, lastOne=None):
         """
         查询商品属性:
         """
@@ -45,7 +47,8 @@ class mp_label(DataBaseOperate):
         elif not pn and not ps:
             sql = "select * from `mp-product`.t_section_no order by id desc limit 1,20;"
         return self.operate_db(sql=sql)
-    def query_mp_brand_info(self,all=None,enable=None,pn=None,ps=None):
+
+    def query_mp_brand_info(self, all=None, enable=None, pn=None, ps=None):
         """
         查询品牌:
         """
@@ -65,6 +68,19 @@ class mp_label(DataBaseOperate):
             sql = "select * from `mp-product`.t_brand order by id desc limit 1;"
         return self.operate_db(sql=sql)
 
+    def query_mp_attr_info(self, attrName=None, isSale=None, all=None, lastOne=None, pn=None, ps=None):
+        """
+        查询属性:
+        """
+        if attrName and isSale:
+            sql = "select * from `mp-product`.t_attr_name where name='{0}' and is_sale={1}" \
+                  " order by id desc;".format(attrName, isSale)
+        elif all:
+            sql = "select * from `mp-product`.t_attr_name order by id desc;"
+        elif lastOne:
+            sql = "select * from `mp-product`.t_attr_name order by id desc limit 1;"
+        return self.operate_db(sql=sql)
+
 
 class MPcategory(DataBaseOperate):
     """
@@ -74,7 +90,6 @@ class MPcategory(DataBaseOperate):
     def __init__(self):
         super(MPcategory, self).__init__()
         self.operate_db = lambda sql: self.operate(host=host_ip, sql=sql)
-
 
 
 if __name__ == '__main__':
