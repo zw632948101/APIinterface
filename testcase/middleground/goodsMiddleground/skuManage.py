@@ -487,45 +487,45 @@ class skuManage(unittest.TestCase):
         self.faker = Faker('zh_CN')
 
 
-    # @data(*sku_data().admin_sku_add)
-    # def test_admin_sku_add(self,case):
-    #     name = case['data']['name']
-    #     alias = case['data']['alias']
-    #     class1 = case['data']['class1']
-    #     class2 = case['data']['class2']
-    #     class3 = case['data']['class3']
-    #     brandId = case['data']['brandId']
-    #     basicCost = case['data']['basicCost']
-    #     minimumPrice = case['data']['minimumPrice']
-    #     marketPrice = case['data']['marketPrice']
-    #     validity = case['data']['validity']
-    #     validityUnit = case['data']['validityUnit']
-    #     netWeight = case['data']['netWeight']
-    #     grossWeight = case['data']['grossWeight']
-    #     weightUnit = case['data']['weightUnit']
-    #     baseUnit = case['data']['baseUnit']
-    #     isSale = case['data']['isSale']
-    #     basicAttr = case['data']['basicAttr']
-    #     saleAttr = case['data']['saleAttr']
-    #
-    #     resp = self.api._admin_sku_add(name_=name,
-    #                                    alias_=alias,
-    #                                    class1_=class1,
-    #                                    class2_=class2,
-    #                                    class3_=class3,
-    #                                    brandId_=brandId,
-    #                                    basicCost_=basicCost,
-    #                                    minimumPrice_=minimumPrice,
-    #                                    marketPrice_=marketPrice,
-    #                                    validity_=validity,
-    #                                    validityUnit_=validityUnit,
-    #                                    netWeight_=netWeight,
-    #                                    grossWeight_=grossWeight,
-    #                                    weightUnit_=weightUnit,
-    #                                    baseUnit_=baseUnit,
-    #                                    isSale_=isSale,
-    #                                    basicAttr_=basicAttr,
-    #                                    saleAttr_=saleAttr)
+    @data(*sku_data().admin_sku_add)
+    def test_admin_sku_add(self,case):
+        name = case['data']['name']
+        alias = case['data']['alias']
+        class1 = case['data']['class1']
+        class2 = case['data']['class2']
+        class3 = case['data']['class3']
+        brandId = case['data']['brandId']
+        basicCost = case['data']['basicCost']
+        minimumPrice = case['data']['minimumPrice']
+        marketPrice = case['data']['marketPrice']
+        validity = case['data']['validity']
+        validityUnit = case['data']['validityUnit']
+        netWeight = case['data']['netWeight']
+        grossWeight = case['data']['grossWeight']
+        weightUnit = case['data']['weightUnit']
+        baseUnit = case['data']['baseUnit']
+        isSale = case['data']['isSale']
+        basicAttr = case['data']['basicAttr']
+        saleAttr = case['data']['saleAttr']
+
+        resp = self.api._admin_sku_add(name_=name,
+                                       alias_=alias,
+                                       class1_=class1,
+                                       class2_=class2,
+                                       class3_=class3,
+                                       brandId_=brandId,
+                                       basicCost_=basicCost,
+                                       minimumPrice_=minimumPrice,
+                                       marketPrice_=marketPrice,
+                                       validity_=validity,
+                                       validityUnit_=validityUnit,
+                                       netWeight_=netWeight,
+                                       grossWeight_=grossWeight,
+                                       weightUnit_=weightUnit,
+                                       baseUnit_=baseUnit,
+                                       isSale_=isSale,
+                                       basicAttr_=basicAttr,
+                                       saleAttr_=saleAttr)
 
     @data(*sku_data().admin_sku_page_list)
     def test_admin_sku_page_list(self,case):
