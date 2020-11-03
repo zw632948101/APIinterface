@@ -199,6 +199,12 @@ class MPcategory(DataBaseOperate):
         return self.operate_db(sql=sql)
 
 
+class mp_SKU(DataBaseOperate):
+    def __init__(self):
+        super(mp_SKU, self).__init__()
+        self.operate_db = lambda sql: self.operate(host=host_ip, sql=sql)
+
+
 if __name__ == '__main__':
     # sql = mp_label()
     # a = sql.query_mp_section_info("T",1)
