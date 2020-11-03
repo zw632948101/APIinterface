@@ -8,7 +8,7 @@ import random
 from utils.log import log
 from interfaces.middleground.ProductAction import ProductAction
 from testcase.middleground.sql.goodsMP import MPcategory
-from utils import runlevel, timestamp
+from utils import runlevel, timestamp, conversion
 from ddt import data, unpack, ddt
 from faker import Faker
 import unittest
@@ -110,7 +110,6 @@ class categoryManage(unittest.TestCase):
         remark = adddict.get('remark')
         pcode = adddict.get('pcode')
         response = self.api._admin_category_add(bizId_=bizId, pcode_=pcode, name_=name, isSale_=isSale, remark_=remark)
-        self.assertEqual(response.get('status'), 'OK', response.get('errorMsg'))
         if response.get('status') == 'OK':
             self.assertEqual(response.get('status'), 'OK', response.get('errorMsg'))
             dbinfo = self.db.query_category_add_info(bizid=bizId, name=name, isSale=isSale, remark=remark, pcode=pcode)
@@ -118,7 +117,16 @@ class categoryManage(unittest.TestCase):
             self.assertEqual(self.api.user.user_id, str(dbinfo[0].get('creator_id')))
         else:
             self.assertEqual(response.get('status'), 'ERROR')
-            log.info(response.get('errorMsg'))
+            if response.get('errorCode') == '11020101':
+                self.assertEqual(response.get('errorMsg'), '业务类型不存在!')
+            elif name is None:
+                self.assertEqual(response.get('errorMsg'), '名称不能为空')
+            elif len(name) > 20:
+                self.assertEqual(response.get('errorMsg'), '名称不超过20字')
+            elif response.get('errorCode') == '11020003':
+                self.assertEqual(response.get('errorMsg'), '所属业务不能为空')
+            elif response.get('errorCode') == '11020105':
+                self.assertEqual(response.get('errorMsg'), '商品类目不存在')
 
     @unittest.skipIf(runlevel(1), '主流程，商品类目列表分页')
     def test_admin_category_page_list(self):
@@ -131,6 +139,7 @@ class categoryManage(unittest.TestCase):
         response = self.api._admin_category_page_list(pn_=pn, ps_=ps)
         self.assertEqual(response.get('status'), 'OK', response.get('errorMsg'))
         dbinfo = self.db.query_category_page_list(pn=pn, ps=ps)
+        dbinfo = conversion.del_dict_value_null(dbinfo)
         content = response.get('content')
         self.assertEqual(len(dbinfo), len(content.get('datas')))
         for dbi, datai in list(zip(dbinfo, content.get('datas'))):
@@ -142,7 +151,8 @@ class categoryManage(unittest.TestCase):
         编辑商品类目
         :return:
         """
-        code = 'T02'
+        dbinfo = self.db.query_category_page_list()[0]
+        code = dbinfo.get('code')
         remark = self.faker.text(200)
         isSale = 0
         response = self.api._admin_category_edit(code_=code, remark_=remark, isSale_=isSale)
@@ -152,7 +162,7 @@ class categoryManage(unittest.TestCase):
         self.assertEqual(self.api.user.user_id, str(dbinfo[0].get('creator_id')))
 
     @data(*categoryData().category_edit_data())
-    @unittest.skipIf(runlevel(2), '编辑商品类目主流程')
+    @unittest.skipIf(runlevel(3), '编辑商品类目主流程')
     def test_admin_category_edit_check(self, editdict):
         """
         编辑商品类目
@@ -162,7 +172,6 @@ class categoryManage(unittest.TestCase):
         remark = editdict.get('remark')
         isSale = editdict.get('isSale')
         response = self.api._admin_category_edit(code_=code, remark_=remark, isSale_=isSale)
-        self.assertEqual(response.get('status'), 'OK', response.get('errorMsg'))
         if response.get('status') == 'OK':
             self.assertEqual(response.get('status'), 'OK', response.get('errorMsg'))
             dbinfo = self.db.query_category_edit_info(isSale=isSale, code=code)
@@ -170,7 +179,10 @@ class categoryManage(unittest.TestCase):
             self.assertEqual(self.api.user.user_id, str(dbinfo[0].get('editor_id')))
         else:
             self.assertEqual(response.get('status'), 'ERROR')
-            log.info(response.get('errorMsg'))
+            if code == None:
+                self.assertEqual(response.get('errorMsg'), '编码不能为空')
+            else:
+                self.assertEqual(response.get('errorMsg'), '数据不存在')
 
     @unittest.skipIf(runlevel(1), '主流程用例，商品类目  启用/禁用')
     def test_admin_category_change_status(self):
@@ -188,7 +200,7 @@ class categoryManage(unittest.TestCase):
         self.assertEqual(self.api.user.user_id, str(dbinfo[0].get('creator_id')))
 
     @data(*categoryData().category_status_data())
-    @unittest.skipIf(runlevel(3), '主流程用例，商品类目  启用/禁用')
+    @unittest.skipIf(runlevel(2), '主流程用例，商品类目  启用/禁用')
     def test_admin_category_change_status_check(self, statusdict):
         """
         商品类目  启用/禁用
@@ -197,7 +209,15 @@ class categoryManage(unittest.TestCase):
         id_ = statusdict.get('id')
         status = statusdict.get('status')
         response = self.api._admin_category_change_status(id_=id_, status_=status)
-        self.assertEqual(response.get('status'), 'OK', response.get('errorMsg'))
-        dbinfo = self.db.query_category_status_info(id_=id_)
-        self.assertEqual(len(dbinfo), 1)
-        self.assertEqual(self.api.user.user_id, str(dbinfo[0].get('creator_id')))
+        if response.get('status') == 'OK':
+            self.assertEqual(response.get('status'), 'OK', response.get('errorMsg'))
+            dbinfo = self.db.query_category_status_info(id_=id_)
+            self.assertEqual(len(dbinfo), 1)
+            self.assertEqual(self.api.user.user_id, str(dbinfo[0].get('creator_id')))
+        else:
+            if response.get('errorCode') == '11020116':
+                self.assertEqual(response.get('errorMsg'), '数据已更新,请刷新页面')
+            if response.get('errorCode') == '11020115':
+                self.assertEqual(response.get('errorMsg'), '数据不存在')
+            if response.get('errorCode') == '11020003':
+                self.assertEqual(response.get('errorMsg'), '状态不能为空')
