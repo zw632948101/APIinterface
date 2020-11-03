@@ -47,6 +47,35 @@ class mp_label(DataBaseOperate):
         elif not pn and not ps:
             sql = "select * from `mp-product`.t_section_no order by id desc limit 1,20;"
         return self.operate_db(sql=sql)
+    def git_label_list(self):
+        '''
+        查询所有标签
+        '''
+        sql = "SELECT * FROM `mp-product`.t_label where id != '';"
+        return self.operate_db(sql=sql)
+    def git_admin_label_page_list(self):
+        '''
+        查询倒序的五条数据
+            :return:
+        '''
+        sql = "select * from `mp-product`.t_label   order by id desc LIMIT 5;"
+        return self.operate_db(sql=sql)
+    def git_admin_label_change_status(self):
+        '''
+        查询标签的启用禁用状态
+
+        :return:
+        '''
+        sql = "select * from `mp-product`.t_label where id = 50 ;"
+        return self.operate_db(sql=sql)
+
+    def git_admin_label_list_by_type(self,type = None,status = None):
+        '''
+        查询类型列表
+        :return:
+        '''
+        sql = "select * from `mp-product`.t_label where type={} and status={} ;".format(type,status)
+        return self.operate_db(sql=sql)
 
     def query_mp_brand_info(self, all=None, enable=None, pn=None, ps=None):
         """
@@ -171,16 +200,11 @@ class MPcategory(DataBaseOperate):
 
 
 if __name__ == '__main__':
-    sql = mp_label()
-    a = sql.query_mp_brand_info(all=1)
-    print(a)
-    # b = [{'id': 95, 'name': '追花族-蜂蜜', 'prefix': 'a'}]
-    #
-    #
-    # c = [{'id': 95, 'biz_id': 1, 'name': '追花族-蜂蜜', 'prefix': 'a', 'start_serial': 6, 'end_serial': 6, 'serial': 6, 'creator_id': 694, 'create_time': '2020-10-29 11:36:40', 'editor_id': 694, 'edit_time': '2020-10-29 14:38:34', 'is_delete': 0},
-    #      {'id': 94, 'biz_id': 1, 'name': '追花族-蜂蜜', 'prefix': ' ', 'start_serial': 86, 'end_serial': 150, 'serial': 88, 'creator_id': 694, 'create_time': '2020-10-29 10:42:59', 'editor_id': 694, 'edit_time': '2020-10-29 11:27:29', 'is_delete': 0}]
-    #
-    #
-    # for l in c[0].items():
-    #     if b[0].items() not in l:
-    #         raise AssertionError
+    # sql = mp_label()
+    # a = sql.query_mp_section_info("T",1)
+    # print(a)
+
+
+    t = mp_label()
+    result = t.git_admin_label_change_status()
+    print(result[0]['status'])
