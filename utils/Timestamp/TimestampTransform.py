@@ -96,4 +96,4 @@ class TimestampTransform(object):
 
 if __name__ == '__main__':
     t = TimestampTransform()
-    t.get_random_date()
+    print(t.get_standardtime_by_offset(type=2,day=350))
