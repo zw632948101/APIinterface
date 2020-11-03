@@ -527,6 +527,7 @@ class skuManage(unittest.TestCase):
                                        basicAttr_=basicAttr,
                                        saleAttr_=saleAttr)
 
+    @unittest.skipIf(runlevel(2), "跑主流程时，跳过该用例")
     @data(*sku_data().admin_sku_page_list)
     def test_admin_sku_page_list(self,case):
         pn = case['data']['pn']
