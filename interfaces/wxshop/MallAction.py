@@ -27,20 +27,12 @@ class MallAction(object):
         else:
             raise Exception('status未返回OK或ERROR')
 
-    def _api_pay_channel_status_query(self, channelBillNos_=None):
-        if self.user is None:
-            data = {'channelBillNos': channelBillNos_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'channelBillNos': channelBillNos_}
-        response = self.request.post(url=self.url+'/api/pay/channel/status/query', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _api_pay_notify(self):
+    def _api_callback_pay_notify(self):
         if self.user is None:
             data = {}
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
-        response = self.request.post(url=self.url+'/api/pay/notify', data=data, hosts=self.url)
+        response = self.request.post(url=self.url+'/api/callback/pay/notify', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _api_shop_get(self, shopId_=None):
@@ -65,6 +57,22 @@ class MallAction(object):
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'shopIds': shopIds_}
         response = self.request.post(url=self.url+'/api/shop/list-by-ids', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _api_task_order_timed_close(self, orderNo_=None):
+        if self.user is None:
+            data = {'orderNo': orderNo_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'orderNo': orderNo_}
+        response = self.request.post(url=self.url+'/api/task/order/timed-close', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _api_task_pay_channel_status_query(self, channelBillNos_=None):
+        if self.user is None:
+            data = {'channelBillNos': channelBillNos_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'channelBillNos': channelBillNos_}
+        response = self.request.post(url=self.url+'/api/task/pay/channel/status/query', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _mobile_evaluate_order_add_(self, orderNo_=None, comment_=None, totalScore_=None, serviceScore_=None, logisticsScore_=None):
@@ -155,10 +163,10 @@ class MallAction(object):
         response = self.request.post(url=self.url+'/web/order/submit-order', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _web_pay_trade_unified_order(self, outTradeNos_=None, appId_=None, desAccountNo_=None, desAccountName_=None):
+    def _web_pay_trade_prepay_order(self, outTradeNos_=None, appId_=None, desAccountNo_=None, desAccountName_=None):
         if self.user is None:
             data = {'outTradeNos': outTradeNos_, 'appId': appId_, 'desAccountNo': desAccountNo_, 'desAccountName': desAccountName_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'outTradeNos': outTradeNos_, 'appId': appId_, 'desAccountNo': desAccountNo_, 'desAccountName': desAccountName_}
-        response = self.request.post(url=self.url+'/web/pay-trade/unified-order', data=data, hosts=self.url)
+        response = self.request.post(url=self.url+'/web/pay-trade/prepay-order', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))

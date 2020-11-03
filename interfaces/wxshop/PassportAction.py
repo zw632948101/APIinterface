@@ -259,6 +259,22 @@ class PassportAction(object):
         response = self.request.post(url=self.url+'/web/sso/logout', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
+    def _web_sso_mall_bind_wx(self, userName_=None, userHeadImg_=None, mobile_=None, verifyCode_=None, openId_=None, accessToken_=None, deviceId_=None, authType_=None, deviceType_=None, appId_=None):
+        if self.user is None:
+            data = {'userName': userName_, 'userHeadImg': userHeadImg_, 'mobile': mobile_, 'verifyCode': verifyCode_, 'openId': openId_, 'accessToken': accessToken_, 'deviceId': deviceId_, 'authType': authType_, 'deviceType': deviceType_, 'appId': appId_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'userName': userName_, 'userHeadImg': userHeadImg_, 'mobile': mobile_, 'verifyCode': verifyCode_, 'openId': openId_, 'accessToken': accessToken_, 'deviceId': deviceId_, 'authType': authType_, 'deviceType': deviceType_, 'appId': appId_}
+        response = self.request.post(url=self.url+'/web/sso/mall-bind-wx', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _web_sso_mall_login_wx(self, code_=None, encryptedData_=None, iv_=None, userName_=None, gender_=None, userHeadImg_=None, mobile_=None, deviceId_=None, deviceType_=None, authType_=None, appId_=None):
+        if self.user is None:
+            data = {'code': code_, 'encryptedData': encryptedData_, 'iv': iv_, 'userName': userName_, 'gender': gender_, 'userHeadImg': userHeadImg_, 'mobile': mobile_, 'deviceId': deviceId_, 'deviceType': deviceType_, 'authType': authType_, 'appId': appId_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_, 'encryptedData': encryptedData_, 'iv': iv_, 'userName': userName_, 'gender': gender_, 'userHeadImg': userHeadImg_, 'mobile': mobile_, 'deviceId': deviceId_, 'deviceType': deviceType_, 'authType': authType_, 'appId': appId_}
+        response = self.request.post(url=self.url+'/web/sso/mall-login-wx', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
     def _web_sso_validate_email(self, appId_=None, deviceType_=None, deviceId_=None, account_=None, userName_=None, headImg_=None, password_=None):
         if self.user is None:
             data = {'appId': appId_, 'deviceType': deviceType_, 'deviceId': deviceId_, 'account': account_, 'userName': userName_, 'headImg': headImg_, 'password': password_, }

@@ -1,4 +1,4 @@
-which_project: &which_project middleground
+which_project: &which_project wxshop
 env: &env
   run: DEV
   updateActionAPI: DEV_API
@@ -97,23 +97,28 @@ middleground:
   urldict:
     MP_PASSPORT: "Passport"
     MP_PRODUCT: "Product"
+    MP_DELIVERY: "delivery"
   accounttype: 'user'
   hosts:
     DEV:
       MP_PRODUCT: 'http://dev-gateway.worldfarm.com/mp-product'
       FC_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
+      MP_DELIVERY: 'http://dev-gateway.worldfarm.com/mp-delivery'
 
     DEV_API:
       MP_PRODUCT: 'http://dev-gateway.worldfarm.com/mp-product'
       MP_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
+      MP_DELIVERY: 'http://dev-gateway.worldfarm.com/mp-delivery'
 
     QA:
       MP_PRODUCT: 'http://qa-gateway.worldfarm.com/fc-bee'
-      MP_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
+      FC_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
+      MP_DELIVERY: 'http://qa-gateway.worldfarm.com/mp-delivery'
 
     QA_API:
       MP_PRODUCT: 'http://qa-gateway.worldfarm.com/fc-bee'
-      MP_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
+      FC_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
+      MP_DELIVERY: 'http://qa-gateway.worldfarm.com/mp-delivery'
 
 wxshop:
   <<: *env
@@ -130,20 +135,20 @@ wxshop:
   hosts:
     DEV:
       WX_PRODUCT: 'http://dev-gateway.worldfarm.com/wx-product'
-      WX_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
+      FC_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
       WX_MALL: 'http://dev-gateway.worldfarm.com/wx-mall'
 
     DEV_API:
       WX_PRODUCT: 'http://dev-gateway.worldfarm.com/wx-product'
-      WX_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
+      FC_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
       WX_MALL: 'http://dev-gateway.worldfarm.com/wx-mall'
 
     QA:
       WX_PRODUCT: 'http://qa-gateway.worldfarm.com/wx-product'
-      WX_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
+      FC_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
       WX_MALL: 'http://qa-gateway.worldfarm.com/wx-mall'
 
     QA_API:
       WX_PRODUCT: 'http://qa-gateway.worldfarm.com/wx-product'
-      WX_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
+      FC_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
       WX_MALL: 'http://qa-gateway.worldfarm.com/wx-mall'
