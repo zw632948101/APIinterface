@@ -152,16 +152,19 @@ class brandManage(unittest.TestCase):
             self.assertEqual(self.db.git_admin_biz_change_status(id,status)[0]['id'],id)
             self.assertEqual(self.db.git_admin_biz_change_status(id,status)[0]['status'],status)
 
+    @unittest.skipIf(runlevel(2), "跑主流程时，跳过该用例")
     def test_admin_biz_list_all(self):
         resp = self.api._admin_biz_list_all()
         self.assertEqual('OK',resp.get('status'))
         if resp.get('status') == 'OK':
             self.assertEqual(len(self.db.git_admin_biz_list_all()),len(resp['content']))
 
+    @unittest.skipIf(runlevel(2), "跑主流程时，跳过该用例")
     def test_admin_biz_list_enable(self):
         resp = self.api._admin_biz_list_enable()
         self.assertEqual('OK', resp.get('status'))
 
+    @unittest.skipIf(runlevel(2), "跑主流程时，跳过该用例")
     @data(*brand_data().admin_biz_list_enable)
     def test_admin_biz_page_list(self,case):
         pn = case['data']['pn']

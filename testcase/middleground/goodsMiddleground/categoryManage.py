@@ -68,7 +68,7 @@ class categoryData(object):
 
 
 @ddt
-class categoryManage(unittest.TestCase):
+class tagManage(unittest.TestCase):
     def setUp(self) -> None:
         """
         测试前数据准备
@@ -79,14 +79,13 @@ class categoryManage(unittest.TestCase):
         self.db = MPcategory()
         self.faker = Faker('zh_CN')
 
-    @unittest.skipIf(runlevel(1), '主流程用例，新建类别')
     def test_admin_category_add(self):
         """
         商品类目-新建类别
         :return:
         """
         bizId = 1
-        name = "测试类别%s" % timestamp.get_timestamp()
+        name = '测试商品分类%s' % timestamp.get_timestamp()
         isSale = 1
         remark = self.faker.text(200)
         pcode = None
