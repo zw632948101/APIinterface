@@ -13,7 +13,6 @@ import time
 import random
 import warnings
 from interfaces.middleground.ProductAction import ProductAction
-from interfaces.middleground.ProductAction import ProductAction
 from testcase.middleground.sql.goodsMP import mp_label
 from utils import runlevel, timestamp
 from ddt import data, unpack, ddt
@@ -169,6 +168,8 @@ class tagManage(unittest.TestCase):
             self.assertEqual(str(info[0].get('creator_id')), self.api.user.user_id)
         else:
             print("")
+
+    @unittest.skipIf(runlevel(2), "跑主流程时，跳过该用例")
     def test_get_label_list_all(self):
         """
                 所有标签获取
@@ -196,6 +197,7 @@ class tagManage(unittest.TestCase):
         self.assertEqual(resp.get('status'),'OK',resp.get('errorMsg'))
         self.assertEqual(self.db.git_admin_label_change_status()[0]['status'],int(case['data']['status_']))
 
+    @unittest.skipIf(runlevel(2), "跑主流程时，跳过该用例")
     def test_admin_label_page_list(self):
         '''
         分页查询
@@ -206,6 +208,7 @@ class tagManage(unittest.TestCase):
         self.assertEqual(len(self.db.git_admin_label_page_list()),len(resp['content']['datas']))
         self.assertEqual(self.db.git_admin_label_page_list()[0]['name'],resp['content']['datas'][0]['name'])
 
+    @unittest.skipIf(runlevel(2), "跑主流程时，跳过该用例")
     @data(*label_data().admin_label_list_by_type)
     def test_admin_label_list_by_type(self,case):
         '''
