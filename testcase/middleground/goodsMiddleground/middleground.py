@@ -28,6 +28,7 @@ class Context:
 class Flow_Path(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        # 事先查一次总的sku商品数量
         cls.expect = sku_mp().git_sku_add(2)
 
     def setUp(self):
@@ -41,7 +42,7 @@ class Flow_Path(unittest.TestCase):
         self.brand_db = brand_mp()
         self.shop_db = shop_mp()
         self.faker = Faker('zh_CN')
-        self.expect = sku_mp().git_sku_add(2)  # 先查出sku表中所有的数据条数
+
     # 新增一个品牌
     @data(*middleground_data().test_brand_add)
     def test_4_brand_add(self,case):
@@ -124,6 +125,7 @@ class Flow_Path(unittest.TestCase):
     # # 新增商品SKU
     @data(*middleground_data().test_sku_add)
     def test_admin_sku_add(self, case):
+
         name = case['name']
         alias = case['alias']
         class1 = case['class1']
@@ -162,16 +164,25 @@ class Flow_Path(unittest.TestCase):
                                        basicAttr_=basicAttr,
                                        saleAttr_=saleAttr)
         self.assertEqual('OK',resp.get('status'))
+        # 如果接口调用成功，数据库中会加一条数据
         if resp.get('status') == 'OK':
             for i in self.expect:
                 for value in i.values():
-                    self.expect  = value
+                    self.expect = value
+            actual = sku_mp().git_sku_add(2)[0]['count(*)']
+            self.assertEqual(self.expect + 1,actual)
+            setattr(Context,'skuId',sku_mp().git_sku_add(1)[0]['id'])
+            setattr(Context,'skuCode',sku_mp().git_sku_add(1)[0]['code'])
 
-            self.assertEqual(self.expect + 1 ,sku_mp().git_sku_add(2)[0]['count(*)'])
-    # 新增库存，新增库存需要用到商品skuID
-    # @data(*middleground_data().test_inventory_add)
-    # def test_inventory_add(self):
-    #     res = self.api._admin_inventory_add(skuId_=None,skuCode_=None,quantity_=None)
+
+    # 给新增的商品加库存
+    @data(*middleground_data().test_inventory_add)
+    def test_inventory_add(self,case):
+        skuId_ = getattr(Context,'skuId')
+        skuCode_ = getattr(Context,'skuCode')
+        quantity_ = case['quantity']
+        res = self.api._admin_inventory_add(skuId_=skuId_,skuCode_=skuCode_,quantity_=quantity_)
+        self.assertEqual('OK',res.get('status'))
 
 
 if __name__ == '__main__':

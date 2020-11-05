@@ -20,22 +20,25 @@ class Random:
 
 
 class middleground_data:
-    pass
+
     test_brand_add = [{"name":Random().create_name(),"logo":Random().logo_list()},
                       ]
-    test_biz_add = [{"ruleName":"蜂蜜汁"}]
+    test_biz_add = [{"ruleName":"蜂蜜汁"}
+                    ]
     test_category_add = [{"bizId":None,"pcode":"","name":Random().create_name(),"isSale":1,"remark":"凡酿蜜蜂普天皆有"},
                          {"bizId":None,"pcode":"","name":Random().create_name(),"isSale":0,"remark":"凡酿蜜蜂普天皆有"},
                          {"bizId":None,"pcode":"F14","name":Random().create_name(),"isSale":1,"remark":"凡酿蜜蜂普天皆有"},
                          {"bizId":None,"pcode":"F1402","name":Random().create_name(),"isSale":1,"remark":"凡酿蜜蜂普天皆有"}]
-    test_section_add = [{"prefix_":"F","bizId_":"","num_":99}]
+    test_section_add = [{"prefix_":"F","bizId_":"","num_":99}
+                        ]
     test_admin_attr_add = [
         {"title":"新增商品规格","attrName":Random().create_name(),"isSale":1},
         {"title":"新增商品属性","attrName":Random().create_name(),"isSale":0}
     ]
-    test_label_add = [{"name":Random().create_name(),"type":1}]
+    test_label_add = [{"name":Random().create_name(),"type":1}
+                      ]
     test_sku_add = [{"name":Random().create_name(),
-                     "alias":"Random().create_name()",
+                     "alias":Random().create_name(),
                      "class1":"F14", # 分类编码
                      "class2":"F1402",
                      "class3":"F140201",
@@ -53,7 +56,7 @@ class middleground_data:
                      "airTransport":1,
                      "basicAttr":"",
                      "saleAttr":""}]
-    test_inventory_add = [{"skuId":"","skuCode":"","quantity":""},
+    test_inventory_add = [{"skuId":"","skuCode":"","quantity":1000},
                           ]
 
 
