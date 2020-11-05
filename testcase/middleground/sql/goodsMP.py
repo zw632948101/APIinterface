@@ -204,6 +204,80 @@ class mp_SKU(DataBaseOperate):
         super(mp_SKU, self).__init__()
         self.operate_db = lambda sql: self.operate(host=host_ip, sql=sql)
 
+    def query_category_add_info(self, bizid='', name='', isSale='', remark='', pcode=None):
+        """
+        查询新建的商品类目
+        :param bizid:
+        :param name:
+        :param isSale:
+        :param remark:
+        :param pcode:
+        :return:
+        """
+        pcode = '' if pcode is None else "AND tc.pcode = " + pcode
+        sql = """
+            SELECT *
+            FROM `mp-product`.t_product_category tc
+            WHERE tc.name = '%s'
+              AND tc.is_sale = '%s'
+              AND tc.biz_id = '%s'
+              AND tc.remark = '%s'
+              %s;
+              """ % (name, isSale, bizid, remark, pcode)
+        return self.operate_db(sql=sql)
+
+    def query_category_edit_info(self, code, isSale):
+        """
+        编辑商品类目查询
+        :param code:
+        :param isSale:
+        :return:
+        """
+        sql = """
+            SELECT *
+            FROM `mp-product`.t_product_category tc
+            WHERE tc.is_sale = '%s'
+              AND tc.code = '%s';
+              """ % (isSale, code)
+        return self.operate_db(sql=sql)
+
+    def query_category_status_info(self, id_):
+        """
+        编辑商品类目查询
+        :param code:
+        :param isSale:
+        :return:
+        """
+        sql = """
+            SELECT *
+            FROM `mp-product`.t_product_category tc
+            WHERE tc.id = '%s';
+              """ % (id_)
+        return self.operate_db(sql=sql)
+
+    def query_category_page_list(self, pn=1, ps=20):
+        """
+        分页查询类目列表
+        :param pn:
+        :param ps:
+        :return:
+        """
+        if pn >= 1:
+            ps1 = pn * ps
+            pn = ps1 - ps
+            ps = ps1
+
+        sql = """
+            SELECT tc.code AS code,
+                   tc.name ,
+                   tc.status AS status,
+                   tc.id
+            FROM `mp-product`.t_product_category tc
+            ORDER BY tc.id DESC
+            LIMIT %s,%s;
+              """ % (pn, ps)
+        return self.operate_db(sql=sql)
+
 
 if __name__ == '__main__':
     # sql = mp_label()

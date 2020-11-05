@@ -37,50 +37,50 @@ class TestAttrManage(unittest.TestCase):
         self.db = mp_label()
         self.faker = Faker('zh_CN')
 
-    # @unittest.skipIf(runlevel(1), '主流程执行用例，设置等级为2时跳过该用例')
-    # def test_admin_attr_add(self):
-    #     attrName = self.faker.text(10)
-    #     isSale = random.randint(0, 1)
-    #     resp = self.api._admin_attr_add(attrName_=attrName, isSale_=isSale)
-    #     self.assertEqual("OK",resp["status"],"状态status断言失败")
-    #     db_info = self.db.query_mp_attr_info()
-    #     self.assertEqual(attrName,jsonpath(db_info,"$..name")[0],"属性名字attrName断言失败")
-    #     self.assertEqual(isSale, jsonpath(db_info,"$..is_sale")[0],"是否销售状态isSale断言失败")
+    @unittest.skipIf(runlevel(1), '主流程执行用例，设置等级为2时跳过该用例')
+    def test_admin_attr_add(self):
+        attrName = self.faker.text(10)
+        isSale = random.randint(0, 1)
+        resp = self.api._admin_attr_add(attrName_=attrName, isSale_=isSale)
+        self.assertEqual("OK",resp["status"],"状态status断言失败")
+        db_info = self.db.query_mp_attr_info()
+        self.assertEqual(attrName,jsonpath(db_info,"$..name")[0],"属性名字attrName断言失败")
+        self.assertEqual(isSale, jsonpath(db_info,"$..is_sale")[0],"是否销售状态isSale断言失败")
 
-    # @data(*attrAdd_data)
-    # @unittest.skipIf(runlevel(3), '主流程执行用例，设置等级为4时跳过该用例')
-    # def test_admin_attr_add_check(self, caseData):
-    #     self.isSale = random.randint(0, 1)
-    #     self.attrName = self.faker.pystr(min_chars=5, max_chars=10)
-    #     case_title = caseData["case_title"]
-    #     case_data = eval(changData(caseData["case_data"], self))
-    #     case_expect = eval(changData(caseData["case_expect"], self))
-    #     attrName = case_data["attrName"]
-    #     isSale = case_data["isSale"]
-    #     resp = self.api._admin_attr_add(attrName_=attrName, isSale_=isSale)
-    #
-    #     try:
-    #         self.assertEqual('OK', resp["status"], "状态断言失败")
-    #         db_info = self.db.query_mp_attr_info(attrName=attrName, isSale=isSale)
-    #         self.assertEqual(attrName, jsonpath(db_info, "$..name")[0], "属性名字段断言失败")
-    #         self.assertEqual(isSale, jsonpath(db_info, "$..is_sale")[0], "是否销售属性字段断言失败")
-    #     except:
-    #         self.assertEqual(case_expect.get("errorCode"), resp.get("errorCode"), "{0}断言失败:{1}"
-    #                          .format(case_title, resp.get('errorMsg')))
-    #         self.assertEqual(case_expect.get("status"), resp.get("status"), "{0}断言失败{1}:"
-    #                          .format(case_title, resp.get('errorMsg')))
-    #
-    # @unittest.skipIf(runlevel(1), '主流程执行用例，设置等级为2时跳过该用例')
-    # def test_admin_attr_list_all(self):
-    #     self.api._admin_attr_list_all()
-    #     """
-    #     所有属性列表
-    #     :return:
-    #     """
-    #     resp = self.api._admin_attr_list_all()
-    #     self.assertEqual("OK", resp.get("status"), "status状态断言失败")
-    #     db_info = self.db.query_mp_attr_info(all=1)
-    #     self.assertEqual(len(resp.get("content")), len(db_info), "回传号段数量与db数量不一致")
+    @data(*attrAdd_data)
+    @unittest.skipIf(runlevel(3), '主流程执行用例，设置等级为4时跳过该用例')
+    def test_admin_attr_add_check(self, caseData):
+        self.isSale = random.randint(0, 1)
+        self.attrName = self.faker.pystr(min_chars=5, max_chars=10)
+        case_title = caseData["case_title"]
+        case_data = eval(changData(caseData["case_data"], self))
+        case_expect = eval(changData(caseData["case_expect"], self))
+        attrName = case_data["attrName"]
+        isSale = case_data["isSale"]
+        resp = self.api._admin_attr_add(attrName_=attrName, isSale_=isSale)
+
+        try:
+            self.assertEqual('OK', resp["status"], "状态断言失败")
+            db_info = self.db.query_mp_attr_info(attrName=attrName, isSale=isSale)
+            self.assertEqual(attrName, jsonpath(db_info, "$..name")[0], "属性名字段断言失败")
+            self.assertEqual(isSale, jsonpath(db_info, "$..is_sale")[0], "是否销售属性字段断言失败")
+        except:
+            self.assertEqual(case_expect.get("errorCode"), resp.get("errorCode"), "{0}断言失败:{1}"
+                             .format(case_title, resp.get('errorMsg')))
+            self.assertEqual(case_expect.get("status"), resp.get("status"), "{0}断言失败{1}:"
+                             .format(case_title, resp.get('errorMsg')))
+
+    @unittest.skipIf(runlevel(1), '主流程执行用例，设置等级为2时跳过该用例')
+    def test_admin_attr_list_all(self):
+        self.api._admin_attr_list_all()
+        """
+        所有属性列表
+        :return:
+        """
+        resp = self.api._admin_attr_list_all()
+        self.assertEqual("OK", resp.get("status"), "status状态断言失败")
+        db_info = self.db.query_mp_attr_info(all=1)
+        self.assertEqual(len(resp.get("content")), len(db_info), "回传号段数量与db数量不一致")
 
     @unittest.skipIf(runlevel(1), '主流程执行用例，设置等级为2时跳过该用例')
     def test_admin_attr_page_list(self):
@@ -142,8 +142,8 @@ class TestAttrManage(unittest.TestCase):
     #         self.assertEqual(case_expect.get("status"), resp.get("status"), "{0}断言失败{1}:"
     #                          .format(case_title, resp.get('errorMsg')))
     #
-    # def tearDown(self):
-    #     pass
+    def tearDown(self):
+        pass
 
 
 if __name__ == '__main__':
