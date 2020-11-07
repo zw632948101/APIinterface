@@ -88,5 +88,6 @@ class skuManage(unittest.TestCase):
         resp = self.api._admin_sku_detail(skuCode_="F1402010006")
         self.assertEqual('OK',resp.get('status'))
         print("这是响应实体: %s"%resp)
+        print(resp.get('header'))
 if __name__ == '__main__':
     unittest.main()

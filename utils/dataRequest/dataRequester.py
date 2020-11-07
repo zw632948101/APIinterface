@@ -100,3 +100,6 @@ class Request(object):
             log.debug(response)
         # rea().reload_data(host_name=hosts, url=url)
         return response.decode("utf-8")
+
+
+
