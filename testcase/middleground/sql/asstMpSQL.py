@@ -113,3 +113,9 @@ class excelExportSQL(DataBaseOperate):
     def __init__(self):
         super(excelExportSQL, self).__init__()
         self.operate_db = lambda sql: self.operate(host=host_ip, sql=sql)
+
+
+class applySQL(DataBaseOperate):
+    def __init__(self):
+        super(applySQL, self).__init__()
+        self.operate_db = lambda sql: self.operate(host=host_ip, sql=sql)

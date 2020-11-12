@@ -18,7 +18,7 @@ import random
 
 
 @ddt
-class codeBase(unittest.TestCase):
+class warehouse(unittest.TestCase):
     def setUp(self) -> None:
         """
         测试前数据准备

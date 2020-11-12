@@ -1,4 +1,4 @@
-which_project: &which_project wxshop
+which_project: &which_project middleground
 env: &env
   run: QA
   updateActionAPI: DEV_API
