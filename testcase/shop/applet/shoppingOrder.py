@@ -67,7 +67,9 @@ class shopping_order(unittest.TestCase):
         if res.get('status') == 'OK':
             orderNo=res.get('content')['orderNo']# 订单号存起来
             setattr(Centext,'orderNo',orderNo)
+            # 断言-->订单新增成功，订单详情应该与下单时信息匹配，则PASS
 
+    # 查看订单详情
     def test_4_admin_web_order_detail(self):
 
         res = self.api._web_order_detail(orderNo_=getattr(Centext,'orderNo'))

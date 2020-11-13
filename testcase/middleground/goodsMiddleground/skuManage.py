@@ -44,36 +44,36 @@ class skuManage(unittest.TestCase):
         self.faker = Faker('zh_CN')
 
 
-    # @data(*api_data().admin_sku_add)
-    # def test_admin_sku_add(self,case):
-    #     name = case['data']['name']
-    #     alias = case['data']['alias']
-    #     class1 = case['data']['class1']
-    #     class2 = case['data']['class2']
-    #     class3 = case['data']['class3']
-    #     brandId = case['data']['brandId']
-    #     basicCost = case['data']['basicCost']
-    #     minimumPrice = case['data']['minimumPrice']
-    #     marketPrice = case['data']['marketPrice']
-    #     validity = case['data']['validity']
-    #     validityUnit = case['data']['validityUnit']
-    #     netWeight = case['data']['netWeight']
-    #     grossWeight = case['data']['grossWeight']
-    #     weightUnit = case['data']['weightUnit']
-    #     baseUnit = case['data']['baseUnit']
-    #     isSale = case['data']['isSale']
-    #     basicAttr = case['data']['basicAttr']
-    #     saleAttr = case['data']['saleAttr']
-    #
-    #     resp = self.api._admin_sku_add(name_=name,alias_=alias,class1_=class1,class2_=class2,class3_=class3,
-    #                                    brandId_=brandId,basicCost_=basicCost,minimumPrice_=minimumPrice,
-    #                                    marketPrice_=marketPrice,validity_=validity,validityUnit_=validityUnit,
-    #                                    netWeight_=netWeight,grossWeight_=grossWeight,weightUnit_=weightUnit,
-    #                                    baseUnit_=baseUnit,isSale_=isSale,basicAttr_=basicAttr,saleAttr_=saleAttr)
-    #
-    #     self.assertEqual(case['expect'],resp.get('status'))
-    #     if resp.get('status') == 'OK':
-    #         self.assertEqual(mp_label().git_sku_add(1)[0]['name'],name)
+    @data(*api_data().admin_sku_add)
+    def test_admin_sku_add(self,case):
+        name = case['data']['name']
+        alias = case['data']['alias']
+        class1 = case['data']['class1']
+        class2 = case['data']['class2']
+        class3 = case['data']['class3']
+        brandId = case['data']['brandId']
+        basicCost = case['data']['basicCost']
+        minimumPrice = case['data']['minimumPrice']
+        marketPrice = case['data']['marketPrice']
+        validity = case['data']['validity']
+        validityUnit = case['data']['validityUnit']
+        netWeight = case['data']['netWeight']
+        grossWeight = case['data']['grossWeight']
+        weightUnit = case['data']['weightUnit']
+        baseUnit = case['data']['baseUnit']
+        isSale = case['data']['isSale']
+        basicAttr = case['data']['basicAttr']
+        saleAttr = case['data']['saleAttr']
+
+        resp = self.api._admin_sku_add(name_=name,alias_=alias,class1_=class1,class2_=class2,class3_=class3,
+                                       brandId_=brandId,basicCost_=basicCost,minimumPrice_=minimumPrice,
+                                       marketPrice_=marketPrice,validity_=validity,validityUnit_=validityUnit,
+                                       netWeight_=netWeight,grossWeight_=grossWeight,weightUnit_=weightUnit,
+                                       baseUnit_=baseUnit,isSale_=isSale,basicAttr_=basicAttr,saleAttr_=saleAttr)
+
+        self.assertEqual(case['expect'],resp.get('status'))
+        if resp.get('status') == 'OK':
+            self.assertEqual(mp_label().git_sku_add(1)[0]['name'],name)
 
     # @unittest.skipIf(runlevel(2), "跑主流程时，跳过该用例")
     # @data(*api_data().admin_sku_page_list)
@@ -84,10 +84,10 @@ class skuManage(unittest.TestCase):
     #     name = case['data']['name']
     #     resp = self.api._admin_sku_page_list(pn_=pn, ps_=ps, skuCode_=skuCode, name_=name)
 
-    def test_admin_sku_detail(self):
-        resp = self.api._admin_sku_detail(skuCode_="F1402010006")
-        self.assertEqual('OK',resp.get('status'))
-        print("这是响应实体: %s"%resp)
-        print(resp.get('header'))
+    # def test_admin_sku_detail(self):
+    #     resp = self.api._admin_sku_detail(skuCode_="F1402010006")
+    #     self.assertEqual('OK',resp.get('status'))
+    #     print("这是响应实体: %s"%resp)
+    #     print(resp.get('header'))
 if __name__ == '__main__':
     unittest.main()
