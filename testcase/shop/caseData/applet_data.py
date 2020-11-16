@@ -14,10 +14,10 @@ from faker import Faker
 import unittest
 import requests
 class applet_api:
-    admin_web_cart_add = [{"title":"加入购物车","data":{"skuNo":"T0101010001","shopId":"1","amount":"13"},"expect":"OK"},
-                          {"title":"商品编码为空","data":{"skuNo":None,"shopId":"1","amount":"13"},"expect":"ERROR"},
-                          {"title":"商品id为空","data":{"skuNo":"T0101010001","shopId":None,"amount":"13"},"expect":"ERROR"},
-                          {"title":"购买数量","data":{"skuNo":"T0101010001","shopId":"1","amount":None},"expect":"ERROR"},
+    admin_web_cart_add = [{"title":"正常数量：","data":{"amount":"2"},"expect":"OK"},
+                          {"title":"数量为空：","data":{"amount":None},"expect":"ERROR"},
+                          {"title":"数量为负：","data":{"amount":-500},"expect":"ERROR"},
+                          {"title":"购买数量超出库存：","data":{"amount":"100000000"},"expect":"ERROR"}
                          ]
     admin_web_cart_edit_amount = [{"title":"编辑购物车商品数量","data":{"id":"6","amount":"9"},"expect":"OK"},
                                   {"title":"编辑购物车数量为空","data":{"id":"6","amount":None},"expect":"ERROR"}
@@ -25,17 +25,26 @@ class applet_api:
 
     admin_web_cart_balance = [{'title':'购物车结算','data':{"id":"6"},'expect':'OK'},
                         {'title':'结算id空','data':{"id":None},'expect':'ERROR'}]
+    admin_web_cart_buy_again = [{"title":"再次购买","data":{"product":[{"skuNo":"10201010007","amount":"10"}],"shopId":"1"},"expect":"OK"},
+                                {"title":"再次购买-库存不足","data":{"product":[{"skuNo":"10201010003","amount":"10"}],"shopId":"1"},"expect":"ERROR"},
+                                {"title":"再次购买-商品下架","data":{"product":[{"skuNo":"10701030003","amount":"10"}],"shopId":"1"},"expect":"ERROR"},
+                                {"title":"商品sku错误","data":{"product":[{"skuNo":"111111","amount":"10"}],"shopId":"1"},"expect":"ERROR"},
+                                {"title":"店铺传空","data":{"product":[{"skuNo":"10201010007","amount":"10"}],"shopId":None},"expect":"ERROR"},
+                                {"title":"商品传空","data":{"product":None,"shopId":"1"},"expect":"ERROR"}
+                                ]
 
     admin_web_cart_purchase = [{"title":"加入购物车","data":{"skuNo":"T0101010001","shopId":"1","amount":"13"},"expect":"OK"}]
 
+
 class submit_order:
     cartId = ''
-    web_order_close = []
+    web_order_close = [{"title":"取消订单","data":{"pn":"","ps":"","reason":"不想要了"},"expect":"OK"},
+                       {"title":"原因为空","data":{"pn":"","ps":"","reason":None},"expect":"ERROR"}]
     web_order_detail = []
     web_order_list = []
     web_order_submit_order = [{"title":"下单",
                                "data":{"shopId":"1",
-                                       "product":{"cartId":"10","skuNo":"Z0101010003","skuNum":"3"},
+                                       "product":[],
                                        "addressId":"1",
                                        "freight":"0",
                                        "deliveryType":1,

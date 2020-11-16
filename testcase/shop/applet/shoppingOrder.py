@@ -21,8 +21,10 @@ class Centext:
 
 @ddt
 class shopping_order(unittest.TestCase):
-
-
+    @classmethod
+    def setUpClass(cls):
+        cls.skuNo_ = random.choice(mp_label().gti_web_cart_add2(True))['code']
+        cls.shopId_ = random.choice(mp_label().gti_web_cart_add2(False))['id']
     def setUp(self):
         """
         测试前数据准备
@@ -34,12 +36,16 @@ class shopping_order(unittest.TestCase):
         self.faker = Faker('zh_CN')
 
     #新增购物车
-    def test_1_web_cart_add(self):
-        skuNo_ = "Z0101010003"
-        shopId_ = 1
-        amount_ = 14
+    @data(*applet_api().admin_web_cart_add)
+    def test_1_web_cart_add(self,case):
+        skuNo_ = mp_label().gti_web_cart_add2(True)[0]['code']
+        shopId_ = mp_label().gti_web_cart_add2(False)[0]['id']
+        amount_ = case['data']['amount']
+
         res = self.api._web_cart_add(skuNo_=skuNo_, shopId_=shopId_, amount_=amount_)
-        self.assertEqual('OK', res.get('status'))
+        self.assertEqual(case['expect'], res.get('status'))
+
+
     # 获取购物车列表
     def test_2_web_cart_list(self):
         res = self.api._web_cart_list()
@@ -49,31 +55,74 @@ class shopping_order(unittest.TestCase):
             # 获取到的购物车di 存起来
             setattr(Centext,'cartId', random.choice(result)['cartId'])
 
-    # 确认下单
-    @data(*submit_order().web_order_submit_order)
-    def test_3_admin_web_order_submit_order(self,case):
+
+    # 编辑购物车
+    cart_edit_amount = [{'data':{"amount":"7"},'expect':'OK'},
+                            {'data':{"amount":None},'expect':'ERROR'}
+                            ]
+    @data(*cart_edit_amount)
+    def test_3_web_cart_edit_amount(self,case):
+        id_ = getattr(Centext ,'cartId')
+        amount_ = case['data']['amount']
+        resp = self.api._web_cart_edit_amount(id_=id_,amount_=amount_)
+        self.assertEqual(case['expect'],resp.get('status'))
+
+    # 购物车结算
+    def test_4_web_cart_balance(self):
+        id_ = getattr(Centext,'cartId')
+        resp = self.api._web_cart_balance(id_=id_)
+        self.assertEqual('OK',resp.get('status'))
+        #print("结算id： %s"%id_)
+    # 再次购买
+    @data(*applet_api().admin_web_cart_buy_again)
+    def test_5_web_cart_buy_again(self,case):
+        product_ = str(case['data']['product'])
         shopId_ = case['data']['shopId']
-        product_ = str([{"cartId":getattr(Centext,'cartId'),"skuNo":"Z0101010003","skuNum":"3"}])
-        addressId_ = case['data']['addressId']
-        freight_ = case['data']['freight']
-        deliveryType_ = case['data']['deliveryType']
-        productPrice_ = case['data']['productPrice']
-        buyerMemo_ = case['data']['buyerMemo']
-        res = self.api._web_order_submit_order(shopId_=shopId_, product_=product_,
-                                               addressId_=addressId_, freight_=freight_,
-                                               deliveryType_=deliveryType_, productPrice_=productPrice_,
-                                               buyerMemo_=buyerMemo_)
-        self.assertEqual(case['expect'], res.get('status'))
-        if res.get('status') == 'OK':
-            orderNo=res.get('content')['orderNo']# 订单号存起来
-            setattr(Centext,'orderNo',orderNo)
-            # 断言-->订单新增成功，订单详情应该与下单时信息匹配，则PASS
+        resp = self.api._web_cart_buy_again(product_=product_, shopId_=shopId_)
+        self.assertEqual(case['expect'],resp.get('status'))
+        if resp.get('status') == 'OK':
+            result = self.api._web_cart_list()
+            res = result.get('content')[0]['cartList']
+            # print("再次购买，生成的购物车id",res)
+            setattr(Centext, 'cartId', res[0]['cartId'])
+        else:
+            pass
+    # 删除购物车
+    def test_6_web_cart_del(self):
+        resp = self.api._web_cart_del(id_=getattr(Centext, 'cartId'))
+        self.assertEqual('OK',resp.get('status'))
 
-    # 查看订单详情
-    def test_4_admin_web_order_detail(self):
 
-        res = self.api._web_order_detail(orderNo_=getattr(Centext,'orderNo'))
-        self.assertEqual('OK',res.get('status'))
+
+
+
+
+
+    # # 确认下单
+    # @data(*submit_order().web_order_submit_order)
+    # def test_3_admin_web_order_submit_order(self,case):
+    #     shopId_ = case['data']['shopId']
+    #     product_ = str([{"cartId":getattr(Centext,'cartId'),"skuNo":mp_label().gti_web_cart_add2(True)[0]['code'],"skuNum":"3"}])
+    #     addressId_ = case['data']['addressId']
+    #     freight_ = case['data']['freight']
+    #     deliveryType_ = case['data']['deliveryType']
+    #     productPrice_ = case['data']['productPrice']
+    #     buyerMemo_ = case['data']['buyerMemo']
+    #     res = self.api._web_order_submit_order(shopId_=shopId_, product_=product_,
+    #                                            addressId_=addressId_, freight_=freight_,
+    #                                            deliveryType_=deliveryType_, productPrice_=productPrice_,
+    #                                            buyerMemo_=buyerMemo_)
+    #     self.assertEqual(case['expect'], res.get('status'))
+    #     if res.get('status') == 'OK':
+    #         orderNo=res.get('content')['orderNo']# 订单号存起来
+    #         setattr(Centext,'orderNo',orderNo)
+    #         # 断言-->订单新增成功，订单详情应该与下单时信息匹配，则PASS
+    #
+    # # 查看订单详情
+    # def test_4_admin_web_order_detail(self):
+    #
+    #     res = self.api._web_order_detail(orderNo_=getattr(Centext,'orderNo'))
+    #     self.assertEqual('OK',res.get('status'))
 
 if __name__ == '__main__':
     unittest.main()

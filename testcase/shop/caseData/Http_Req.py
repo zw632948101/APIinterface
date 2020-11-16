@@ -72,9 +72,22 @@ class Http_Request:
 
 
 if __name__ == '__main__':
-    url = 'http://dev-gateway.worldfarm.com/wx-mall/web/cart/list'
-    data = ''
-    header = {"Content-Type": "application/x-www-form-urlencoded",
+    url = 'http://dev-gateway.worldfarm.com/world-passport/web/sso/mall-login-wx'
+    data = {
+            "code":"001JEI10099MBK1jfP200EoieJ2JEI1M",
+            "encryptedData":"34GMpZPyzi0cg9rSk+lgn1Q0v2jximzmK7QPFMiEyvCCoyoOW9yk6OlMw+Hh4qGkpO0jXU6NH0HsJFMTx49C1JtauesKKIYBf/9N6sKmwDF9Cnl4BhXOzRcnGDAuzlF6FVDOXtiJTX4r6f61skI98w2vdPjWCjSIzPTWuLAmYUV49FRGVjroGqXoYKDp61hgWBbvY+T6VYnPU2lOsoWlUQ==",
+            "iv":"M2awA7HTIk9bDJZ8cHGzsw==",
+            # "userName":"",
+            # "gender":"",
+            # "userHeadImg":"",
+            # "mobile":"",
+            "deviceId":"1213",
+            "deviceType":"WEB",
+            "authType":"WECHAT",
+            "appId":"FLOWER_CHASERS"
+            }
+
+    header2 = {"Content-Type": "application/x-www-form-urlencoded",
         "Accept": "application/json, text/plain, */*",
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4)"
                       " AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -83,22 +96,13 @@ if __name__ == '__main__':
         "region": "online",
         "Accept_Language": "zh",
         "_Device-Id_":"cc4feebe419791332bbcff5e0fdf084a",
-        "_Token_": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJjYzRmZWViZTQxOTc5MTMzMmJiY2ZmNWUwZmRmMDg0YSIsImRldmljZUdyb3VwIjoiVVNFUiIsImlwIjoiMTkyLjE2OC44OS4xNzUiLCJpc3MiOiJaWVBfU1NPIiwidXNlciI6IntcImFjY291bnRUeXBlXCI6MjEsXCJhcHBJZFwiOlwiMTFcIixcImRldmljZVR5cGVcIjpcIkFORFJPSUQtVVNFUlwiLFwiaGVhZEltZ1wiOlwiaHR0cDovL3p5cC1mYXJtLTIub3NzLWFwLXNvdXRoZWFzdC0xLmFsaXl1bmNzLmNvbS9kYXRhL2ZjLXVzZXIvaGVhZEltZy8xNTkzNTgyNTM0ODAzLmpwZ1wiLFwiaWRcIjo2OTQsXCJuZXdcIjpmYWxzZSxcInBhc3N3b3JkXCI6XCI3Mzc1MzA0MWY3NzZiNjg0MjE0NmFlNTA0MTQ4NjBiMzdmMzY5Nzg2Njk4N2NiMGZcIixcInBob25lXCI6XCIxNTM4ODEyNjA3MlwiLFwic3RhdHVzXCI6MSxcInVzZXJOYW1lXCI6XCLlvKDkuInlkbXlkbXlkbVcIn0iLCJpYXQiOjE2MDQ3MTQxMDl9.l8Mf3c2JV8xPefzoorZi3qMk6Zphxpt5eSuH1ulMFz_3v15x5G0yVHDW_N6AjzkN2Ubac_f_YViu65yl7XI-lQ"
-}
+        "_Token_": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJjYzRmZWViZTQxOTc5MTMzMmJiY2ZmNWUwZmRmMDg0YSIsImRldmljZUdyb3VwIjoiVVNFUiIsImlwIjoiMTkyLjE2OC44OS4xNzUiLCJpc3MiOiJaWVBfU1NPIiwidXNlciI6IntcImFjY291bnRUeXBlXCI6MjEsXCJhcHBJZFwiOlwiMTFcIixcImRldmljZVR5cGVcIjpcIkFORFJPSUQtVVNFUlwiLFwiaGVhZEltZ1wiOlwiaHR0cDovL3p5cC1mYXJtLTIub3NzLWFwLXNvdXRoZWFzdC0xLmFsaXl1bmNzLmNvbS9kYXRhL2ZjLXVzZXIvaGVhZEltZy8xNTkzNTgyNTM0ODAzLmpwZ1wiLFwiaWRcIjo2OTQsXCJuZXdcIjpmYWxzZSxcInBhc3N3b3JkXCI6XCI3Mzc1MzA0MWY3NzZiNjg0MjE0NmFlNTA0MTQ4NjBiMzdmMzY5Nzg2Njk4N2NiMGZcIixcInBob25lXCI6XCIxNTM4ODEyNjA3MlwiLFwic3RhdHVzXCI6MSxcInVzZXJOYW1lXCI6XCLlvKDkuInlkbXlkbXlkbVcIn0iLCJpYXQiOjE2MDQ3MTQxMDl9.l8Mf3c2JV8xPefzoorZi3qMk6Zphxpt5eSuH1ulMFz_3v15x5G0yVHDW_N6AjzkN2Ubac_f_YViu65yl7XI-lQ"}
 
-    t = Http_Request('post',url=url,data=data,header=header)
+    t = Http_Request('post',url=url,data=data,header=None)
     result = t.get_json()
-    # print(result[0])
-    # print(result)
-    # print("购物车列表: %s"%result['cartList'])
-    # print(len(result['cartList']))
-    # for item in result.items():
-    #     print("这是键值对：",item)
-    #
-    # for value in result.values():
-    #     print("这是值:",value)
-
     print(result)
+
+
 
 
 
