@@ -51,11 +51,11 @@ class assetAction(object):
         response = self.request.post(url=self.url+'/admin/apply/page', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_apply_page_ex_warehouse(self, pn_=None, ps_=None, warehouseId_=None, applyNo_=None, status_=None):
+    def _admin_apply_page_ex_warehouse(self, pn_=None, ps_=None, warehouseId_=None, applyNo_=None, status_=None, productId_=None):
         if self.user is None:
-            data = {'pn': pn_, 'ps': ps_, 'warehouseId': warehouseId_, 'applyNo': applyNo_, 'status': status_, }
+            data = {'pn': pn_, 'ps': ps_, 'warehouseId': warehouseId_, 'applyNo': applyNo_, 'status': status_, 'productId': productId_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'warehouseId': warehouseId_, 'applyNo': applyNo_, 'status': status_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'warehouseId': warehouseId_, 'applyNo': applyNo_, 'status': status_, 'productId': productId_}
         response = self.request.post(url=self.url+'/admin/apply/page-ex-warehouse', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -115,11 +115,11 @@ class assetAction(object):
         response = self.request.post(url=self.url+'/admin/asset/statics-by-owner', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    # def _admin_asset_transfer(self, address_province_=None, address_city_=None, address_county_=None, address_address_=None, address_lng_=None, address_lat_=None, codes[0]_attrs[0]_attrId_=None, codes[0]_attrs[0]_type_=None, codes[0]_attrs[0]_attrName_=None, codes[0]_attrs[0]_unit_=None, codes[0]_attrs[0]_value_=None, codes[0]_code_=None, codes[0]_weight_=None, senderRole_=None, receiverRole_=None, receiverId_=None, remark_=None, transferTime_=None):
+    # def _admin_asset_transfer(self, address_province_=None, address_city_=None, address_county_=None, address_address_=None, address_lng_=None, address_lat_=None, codes[0]_attrs[0]_attrId_=None, codes[0]_attrs[0]_type_=None, codes[0]_attrs[0]_attrName_=None, codes[0]_attrs[0]_unit_=None, codes[0]_attrs[0]_value_=None, codes[0]_code_=None, codes[0]_weight_=None, senderRole_=None, receiverRole_=None, receiverId_=None, remark_=None, transferTime_=None, apiaryId_=None):
     #     if self.user is None:
-    #         data = {'address_province': address_province_, 'address_city': address_city_, 'address_county': address_county_, 'address_address': address_address_, 'address_lng': address_lng_, 'address_lat': address_lat_, 'codes[0]_attrs[0]_attrId': codes[0]_attrs[0]_attrId_, 'codes[0]_attrs[0]_type': codes[0]_attrs[0]_type_, 'codes[0]_attrs[0]_attrName': codes[0]_attrs[0]_attrName_, 'codes[0]_attrs[0]_unit': codes[0]_attrs[0]_unit_, 'codes[0]_attrs[0]_value': codes[0]_attrs[0]_value_, 'codes[0]_code': codes[0]_code_, 'codes[0]_weight': codes[0]_weight_, 'senderRole': senderRole_, 'receiverRole': receiverRole_, 'receiverId': receiverId_, 'remark': remark_, 'transferTime': transferTime_, }
+    #         data = {'address_province': address_province_, 'address_city': address_city_, 'address_county': address_county_, 'address_address': address_address_, 'address_lng': address_lng_, 'address_lat': address_lat_, 'codes[0]_attrs[0]_attrId': codes[0]_attrs[0]_attrId_, 'codes[0]_attrs[0]_type': codes[0]_attrs[0]_type_, 'codes[0]_attrs[0]_attrName': codes[0]_attrs[0]_attrName_, 'codes[0]_attrs[0]_unit': codes[0]_attrs[0]_unit_, 'codes[0]_attrs[0]_value': codes[0]_attrs[0]_value_, 'codes[0]_code': codes[0]_code_, 'codes[0]_weight': codes[0]_weight_, 'senderRole': senderRole_, 'receiverRole': receiverRole_, 'receiverId': receiverId_, 'remark': remark_, 'transferTime': transferTime_, 'apiaryId': apiaryId_, }
     #     else:
-    #         data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'address_province': address_province_, 'address_city': address_city_, 'address_county': address_county_, 'address_address': address_address_, 'address_lng': address_lng_, 'address_lat': address_lat_, 'codes[0]_attrs[0]_attrId': codes[0]_attrs[0]_attrId_, 'codes[0]_attrs[0]_type': codes[0]_attrs[0]_type_, 'codes[0]_attrs[0]_attrName': codes[0]_attrs[0]_attrName_, 'codes[0]_attrs[0]_unit': codes[0]_attrs[0]_unit_, 'codes[0]_attrs[0]_value': codes[0]_attrs[0]_value_, 'codes[0]_code': codes[0]_code_, 'codes[0]_weight': codes[0]_weight_, 'senderRole': senderRole_, 'receiverRole': receiverRole_, 'receiverId': receiverId_, 'remark': remark_, 'transferTime': transferTime_}
+    #         data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'address_province': address_province_, 'address_city': address_city_, 'address_county': address_county_, 'address_address': address_address_, 'address_lng': address_lng_, 'address_lat': address_lat_, 'codes[0]_attrs[0]_attrId': codes[0]_attrs[0]_attrId_, 'codes[0]_attrs[0]_type': codes[0]_attrs[0]_type_, 'codes[0]_attrs[0]_attrName': codes[0]_attrs[0]_attrName_, 'codes[0]_attrs[0]_unit': codes[0]_attrs[0]_unit_, 'codes[0]_attrs[0]_value': codes[0]_attrs[0]_value_, 'codes[0]_code': codes[0]_code_, 'codes[0]_weight': codes[0]_weight_, 'senderRole': senderRole_, 'receiverRole': receiverRole_, 'receiverId': receiverId_, 'remark': remark_, 'transferTime': transferTime_, 'apiaryId': apiaryId_}
     #     response = self.request.post(url=self.url+'/admin/asset/transfer', data=data, hosts=self.url)
     #     return self.__judge_response_status(json.loads(response))
 
@@ -147,20 +147,20 @@ class assetAction(object):
         response = self.request.post(url=self.url+'/admin/code-batch/page', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_excel_export_code(self, batchId_=None,value_=None):
+    def _admin_excel_export_code(self, batchId_=None):
         if self.user is None:
-            data = {'batchId': batchId_, 'value': value_}
+            data = {'batchId': batchId_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'batchId': batchId_, 'value': value_}
-        response = self.request.post(url=self.url+'/admin/excel-export/code', data=data, hosts=self.url)
-        return response
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'batchId': batchId_}
+        response = self.request.get(url=self.url+'/admin/excel-export/code', params=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
 
     def _admin_excel_export_in_warehouse(self, productId_=None):
         if self.user is None:
             data = {'productId': productId_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'productId': productId_}
-        response = self.request.post(url=self.url+'/admin/excel-export/in-warehouse', data=data, hosts=self.url)
+        response = self.request.get(url=self.url+'/admin/excel-export/in-warehouse', params=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _admin_excel_export_out_warehouse(self, productId_=None, type_=None):
@@ -168,7 +168,7 @@ class assetAction(object):
             data = {'productId': productId_, 'type': type_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'productId': productId_, 'type': type_}
-        response = self.request.post(url=self.url+'/admin/excel-export/out-warehouse', data=data, hosts=self.url)
+        response = self.request.get(url=self.url+'/admin/excel-export/out-warehouse', params=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _admin_file_upload(self, file_=None):
@@ -209,6 +209,14 @@ class assetAction(object):
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'id': id_}
         response = self.request.post(url=self.url+'/admin/product/get-product-attr', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_product_list(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/admin/product/list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _admin_product_list_page(self, pn_=None, ps_=None, typeId_=None, code_=None, name_=None):
@@ -291,11 +299,11 @@ class assetAction(object):
         response = self.request.post(url=self.url+'/admin/type-dict/list-by-type', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_warehouse_add(self, code_=None, name_=None, lng_=None, lat_=None, address_=None, area_=None, goodsTypeIds_=None, managerId_=None, leaseStartTime_=None, leaseEndTime_=None, landlord_=None, landlordPhone_=None, remark_=None, imgUrls_=None):
+    def _admin_warehouse_add(self, code_=None, name_=None, lng_=None, lat_=None, province_=None, city_=None, county_=None, address_=None, area_=None, goodsTypeIds_=None, managerId_=None, leaseStartTime_=None, leaseEndTime_=None, landlord_=None, landlordPhone_=None, remark_=None, imgUrls_=None):
         if self.user is None:
-            data = {'code': code_, 'name': name_, 'lng': lng_, 'lat': lat_, 'address': address_, 'area': area_, 'goodsTypeIds': goodsTypeIds_, 'managerId': managerId_, 'leaseStartTime': leaseStartTime_, 'leaseEndTime': leaseEndTime_, 'landlord': landlord_, 'landlordPhone': landlordPhone_, 'remark': remark_, 'imgUrls': imgUrls_, }
+            data = {'code': code_, 'name': name_, 'lng': lng_, 'lat': lat_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'area': area_, 'goodsTypeIds': goodsTypeIds_, 'managerId': managerId_, 'leaseStartTime': leaseStartTime_, 'leaseEndTime': leaseEndTime_, 'landlord': landlord_, 'landlordPhone': landlordPhone_, 'remark': remark_, 'imgUrls': imgUrls_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_, 'name': name_, 'lng': lng_, 'lat': lat_, 'address': address_, 'area': area_, 'goodsTypeIds': goodsTypeIds_, 'managerId': managerId_, 'leaseStartTime': leaseStartTime_, 'leaseEndTime': leaseEndTime_, 'landlord': landlord_, 'landlordPhone': landlordPhone_, 'remark': remark_, 'imgUrls': imgUrls_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_, 'name': name_, 'lng': lng_, 'lat': lat_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'area': area_, 'goodsTypeIds': goodsTypeIds_, 'managerId': managerId_, 'leaseStartTime': leaseStartTime_, 'leaseEndTime': leaseEndTime_, 'landlord': landlord_, 'landlordPhone': landlordPhone_, 'remark': remark_, 'imgUrls': imgUrls_}
         response = self.request.post(url=self.url+'/admin/warehouse/add', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -419,6 +427,14 @@ class assetAction(object):
         response = self.request.post(url=self.url+'/mobile/apply/page', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
+    def _mobile_asset_detail(self, id_=None):
+        if self.user is None:
+            data = {'id': id_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'id': id_}
+        response = self.request.post(url=self.url+'/mobile/asset/detail', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
     def _mobile_asset_page_grant(self, pn_=None, ps_=None, startTime_=None, endTime_=None, province_=None, city_=None, county_=None):
         if self.user is None:
             data = {'pn': pn_, 'ps': ps_, 'startTime': startTime_, 'endTime': endTime_, 'province': province_, 'city': city_, 'county': county_, }
@@ -433,6 +449,14 @@ class assetAction(object):
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
         response = self.request.post(url=self.url+'/mobile/asset/transfer', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _mobile_product_list(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/mobile/product/list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _mobile_supplier_list(self):
@@ -499,10 +523,10 @@ class assetAction(object):
         response = self.request.post(url=self.url+'/mobile/warehouse/out-warehouse', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_warehouse_page_ex_warehouse(self, pn_=None, ps_=None, warehouseId_=None, applyNo_=None, status_=None):
+    def _mobile_warehouse_page_ex_warehouse(self, pn_=None, ps_=None, warehouseId_=None, applyNo_=None, status_=None, productId_=None):
         if self.user is None:
-            data = {'pn': pn_, 'ps': ps_, 'warehouseId': warehouseId_, 'applyNo': applyNo_, 'status': status_, }
+            data = {'pn': pn_, 'ps': ps_, 'warehouseId': warehouseId_, 'applyNo': applyNo_, 'status': status_, 'productId': productId_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'warehouseId': warehouseId_, 'applyNo': applyNo_, 'status': status_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'warehouseId': warehouseId_, 'applyNo': applyNo_, 'status': status_, 'productId': productId_}
         response = self.request.post(url=self.url+'/mobile/warehouse/page-ex-warehouse', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))

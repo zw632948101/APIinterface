@@ -29,6 +29,7 @@ class CompareTheData(object):
             self.swagger_data, self.swagger_tags = swagger
             self.__cmp_config()
             self.data_check()
+            adfa.updata_database(self.check_result, host)
             self.get_eidt_api_statistics(key, host)
             self.get_edit_api_excel_statistics(key, host)
 

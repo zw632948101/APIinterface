@@ -108,6 +108,44 @@ class warehouseSQL(DataBaseOperate):
         super(warehouseSQL, self).__init__()
         self.operate_db = lambda sql: self.operate(host=host_ip, sql=sql)
 
+    def query_asset_apply_status_data(self, applicantid=None, status=10):
+        """
+        查询待出库的资产申请
+        :param applicantid:
+        :param status:
+        :return:
+        """
+        applicantid = 'AND ta.applicant_id = %s' % applicantid if applicantid is not None else ''
+        sql = """
+            SELECT *
+            FROM `mp-asset`.t_asset_apply ta
+            WHERE ta.is_delete = 0
+              AND ta.status = {status}
+              AND ta.warehouse_id IS NOT NULL
+              {applicantid}
+            ORDER BY ta.id;
+              """.format(applicantid=applicantid, status=status)
+        return self.operate_db(sql=sql)
+
+    def query_status_product_warehouse_aseet_code(self, status=10, warehouseid=None, product_id=None):
+        """
+        跟进资产id和仓库id查询待出库的编码
+        :param status:
+        :param warehouseid:
+        :param product_id:
+        :return:
+        """
+        product_id = "AND ta.product_id = %s" % product_id if product_id is not None else ''
+        warehouseid = "AND ta.warehouse_id = %s" % warehouseid if warehouseid is not None else ''
+        sql = """
+                SELECT *
+                FROM `mp-asset`.t_asset ta
+                WHERE ta.status = {status}
+                AND ta.is_delete = 0
+                {product_id} {warehouseid};
+              """.format(status=status, product_id=product_id, warehouseid=warehouseid)
+        return self.operate_db(sql=sql)
+
 
 class excelExportSQL(DataBaseOperate):
     def __init__(self):
@@ -119,3 +157,61 @@ class applySQL(DataBaseOperate):
     def __init__(self):
         super(applySQL, self).__init__()
         self.operate_db = lambda sql: self.operate(host=host_ip, sql=sql)
+
+
+class mobileWarehouseSQL(DataBaseOperate):
+    def __init__(self):
+        super(mobileWarehouseSQL, self).__init__()
+        self.operate_db = lambda sql: self.operate(host=host_ip, sql=sql)
+
+    def query_init_warehouse_code(self):
+        """
+        查询未出库的RFID和二维码
+        :return:
+        """
+        sql = """
+            SELECT tc.code AS qrCode, tf.code AS rfidCode
+            FROM `mp-asset`.t_code_base tc,
+                 `mp-asset`.t_code_base_rfid tf
+            WHERE tc.product_id = 1
+              AND tf.product_id = 1
+              AND tc.status = 10
+              AND tf.status = 10
+              AND tc.is_delete = 0
+              AND tf.is_delete = 0;
+              """
+        return self.operate_db(sql=sql)
+
+
+class assetSQL(DataBaseOperate):
+    def __init__(self):
+        super(assetSQL, self).__init__()
+        self.operate_db = lambda sql: self.operate(host=host_ip, sql=sql)
+
+    def query_code_base_all_code(self, productid=3):
+        """
+        查询铭牌编码code
+        :return:
+        """
+        sql = """
+            SELECT tc.code AS qrCode
+            FROM `mp-asset`.t_code_base tc
+            WHERE tc.product_id = %s
+              AND tc.is_delete = 0
+              AND tc.status = 10 LIMIT 20;
+              """ % productid
+        return self.operate_db(sql=sql)
+
+    def query_code_base_all_rfidcode(self, productid=3):
+        """
+        查询铭牌编码rfidcode
+        :return:
+        """
+        sql = """
+            SELECT tc.code AS rfidCode
+            FROM `mp-asset`.t_code_base_rfid tc
+            WHERE tc.product_id = %s
+              AND tc.is_delete = 0
+              AND tc.status = 10 LIMIT 20;
+              """ % productid
+        return self.operate_db(sql=sql)
