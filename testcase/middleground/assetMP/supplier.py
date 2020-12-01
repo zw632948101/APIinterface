@@ -60,7 +60,7 @@ class supplier(unittest.TestCase):
         :return:
         """
         code = 'MS-%s' % random.randint(1, 9999)
-        name = '苗叔'
+        name = '苗叔3'
         supplierTypeId = 6
         adderss = '四川省成都市高新区软件园A区'
         contacts = self.faker.name()

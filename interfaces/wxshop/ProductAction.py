@@ -35,6 +35,14 @@ class ProductAction(object):
         response = self.request.post(url=self.url+'/web/category/list-by-level', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
+    def _web_index_home_page(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/web/index/home-page', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
     def _web_sku_detail_group_cate(self, code_=None):
         if self.user is None:
             data = {'code': code_, }
@@ -49,4 +57,20 @@ class ProductAction(object):
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'cate': cate_}
         response = self.request.post(url=self.url+'/web/sku/list-group-by-cate', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _web_sku_recommend_list(self, pn_=None, ps_=None, name_=None):
+        if self.user is None:
+            data = {'pn': pn_, 'ps': ps_, 'name': name_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'name': name_}
+        response = self.request.post(url=self.url+'/web/sku/recommend-list', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _web_sku_search_list(self, pn_=None, ps_=None, name_=None):
+        if self.user is None:
+            data = {'pn': pn_, 'ps': ps_, 'name': name_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'name': name_}
+        response = self.request.post(url=self.url+'/web/sku/search-list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))

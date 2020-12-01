@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 # @Time:2020/11/12 09:36
 # @Author: wei.zhang
-# @File : apply.py
+# @File : mobileApply.py
 # @Software: PyCharm
 
 import json
@@ -32,17 +32,17 @@ class apply(unittest.TestCase):
         资产申请 - 新增申请单
         :return:
         """
-        consigneeId_ = self.api.user.user_id
-        consigneeType_ = 0
-        productId_ = 2
-        total_ = 10
+        consigneeId_ = 9
+        consigneeType_ = 1
+        productId_ = 3
+        total_ = 20
         reason_ = self.faker.text(10)
-        province_ = 510000
-        city_ = 510100
-        county_ = 510107
-        address_ = '成都市武侯区天府大道南段天府软件园E区'
-        lng_ = '104.06845004146564'
-        lat_ = '30.537992903651553'
+        province_ = 230000
+        city_ = 230100
+        county_ = 230102
+        address_ = '哈尔滨市南极街116号'
+        lng_ = '126.548078'
+        lat_ = '45.816896'
         resp = self.api._mobile_apply_add(consigneeId_=consigneeId_, consigneeType_=consigneeType_,
                                           productId_=productId_, total_=total_, reason_=reason_,
                                           province_=province_, city_=city_, county_=county_,
