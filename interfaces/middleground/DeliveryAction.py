@@ -43,66 +43,50 @@ class deliveryAction(object):
         response = self.request.post(url=self.url+'/admin/delivery/list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_deliveryStatus_get(self):
+    def _api_common_create_accessToken(self, code_=None):
         if self.user is None:
-            data = {}
+            data = {'code': code_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
-        response = self.request.post(url=self.url+'/admin/deliveryStatus/get', data=data, hosts=self.url)
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_}
+        response = self.request.post(url=self.url+'/api/common/create-accessToken', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_orderInfo_get(self):
+    def _api_delivery_notify_receive(self, message_id_=None, token_=None, format_=None, request_body_=None, timestamp_=None):
         if self.user is None:
-            data = {}
+            data = {'message_id': message_id_, 'token': token_, 'format': format_, 'request_body': request_body_, 'timestamp': timestamp_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
-        response = self.request.post(url=self.url+'/admin/orderInfo/get', data=data, hosts=self.url)
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'message_id': message_id_, 'token': token_, 'format': format_, 'request_body': request_body_, 'timestamp': timestamp_}
+        response = self.request.post(url=self.url+'/api/delivery-notify/receive', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_delivery_get(self):
+    def _api_delivery_create(self, input_=None):
         if self.user is None:
-            data = {}
+            data = {'input': input_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
-        response = self.request.post(url=self.url+'/mobile/delivery/get', data=data, hosts=self.url)
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+        response = self.request.post(url=self.url+'/api/delivery/create', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_deliveryStatus_get(self):
+    def _api_delivery_get_deliveryInfo(self, input_=None):
         if self.user is None:
-            data = {}
+            data = {'input': input_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
-        response = self.request.post(url=self.url+'/mobile/deliveryStatus/get', data=data, hosts=self.url)
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+        response = self.request.post(url=self.url+'/api/delivery/get-deliveryInfo', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_orderInfo_get(self):
+    def _api_delivery_order_intercept(self, input_=None):
         if self.user is None:
-            data = {}
+            data = {'input': input_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
-        response = self.request.post(url=self.url+'/mobile/orderInfo/get', data=data, hosts=self.url)
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+        response = self.request.post(url=self.url+'/api/delivery/order-intercept', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _web_delivery_get(self):
+    def _api_delivery_trace_list(self, input_=None):
         if self.user is None:
-            data = {}
+            data = {'input': input_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
-        response = self.request.post(url=self.url+'/web/delivery/get', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _web_deliveryStatus_get(self):
-        if self.user is None:
-            data = {}
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
-        response = self.request.post(url=self.url+'/web/deliveryStatus/get', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _web_orderInfo_get(self):
-        if self.user is None:
-            data = {}
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
-        response = self.request.post(url=self.url+'/web/orderInfo/get', data=data, hosts=self.url)
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+        response = self.request.post(url=self.url+'/api/delivery/trace-list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))

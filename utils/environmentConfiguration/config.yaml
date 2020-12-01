@@ -1,10 +1,10 @@
-which_project: &which_project wxshop
+which_project: &which_project middleground
 env: &env
-  run: DEV
+  run: QA
   updateActionAPI: DEV_API
   version: 2.3.1
   RUN_LEVEL: 3
-  dataBaseURI: 5595ec6c66c0374940fb2d6919a487f9b500f8602951206c6f9b85cab245bd1e90a2c42c9b0fb3883c44aadb5235b9dc94d8411f761298d477315e878eb9a87f
+  dataBaseURI: 5595ec6c66c0374940fb2d6919a487f9162ddc9bcbd00523b504b2f25d55dc30ad413b43d196ffa16fc59cc4d2f2a9d04993d429fa428436f36c2d79d4d0478d
   projectName: *which_project
 
 flowerChaser:
@@ -95,30 +95,35 @@ middleground:
     QA:
       host_ip: 38decc2956f8bcf5731227852dd4d5bd
   urldict:
-    MP_PASSPORT: "Passport"
+    FC_PASSPORT: "Passport"
     MP_PRODUCT: "Product"
     MP_DELIVERY: "delivery"
+    MP_ASSET: "asset"
   accounttype: 'user'
   hosts:
     DEV:
       MP_PRODUCT: 'http://dev-gateway.worldfarm.com/mp-product'
       FC_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
       MP_DELIVERY: 'http://dev-gateway.worldfarm.com/mp-delivery'
+      MP_ASSET: 'http://dev-gateway.worldfarm.com/mp-asset'
 
     DEV_API:
       MP_PRODUCT: 'http://dev-gateway.worldfarm.com/mp-product'
-      MP_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
+      FC_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
       MP_DELIVERY: 'http://dev-gateway.worldfarm.com/mp-delivery'
+      MP_ASSET: 'http://dev-gateway.worldfarm.com/mp-asset'
 
     QA:
-      MP_PRODUCT: 'http://qa-gateway.worldfarm.com/fc-bee'
+      MP_PRODUCT: 'http://qa-gateway.worldfarm.com/mp-product'
       FC_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
       MP_DELIVERY: 'http://qa-gateway.worldfarm.com/mp-delivery'
+      MP_ASSET: 'http://qa-gateway.worldfarm.com/mp-asset'
 
     QA_API:
-      MP_PRODUCT: 'http://qa-gateway.worldfarm.com/fc-bee'
+      MP_PRODUCT: 'http://qa-gateway.worldfarm.com/mp-product'
       FC_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
       MP_DELIVERY: 'http://qa-gateway.worldfarm.com/mp-delivery'
+      MP_ASSET: 'http://qa-gateway.worldfarm.com/mp-asset'
 
 wxshop:
   <<: *env

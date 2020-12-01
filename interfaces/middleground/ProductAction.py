@@ -291,12 +291,20 @@ class ProductAction(object):
         response = self.request.post(url=self.url+'/admin/release-opt/on-off-shelve', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_release_opt_page_opt_list(self, pn_=None, ps_=None, channelId_=None, labelId_=None, labelName_=None, skuName_=None):
+    def _admin_release_opt_page_opt_list(self, pn_=None, ps_=None, channelId_=None, labelId_=None, labelName_=None, skuName_=None, skuCode_=None):
         if self.user is None:
-            data = {'pn': pn_, 'ps': ps_, 'channelId': channelId_, 'labelId': labelId_, 'labelName': labelName_, 'skuName': skuName_, }
+            data = {'pn': pn_, 'ps': ps_, 'channelId': channelId_, 'labelId': labelId_, 'labelName': labelName_, 'skuName': skuName_, 'skuCode': skuCode_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'channelId': channelId_, 'labelId': labelId_, 'labelName': labelName_, 'skuName': skuName_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'channelId': channelId_, 'labelId': labelId_, 'labelName': labelName_, 'skuName': skuName_, 'skuCode': skuCode_}
         response = self.request.post(url=self.url+'/admin/release-opt/page-opt-list', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_release_opt_qty_update(self, releaseId_=None):
+        if self.user is None:
+            data = {'releaseId': releaseId_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'releaseId': releaseId_}
+        response = self.request.post(url=self.url+'/admin/release-opt/qty-update', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _admin_release_opt_release(self, releaseId_=None):
@@ -307,11 +315,11 @@ class ProductAction(object):
         response = self.request.post(url=self.url+'/admin/release-opt/release', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_release_add(self, channel_=None, skuCode_=None, name_=None, alias_=None, minimumPrice_=None, marketPrice_=None, labelId_=None, medias_=None, mediaDetails_=None):
+    def _admin_release_add(self, channel_=None, skuCode_=None, name_=None, alias_=None, minimumPrice_=None, marketPrice_=None, labelId_=None, mediaIcon_=None, medias_=None, mediaDetails_=None):
         if self.user is None:
-            data = {'channel': channel_, 'skuCode': skuCode_, 'name': name_, 'alias': alias_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'labelId': labelId_, 'medias': medias_, 'mediaDetails': mediaDetails_, }
+            data = {'channel': channel_, 'skuCode': skuCode_, 'name': name_, 'alias': alias_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'labelId': labelId_, 'mediaIcon': mediaIcon_, 'medias': medias_, 'mediaDetails': mediaDetails_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'channel': channel_, 'skuCode': skuCode_, 'name': name_, 'alias': alias_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'labelId': labelId_, 'medias': medias_, 'mediaDetails': mediaDetails_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'channel': channel_, 'skuCode': skuCode_, 'name': name_, 'alias': alias_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'labelId': labelId_, 'mediaIcon': mediaIcon_, 'medias': medias_, 'mediaDetails': mediaDetails_}
         response = self.request.post(url=self.url+'/admin/release/add', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -323,21 +331,21 @@ class ProductAction(object):
         response = self.request.post(url=self.url+'/admin/release/detail', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_release_page_list(self, pn_=None, ps_=None, skuCode_=None, name_=None, filterType_=None):
+    def _admin_release_page_list(self, pn_=None, ps_=None, skuCode_=None, name_=None, filterType_=None, channel_=None):
         if self.user is None:
-            data = {'pn': pn_, 'ps': ps_, 'skuCode': skuCode_, 'name': name_, 'filterType': filterType_, }
+            data = {'pn': pn_, 'ps': ps_, 'skuCode': skuCode_, 'name': name_, 'filterType': filterType_, 'channel': channel_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'skuCode': skuCode_, 'name': name_, 'filterType': filterType_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'skuCode': skuCode_, 'name': name_, 'filterType': filterType_, 'channel': channel_}
         response = self.request.post(url=self.url+'/admin/release/page-list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    # def _admin_release_update(self, medias[0]_url_=None, medias[0]_type_=None, medias[0]_isMobile_=None, mediaDetails[0]_url_=None, mediaDetails[0]_type_=None, mediaDetails[0]_isMobile_=None, releaseId_=None, channel_=None, skuCode_=None, name_=None, alias_=None, minimumPrice_=None, marketPrice_=None, lableId_=None):
-    #     if self.user is None:
-    #         data = {'medias[0]_url': medias[0]_url_, 'medias[0]_type': medias[0]_type_, 'medias[0]_isMobile': medias[0]_isMobile_, 'mediaDetails[0]_url': mediaDetails[0]_url_, 'mediaDetails[0]_type': mediaDetails[0]_type_, 'mediaDetails[0]_isMobile': mediaDetails[0]_isMobile_, 'releaseId': releaseId_, 'channel': channel_, 'skuCode': skuCode_, 'name': name_, 'alias': alias_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'lableId': lableId_, }
-    #     else:
-    #         data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'medias[0]_url': medias[0]_url_, 'medias[0]_type': medias[0]_type_, 'medias[0]_isMobile': medias[0]_isMobile_, 'mediaDetails[0]_url': mediaDetails[0]_url_, 'mediaDetails[0]_type': mediaDetails[0]_type_, 'mediaDetails[0]_isMobile': mediaDetails[0]_isMobile_, 'releaseId': releaseId_, 'channel': channel_, 'skuCode': skuCode_, 'name': name_, 'alias': alias_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'lableId': lableId_}
-    #     response = self.request.post(url=self.url+'/admin/release/update', data=data, hosts=self.url)
-    #     return self.__judge_response_status(json.loads(response))
+    def _admin_release_update(self, releaseId_=None, channel_=None, skuCode_=None, name_=None, alias_=None, minimumPrice_=None, marketPrice_=None, labelId_=None, mediaIcon_=None, medias_=None, mediaDetails_=None):
+        if self.user is None:
+            data = {'releaseId': releaseId_, 'channel': channel_, 'skuCode': skuCode_, 'name': name_, 'alias': alias_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'labelId': labelId_, 'mediaIcon': mediaIcon_, 'medias': medias_, 'mediaDetails': mediaDetails_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'releaseId': releaseId_, 'channel': channel_, 'skuCode': skuCode_, 'name': name_, 'alias': alias_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'labelId': labelId_, 'mediaIcon': mediaIcon_, 'medias': medias_, 'mediaDetails': mediaDetails_}
+        response = self.request.post(url=self.url+'/admin/release/update', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
 
     def _admin_section_add(self, prefix_=None, bizId_=None, num_=None):
         if self.user is None:
@@ -361,6 +369,14 @@ class ProductAction(object):
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_}
         response = self.request.post(url=self.url+'/admin/section/page-list', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_section_prefix_list(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/admin/section/prefix-list', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _admin_shop_add(self, name_=None, remark_=None):
@@ -403,12 +419,20 @@ class ProductAction(object):
         response = self.request.post(url=self.url+'/admin/shop/list-all', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_sku_add(self, name_=None, alias_=None, class1_=None, class2_=None, class3_=None, brandId_=None, basicCost_=None, minimumPrice_=None, marketPrice_=None, validity_=None, validityUnit_=None, netWeight_=None, grossWeight_=None, weightUnit_=None, baseUnit_=None, isSale_=None, airTransport_=None, basicAttr_=None, saleAttr_=None):
+    def _admin_sku_add(self, name_=None, alias_=None, class1_=None, class2_=None, class3_=None, brandId_=None, basicCost_=None, minimumPrice_=None, marketPrice_=None, validity_=None, validityUnit_=None, netWeight_=None, grossWeight_=None, baseUnit_=None, isSale_=None, airTransport_=None, basicAttr_=None, saleAttr_=None, length_=None, width_=None, height_=None, volume_=None, barCode_=None):
         if self.user is None:
-            data = {'name': name_, 'alias': alias_, 'class1': class1_, 'class2': class2_, 'class3': class3_, 'brandId': brandId_, 'basicCost': basicCost_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'validity': validity_, 'validityUnit': validityUnit_, 'netWeight': netWeight_, 'grossWeight': grossWeight_, 'weightUnit': weightUnit_, 'baseUnit': baseUnit_, 'isSale': isSale_, 'airTransport': airTransport_, 'basicAttr': basicAttr_, 'saleAttr': saleAttr_, }
+            data = {'name': name_, 'alias': alias_, 'class1': class1_, 'class2': class2_, 'class3': class3_, 'brandId': brandId_, 'basicCost': basicCost_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'validity': validity_, 'validityUnit': validityUnit_, 'netWeight': netWeight_, 'grossWeight': grossWeight_, 'baseUnit': baseUnit_, 'isSale': isSale_, 'airTransport': airTransport_, 'basicAttr': basicAttr_, 'saleAttr': saleAttr_, 'length': length_, 'width': width_, 'height': height_, 'volume': volume_, 'barCode': barCode_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'name': name_, 'alias': alias_, 'class1': class1_, 'class2': class2_, 'class3': class3_, 'brandId': brandId_, 'basicCost': basicCost_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'validity': validity_, 'validityUnit': validityUnit_, 'netWeight': netWeight_, 'grossWeight': grossWeight_, 'weightUnit': weightUnit_, 'baseUnit': baseUnit_, 'isSale': isSale_, 'airTransport': airTransport_, 'basicAttr': basicAttr_, 'saleAttr': saleAttr_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'name': name_, 'alias': alias_, 'class1': class1_, 'class2': class2_, 'class3': class3_, 'brandId': brandId_, 'basicCost': basicCost_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'validity': validity_, 'validityUnit': validityUnit_, 'netWeight': netWeight_, 'grossWeight': grossWeight_, 'baseUnit': baseUnit_, 'isSale': isSale_, 'airTransport': airTransport_, 'basicAttr': basicAttr_, 'saleAttr': saleAttr_, 'length': length_, 'width': width_, 'height': height_, 'volume': volume_, 'barCode': barCode_}
         response = self.request.post(url=self.url+'/admin/sku/add', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_sku_change_status(self, code_=None, status_=None):
+        if self.user is None:
+            data = {'code': code_, 'status': status_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_, 'status': status_}
+        response = self.request.post(url=self.url+'/admin/sku/change-status', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _admin_sku_detail(self, skuCode_=None):
@@ -419,11 +443,11 @@ class ProductAction(object):
         response = self.request.post(url=self.url+'/admin/sku/detail', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_sku_edit(self, code_=None, name_=None, alias_=None, brandId_=None, basicCost_=None, minimumPrice_=None, marketPrice_=None, validity_=None, validityUnit_=None, netWeight_=None, grossWeight_=None, weightUnit_=None, baseUnit_=None, basicAttr_=None, saleAttr_=None):
+    def _admin_sku_edit(self, code_=None, name_=None, alias_=None, brandId_=None, basicCost_=None, minimumPrice_=None, marketPrice_=None, validity_=None, validityUnit_=None, netWeight_=None, grossWeight_=None, baseUnit_=None, isSale_=None, airTransport_=None, basicAttr_=None, saleAttr_=None, length_=None, width_=None, height_=None, volume_=None, barCode_=None):
         if self.user is None:
-            data = {'code': code_, 'name': name_, 'alias': alias_, 'brandId': brandId_, 'basicCost': basicCost_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'validity': validity_, 'validityUnit': validityUnit_, 'netWeight': netWeight_, 'grossWeight': grossWeight_, 'weightUnit': weightUnit_, 'baseUnit': baseUnit_, 'basicAttr': basicAttr_, 'saleAttr': saleAttr_, }
+            data = {'code': code_, 'name': name_, 'alias': alias_, 'brandId': brandId_, 'basicCost': basicCost_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'validity': validity_, 'validityUnit': validityUnit_, 'netWeight': netWeight_, 'grossWeight': grossWeight_, 'baseUnit': baseUnit_, 'isSale': isSale_, 'airTransport': airTransport_, 'basicAttr': basicAttr_, 'saleAttr': saleAttr_, 'length': length_, 'width': width_, 'height': height_, 'volume': volume_, 'barCode': barCode_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_, 'name': name_, 'alias': alias_, 'brandId': brandId_, 'basicCost': basicCost_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'validity': validity_, 'validityUnit': validityUnit_, 'netWeight': netWeight_, 'grossWeight': grossWeight_, 'weightUnit': weightUnit_, 'baseUnit': baseUnit_, 'basicAttr': basicAttr_, 'saleAttr': saleAttr_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_, 'name': name_, 'alias': alias_, 'brandId': brandId_, 'basicCost': basicCost_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'validity': validity_, 'validityUnit': validityUnit_, 'netWeight': netWeight_, 'grossWeight': grossWeight_, 'baseUnit': baseUnit_, 'isSale': isSale_, 'airTransport': airTransport_, 'basicAttr': basicAttr_, 'saleAttr': saleAttr_, 'length': length_, 'width': width_, 'height': height_, 'volume': volume_, 'barCode': barCode_}
         response = self.request.post(url=self.url+'/admin/sku/edit', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -433,4 +457,12 @@ class ProductAction(object):
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'skuCode': skuCode_, 'name': name_}
         response = self.request.post(url=self.url+'/admin/sku/page-list', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _attach_pic_upload(self, file_=None, type_=None):
+        if self.user is None:
+            data = {'file': file_, 'type': type_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'file': file_, 'type': type_}
+        response = self.request.post(url=self.url+'/attach/pic-upload', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))

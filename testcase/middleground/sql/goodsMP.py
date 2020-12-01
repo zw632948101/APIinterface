@@ -17,6 +17,15 @@ class mp_label(DataBaseOperate):
         super(mp_label, self).__init__()
         self.operate_db = lambda sql: self.operate(host=host_ip, sql=sql)
 
+
+    def query_mp_product_category(self):
+        """
+        查询类目
+        """
+        sql = "select * from `mp-product`.`t_product_category` where id != '' order by id desc limit 1;"
+
+        return self.operate_db(sql=sql)
+
     def query_mp_label_info(self, label_name, label_type):
         """
         查询商品标签

@@ -29,10 +29,10 @@ class DataBaseOperate(object):
         password = connection_config.get(host).get('password')
         port = connection_config.get(host).get('port')
 
-        db = pymysql.connect(host='192.168.62.241',
+        db = pymysql.connect(host=host,
                              port=port,
-                             user='farm',
-                             passwd='HEFAWW')
+                             user=user,
+                             passwd=password)
         con = db.cursor(cursor=pymysql.cursors.DictCursor)
         try:
             # 此处新增 单次连接执行多条SQL的功能, 兼容书写时首尾多输入空格的情况

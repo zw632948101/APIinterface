@@ -49,18 +49,23 @@ class Request(object):
             headers = self.headers.copy()
         if url.find('mgr.agrrobot.com') > 0:
             headers['Authentication-Token'] = data.get('_tk_')
-        response = client.post(url=url, data=data, headers=headers, cookies=None).content
+        response = client.post(url=url, data=data, headers=headers, cookies=None)
+        content = response.content
         log.info('headers: %s' % headers)
-        log.debug('\n\trequest: %s\n\tdata: %s\n\tresponse: %s' % (url, data, response.decode("utf-8")))
+        Content_Type = response.headers.get('Content-Type')
+        log.info(Content_Type)
+        if not Content_Type.find('excel'):
+            content = content.decode("utf-8")
+        log.debug('\n\trequest: %s\n\tdata: %s\n\tresponse: %s' % (url, data, content))
         try:
-            response_json = json.loads(response)
+            response_json = json.loads(content)
             log.debug("\n" + json.dumps(response_json, ensure_ascii=False,
                                         sort_keys=True, indent=2, separators=(',', ': ')))
         except ValueError:
-            log.debug(response)
+            log.debug(content)
         # rea().reload_data(host_name=hosts, url=url)
         client.close()
-        return response.decode("utf-8")
+        return content
 
     def get(self, url, hosts=None, params=None):
         client = requests.session()
@@ -100,3 +105,6 @@ class Request(object):
             log.debug(response)
         # rea().reload_data(host_name=hosts, url=url)
         return response.decode("utf-8")
+
+
+

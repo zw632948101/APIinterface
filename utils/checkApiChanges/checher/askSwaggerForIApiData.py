@@ -9,6 +9,15 @@ from utils.log import log
 import json
 import copy
 
+
+class InternalServerError(Exception):
+    def __init__(self, msg):
+        self.msg = msg
+
+    def __str__(self):
+        print('请求服务器异常：%s' % self.msg)
+
+
 class AskSwaggerForApiData(object):
     tmp_last_operate_str = None
 
@@ -18,6 +27,9 @@ class AskSwaggerForApiData(object):
     def swagger_result(self, host):
         host = host + '/v2/api-docs'
         self.__tmp_swagger_response = self.__get_swagger_response(host)
+        if self.__tmp_swagger_response.get('errorCode') == 500:
+            log.info('请求服务器失败')
+            raise InternalServerError(host)
         return self.__swagger_response_processing()
 
     def __get_swagger_response(self, swagger_url: str) -> dict:
