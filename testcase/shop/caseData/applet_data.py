@@ -50,8 +50,32 @@ class submit_order:
                                        "deliveryType":1,
                                        "productPrice":100,
                                        "buyerMemo":"尽快送达!"},
-                               "expect":"OK"}
-                     ]
+                               "expect":"OK"}]
+    web_mobile_evaluate_order_add = [{"title":"",
+                                      "data":{"orderNo":"", # 取数据库中，order_status = 50的订单
+                                              "comment":"",
+                                              "totalscore":"",
+                                              "serviceScore":"",
+                                              "logisticsScore":"",
+                                              "productScore":""},
+                                      "expect":""},
+                                     {"title":"",
+                                      "data":{"orderNo":"",
+                                              "comment":"",
+                                              "totalscore":"",
+                                              "serviceScore":"",
+                                              "logisticsScore":"",
+                                              "productScore":""},
+                                      "expect":""},
+                                     {"title":"",
+                                      "data":{"orderNo":"",
+                                              "comment":"",
+                                              "totalscore":"",
+                                              "serviceScore":"",
+                                              "logisticsScore":"",
+                                              "productScore":""},
+                                      "expect":""}]
+
 
 
 

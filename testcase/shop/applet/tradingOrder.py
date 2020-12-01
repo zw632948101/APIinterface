@@ -32,6 +32,7 @@ class trading_order(unittest.TestCase):
     def setUpClass(cls):
         # 数据库订单数-->接口请求前查出的
         cls.order_expect = len(mp_label().git_web_order())
+
     def setUp(self):
         """
         测试前数据准备
@@ -103,8 +104,13 @@ class trading_order(unittest.TestCase):
         resp = self.api._web_order_close(pn_=pn_,ps_=ps_,orderNo_=orderNo_,reason_=reason_)
         self.assertEqual(case['expect'],resp.get('status'))
         # 如果取消成功，订单状态为"已取消"
+        order_status = None
+        for i in mp_label().git_web_order_close(orderNo_):
+            order_status = i['order_status']
         if resp.get('status') == 'OK':
-            pass
+            self.assertEqual(100,order_status) # 取消订单成功，订单装order_status状态应为100
+        else:
+            self.assertEqual(10,order_status)  # 取消订单失败，订单装order_status状态应为10
 
 if __name__ == '__main__':
     unittest.main()
