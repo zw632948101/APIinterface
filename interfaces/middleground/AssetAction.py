@@ -91,19 +91,19 @@ class assetAction(object):
         response = self.request.post(url=self.url+'/admin/asset/init', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_asset_page(self, pn_=None, ps_=None, code_=None, supplierIds_=None, statuses_=None):
+    def _admin_asset_page(self, pn_=None, ps_=None, productId_=None, code_=None, supplierIds_=None, statuses_=None):
         if self.user is None:
-            data = {'pn': pn_, 'ps': ps_, 'code': code_, 'supplierIds': supplierIds_, 'statuses': statuses_, }
+            data = {'pn': pn_, 'ps': ps_, 'productId': productId_, 'code': code_, 'supplierIds': supplierIds_, 'statuses': statuses_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'code': code_, 'supplierIds': supplierIds_, 'statuses': statuses_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'productId': productId_, 'code': code_, 'supplierIds': supplierIds_, 'statuses': statuses_}
         response = self.request.post(url=self.url+'/admin/asset/page', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_asset_page_statics(self, pn_=None, ps_=None, code_=None, supplierIds_=None, statuses_=None):
+    def _admin_asset_page_statics(self, pn_=None, ps_=None, productId_=None, code_=None, supplierIds_=None, statuses_=None):
         if self.user is None:
-            data = {'pn': pn_, 'ps': ps_, 'code': code_, 'supplierIds': supplierIds_, 'statuses': statuses_, }
+            data = {'pn': pn_, 'ps': ps_, 'productId': productId_, 'code': code_, 'supplierIds': supplierIds_, 'statuses': statuses_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'code': code_, 'supplierIds': supplierIds_, 'statuses': statuses_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'productId': productId_, 'code': code_, 'supplierIds': supplierIds_, 'statuses': statuses_}
         response = self.request.post(url=self.url+'/admin/asset/page-statics', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -169,6 +169,14 @@ class assetAction(object):
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'code': code_, 'status': status_, 'dictId': dictId_}
         response = self.request.post(url=self.url+'/admin/code-goods/page', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_excel_export_asset_statistics(self, productId_=None):
+        if self.user is None:
+            data = {'productId': productId_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'productId': productId_}
+        response = self.request.get(url=self.url+'/admin/excel-export/asset-statistics', params=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _admin_excel_export_code(self, batchId_=None):
@@ -291,11 +299,11 @@ class assetAction(object):
         response = self.request.post(url=self.url+'/admin/rfid/page', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_supplier_add(self, code_=None, name_=None, supplierTypeId_=None, address_=None, contacts_=None, phone_=None, business_=None):
+    def _admin_supplier_add(self, code_=None, name_=None, supplierTypeId_=None, lng_=None, lat_=None, province_=None, city_=None, county_=None, address_=None, contacts_=None, phone_=None, business_=None):
         if self.user is None:
-            data = {'code': code_, 'name': name_, 'supplierTypeId': supplierTypeId_, 'address': address_, 'contacts': contacts_, 'phone': phone_, 'business': business_, }
+            data = {'code': code_, 'name': name_, 'supplierTypeId': supplierTypeId_, 'lng': lng_, 'lat': lat_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'contacts': contacts_, 'phone': phone_, 'business': business_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_, 'name': name_, 'supplierTypeId': supplierTypeId_, 'address': address_, 'contacts': contacts_, 'phone': phone_, 'business': business_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_, 'name': name_, 'supplierTypeId': supplierTypeId_, 'lng': lng_, 'lat': lat_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'contacts': contacts_, 'phone': phone_, 'business': business_}
         response = self.request.post(url=self.url+'/admin/supplier/add', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -307,11 +315,11 @@ class assetAction(object):
         response = self.request.post(url=self.url+'/admin/supplier/detail', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_supplier_edit(self, id_=None, name_=None, address_=None, phone_=None):
+    def _admin_supplier_edit(self, id_=None, name_=None, lng_=None, lat_=None, province_=None, city_=None, county_=None, address_=None, phone_=None):
         if self.user is None:
-            data = {'id': id_, 'name': name_, 'address': address_, 'phone': phone_, }
+            data = {'id': id_, 'name': name_, 'lng': lng_, 'lat': lat_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'phone': phone_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'id': id_, 'name': name_, 'address': address_, 'phone': phone_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'id': id_, 'name': name_, 'lng': lng_, 'lat': lat_, 'province': province_, 'city': city_, 'county': county_, 'address': address_, 'phone': phone_}
         response = self.request.post(url=self.url+'/admin/supplier/edit', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
@@ -617,6 +625,22 @@ class assetAction(object):
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
         response = self.request.post(url=self.url+'/mobile/asset/transfer', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _mobile_offline_download_grant(self, batchIds_=None):
+        if self.user is None:
+            data = {'batchIds': batchIds_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'batchIds': batchIds_}
+        response = self.request.post(url=self.url+'/mobile/offline/download-grant', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _mobile_offline_page_grant(self, pn_=None, ps_=None, bookStartTime_=None, bookEndTime_=None, recoveryStartTime_=None, recoveryEndTime_=None, province_=None, city_=None, county_=None, searchKey_=None, notIncludeIds_=None):
+        if self.user is None:
+            data = {'pn': pn_, 'ps': ps_, 'bookStartTime': bookStartTime_, 'bookEndTime': bookEndTime_, 'recoveryStartTime': recoveryStartTime_, 'recoveryEndTime': recoveryEndTime_, 'province': province_, 'city': city_, 'county': county_, 'searchKey': searchKey_, 'notIncludeIds': notIncludeIds_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'bookStartTime': bookStartTime_, 'bookEndTime': bookEndTime_, 'recoveryStartTime': recoveryStartTime_, 'recoveryEndTime': recoveryEndTime_, 'province': province_, 'city': city_, 'county': county_, 'searchKey': searchKey_, 'notIncludeIds': notIncludeIds_}
+        response = self.request.post(url=self.url+'/mobile/offline/page-grant', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _mobile_product_list(self):

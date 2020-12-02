@@ -1,6 +1,6 @@
 which_project: &which_project middleground
 env: &env
-  run: QA
+  run: DEV
   updateActionAPI: DEV_API
   version: 2.3.1
   RUN_LEVEL: 3
@@ -11,7 +11,7 @@ flowerChaser:
   <<: *env
   database:
     DEV:
-      host_ip: 00cd6c8916486ff3b8c4180bbe5902f8
+      host_ip: eca79b6781bc07f5ead511b284f07cd1
     QA:
       host_ip: 38decc2956f8bcf5731227852dd4d5bd
   urldict:
@@ -47,7 +47,7 @@ worldFarm:
   <<: *env
   database:
     DEV:
-      host_ip: 00cd6c8916486ff3b8c4180bbe5902f8
+      host_ip: eca79b6781bc07f5ead511b284f07cd1
     QA:
       host_ip: 0e1570fb7aa32f677daffb5047982dbb
   urldict:
@@ -91,11 +91,10 @@ middleground:
   <<: *env
   database:
     DEV:
-      host_ip: 00cd6c8916486ff3b8c4180bbe5902f8
+      host_ip: eca79b6781bc07f5ead511b284f07cd1
     QA:
       host_ip: 38decc2956f8bcf5731227852dd4d5bd
   urldict:
-    FC_PASSPORT: "Passport"
     MP_PRODUCT: "Product"
     MP_DELIVERY: "delivery"
     MP_ASSET: "asset"
@@ -129,7 +128,7 @@ wxshop:
   <<: *env
   database:
     DEV:
-      host_ip: 00cd6c8916486ff3b8c4180bbe5902f8
+      host_ip: eca79b6781bc07f5ead511b284f07cd1
     QA:
       host_ip: 38decc2956f8bcf5731227852dd4d5bd
   urldict:
