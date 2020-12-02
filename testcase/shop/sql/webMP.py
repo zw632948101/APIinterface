@@ -33,6 +33,13 @@ class mp_label(DataBaseOperate):
     def git_web_order(self):
         sql = "select * from `wx-mall`.`t_order`  where id != '' order by id desc ;"
         return self.operate_db(sql=sql)
+
+
+    def git_web_order_close(self,orderNo):
+
+        sql = "select order_status from `wx-mall`.`t_order` where order_no = {};".format(orderNo)
+        return self.operate_db(sql=sql)
+
 if __name__ == '__main__':
     import random
     t = mp_label().gti_web_cart_add2(True)
