@@ -34,11 +34,13 @@ class FakeLocation(object):
                 province = address_json["regeocode"]["addressComponent"]["province"]
                 if city is not None:
                     try:
-                        if len(city) > 2:
-                            city_id = str(self.config_db.sql_id_by_full_name(city[:2])[0]["id"])
-                        else:
-                            city_id = str(self.config_db.sql_id_by_full_name(city)[0]["id"])
                         province_id = self.config_db.query_province_id_by_province_name(province[:2]).get('id')
+                        if len(city) > 2:
+                            city_id = str(self.config_db.sql_id_by_full_name(city[:2], province_id)[0]["id"])
+                        else:
+                            city_id = str(self.config_db.sql_id_by_full_name(city, province_id)[0]["id"])
+                        print(city_id)
+                        print(district)
                         district_id = self.config_db.query_reason_cityid_by_full_name(city_id, district).get('id')
                         return province_id, city_id, district_id, address, lng, lat
                     except IndexError:
