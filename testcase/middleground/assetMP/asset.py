@@ -32,10 +32,10 @@ class asset(unittest.TestCase):
         初始化资产
         :return:
         """
-        codeinfo = self.db.query_code_base_all_code(productid=3)
-        rfid = self.db.query_code_base_all_rfidcode(productid=3)
+        codeinfo = self.db.query_code_base_all_code(productid=13)
+        rfid = self.db.query_code_base_all_rfidcode(productid=13)
         codes = json.dumps([dict(i, **k) for i, k in zip(codeinfo, rfid)])
         warehouseId = 9
         supplierId = 6
-        resp = self.api._admin_asset_init(codes_=codes, warehouseId_=warehouseId, supplierId_=supplierId)
+        resp = self.api._admin_asset_init(codes_=codes, warehouseId_=warehouseId, supplierId_=supplierId, haveRfid_=True)
         self.assertEqual(resp.get('status'), 'OK')

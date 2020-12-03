@@ -45,9 +45,7 @@ class productSQL(DataBaseOperate):
                unix_timestamp(ta.create_time) * 1000 AS createTime,
                unix_timestamp(ta.edit_time) * 1000 AS editTime,
                ta.id,
-               ta.is_delete   AS isDelete,
-               ''             AS orderField,
-               ''             AS orderFieldType
+               ta.is_delete   AS isDelete
             FROM `mp-asset`.t_attribute_dict ta
             WHERE ta.is_delete = 0
               AND ta.product_id = {pid}
@@ -55,7 +53,7 @@ class productSQL(DataBaseOperate):
               """.format(pid=pid)
         return self.operate_db(sql=sql)
 
-    def query_product_list_page(self, typeid=None, name=None, code=None, pn=None, ps=None):
+    def query_product_list_page(self, typeid=None, name=None, code=None, pn=None, ps=None, productid=None):
         """
         查询资产产品列表
         :param typeid:
@@ -63,11 +61,13 @@ class productSQL(DataBaseOperate):
         :param code:
         :param pn:
         :param ps:
+        :param productid:
         :return:
         """
         typeid = "AND tp.type_id = '%s'" % typeid if typeid is not None else ''
         name = "AND tp.name = '%s'" % name if name is not None else ''
         code = "AND tp.code = '%s'" % code if code is not None else ''
+        productid = "AND tp.code = '%s'" % productid if productid is not None else ''
         if pn is not None and ps is not None:
             p = int(ps)
             ps = int(ps) * int(pn)
@@ -86,14 +86,59 @@ class productSQL(DataBaseOperate):
                    tt.prefix,
                    unix_timestamp(tp.create_time) * 1000                                                                                         AS createTime,
                    (SELECT count(*) FROM `mp-asset`.t_code_base tc WHERE tc.product_id = tp.id AND tc.is_delete = 0)                                     AS baseTotal,
-                   (SELECT count(*) FROM `mp-asset`.t_code_base tc WHERE tc.product_id = tp.id AND tc.is_delete = 0 AND tc.storage_batch_id IS NOT NULL) AS baseUsed,
+                   (SELECT count(*) FROM `mp-asset`.t_code_base tc WHERE tc.product_id = tp.id AND tc.is_delete = 0 AND tc.status = 20) AS baseUsed,
                    (SELECT count(*) FROM `mp-asset`.t_code_base_rfid tc WHERE tc.product_id = tp.id AND tc.is_delete = 0) AS rfidTotal,
-                   (SELECT count(*) FROM `mp-asset`.t_code_base_rfid tc WHERE tc.product_id = tp.id AND tc.is_delete = 0 AND tc.storage_batch_id) AS rfidUsed
+                   (SELECT count(*) FROM `mp-asset`.t_code_base_rfid tc WHERE tc.product_id = tp.id AND tc.is_delete = 0 AND tc.status = 20) AS rfidUsed
             FROM `mp-asset`.t_product tp
                      LEFT JOIN `mp-asset`.t_product_type tt ON tp.type_id = tt.id
             WHERE tp.is_delete = 0
-            {typeid} {name} {code} {limit};
-              """.format(typeid=typeid, name=name, code=code, limit=limit)
+            {typeid} {name} {code} {productid}
+            ORDER BY tp.type_id ASC ,tp.create_time ASC
+            {limit};
+              """.format(typeid=typeid, name=name, code=code, limit=limit, productid=productid)
+        return self.operate_db(sql=sql)
+
+    def query_product_type_id(self):
+        """
+        查询产品类型id
+        :return:
+        """
+        sql = """
+        SELECT id,prefix FROM `mp-asset`.t_product_type WHERE is_delete = 0;
+              """
+        return self.operate_db(sql=sql)
+
+    def query_prodcut_parameter_info(self, code, name, unit, typeid):
+        """
+        根据参数查询资产信息
+        :param code:
+        :param name:
+        :param unit:
+        :param typeid:
+        :return:
+        """
+        sql = """
+            SELECT *
+            FROM `mp-asset`.t_product
+            WHERE code = '%s'
+              AND name = '%s'
+              AND unit = '%s'
+              AND type_id = %s;
+              """ % (code, name, unit, typeid)
+        return self.operate_db(sql=sql)
+
+    def query_admin_product_list(self):
+        """
+        查询资产产品
+        :return:
+        """
+        sql = """
+            SELECT tp.id,
+                   tp.name
+            FROM `mp-asset`.t_product tp
+            WHERE tp.is_delete = 0
+            ORDER BY tp.id DESC;
+              """
         return self.operate_db(sql=sql)
 
 

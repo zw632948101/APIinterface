@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 # @Time:2020/11/12 11:05
 # @Author: wei.zhang
-# @File : mobileWarehouse.py
+# @File : Warehouse.py
 # @Software: PyCharm
 """
 移动端-仓库模块
@@ -38,5 +38,5 @@ class apply(unittest.TestCase):
         codes = json.dumps([dbinfo[0]])
         warehouseId = 4
         supplierId = 2
-        resp = self.api._mobile_warehouse_init(codes_=codes, warehouseId_=warehouseId, supplierId_=supplierId)
+        resp = self.api._amdin_warehouse_init(codes_=codes, warehouseId_=warehouseId, supplierId_=supplierId)
         self.assertEqual(resp.get('status'), 'OK')

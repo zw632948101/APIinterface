@@ -95,7 +95,6 @@ middleground:
     QA:
       host_ip: 38decc2956f8bcf5731227852dd4d5bd
   urldict:
-    FC_PASSPORT: "Passport"
     MP_PRODUCT: "Product"
     MP_DELIVERY: "delivery"
     MP_ASSET: "asset"
