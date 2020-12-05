@@ -209,23 +209,98 @@ class mobileWarehouseSQL(DataBaseOperate):
         super(mobileWarehouseSQL, self).__init__()
         self.operate_db = lambda sql: self.operate(host=host_ip, sql=sql)
 
-    def query_init_warehouse_code(self):
+    def query_admin_type_dict(self, typeid=None):
         """
-        查询未出库的RFID和二维码
+        根据传入参数查询类型
+        :param typeid:
         :return:
         """
         sql = """
-            SELECT tc.code AS qrCode, tf.code AS rfidCode
-            FROM `mp-asset`.t_code_base tc,
-                 `mp-asset`.t_code_base_rfid tf
-            WHERE tc.product_id = 1
-              AND tf.product_id = 1
-              AND tc.status = 10
-              AND tf.status = 10
-              AND tc.is_delete = 0
-              AND tf.is_delete = 0;
-              """
+        SELECT tt.id,tt.name FROM `mp-asset`.t_type_dict tt WHERE tt.type = {typeid};
+              """.format(typeid=typeid)
         return self.operate_db(sql=sql)
+
+    def query_warehouse_detail(self, id_=None, code=None, name=None):
+        """
+        根据传入参数查询仓库详情
+        :param id_:
+        :param code:
+        :param name:
+        :return:
+        """
+        id_ = 'AND tw.id = %s' % id_ if id_ else ''
+        code = "AND tw.code = '%s'" % code if code else ''
+        name = "AND tw.name = '%s'" % name if name else ''
+        sql = """
+            SELECT tw.address,
+                   tw.area,
+                   tw.capacity,
+                   tw.code,
+                   unix_timestamp(tw.create_time) * 1000 AS createTime,
+                   tw.id,
+                   tw.landlord,
+                   tw.landlord_phone                     AS landlordPhone,
+                   tw.lat,
+                   tw.lng,
+                   tw.name,
+                   tw.remark,
+                   tw.rent,
+                   tw.rent_unit                          AS rentUnit,
+                   unix_timestamp(tw.lease_end_time)* 1000 AS leaseEndTime,
+                   unix_timestamp(tw.lease_start_time)* 1000 AS leaseStartTime,
+                   tw.goods_type_ids AS goodsType
+            FROM `mp-asset`.t_warehouse tw
+            WHERE tw.is_delete = 0
+            {code} {name} {id} ;
+              """.format(code=code, id=id_, name=name)
+        return self.operate_db(sql)
+
+    def query_asset_biz_attach(self, bizid):
+        """
+        查询业务附件
+        :param bizid:
+        :return:
+        """
+        sql = """
+                SELECT *
+                FROM `mp-asset`.t_biz_attach tb
+                WHERE tb.is_delete = 0
+                  AND tb.biz_id = %s
+                  AND tb.file_type = 1
+                  AND tb.biz_type = 1
+                  ORDER BY tb.id DESC;
+              """ % bizid
+        return self.operate_db(sql=sql)
+
+    def query_warehouse_user_base(self, warid):
+        """
+        根据仓库查询仓库管理员
+        :param warid:
+        :return:
+        """
+        sql = """
+            SELECT tb.user_id, tb.name
+            FROM `mp-asset`.t_storeman ts
+                     LEFT JOIN `mp-asset`.t_user_base tb ON tb.user_id = ts.user_id
+            WHERE ts.warehouse_id = %s;
+              """ % warid
+        return self.operate_db(sql)
+
+    def query_my_warehouse_info(self, userid):
+        """
+        根据用户id查询当前用户的仓库
+        :param userid:
+        :return:
+        """
+        sql = """
+            SELECT tw.code, tw.id, tw.name
+            FROM `mp-asset`.t_warehouse tw
+                     LEFT JOIN `mp-asset`.t_storeman ts ON tw.id = ts.warehouse_id
+            WHERE tw.is_delete = 0
+              AND ts.is_delete = 0
+              AND ts.user_id = %s;
+              """ % userid
+        return self.operate_db(sql)
 
 
 class assetSQL(DataBaseOperate):

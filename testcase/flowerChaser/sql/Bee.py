@@ -18,13 +18,13 @@ class ConfigInformationSql(object):
             return info[0]
         return
 
-    def sql_id_by_full_name(self, full_name):
+    def sql_id_by_full_name(self, full_name, parent_id):
         """
         根据名称查询对应的城市ID
         :param full_name:
         :return:
         """
-        sql = "SELECT id FROM `fc-bee`.t_region WHERE level = 1 AND full_name LIKE '%%%s%%';" % full_name
+        sql = "SELECT id FROM `fc-bee`.t_region WHERE level = 1 AND full_name LIKE '%%%s%%' AND parent_id = %s;" % (full_name, parent_id)
         return self.db.operate(host_ip, sql)
 
     def query_reason_cityid_by_full_name(self, city_id, full_name):
@@ -88,14 +88,14 @@ class NectarSourceInformationSql(object):
         """
         sql = """
             SELECT
-            bf.user_id as userId ,bf.real_name as userName ,bf.contact_number as contactNumber ,ur.role_code as roleCode
-            ,tc.`value` as roleStr
+            bf.user_id AS userId ,bf.real_name AS userName ,bf.contact_number AS contactNumber ,ur.role_code AS roleCode
+            ,tc.`value` AS roleStr
             FROM
             `fc-bee`.t_bee_friend bf
             INNER JOIN `fc-bee`.t_user_role ur ON ur.user_id = bf.user_id AND ur.is_delete = 0 AND ur.role_code IN (1005,1006,1002,1003,1004)
             INNER JOIN `fc-bee`.t_config tc ON tc.`key` = ur.role_code  AND tc.is_delete = 0 AND  tc.`code` = '10001'
-            where bf.is_delete = 0
-            ORDER BY locate(ur.role_code,'1005,1006,1002,1003,1004') ,CONVERT(bf.user_name USING GBK) asc;
+            WHERE bf.is_delete = 0
+            ORDER BY locate(ur.role_code,'1005,1006,1002,1003,1004') ,CONVERT(bf.user_name USING GBK) ASC;
               """
         return self.db.operate(host_ip, sql)
 
@@ -1434,10 +1434,10 @@ class NectarSourcePlant(DataBaseOperate):
         """
         查询全部蜜源植物信息
         """
-        sql = """SELECT tp.id,tp.plant_name as plantName,tp.code,tp.type,tp.variety,tp.alias,tp.region,tp.area,
-                 tp.flowering_description as floweringDescription,tp.nectar_flow_condition as nectarFlowCondition,
-                 tp.powder_type as powderType,tp.min_honey_yield as minHoneyYield,
-                 tp.max_honey_yield as maxHoneyYield,tp.pic_url,tp.code_icon,tp.map_icon,tp.remark
+        sql = """SELECT tp.id,tp.plant_name AS plantName,tp.code,tp.type,tp.variety,tp.alias,tp.region,tp.area,
+                 tp.flowering_description AS floweringDescription,tp.nectar_flow_condition AS nectarFlowCondition,
+                 tp.powder_type AS powderType,tp.min_honey_yield AS minHoneyYield,
+                 tp.max_honey_yield AS maxHoneyYield,tp.pic_url,tp.code_icon,tp.map_icon,tp.remark
                   FROM `fc-bee`.t_nectar_source_plant tp WHERE tp.is_delete = 0;"""
         return self.operate(host_ip, sql)
 
