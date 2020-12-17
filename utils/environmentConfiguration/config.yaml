@@ -28,24 +28,20 @@ flowerChaser:
   hosts:
     DEV:
       FC_BEE: 'http://dev-gateway.worldfarm.com/fc-bee'
-      FC_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
       FC_USER: 'http://dev-gateway.worldfarm.com/world-user'
 
     DEV_API:
       FC_BEE: 'http://dev-gateway.worldfarm.com/fc-bee'
-      FC_PASSPORT: 'http://dev-passport.worldfarm.com'
       FC_USER: 'http://dev-user.worldfarm.com'
 
     QA:
       FC_BEE: 'http://qa-gateway.worldfarm.com/fc-bee'
-      FC_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
       FC_TRADE: 'http://qa-gateway.worldfarm.com/fc-trade'
       FC_USER: 'http://qa-gateway.worldfarm.com/world-user'
 
     QA_API:
       FC_BEE: 'http://qa-gateway.worldfarm.com/fc-bee'
       FC_TRADE: 'http://qa-gateway.worldfarm.com/fc-trade'
-      FC_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
       FC_USER: 'http://qa-gateway.worldfarm.com/world-user'
 
 worldFarm:
@@ -108,28 +104,24 @@ middleground:
   hosts:
     DEV:
       MP_PRODUCT: 'http://dev-gateway.worldfarm.com/mp-product'
-      FC_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
       MP_DELIVERY: 'http://dev-gateway.worldfarm.com/mp-delivery'
       MP_ASSET: 'http://dev-gateway.worldfarm.com/mp-asset'
       MP_WMS: 'http://dev-gateway.worldfarm.com/mp-wms'
 
     DEV_API:
       MP_PRODUCT: 'http://dev-gateway.worldfarm.com/mp-product'
-      FC_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
       MP_DELIVERY: 'http://dev-gateway.worldfarm.com/mp-delivery'
       MP_ASSET: 'http://dev-gateway.worldfarm.com/mp-asset'
       MP_WMS: 'http://dev-gateway.worldfarm.com/mp-wms'
 
     QA:
       MP_PRODUCT: 'http://qa-gateway.worldfarm.com/mp-product'
-      FC_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
       MP_DELIVERY: 'http://qa-gateway.worldfarm.com/mp-delivery'
       MP_ASSET: 'http://qa-gateway.worldfarm.com/mp-asset'
       MP_WMS: 'http://dev-gateway.worldfarm.com/mp-wms'
 
     QA_API:
       MP_PRODUCT: 'http://qa-gateway.worldfarm.com/mp-product'
-      FC_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
       MP_DELIVERY: 'http://qa-gateway.worldfarm.com/mp-delivery'
       MP_ASSET: 'http://qa-gateway.worldfarm.com/mp-asset'
       MP_WMS: 'http://dev-gateway.worldfarm.com/mp-wms'
