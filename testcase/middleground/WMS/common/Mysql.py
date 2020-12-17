@@ -74,6 +74,6 @@ class mp_label(DataBaseOperate):
 if __name__ == '__main__':
     sql = "SELECT * FROM `t_warehouse_monitor`  where warehouse_id = 1  and is_delete != 1 order by id desc limit 1;"
 
-    warehouse = mp_label().git_warehouse_monitor_is_delete()[0]['id']
+    warehouse = mp_label().git_warehouse_monitor_is_delete()[0]['name']
     # 获取绑定关系的id，需要在解绑的时候传入
     print(warehouse)

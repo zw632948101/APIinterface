@@ -24,9 +24,9 @@ class PersonnelMain(testCase):
         """
         register = self.ka._mobile_message_page_list(pn_=1, ps_=20, parentMsgType_=10, msgType_=1002, farmId_=None)
         self.assertEqual(register['status'], 'OK')
-        if register['content']['datas'] == []:
+        if register['content']['test_case'] == []:
             return
-        return register['content']['datas'][0]['extras']
+        return register['content']['test_case'][0]['extras']
 
     def test_mobile_user_invite_search(self, farmId=678, account='632948101@qq.com'):
         """

@@ -26,7 +26,7 @@ class UserManagement(testCase):
         """
         register = self.ua._admin_user_user_list(pn=0, ps=20, status=1, userName=None, email=None)
         self.assertEqual(register['status'], 'OK')
-        return register['content']['datas'][0]['id']
+        return register['content']['test_case'][0]['id']
 
     def test_admin_user_detail(self):
         """

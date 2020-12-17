@@ -135,7 +135,7 @@ class ContainerMain(unittest.TestCase, tt, FakeLocation, tl):
                     shunt_a['unloadAddressOutput'] = shunt_address
                 shunt_info_list.append(shunt_a)
         content = resp.get('content')
-        datas = content.get('datas')
+        datas = content.get('test_case')
         for i in range(len(datas)):
             self.assertDictEqual(datas[i], shunt_info_list[i])
 

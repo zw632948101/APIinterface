@@ -32,9 +32,35 @@ class warehouse_monitor_raname(unittest.TestCase):
         url = read_config(Public_mkdir).get("test_url","url") + "/admin/warehouse/monitor/rename"
         data = {"id":mp_label().git_warehouse_monitor_is_delete()[0]['id'],"name":case['data']['name']}
 
-        response = Request('post',url=url,data=data,headers=self.headers,cookie=None)
+        response = Request('post',
+                           url=url,
+                           data=data,
+                           headers=self.headers,
+                           cookie=None)
         result = response.get_json()
         self.assertEqual(case['expect'],result['status'])
+
+        if result['status'] == 'OK':
+            # 修复接口成功，数据库中的名字，跟接口传递的名字一致
+            actual = mp_label().git_warehouse_monitor_is_delete()[0]['name']
+            self.assertEqual(data['name'],actual)
+        else:
+
+            actual = mp_label().git_warehouse_monitor_is_delete()[0]['name']
+            self.assertNotEqual(data['name'],actual)
+    @data(*warehouse_data().admin_warehouse_monitor_list)
+    def test_admin_warehouse_monitor_list(self,case):
+        url = read_config(Public_mkdir).get("test_url","url") + "/admin/warehouse/monitor/list"
+        data = case['data']
+        resphonse = Request('post',
+                            url=url,
+                            data=data,
+                            headers=self.headers,
+                            cookie=None)
+        result = resphonse.get_json()
+        self.assertEqual(case['expect'],result['status'])
+        if result['status'] == 'ERROR':
+            print(result['errorMsg'])
 
 if __name__ == '__main__':
     unittest.main()

@@ -147,5 +147,7 @@ class warehouse_data:
                                "data": {"name":"进取参加班级学校组织的各种课内外活动喜欢和同学讨论并解决问题"},
                                "expect":"ERROR"}
                               ]
+    admin_warehouse_monitor_list = [{"title":"获取绑定的列表","url":"/admin/warehouse/monitor/list","data":{"id":"1"},"expect":"OK"},
+                                    {"title":"id传空","url":"/admin/warehouse/monitor/list","data":{"id":None},"expect":"ERROR"}]
 
 

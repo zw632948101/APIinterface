@@ -98,6 +98,7 @@ middleground:
     MP_PRODUCT: "Product"
     MP_DELIVERY: "delivery"
     MP_ASSET: "asset"
+    MP_WMS : "wms_api"
   accounttype: 'user'
   hosts:
     DEV:
@@ -105,24 +106,28 @@ middleground:
       FC_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
       MP_DELIVERY: 'http://dev-gateway.worldfarm.com/mp-delivery'
       MP_ASSET: 'http://dev-gateway.worldfarm.com/mp-asset'
+      MP_WMS: 'http://dev-gateway.worldfarm.com/mp-wms'
 
     DEV_API:
       MP_PRODUCT: 'http://dev-gateway.worldfarm.com/mp-product'
       FC_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
       MP_DELIVERY: 'http://dev-gateway.worldfarm.com/mp-delivery'
       MP_ASSET: 'http://dev-gateway.worldfarm.com/mp-asset'
+      MP_WMS: 'http://dev-gateway.worldfarm.com/mp-wms'
 
     QA:
       MP_PRODUCT: 'http://qa-gateway.worldfarm.com/mp-product'
       FC_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
       MP_DELIVERY: 'http://qa-gateway.worldfarm.com/mp-delivery'
       MP_ASSET: 'http://qa-gateway.worldfarm.com/mp-asset'
+      MP_WMS: 'http://dev-gateway.worldfarm.com/mp-wms'
 
     QA_API:
       MP_PRODUCT: 'http://qa-gateway.worldfarm.com/mp-product'
       FC_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
       MP_DELIVERY: 'http://qa-gateway.worldfarm.com/mp-delivery'
       MP_ASSET: 'http://qa-gateway.worldfarm.com/mp-asset'
+      MP_WMS: 'http://dev-gateway.worldfarm.com/mp-wms'
 
 wxshop:
   <<: *env

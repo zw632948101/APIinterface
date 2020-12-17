@@ -212,15 +212,15 @@ class ContainerMain(unittest.TestCase):
         list_db = self.purchase_db.query_purchase_list(customer_id=user_id, pn=pn, ps=ps)
         if response_data['status'] == "OK":
             for i in range(len(list_db)):
-                self.assertEqual(response_data['content']['datas'][i]['id'], list_db[i]['id'])
-                self.assertEqual(response_data['content']['datas'][i]['contractNo'], list_db[i]['contract_no'])
-                self.assertEqual(response_data['content']['datas'][i]['hiveNum'], list_db[i]['hive_num'])
-                # sign_time = time.localtime(response_data['content']['datas'][i]['signTime'] / 1000)
+                self.assertEqual(response_data['content']['test_case'][i]['id'], list_db[i]['id'])
+                self.assertEqual(response_data['content']['test_case'][i]['contractNo'], list_db[i]['contract_no'])
+                self.assertEqual(response_data['content']['test_case'][i]['hiveNum'], list_db[i]['hive_num'])
+                # sign_time = time.localtime(response_data['content']['test_case'][i]['signTime'] / 1000)
                 # sign_time_stamp = time.strftime("%Y-%m-%d %H:%M:%S", sign_time)
                 # self.assertEqual(sign_time_stamp, list_db[i]['sign_time'])
-                self.assertEqual(response_data['content']['datas'][i]['status'], list_db[i]['status'])
-                self.assertEqual(response_data['content']['datas'][i]['amount'], list_db[i]['amount'])
-                self.assertEqual(response_data['content']['datas'][i]['handsel'], list_db[i]['handsel'])
+                self.assertEqual(response_data['content']['test_case'][i]['status'], list_db[i]['status'])
+                self.assertEqual(response_data['content']['test_case'][i]['amount'], list_db[i]['amount'])
+                self.assertEqual(response_data['content']['test_case'][i]['handsel'], list_db[i]['handsel'])
 
     def test_mobile_purchase_purchase_detail(self):
         """
@@ -295,7 +295,7 @@ class ContainerMain(unittest.TestCase):
             # contract_db_list = self.purchase_db.sql_contract_view_by_friend_id(id)[0]
             # self.assertEqual(response_data['content']['id'], contract_db_list['id'])
             # self.assertEqual(response_data['content']['contractNo'], contract_db_list['contract_no'])
-            # # sign_time = time.localtime(response_data['content']['datas'][ ]['signTime'] / 1000)
+            # # sign_time = time.localtime(response_data['content']['test_case'][ ]['signTime'] / 1000)
             # # sign_time_stamp = time.strftime("%Y-%m-%d %H:%M:%S", sign_time)
             # # self.assertEqual(sign_time_stamp, list_db[ ]['sign_time'])
             # self.assertEqual(response_data['content']['status'], contract_db_list['status'])

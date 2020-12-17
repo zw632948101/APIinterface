@@ -6,13 +6,15 @@ import warnings
 from interfaces.wxshop.MallAction import MallAction
 #from testcase.middleground.sql.brandMP import mp_label as
 from testcase.shop.sql.webMP import mp_label
-
-# from interfaces.middleground.ProductAction import ProductAction
+from testcase.shop.caseData.os_path import evaluate_001,evaluate_002
 from utils import runlevel, timestamp
 from ddt import data, unpack, ddt
 from faker import Faker
 import unittest
 import requests
+
+
+
 class applet_api:
     admin_web_cart_add = [{"title":"正常数量：","data":{"amount":"2"},"expect":"OK"},
                           {"title":"数量为空：","data":{"amount":None},"expect":"ERROR"},
@@ -35,7 +37,10 @@ class applet_api:
 
     admin_web_cart_purchase = [{"title":"加入购物车","data":{"skuNo":"T0101010001","shopId":"1","amount":"13"},"expect":"OK"}]
 
-
+file_list = ["https://thumb22.jfcdns.com/thumb/up/2017-12/15135651876688413_460_380.jpg",
+                 "https://goss.veer.com/creative/vcg/veer/800water/veer-133156216.jpg",
+                 "https://p3.itc.cn/images03/20200521/022e648fea5148a9b93a99eb5d50d32c.jpeg",
+                 "https://pic.9ht.com/up/2017-12/15135801979119688.jpg"]
 class submit_order:
     cartId = ''
     web_order_close = [{"title":"取消订单","data":{"pn":"","ps":"","reason":"不想要了"},"expect":"OK"},
@@ -167,7 +172,9 @@ class submit_order:
                                 "shopId":"1"},
                          "expect":"ERROR"}]
 
-
+    web_attach_upload = [{"title":"上传图片-gif图片","data":{"file":evaluate_001,"type":1},"expect":"OK"},
+                         {"title":"上传图片-jpg图片","data":{"file":evaluate_002,"type":1},"expect":"OK"}
+                        ]
 
 
 #
@@ -194,3 +201,5 @@ class submit_order:
 #     res_ = requests.post(url=url2,headers=headers2)
 #     print(res_.json())
 
+if __name__ == '__main__':
+    a= submit_order().file_list

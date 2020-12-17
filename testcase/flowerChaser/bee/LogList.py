@@ -55,7 +55,7 @@ class LogListMain(unittest.TestCase):
         json_response = self.ba._mobile_work_log_page_list(ps_='100', pn_='1', onlySelf_=False)
         if json_response["status"] == "OK":
             my_log = self.wrs.query_all_log_by_email(self.email)
-            # self.assertEqual([], json_response["content"]["datas"])
+            # self.assertEqual([], json_response["content"]["test_case"])
         else:
             self.assertTrue(False, "非管理员查询全部日志成功")
 
@@ -79,7 +79,7 @@ class LogListMain(unittest.TestCase):
         self.ba.set_user("26632629@qq.com", "123456")
         json_response = self.ba._mobile_work_log_page_list(ps_='', pn_='', onlySelf_=True)
         if json_response["status"] == "OK":
-            json_data = json_response["content"]["datas"]
+            json_data = json_response["content"]["test_case"]
             my_log = self.wrs.query_all_log_by_email(self.email)
             for i in range(len(my_log)):
                 self.assertEqual(json_data[i]["address"], my_log[i]["address"])

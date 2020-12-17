@@ -32,7 +32,7 @@ class Request():
 if __name__ == '__main__':
     data = {"appId": "FLOWER_CHASERS", "mobile": "15198034727", "verifyCode": "8888", "deviceType": "WEB",
             "deviceId": ""}
-    res = Request('post',url="http://dev-gateway.worldfarm.com/world-passport/admin/sso/sms-login",data=data,header=None,cookie=None)
+    res = Request('post',url="http://dev-gateway.worldfarm.com/world-passport/admin/sso/sms-login",data=data,headers=None,cookie=None)
     result = res.get_json()
     print(result)
     header = {"_Device-Id_":result['content']['deviceId'],
@@ -40,7 +40,7 @@ if __name__ == '__main__':
               "region":"online"
               }
     data1 = {"status":1}
-    resp = Request('post',url="http://dev-gateway.worldfarm.com/mp-wms/admin/warehouse/list",data=data1,header=header,cookie=None)
+    resp = Request('post',url="http://dev-gateway.worldfarm.com/mp-wms/admin/warehouse/list",data=data1,headers=header,cookie=None)
     print(header)
     print(resp.get_json())
 

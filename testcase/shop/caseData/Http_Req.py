@@ -47,15 +47,15 @@ import json
 #
 #         test_data = [] # 定义一个空的list装载用例
 #         for i in range(2,max_row+1):
-#             case =Case() # 实例化上面的Case，下面要读取excel中的测试数据，赋值给初始None
-#             case.case_id = sheet.cell(row = i ,column = 1).value # 读取excel中case_id
-#             case.url = sheet.cell(row = i ,column = 2).value # 读取excel中url
-#             case.data = sheet.cell(row = i ,column = 3).value # 读取excel中data
-#             case.header = sheet.cell(row = i ,column = 4).value # 读取excel中header
-#             case.title = sheet.cell(row = i ,column = 5).value # 读取excel中title
-#             case.method = sheet.cell(row = i ,column = 6).value # 读取excel中请求方式
-#             case.expected = sheet.cell(row = i ,column = 7).value # 读取excel中期望结果
-#             test_data.append(case) # 读取出来的测试数据放到list
+#             datas =Case() # 实例化上面的Case，下面要读取excel中的测试数据，赋值给初始None
+#             datas.case_id = sheet.cell(row = i ,column = 1).value # 读取excel中case_id
+#             datas.url = sheet.cell(row = i ,column = 2).value # 读取excel中url
+#             datas.data = sheet.cell(row = i ,column = 3).value # 读取excel中data
+#             datas.header = sheet.cell(row = i ,column = 4).value # 读取excel中header
+#             datas.title = sheet.cell(row = i ,column = 5).value # 读取excel中title
+#             datas.method = sheet.cell(row = i ,column = 6).value # 读取excel中请求方式
+#             datas.expected = sheet.cell(row = i ,column = 7).value # 读取excel中期望结果
+#             test_data.append(datas) # 读取出来的测试数据放到list
 #
 #         return test_data
 

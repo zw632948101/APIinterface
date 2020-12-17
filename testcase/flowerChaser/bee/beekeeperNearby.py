@@ -82,7 +82,7 @@ class BeekeeperNearby(TestCase):
                                                                    distanceType_=search_contents.get("distanceType", None))
         store_content = self.db.sql_mobile_nearby_bee_friend_page_list(search_contents)
         try:
-            if len(store_content) == len(api_content.get('content').get('datas')):
+            if len(store_content) == len(api_content.get('content').get('test_case')):
                 # 删除值为None的数据
                 for item in store_content:
                     for k in list(item.keys()):
@@ -90,7 +90,7 @@ class BeekeeperNearby(TestCase):
                             del item[k]
 
                 # 删除返回数据中不断言的 labelList 和 regularSourceStr
-                for item in api_content.get('content').get('datas'):
+                for item in api_content.get('content').get('test_case'):
                     for k in list(item.keys()):
                         try:
                             del item["regularSourceStr"]
@@ -98,15 +98,15 @@ class BeekeeperNearby(TestCase):
                         except KeyError:
                             pass
 
-                if len(store_content) == 0 and len(api_content.get('content').get('datas')) == 0 :
+                if len(store_content) == 0 and len(api_content.get('content').get('test_case')) == 0 :
                     pass
                 else:
-                    self.assertEqual(api_content.get('content').get('datas'), store_content,
-                                     '返回的顺序或数据不一致，接口返回：%s\n数据库返回:%s' % (api_content.get('content').get('datas'), store_content))
+                    self.assertEqual(api_content.get('content').get('test_case'), store_content,
+                                     '返回的顺序或数据不一致，接口返回：%s\n数据库返回:%s' % (api_content.get('content').get('test_case'), store_content))
             else:
                 self.assertFalse(True, '接口返回与数据库返回数据不一致，接口返回%s,\n数据库返回%s' % (api_content, store_content))
         except TypeError:
-            if len(api_content.get('content').get('datas')) != 0:
+            if len(api_content.get('content').get('test_case')) != 0:
                 self.assertFalse(True, '接口返回与数据库返回数据条数不一致，接口返回%s,\n数据库返回%s' % (api_content, store_content))
 
     def test_mobile_nearby_bee_friend_nearby_list(self):

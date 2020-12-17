@@ -351,9 +351,9 @@ class CommentrMain(unittest.TestCase, ClinteleSql, FakeLocation, DataConversion)
                                                                         cooperationIntentions=cooperationIntentions,
                                                                         searchType=searchType,
                                                                         distanceType=distanceType)
-        if info['content'].get('datas'):
+        if info['content'].get('test_case'):
             customerdata = self.del_dict_value_null(customerdata)
-            customerapidata = info['content'].get('datas')
+            customerapidata = info['content'].get('test_case')
             customerapidata = self.del_dict_value_null(customerapidata)
             self.assertListEqual(customerapidata, customerdata)
             for i in range(len(customerapidata)):
