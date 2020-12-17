@@ -12,11 +12,11 @@ class assetAction(object):
         self.request = Request()
         self.url = config.get('hosts').get(config.get('run')).get('MP_ASSET')
 
-    def set_user(self, mobile=None, account_type='user', password=None):
+    def set_user(self, mobile=None, account_type='user', **kwargs):
         if mobile is None:
             self.user = None
         else:
-            self.user = User(mobile, account_type, password=password)
+            self.user = User(mobile, account_type, **kwargs)
             self.request.headers.update({"_Device-Id_": self.user.device_id})
             self.request.headers.update({"_Token_": self.user.token})
         return self.user

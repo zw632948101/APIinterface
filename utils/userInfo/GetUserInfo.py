@@ -34,11 +34,13 @@ class SessionTool(object):
     def __init__(self):
         pass
 
-    def get_user_session(self, mobile, account_type='user', password=None):
+    def get_user_session(self, mobile, account_type='user', **kwargs):
         """
         追花族-邮箱密码登录
         :param：account 邮箱
+        :param: account_type 密码
         :param: password 密码
+        :param: wxcode 微信临时授权code，可以直接使用数据已绑定的微信openid
         :return:
         """
         data = {"appId": "FLOWER_CHASERS",
@@ -46,27 +48,30 @@ class SessionTool(object):
                 "deviceId": "cc4feebe419791332bbcff5e0fdf084a",
                 "mobile": mobile,
                 "verifyCode": 8888}
+        host = config.get('loginhosts').get(config.get('run')).get('PASSPORT')
         if account_type == 'user':
-            host = config.get('hosts').get(config.get('run')).get('FC_PASSPORT')
-            session = Request().post(url=host+"/mobile/sso/sms-login",
+            session = Request().post(url=host + "/mobile/sso/sms-login",
                                      data=data)
         elif account_type == 'employee':
-            host = config.get('hosts').get(config.get('run')).get('FC_PASSPORT')
-            session = Request().post(url=host+"/admin/sso/email-login",
+            session = Request().post(url=host + "/admin/sso/email-login",
                                      data=data)
         elif account_type == 'wf_account':
-            datas = {'appId': 'WORLD_FARM', 'deviceType': 'IOS', 'deviceId': 'qaTeam', 'account': mobile,
-                     'password': password}
-            host = config.get('hosts').get(config.get('run')).get('WF_PASSPORT')
+            datas = {'appId': 'WORLD_FARM', 'deviceType': 'IOS', 'deviceId': 'qaTeam',
+                     'account': mobile,
+                     'password': kwargs['password']}
             session = Request().post(url=host + "/mobile/sso/email-login", data=datas)
+        elif account_type == 'wxshop':
+            data.update(kwargs)
+            session = Request().post(url=host + "/web/sso/mall-login-wx",
+                                     data=data)
         else:
             raise Exception("account_type非法, 仅支持user/employee")
         return session
 
 
 class UserSession(object):
-    def __init__(self, mobile, account_type='user', password=None):
-        session = SessionTool().get_user_session(mobile, account_type, password=password)
+    def __init__(self, mobile, account_type='user', **kwargs):
+        session = SessionTool().get_user_session(mobile, account_type, **kwargs)
         session_json = json.loads(session)
         self.deviceId = str(session_json["content"]["deviceId"])
         self.encryptedPwd = str(session_json["content"]["encryptedPwd"])
@@ -76,10 +81,10 @@ class UserSession(object):
 class User(object):
     host_ip = config.get('hosts').get(config.get('run'))
 
-    def __init__(self, mobile, account_type='user', password=None):
+    def __init__(self, mobile, account_type='user', **kwargs):
         self.db_user_info = DBUserInfo()
         self.request = Request()
-        us = UserSession(mobile, account_type, password=password)
+        us = UserSession(mobile, account_type, **kwargs)
         self.token = us.token
         self.user_info = self.db_user_info.mgr_query_user_info_by_account(mobile)
         if self.user_info != ():
@@ -98,7 +103,8 @@ class User(object):
         """
         data = {'token': self.token,
                 'deviceId': self.device_id}
-        response = Request().post(url="http://dev-gateway.worldfarm.com/world-passport/api/sso/check-token", data=data)
+        response = Request().post(
+            url="http://dev-gateway.worldfarm.com/world-passport/api/sso/check-token", data=data)
         json_response = json.loads(response)
         if json_response["status"] == "OK":
             pass

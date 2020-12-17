@@ -10,6 +10,7 @@ import unittest
 import inspect
 import json
 
+
 # 小程序商品收藏
 @ddt
 class attach_upload(unittest.TestCase):
@@ -19,28 +20,31 @@ class attach_upload(unittest.TestCase):
                 :return:
                 """
         self.api = MallAction()
-        self.api.set_user(mobile=15388126072)
+        self.api.set_user(mobile=15388126072, account_type='wxshop',
+                          code='ooFMZ55TMVWnQ_NSN2rAPi60cLu0')
         self.db = wx_applet_evaluate()
         self.faker = Faker('zh_CN')
+
     # 加入收藏
     @data(*submit_order().web_favorite_add)
-    def test_web_favorite_add(self,case):
+    def test_web_favorite_add(self, case):
         skuNo_ = case['data']['skuNo']
         shopId_ = case['data']['shopId']
         resp = self.api._web_favorite_add(skuNo_=skuNo_, shopId_=shopId_)
-        self.assertEqual(case['expect'],resp.get('status'))
+        self.assertEqual(case['expect'], resp.get('status'))
 
     # 收藏列表
     def test_web_favorite_list(self):
         resp = self.api._web_favorite_list(pn_=1, ps_=10)
-        self.assertEqual('OK',resp.get('status'))
+        self.assertEqual('OK', resp.get('status'))
+
     # 取消收藏
     @data(*submit_order().web_favorite_add)
-    def test_web_favorite_cancel(self,case):
+    def test_web_favorite_cancel(self, case):
         skuNo_ = case['data']['skuNo']
         shopId_ = case['data']['shopId']
         resp = self.api._web_favorite_cancel(skuNo_=skuNo_, shopId_=shopId_)
-        self.assertEqual(case['expect'],resp.get('status'))
+        self.assertEqual(case['expect'], resp.get('status'))
 
 
 if __name__ == '__main__':

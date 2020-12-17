@@ -1,11 +1,16 @@
-which_project: &which_project middleground
+which_project: &which_project wxshop
 env: &env
-  run: DEV
+  run: QA
   updateActionAPI: DEV_API
   version: 2.3.1
   RUN_LEVEL: 3
   dataBaseURI: 5595ec6c66c0374940fb2d6919a487f9162ddc9bcbd00523b504b2f25d55dc30ad413b43d196ffa16fc59cc4d2f2a9d04993d429fa428436f36c2d79d4d0478d
   projectName: *which_project
+  loginhosts:
+    DEV:
+      PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
+    DEV_API:
+      PASSPORT: 'http://dev-passport.worldfarm.com'
 
 flowerChaser:
   <<: *env
@@ -137,27 +142,22 @@ wxshop:
     QA:
       host_ip: 38decc2956f8bcf5731227852dd4d5bd
   urldict:
-    WX_PASSPORT: "Passport"
     WX_PRODUCT: "Product"
     WX_MALL: "Mall"
   accounttype: 'user'
   hosts:
     DEV:
       WX_PRODUCT: 'http://dev-gateway.worldfarm.com/wx-product'
-      FC_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
       WX_MALL: 'http://dev-gateway.worldfarm.com/wx-mall'
 
     DEV_API:
       WX_PRODUCT: 'http://dev-gateway.worldfarm.com/wx-product'
-      FC_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
       WX_MALL: 'http://dev-gateway.worldfarm.com/wx-mall'
 
     QA:
       WX_PRODUCT: 'http://qa-gateway.worldfarm.com/wx-product'
-      FC_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
       WX_MALL: 'http://qa-gateway.worldfarm.com/wx-mall'
 
     QA_API:
       WX_PRODUCT: 'http://qa-gateway.worldfarm.com/wx-product'
-      FC_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
       WX_MALL: 'http://qa-gateway.worldfarm.com/wx-mall'
