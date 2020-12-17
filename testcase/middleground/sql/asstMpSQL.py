@@ -53,7 +53,8 @@ class productSQL(DataBaseOperate):
               """.format(pid=pid)
         return self.operate_db(sql=sql)
 
-    def query_product_list_page(self, typeid=None, name=None, code=None, pn=None, ps=None, productid=None):
+    def query_product_list_page(self, typeid=None, name=None, code=None, pn=None, ps=None,
+                                productid=None):
         """
         查询资产产品列表
         :param typeid:
@@ -172,7 +173,8 @@ class warehouseSQL(DataBaseOperate):
               """.format(applicantid=applicantid, status=status)
         return self.operate_db(sql=sql)
 
-    def query_status_product_warehouse_aseet_code(self, status=10, warehouseid=None, product_id=None):
+    def query_status_product_warehouse_aseet_code(self, status=10, warehouseid=None,
+                                                  product_id=None):
         """
         跟进资产id和仓库id查询待出库的编码
         :param status:
@@ -302,6 +304,30 @@ class mobileWarehouseSQL(DataBaseOperate):
               """ % userid
         return self.operate_db(sql)
 
+    def query_warehouse_info(self, name=None, code=None):
+        """
+        通过仓库代码和仓库名称查询仓库信息
+        :param name:
+        :param code:
+        :return:
+        """
+        code = " AND tw.code = '%s'" % code if code else ''
+        name = " AND tw.name = '%s'" % name if name else ''
+        sql = """
+            SELECT tw.address, tw.code, unix_timestamp(tw.create_time) * 1000 AS createTime, tw.id, tw.name, tu.name AS creator, group_concat(t.name) AS manager
+            FROM `mp-asset`.t_warehouse tw
+                     LEFT JOIN `mp-asset`.t_user_base tu ON tu.user_id = tw.creator_id
+                     LEFT JOIN (SELECT tub.name, ts.warehouse_id
+                                FROM `mp-asset`.t_storeman ts
+                                         LEFT JOIN `mp-asset`.t_user_base tub ON ts.user_id = tub.user_id
+                                WHERE ts.is_delete = 0
+                                  AND tub.is_delete = 0) AS t ON t.warehouse_id = tw.id
+            WHERE tw.is_delete = 0
+            {code} {name}
+            GROUP BY tw.id;
+              """.format(code=code, name=name)
+        return self.operate_db(sql=sql)
+
 
 class assetSQL(DataBaseOperate):
     def __init__(self):
@@ -335,3 +361,44 @@ class assetSQL(DataBaseOperate):
               AND tc.status = 10 LIMIT 20;
               """ % productid
         return self.operate_db(sql=sql)
+
+    def test_sql(self):
+        sql = """
+            SELECT p.id AS strategyId,p1.grade,CASE
+                WHEN 1=1 THEN
+                    ceiling(rand()*p1.price_max) 
+            END 'price',CASE
+                WHEN 1=1 THEN
+                    18455
+            END 'sellerId',
+            p.province,p.city,CASE
+                WHEN p.county=0 THEN
+                    r.id
+                ELSE
+                    p.county
+            END 'county',p.category,p.variety,
+            convert(CASE
+                WHEN p.category=1 THEN
+                    ceiling(rand()*3)
+                ELSE
+                    ceiling(rand()*2)
+            END,SIGNED) 'type',c.`key` AS purity,CASE
+                WHEN p.category=1 THEN
+                    ceiling(rand()*9 + 36)
+            END 'consistence',CASE
+                WHEN p.category=1 THEN
+                    ceiling(rand()*100)
+            END 'capRate',CASE
+                WHEN p.category=2 THEN
+                    ceiling(rand()*100)
+            END 'humidity',p.category
+            FROM `fc-trade`.t_price_category p,
+            `fc-bee`.t_region r,`fc-bee`.t_config c,`fc-trade`.t_price_strategy p1
+            WHERE p.`status`=1 AND r.parent_id=p.city AND c.`code`=10015 AND p1.price_category_id=p.id;
+              """
+        return self.operate_db(sql=sql)
+
+
+if __name__ == '__main__':
+    a = assetSQL()
+    print(a.test_sql())

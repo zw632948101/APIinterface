@@ -59,12 +59,17 @@ class apply(unittest.TestCase):
         imgurls = 'https://dnkj-mp-asset-prod.oss-cn-beijing.aliyuncs.com/data/qa/mp-asset/1606891875667.jpg,' \
                   'https://dnkj-mp-asset-prod.oss-cn-beijing.aliyuncs.com/data/qa/mp-asset/1606891902220.jpg,' \
                   'https://dnkj-mp-asset-prod.oss-cn-beijing.aliyuncs.com/data/qa/mp-asset/1606891928597.jpg'
-        response = self.api._admin_warehouse_add(code_=code_, name_=name_, type_=type_, lng_=lng, lat_=lat,
-                                                 province_=province, city_=city, county_=district, address_=address,
-                                                 area_=area_, capacity_=capacity, goodsTypeIds_=goodsTypeIds,
-                                                 managerIds_=managerIds, leaseStartTime_=leaseStartTime,
+        response = self.api._admin_warehouse_add(code_=code_, name_=name_, type_=type_, lng_=lng,
+                                                 lat_=lat,
+                                                 province_=province, city_=city, county_=district,
+                                                 address_=address,
+                                                 area_=area_, capacity_=capacity,
+                                                 goodsTypeIds_=goodsTypeIds,
+                                                 managerIds_=managerIds,
+                                                 leaseStartTime_=leaseStartTime,
                                                  leaseEndTime_=leaseEndTime, landlord_=landlord,
-                                                 landlordPhone_=landlordphoen, rent_=rent, rentUnit_=rentUnit,
+                                                 landlordPhone_=landlordphoen, rent_=rent,
+                                                 rentUnit_=rentUnit,
                                                  remark_=remark, imgUrls_=imgurls)
         if response.get('status') == 'OK':
             self.assertEqual(response.get('status'), 'OK')
@@ -73,7 +78,9 @@ class apply(unittest.TestCase):
         else:
             self.assertEqual(response.get('status'), 'ERROR')
             if response.get('errorCode') == '11050003':
-                self.assertIn(response.get('errorMsg'), ['照片Url集不能为空', '库管人不能为空', '存放货物类型不能为空', '容量不能为空', '仓库面积不能为空', '仓库代码不能为空', '仓库名称超过长度限制(30)', '仓库名称不能为空', '仓库类型不能为空'])
+                self.assertIn(response.get('errorMsg'),
+                              ['照片Url集不能为空', '库管人不能为空', '存放货物类型不能为空', '容量不能为空', '仓库面积不能为空',
+                               '仓库代码不能为空', '仓库名称超过长度限制(30)', '仓库名称不能为空', '仓库类型不能为空'])
             elif response.get('errorCode') == '11050001':
                 self.assertIn(response.get('errorMsg'), ['系统繁忙，请稍后再试'])
             elif response.get('errorCode') == '11050101':
@@ -93,7 +100,8 @@ class apply(unittest.TestCase):
             typedict = self.db.query_admin_type_dict(typeid=2)
             attach = conversion.data_assemble('url', self.db.query_asset_biz_attach(bizid=id_))
             typeid = dbinfo.get('goodsType').split(',')
-            baseinfo = conversion.data_assemble('name', self.db.query_warehouse_user_base(warid=id_))
+            baseinfo = conversion.data_assemble('name',
+                                                self.db.query_warehouse_user_base(warid=id_))
             goodsType = []
             for i in typedict:
                 if str(i.get('id')) in typeid:
@@ -123,3 +131,21 @@ class apply(unittest.TestCase):
         content = response.get('content')
         for i in range(len(content)):
             self.assertDictEqual(content[i], dbinfo[i])
+
+    @unittest.skipIf(runlevel(1), '仓库-分页列表')
+    def test_admin_warehouse_page(self):
+        """
+        仓库-分页列表
+        :return:
+        """
+        dbinfo = random.choice(self.db.query_warehouse_detail())
+        pn = None
+        ps = None
+        code = dbinfo.get('code')
+        name = dbinfo.get('name')
+        response = self.api._admin_warehouse_page(pn_=pn, ps_=ps, code_=code, name_=name)
+        self.assertEqual(response.get('status'), 'OK')
+        wareinfo = self.db.query_warehouse_info
+        content = response.get('content').get('datas')
+        for i in range(len(content)):
+            self.assertDictEqual(content[i], wareinfo[i])
