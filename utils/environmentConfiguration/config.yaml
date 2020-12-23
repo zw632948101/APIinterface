@@ -1,6 +1,6 @@
-which_project: &which_project wxshop
+which_project: &which_project middleground
 env: &env
-  run: QA
+  run: DEV
   updateActionAPI: DEV_API
   version: 2.3.1
   RUN_LEVEL: 3
@@ -9,8 +9,8 @@ env: &env
   loginhosts:
     DEV:
       PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
-    DEV_API:
-      PASSPORT: 'http://dev-passport.worldfarm.com'
+    QA:
+      PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
 
 flowerChaser:
   <<: *env
