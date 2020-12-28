@@ -13,6 +13,7 @@ Wms_Path = os.path.split(os.path.split(os.path.realpath(__file__))[0])[0]
 Config_mkdir = os.path.join(Wms_Path + r"\configs")
 Header_mkdir = os.path.join(Config_mkdir + r"\header_wms.conf")
 Public_mkdir = os.path.join(Config_mkdir + r"\public_wms.conf")
+Header_wx = os.path.join(Config_mkdir + r"header_wx.conf")
 if __name__ == '__main__':
 
     print(moke_path)

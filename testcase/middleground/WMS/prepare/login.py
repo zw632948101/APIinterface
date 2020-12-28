@@ -4,6 +4,7 @@ import unittest
 import configparser
 from testcase.middleground.WMS.common.config import read_config
 from testcase.middleground.WMS.common.Pash import Header_mkdir # 存放header值得配置文件
+from testcase.middleground.WMS.common.Pash import Header_wx # 存放wx登录后的header配置文件
 from testcase.middleground.WMS.common.Pash import Public_mkdir # 调用登录接口需要的参数值，直接放在了公共配置文件
 
 
@@ -15,7 +16,12 @@ class login:
                      "verifyCode":read_config(Public_mkdir).int("login_data","verifyCode"),
                      "deviceType":read_config(Public_mkdir).get("login_data","deviceType")
                      }
-
+        self.wx_data = {
+                     "code":"oZC5HwbbxDgZcZrQaXM9qaoj",
+                     "deviceType":"ANDROID",
+                     "appId":"FLOWER_CHASERS"
+                      }
+    # 中台登录
     def test_login(self):
         # 调登录接口
         try:
@@ -41,10 +47,31 @@ class login:
             print("登录报错")
 
         return result
+    # 小程序登录
+    def wx_login(self):
+
+
+        resp = requests.post(url=self.url,data=self.data,json=None)
+        result = resp.json()
+        if result['status'] == 'OK':
+            set_conf = configparser.ConfigParser()
+            set_conf.add_section('header')
+            set_conf.set('header', '_Token_', result['content']['token'])
+            set_conf.set('header', '_Device-Id_', result['content']['deviceId'])
+            try:
+                with open(Header_wx, 'w+') as fw:
+                    set_conf.write(fw)
+            except Exception as e:
+                raise e
+
+        return result
 
 
 if __name__ == '__main__':
     url = r"/world-passport/admin/sso/sms-login"
-    data = {"appId":"FLOWER_CHASERS","mobile":"15198034727","verifyCode":"8888","deviceType":"WEB"}
+    data = json.dumps({"appId":"FLOWER_CHASERS","mobile":15198034727,"verifyCode":8888,"deviceType":"WEB"})
     t = login(url=url).test_login()
     print(t)
+
+
+

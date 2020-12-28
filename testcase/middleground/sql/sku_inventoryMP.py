@@ -16,10 +16,17 @@ class mp_label(DataBaseOperate):
             return self.operate_db(sql=sql)
         elif number == 2:
             return self.operate_db(sql=sql2)
+    def git_newest_sku(self):
+
+        sql = ''
 
 
 if __name__ == '__main__':
-    t = mp_label().git_sku_add(2)
-    for i in t:
-        for value in i.values():
-            print(value)
+    t = mp_label().git_sku_add(1)
+    # # sku_code = None
+    # # for sku in t:
+    # #     sku_code = sku['code']
+    # # print(sku_code)
+    # for i in t:
+    #     print(i['count(*)'])
+    print(t[0]['code'])
