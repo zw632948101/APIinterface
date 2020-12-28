@@ -4,17 +4,16 @@ import unittest
 import configparser
 from testcase.middleground.WMS.common.config import read_config
 from testcase.middleground.WMS.common.Pash import Header_mkdir # 存放header值得配置文件
-from testcase.middleground.WMS.common.Pash import Header_wx # 存放wx登录后的header配置文件
 from testcase.middleground.WMS.common.Pash import Public_mkdir # 调用登录接口需要的参数值，直接放在了公共配置文件
 
 
 class login:
-    def __init__(self,url):
-        self.url = read_config(Public_mkdir).get("test_url","login_url") + url
-        self.data = {"appId":read_config(Public_mkdir).get("login_data","appId"),
-                     "mobile":read_config(Public_mkdir).int("login_data","mobile"),
-                     "verifyCode":read_config(Public_mkdir).int("login_data","verifyCode"),
-                     "deviceType":read_config(Public_mkdir).get("login_data","deviceType")
+    def __init__(self, url):
+        self.url = read_config(Public_mkdir).get("test_url", "login_url") + url
+        self.data = {"appId": read_config(Public_mkdir).get("login_data", "appId"),
+                     "mobile": read_config(Public_mkdir).int("login_data", "mobile"),
+                     "verifyCode": read_config(Public_mkdir).int("login_data", "verifyCode"),
+                     "deviceType": read_config(Public_mkdir).get("login_data", "deviceType")
                      }
         self.wx_data = {
                      "code":"oZC5HwbbxDgZcZrQaXM9qaoj",
@@ -69,7 +68,7 @@ class login:
 
 if __name__ == '__main__':
     url = r"/world-passport/admin/sso/sms-login"
-    data = json.dumps({"appId":"FLOWER_CHASERS","mobile":15198034727,"verifyCode":8888,"deviceType":"WEB"})
+    data = {"appId":"FLOWER_CHASERS","mobile":"15198034727","verifyCode":"8888","deviceType":"WEB"}
     t = login(url=url).test_login()
     print(t)
 
