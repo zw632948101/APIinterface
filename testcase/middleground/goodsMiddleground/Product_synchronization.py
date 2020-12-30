@@ -155,6 +155,19 @@ class product(unittest.TestCase):
         resp = self.api._admin_product_sync_erp_push(skus_=json.dumps(skus_),
                                                      subjectCode_=subjectCode_)
         self.assertEqual('OK',resp.get('status'))
+    # 获取同步状态
+    def test_admin_product_sync_pagelist(self):
+        resp = self.api._admin_product_sync_pageList(pn_=1,
+                                                     ps_=10,
+                                                     name_="erp",
+                                                     skuName_=None,
+                                                     subjectId_=1,
+                                                     skuCode_=None,
+                                                     status_=0)
+        self.assertEqual('OK',resp.get('status'))
+        print(resp.get('content'))
+
+
 
     # 同步商品到WMS或ERP
     def test_admin_product_sync(self):

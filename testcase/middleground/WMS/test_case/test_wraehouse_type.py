@@ -25,10 +25,15 @@ class wraehouse_type(unittest.TestCase):
             "_Token_": read_config(Header_mkdir).get("header", "_token_"),
             "region": "online"
         }
+        self.url = read_config(Public_mkdir).get("test_url","url")
     def test_admin_warehouse_type_count(self):
         url = read_config(Public_mkdir).get("test_url","url") + "/admin/warehouse/type/count"
         data = {}
-        resphonse = Request('post',url=url,data=data,headers=self.headers,cookie=None)
+        resphonse = Request('post',
+                            url=url,
+                            data=data,
+                            headers=self.headers,
+                            cookie=None)
         result = resphonse.get_json()
         self.assertEqual('OK',result['status'])
 
@@ -36,13 +41,24 @@ class wraehouse_type(unittest.TestCase):
     def test_admin_warehouse_type_list(self):
         url = read_config(Public_mkdir).get("test_url","url") + "/admin/warehouse/type/list"
         data = {"pn":"1","ps":"10","name":"移动临时仓 "}
-        resphonse = Request('post',url=url,data=data,headers=self.headers,cookie=None)
+        resphonse = Request('post',
+                            url=url,
+                            data=data,
+                            headers=self.headers,
+                            cookie=None)
         result = resphonse.get_json()
         self.assertEqual("OK",result['status'])
 
 
     def test_admin_warehouse_type_page_list(self):
-        pass
+        url = self.url + '/admin/warehouse/type/page-list'
+        data = {"pn":"1","ps":"10","name":"默认库区"}
+        resp = Request('post',
+                       url=url,
+                       data=data,
+                       headers=self.headers,
+                       cookie=None)
+        print(resp.get_json())
 
 
 if __name__ == '__main__':
