@@ -191,7 +191,7 @@ class LandmarkMain(testCase):
         register = self.ka._mobile_water_resource_list(farmId=farmid, type=water_type)
         self.assertEqual(register['status'], "OK")
         content = register.get('content')
-        datas = content.get('datas')
+        datas = content.get('test_case')
         if datas:
             # 查询水资源图片
             water_info_list = self.fq.query_landmark_list_info_transit_farmid(farmid, water_type)

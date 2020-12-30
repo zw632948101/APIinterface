@@ -97,22 +97,22 @@ class FarmTask(testCase):
         task_list = self.fq.query_task_list_buy_farm_id_sort(farm_id=farm_id)
         content = register.get('content')
         if content:
-            for i in range(len(content.get("datas"))):
-                self.assertEqual(content["datas"][i]["farmId"], task_list[i]["farm_id"])
-                self.assertEqual(content["datas"][i]["taskName"], task_list[i]["task_name"])
-                self.assertEqual(content["datas"][i]["description"], task_list[i]["description"])
-                self.assertEqual(content["datas"][i]["status"], task_list[i]["status"])
+            for i in range(len(content.get("test_case"))):
+                self.assertEqual(content["test_case"][i]["farmId"], task_list[i]["farm_id"])
+                self.assertEqual(content["test_case"][i]["taskName"], task_list[i]["task_name"])
+                self.assertEqual(content["test_case"][i]["description"], task_list[i]["description"])
+                self.assertEqual(content["test_case"][i]["status"], task_list[i]["status"])
 
-                distributeUsers = content["datas"][i].get('distributeUsers')
+                distributeUsers = content["test_case"][i].get('distributeUsers')
                 if distributeUsers:
-                    taskuserinfo = self.fq.query_farm_task_receiver_info(taskid=content["datas"][i].get('id'))
+                    taskuserinfo = self.fq.query_farm_task_receiver_info(taskid=content["test_case"][i].get('id'))
                     taskuserinfo = self.tool.del_dict_value_null(taskuserinfo)
                     self.assertListEqual(taskuserinfo, distributeUsers)
 
                 # 断言完成人信息
                 completeUser = content.get('completeUser')
                 if completeUser:
-                    completeuser = self.fq.query_task_info_complete_user(task_id=content["datas"][i].get('id'))
+                    completeuser = self.fq.query_task_info_complete_user(task_id=content["test_case"][i].get('id'))
                     completeuser = self.tool.del_dict_value_null(completeuser)
                     self.assertDictEqual(completeuser, completeUser)
         else:

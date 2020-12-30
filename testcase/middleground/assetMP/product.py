@@ -11,7 +11,7 @@ import json
 
 from interfaces.middleground.AssetAction import assetAction
 from testcase.middleground.sql.asstMpSQL import productSQL
-from utils import runlevel, dataDispose
+from utils import runlevel, dataDispose, conversion
 from ddt import data, ddt
 from faker import Faker
 import unittest
@@ -51,7 +51,8 @@ class productData(object):
         attrs = self.inspect_name(data_dict=attrs_dict, unit=unit, type=typeId, attrName=attrName)
         attrs.append(None)
         attrs.append(123)
-        return self.inspect_name(data_dict=add_dict, typeId=typeId, code=code, name=name, unit=unit, desc=desc, attrs=attrs)
+        return self.inspect_name(data_dict=add_dict, typeId=typeId, code=code, name=name, unit=unit,
+                                 desc=desc, attrs=attrs)
 
     def get_attr_data(self):
         """
@@ -71,8 +72,16 @@ class productData(object):
         code = ['QJX_18636', 'Q', 1, None, '#']
         name = ['王', 'dfs', 12, None, '#']
         pagedata = {'pn': None, 'ps': None, 'typeId': None, 'code': None, 'name': None}
-        pdata = dataDispose().recursion_dispose_data_dict(dic=pagedata, pn=pn, ps=ps, typeId=typeId, code=code, name=name)
+        pdata = dataDispose().recursion_dispose_data_dict(dic=pagedata, pn=pn, ps=ps, typeId=typeId,
+                                                          code=code, name=name)
         return pdata
+
+    def detail_data(self):
+        """
+        资产产品详情请求传参字段
+        :return:
+        """
+        return [0, -1, None, '#']
 
 
 @ddt
@@ -90,17 +99,30 @@ class codeBase(unittest.TestCase):
     @unittest.skipIf(runlevel(1), '资产产品-新建')
     def test_admin_product_add(self):
         """
-        资产产品-新建
+        资产产品-新建 涉及ERP同步
         :return:
         """
-        typeId = 1
-        code = 'QJX-03'
-        name = '世界农场继箱'
-        unit = '箱'
-        desc = self.faker.text(50)
-        attrs = json.dumps([{'attrName': '数量', 'unit': '箱', 'type': '1'}])
-        response = self.api._admin_product_add(typeId_=typeId, code_=code, name_=name, unit_=unit, desc_=desc, attrs_=attrs)
-        self.assertEqual(response.get('status'), 'OK')
+        productT = random.choice(self.db.query_product_type_id())
+        typeId = productT.get('id')  # 产品类型id
+        code = str(productT.get('prefix')) + str(random.randint(1, 9999))  # 代码库编码
+        name = '世界农场设备' + str(random.randint(1, 9999))  # 资产名称
+        unit = '台'  # 单位
+        desc = self.faker.text(50)  # 资产说明
+        attrs = json.dumps([{'attrName': '数量', 'unit': '台', 'type': '1'}])  # 资产属性集合
+        response = self.api._admin_product_add(typeId_=typeId, code_=code, name_=name, unit_=unit,
+                                               desc_=desc, attrs_=attrs)
+        if response.get('status') == 'OK':
+            self.assertEqual(response.get('status'), 'OK')
+            dbinfo = self.db.query_prodcut_parameter_info(code=code, name=name, unit=unit,
+                                                          typeid=typeId)
+            self.assertEqual(len(dbinfo), 1)
+        else:
+            codelist = ['11050055', '11050065', '11050001', '11050003', '11050052', '10020020']
+            errorMsg = ['该类资产不存在', '产品类型id不能为空', '资产名称不能为空', '资产名称重复,不能重复添加', '资产代码重复,不能重复添加',
+                        '单位不能为空', '编码必须是字母或字母+数字',
+                        "Your account is logged on on another device, and you are forced to go offline."]
+            self.assertIn(response.get('errorCode'), codelist)
+            self.assertIn(response.get('errorMsg'), errorMsg)
 
     @data(*productData().product_add_data())
     @unittest.skipIf(runlevel(3), '资产产品-新建')
@@ -110,37 +132,25 @@ class codeBase(unittest.TestCase):
         :return:
         """
         typeId = adict.get('typeId')
-        code = adict.get('code') if isinstance(adict.get('code'), str) else 'QJX_%s' % random.randint(1, 99999)
+        code = adict.get('code') if isinstance(adict.get('code'),
+                                               str) else 'QJX_%s' % random.randint(1, 99999)
         name = adict.get('name') if isinstance(adict.get('name'), str) else self.faker.name()
         unit = adict.get('unit')
         desc = adict.get('desc')
         attrs = json.dumps([adict.get('attrs')])
-        response = self.api._admin_product_add(typeId_=typeId, code_=code, name_=name, unit_=unit, desc_=desc, attrs_=attrs)
+        response = self.api._admin_product_add(typeId_=typeId, code_=code, name_=name, unit_=unit,
+                                               desc_=desc, attrs_=attrs)
         if response.get('status') == 'OK':
             self.assertEqual(response.get('status'), 'OK')
         else:
-            if response.get('errorCode') == '11050052':
-                self.assertEqual(response.get('errorMsg'), '该类资产不存在')
-            elif typeId is None:
-                self.assertEqual(response.get('errorMsg'), '产品类型id不能为空')
-            elif name is None:
-                self.assertEqual(response.get('errorMsg'), '资产名称不能为空')
-            elif response.get('errorCode') == '11050055':
-                self.assertEqual(response.get('errorMsg'), '资产名称重复,不能重复添加')
-            elif response.get('errorCode') == '11050065':
-                self.assertEqual(response.get('errorMsg'), '资产代码重复,不能重复添加')
-            elif response.get('errorCode') == '11050001':
-                self.assertIn('绯荤粺寮傚父', response.get('errorMsg'))
-            elif unit is None:
-                self.assertEqual(response.get('errorMsg'), '单位不能为空')
-            elif desc is None:
-                self.assertEqual(response.get('errorMsg'), '资产说明不能为空')
-            elif response.get('errorCode') == '11050003':
-                self.assertIn('鍙傛暟楠岃瘉閿欒', response.get('errorMsg'))
-            else:
-                self.assertEqual(response.get('errorMsg'), '资产名称重复,不能重复添加')
+            codelist = ['11050055', '11050065', '11050001', '11050003', '11050052', '10020020']
+            errorMsg = ['该类资产不存在', '产品类型id不能为空', '资产名称不能为空', '资产名称重复,不能重复添加', '资产代码重复,不能重复添加',
+                        '单位不能为空', '编码必须是字母或字母+数字',
+                        "Your account is logged on on another device, and you are forced to go offline."]
+            self.assertIn(response.get('errorCode'), codelist)
+            self.assertIn(response.get('errorMsg'), errorMsg)
 
-    @unittest.skipIf(runlevel(3), '资产产品-获取资产属性')
+    @unittest.skipIf(runlevel(1), '资产产品-获取资产属性')
     def test_admin_product_get_product_attr(self):
         """
         资产产品-获取资产属性
@@ -178,7 +188,7 @@ class codeBase(unittest.TestCase):
             elif response.get('errorCode') == '11050001':
                 self.assertEqual(response.get('errorMsg'), '系统繁忙，请稍后再试')
 
-    @unittest.skipIf(runlevel(3), '资产产品-分页列表')
+    @unittest.skipIf(runlevel(1), '资产产品-分页列表')
     def test_admin_product_list_page(self):
         """
         资产产品-分页列表
@@ -189,11 +199,13 @@ class codeBase(unittest.TestCase):
         typeId = None
         code = None
         name = None
-        response = self.api._admin_product_list_page(pn_=pn, ps_=ps, typeId_=typeId, code_=code, name_=name)
+        response = self.api._admin_product_list_page(pn_=pn, ps_=ps, typeId_=typeId, code_=code,
+                                                     name_=name)
         self.assertEqual(response.get('status'), 'OK')
         dbinfo = self.db.query_product_list_page(pn=pn, ps=ps, name=name, typeid=typeId, code=code)
         for i in range(len(dbinfo)):
             typeinfo = self.db.query_product_type_info(pid=dbinfo[i].get('id'))
+            typeinfo = conversion.del_dict_value_null(list(typeinfo))
             dbinfo[i]['attrs'] = typeinfo
         datas = response.get('content').get('datas')
         self.assertEqual(len(datas), len(dbinfo))
@@ -212,12 +224,15 @@ class codeBase(unittest.TestCase):
         typeId = dic.get('typeId')
         code = dic.get('code')
         name = dic.get('name')
-        response = self.api._admin_product_list_page(pn_=pn, ps_=ps, typeId_=typeId, code_=code, name_=name)
+        response = self.api._admin_product_list_page(pn_=pn, ps_=ps, typeId_=typeId, code_=code,
+                                                     name_=name)
         if response.get('status') == 'OK':
             self.assertEqual(response.get('status'), 'OK')
-            dbinfo = self.db.query_product_list_page(pn=pn, ps=ps, name=name, typeid=typeId, code=code)
+            dbinfo = self.db.query_product_list_page(pn=pn, ps=ps, name=name, typeid=typeId,
+                                                     code=code)
             for i in range(len(dbinfo)):
                 typeinfo = self.db.query_product_type_info(pid=dbinfo[i].get('id'))
+                typeinfo = conversion.del_dict_value_null(list(typeinfo))
                 dbinfo[i]['attrs'] = list(typeinfo)
             datas = response.get('content').get('datas')
             self.assertEqual(len(datas), len(dbinfo))
@@ -230,20 +245,98 @@ class codeBase(unittest.TestCase):
             else:
                 self.assertIn('参数验证错误', response.get('errorMsg'))
 
+    @unittest.skipIf(runlevel(1), '资产产品-详情')
     def test_admin_product_detail(self):
         """
         资产产品-详情
         :return:
         """
-        prid = 1
+        dbinfo = random.choice(self.db.query_product_info())
+        prid = dbinfo.get('id')
         response = self.api._admin_product_detail(id_=prid)
         self.assertEqual(response.get('status'), 'OK')
+        dbinfo = self.db.query_product_list_page(productid=prid)
+        for i in range(len(dbinfo)):
+            typeinfo = self.db.query_product_type_info(pid=dbinfo[i].get('id'))
+            typeinfo = conversion.del_dict_value_null(list(typeinfo))
+            dbinfo[i]['attrs'] = typeinfo
+        content = response.get('content')
+        for i in range(len(content)):
+            self.assertDictEqual(content[i], dbinfo[i])
 
-    @unittest.skipIf(runlevel(3), '资产-使用轨迹分页列表')
+    @unittest.skipIf(runlevel(3), '资产产品-详情')
+    @data(*productData().detail_data())
+    def test_admin_product_detail_check(self, prid):
+        """
+        资产产品-详情
+        :return:
+        """
+        response = self.api._admin_product_detail(id_=prid)
+        if response.get('status') == 'OK':
+            self.assertEqual(response.get('status'), 'OK')
+            dbinfo = self.db.query_product_list_page(productid=prid)
+            for i in range(len(dbinfo)):
+                typeinfo = self.db.query_product_type_info(pid=dbinfo[i].get('id'))
+                typeinfo = conversion.del_dict_value_null(list(typeinfo))
+                dbinfo[i]['attrs'] = typeinfo
+            content = response.get('content')
+            for i in range(len(content)):
+                self.assertDictEqual(content[i], dbinfo[i])
+        else:
+            self.assertEqual(response.get('status'), 'ERROR')
+            if response.get('errorCode') == '11050052':
+                self.assertEqual(response.get('errorMsg'), "该类资产不存在")
+            else:
+                self.assertEqual(response.get('errorMsg'), "系统繁忙，请稍后再试")
+
+    @unittest.skipIf(runlevel(6), '资产-使用轨迹分页列表')
     def test_admin_product_type_list(self):
         """
-        资产-使用轨迹分页列表
+        资产-使用轨迹分页列表-不在使用
         :return:
         """
         response = self.api._admin_product_type_list()
         self.assertEqual(response.get('status'), 'OK')
+
+    @unittest.skipIf(runlevel(1), '资产产品-产品列表下拉框')
+    def test_admin_product_list(self):
+        """
+        资产产品-产品列表下拉框
+        :return:
+        """
+        response = self.api._admin_product_list()
+        self.assertEqual(response.get('status'), 'OK')
+        dbinfo = self.db.query_admin_product_list()
+        content = response.get('content')
+        for i in range(len((content))):
+            self.assertDictEqual(dbinfo[i], content[i])
+
+    @unittest.skipIf(runlevel(1), '资产产品-编辑')
+    def test_admin_product_edit(self):
+        """
+        资产产品-编辑 涉及ERP同步
+        :return:
+        """
+        pid_info = random.choice(self.db.query_product_info())
+        pid = pid_info.get('id')
+        productT = random.choice(self.db.query_product_type_id())
+        typeId = productT.get('id')  # 产品类型id
+        code = str(productT.get('prefix')) + str(random.randint(1, 9999))  # 代码库编码
+        name = '世界农场设备' + str(random.randint(1, 9999))  # 资产名称
+        unit = '台'  # 单位
+        desc = self.faker.text(50)  # 资产说明
+        attrs = json.dumps([{'attrName': '数量', 'unit': '台', 'type': '1'}])  # 资产属性集合
+        response = self.api._admin_product_edit(id_=pid, typeId_=typeId, code_=code, name_=name,
+                                                unit_=unit, desc_=desc, attrs_=attrs)
+        if response.get('status') == 'OK':
+            self.assertEqual(response.get('status'), 'OK')
+            dbinfo = self.db.query_prodcut_parameter_info(code=code, name=name, unit=unit,
+                                                          typeid=typeId)
+            self.assertEqual(len(dbinfo), 1)
+        else:
+            codelist = ['11050055', '11050065', '11050001', '11050003', '11050052', '10020020']
+            errorMsg = ['该类资产不存在', '产品类型id不能为空', '资产名称不能为空', '资产名称重复,不能重复添加', '资产代码重复,不能重复添加',
+                        '单位不能为空', '编码必须是字母或字母+数字',
+                        "Your account is logged on on another device, and you are forced to go offline."]
+            self.assertIn(response.get('errorCode'), codelist)
+            self.assertIn(response.get('errorMsg'), errorMsg)

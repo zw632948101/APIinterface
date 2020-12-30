@@ -96,8 +96,8 @@ class CattleDrugMain(testCase):
         self.assertEqual(info.get('status'), 'OK')
         raiseinfo = self.fq.query_farm_raise_id(farmid=farmid, limit=20)
         content = info.get('content')
-        self.assertEqual(len(content.get('datas')), len(raiseinfo))
-        datas = content.get('datas')
+        self.assertEqual(len(content.get('test_case')), len(raiseinfo))
+        datas = content.get('test_case')
         for i in range(len(raiseinfo)):
             self.assertEqual(datas[i].get('createTime'), self.tt.str_time_timestamp(raiseinfo[i].get('create_time')))
             self.assertEqual(datas[i].get('feedingDate'), self.tt.str_time_timestamp(raiseinfo[i].get('feeding_date')))

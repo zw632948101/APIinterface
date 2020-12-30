@@ -12,11 +12,11 @@ class MallAction(object):
         self.request = Request()
         self.url = config.get('hosts').get(config.get('run')).get('WX_MALL')
 
-    def set_user(self, mobile=None, account_type='user', password=None):
+    def set_user(self, mobile=None, account_type='user', **kwargs):
         if mobile is None:
             self.user = None
         else:
-            self.user = User(mobile, account_type, password=password)
+            self.user = User(mobile, account_type, **kwargs)
             self.request.headers.update({"_Device-Id_": self.user.device_id})
             self.request.headers.update({"_Token_": self.user.token})
         return self.user
@@ -27,12 +27,52 @@ class MallAction(object):
         else:
             raise Exception('status未返回OK或ERROR')
 
+    def _admin_evaluate_audit(self, evaluateNo_=None, status_=None):
+        if self.user is None:
+            data = {'evaluateNo': evaluateNo_, 'status': status_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'evaluateNo': evaluateNo_, 'status': status_}
+        response = self.request.post(url=self.url+'/admin/evaluate/audit', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_evaluate_list(self, pn_=None, ps_=None, contentStatus_=None):
+        if self.user is None:
+            data = {'pn': pn_, 'ps': ps_, 'contentStatus': contentStatus_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'contentStatus': contentStatus_}
+        response = self.request.post(url=self.url+'/admin/evaluate/list', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_evaluate_order_detail(self, orderNo_=None):
+        if self.user is None:
+            data = {'orderNo': orderNo_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'orderNo': orderNo_}
+        response = self.request.post(url=self.url+'/admin/evaluate/order-detail', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_evaluate_reply(self, evaluateNo_=None, comment_=None, replyEvaluateNo_=None):
+        if self.user is None:
+            data = {'evaluateNo': evaluateNo_, 'comment': comment_, 'replyEvaluateNo': replyEvaluateNo_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'evaluateNo': evaluateNo_, 'comment': comment_, 'replyEvaluateNo': replyEvaluateNo_}
+        response = self.request.post(url=self.url+'/admin/evaluate/reply', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
     def _api_callback_pay_notify(self):
         if self.user is None:
             data = {}
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
         response = self.request.post(url=self.url+'/api/callback/pay/notify', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _api_favorite_check(self, input_=None):
+        if self.user is None:
+            data = {'input': input_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+        response = self.request.post(url=self.url+'/api/favorite/check', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _api_omsDelivery_sync_logistics(self, logisticsList_=None):
@@ -57,30 +97,6 @@ class MallAction(object):
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'outTradeNo': outTradeNo_}
         response = self.request.post(url=self.url+'/api/pay-trade/pay-notify-order', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _api_shop_get(self, shopId_=None):
-        if self.user is None:
-            data = {'shopId': shopId_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'shopId': shopId_}
-        response = self.request.post(url=self.url+'/api/shop/get', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _api_shop_list(self):
-        if self.user is None:
-            data = {}
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
-        response = self.request.post(url=self.url+'/api/shop/list', data=data, hosts=self.url)
-        return self.__judge_response_status(json.loads(response))
-
-    def _api_shop_list_by_ids(self, shopIds_=None):
-        if self.user is None:
-            data = {'shopIds': shopIds_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'shopIds': shopIds_}
-        response = self.request.post(url=self.url+'/api/shop/list-by-ids', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _api_task_order_push_orders(self):
@@ -123,12 +139,12 @@ class MallAction(object):
         response = self.request.post(url=self.url+'/api/task/pay/notify-order', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_evaluate_order_add_(self, orderNo_=None, comment_=None, totalScore_=None, serviceScore_=None, logisticsScore_=None, productScore_=None):
+    def _web_attach_upload(self, file_=None, type_=None):
         if self.user is None:
-            data = {'orderNo': orderNo_, 'comment': comment_, 'totalScore': totalScore_, 'serviceScore': serviceScore_, 'logisticsScore': logisticsScore_, 'productScore': productScore_, }
+            data = {'file': file_, 'type': type_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'orderNo': orderNo_, 'comment': comment_, 'totalScore': totalScore_, 'serviceScore': serviceScore_, 'logisticsScore': logisticsScore_, 'productScore': productScore_}
-        response = self.request.post(url=self.url+'/mobile/evaluate/order/add/', data=data, hosts=self.url)
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'file': file_, 'type': type_}
+        response = self.request.post(url=self.url+'/web/attach/upload', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _web_cart_add(self, skuNo_=None, shopId_=None, amount_=None):
@@ -187,6 +203,54 @@ class MallAction(object):
         response = self.request.post(url=self.url+'/web/cart/purchase', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
+    def _web_evaluate_add(self, orderNo_=None, serviceScore_=None, logisticsScore_=None, productEvaluateJson_=None):
+        if self.user is None:
+            data = {'orderNo': orderNo_, 'serviceScore': serviceScore_, 'logisticsScore': logisticsScore_, 'productEvaluateJson': productEvaluateJson_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'orderNo': orderNo_, 'serviceScore': serviceScore_, 'logisticsScore': logisticsScore_, 'productEvaluateJson': productEvaluateJson_}
+        response = self.request.post(url=self.url+'/web/evaluate/add', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _web_evaluate_count(self, skuNo_=None):
+        if self.user is None:
+            data = {'skuNo': skuNo_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'skuNo': skuNo_}
+        response = self.request.post(url=self.url+'/web/evaluate/count', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _web_evaluate_list(self, pn_=None, ps_=None, skuNo_=None, evaluateStatus_=None):
+        if self.user is None:
+            data = {'pn': pn_, 'ps': ps_, 'skuNo': skuNo_, 'evaluateStatus': evaluateStatus_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'skuNo': skuNo_, 'evaluateStatus': evaluateStatus_}
+        response = self.request.post(url=self.url+'/web/evaluate/list', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _web_favorite_add(self, skuNo_=None, shopId_=None):
+        if self.user is None:
+            data = {'skuNo': skuNo_, 'shopId': shopId_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'skuNo': skuNo_, 'shopId': shopId_}
+        response = self.request.post(url=self.url+'/web/favorite/add', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _web_favorite_cancel(self, skuNo_=None, shopId_=None):
+        if self.user is None:
+            data = {'skuNo': skuNo_, 'shopId': shopId_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'skuNo': skuNo_, 'shopId': shopId_}
+        response = self.request.post(url=self.url+'/web/favorite/cancel', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
+    def _web_favorite_list(self, pn_=None, ps_=None):
+        if self.user is None:
+            data = {'pn': pn_, 'ps': ps_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_}
+        response = self.request.post(url=self.url+'/web/favorite/list', data=data, hosts=self.url)
+        return self.__judge_response_status(json.loads(response))
+
     def _web_order_close(self, pn_=None, ps_=None, orderNo_=None, reason_=None):
         if self.user is None:
             data = {'pn': pn_, 'ps': ps_, 'orderNo': orderNo_, 'reason': reason_, }
@@ -235,10 +299,10 @@ class MallAction(object):
         response = self.request.post(url=self.url+'/web/order/submit-order', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
-    def _web_pay_trade_prepay_order(self, outTradeNos_=None, desAccountNo_=None, desAccountName_=None):
+    def _web_pay_trade_prepay_order(self, outTradeNo_=None, desAccountNo_=None, desAccountName_=None):
         if self.user is None:
-            data = {'outTradeNos': outTradeNos_, 'desAccountNo': desAccountNo_, 'desAccountName': desAccountName_, }
+            data = {'outTradeNo': outTradeNo_, 'desAccountNo': desAccountNo_, 'desAccountName': desAccountName_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'outTradeNos': outTradeNos_, 'desAccountNo': desAccountNo_, 'desAccountName': desAccountName_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'outTradeNo': outTradeNo_, 'desAccountNo': desAccountNo_, 'desAccountName': desAccountName_}
         response = self.request.post(url=self.url+'/web/pay-trade/prepay-order', data=data, hosts=self.url)
         return self.__judge_response_status(json.loads(response))

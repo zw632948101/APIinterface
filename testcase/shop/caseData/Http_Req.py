@@ -3,6 +3,18 @@ import json
 # from common.os_path import case_dir # 引入测试用例的路径
 # from common.request import Http_Request
 import random
+import unittest
+from utils.log import log
+from interfaces.wxshop.MallAction import MallAction
+from testcase.shop.sql.appletWX import wx_applet_evaluate
+from testcase.shop.caseData.applet_data import submit_order
+from testcase.shop.sql.webMP import mp_label
+from utils import runlevel, timestamp
+from ddt import data, unpack, ddt
+from faker import Faker
+import unittest
+import inspect
+import json
 
 # class Case:
 #
@@ -35,15 +47,15 @@ import random
 #
 #         test_data = [] # 定义一个空的list装载用例
 #         for i in range(2,max_row+1):
-#             case =Case() # 实例化上面的Case，下面要读取excel中的测试数据，赋值给初始None
-#             case.case_id = sheet.cell(row = i ,column = 1).value # 读取excel中case_id
-#             case.url = sheet.cell(row = i ,column = 2).value # 读取excel中url
-#             case.data = sheet.cell(row = i ,column = 3).value # 读取excel中data
-#             case.header = sheet.cell(row = i ,column = 4).value # 读取excel中header
-#             case.title = sheet.cell(row = i ,column = 5).value # 读取excel中title
-#             case.method = sheet.cell(row = i ,column = 6).value # 读取excel中请求方式
-#             case.expected = sheet.cell(row = i ,column = 7).value # 读取excel中期望结果
-#             test_data.append(case) # 读取出来的测试数据放到list
+#             datas =Case() # 实例化上面的Case，下面要读取excel中的测试数据，赋值给初始None
+#             datas.case_id = sheet.cell(row = i ,column = 1).value # 读取excel中case_id
+#             datas.url = sheet.cell(row = i ,column = 2).value # 读取excel中url
+#             datas.data = sheet.cell(row = i ,column = 3).value # 读取excel中data
+#             datas.header = sheet.cell(row = i ,column = 4).value # 读取excel中header
+#             datas.title = sheet.cell(row = i ,column = 5).value # 读取excel中title
+#             datas.method = sheet.cell(row = i ,column = 6).value # 读取excel中请求方式
+#             datas.expected = sheet.cell(row = i ,column = 7).value # 读取excel中期望结果
+#             test_data.append(datas) # 读取出来的测试数据放到list
 #
 #         return test_data
 
@@ -72,35 +84,37 @@ class Http_Request:
 
 
 if __name__ == '__main__':
-    url = 'http://dev-gateway.worldfarm.com/world-passport/web/sso/mall-login-wx'
+
+    class add_evaluate(unittest.TestCase):
+        def setUp(self) -> None:
+            """
+            测试前数据准备
+            :return:
+            """
+            self.api = MallAction()
+            self.api.set_user(mobile=15198034727)
+            self.db = wx_applet_evaluate()
+            self.faker = Faker('zh_CN')
+
+    url = 'http://dev-gateway.worldfarm.com/wx-mall/web/order/list'
     data = {
-            "code":"001JEI10099MBK1jfP200EoieJ2JEI1M",
-            "encryptedData":"34GMpZPyzi0cg9rSk+lgn1Q0v2jximzmK7QPFMiEyvCCoyoOW9yk6OlMw+Hh4qGkpO0jXU6NH0HsJFMTx49C1JtauesKKIYBf/9N6sKmwDF9Cnl4BhXOzRcnGDAuzlF6FVDOXtiJTX4r6f61skI98w2vdPjWCjSIzPTWuLAmYUV49FRGVjroGqXoYKDp61hgWBbvY+T6VYnPU2lOsoWlUQ==",
-            "iv":"M2awA7HTIk9bDJZ8cHGzsw==",
-            # "userName":"",
-            # "gender":"",
-            # "userHeadImg":"",
-            # "mobile":"",
-            "deviceId":"1213",
-            "deviceType":"WEB",
-            "authType":"WECHAT",
-            "appId":"FLOWER_CHASERS"
+            "pn":1,
+            "ps":2,
+            "orderStatus":10
             }
 
-    header2 = {"Content-Type": "application/x-www-form-urlencoded",
-        "Accept": "application/json, text/plain, */*",
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4)"
-                      " AppleWebKit/537.36 (KHTML, like Gecko) "
-                      "Chrome/86.0.4240.111 Safari/537.36",
-        "_Device-Type_": "web",
-        "region": "online",
-        "Accept_Language": "zh",
-        "_Device-Id_":"cc4feebe419791332bbcff5e0fdf084a",
-        "_Token_": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJjYzRmZWViZTQxOTc5MTMzMmJiY2ZmNWUwZmRmMDg0YSIsImRldmljZUdyb3VwIjoiVVNFUiIsImlwIjoiMTkyLjE2OC44OS4xNzUiLCJpc3MiOiJaWVBfU1NPIiwidXNlciI6IntcImFjY291bnRUeXBlXCI6MjEsXCJhcHBJZFwiOlwiMTFcIixcImRldmljZVR5cGVcIjpcIkFORFJPSUQtVVNFUlwiLFwiaGVhZEltZ1wiOlwiaHR0cDovL3p5cC1mYXJtLTIub3NzLWFwLXNvdXRoZWFzdC0xLmFsaXl1bmNzLmNvbS9kYXRhL2ZjLXVzZXIvaGVhZEltZy8xNTkzNTgyNTM0ODAzLmpwZ1wiLFwiaWRcIjo2OTQsXCJuZXdcIjpmYWxzZSxcInBhc3N3b3JkXCI6XCI3Mzc1MzA0MWY3NzZiNjg0MjE0NmFlNTA0MTQ4NjBiMzdmMzY5Nzg2Njk4N2NiMGZcIixcInBob25lXCI6XCIxNTM4ODEyNjA3MlwiLFwic3RhdHVzXCI6MSxcInVzZXJOYW1lXCI6XCLlvKDkuInlkbXlkbXlkbVcIn0iLCJpYXQiOjE2MDQ3MTQxMDl9.l8Mf3c2JV8xPefzoorZi3qMk6Zphxpt5eSuH1ulMFz_3v15x5G0yVHDW_N6AjzkN2Ubac_f_YViu65yl7XI-lQ"}
+    header2 = {"Accept":"application/json",
+               "Accept-Encoding":"gzip,deflate",
+               "User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36",
+               "_App-Version_":"2.3.1",
+               "_Device-Id_":"cc4feebe419791332bbcff5e0fdf084a",
+               "_Device-Type_":"iOS",
+               "_Token_":"eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJjYzRmZWViZTQxOTc5MTMzMmJiY2ZmNWUwZmRmMDg0YSIsImRldmljZUdyb3VwIjoiVVNFUiIsImlwIjoiMTkyLjE2OC44OS4xNzUiLCJpc3MiOiJaWVBfU1NPIiwidXNlciI6IntcImFjY291bnRUeXBlXCI6MjEsXCJhcHBJZFwiOlwiMTFcIixcImRldmljZVR5cGVcIjpcIkFORFJPSUQtVVNFUlwiLFwiaGVhZEltZ1wiOlwiaHR0cDovL3p5cC1mYXJtLTIub3NzLWFwLXNvdXRoZWFzdC0xLmFsaXl1bmNzLmNvbS9kYXRhL2ZjLXVzZXIvaGVhZEltZy8xNTkzNTgyNTM0ODAzLmpwZ1wiLFwiaWRcIjo2OTQsXCJuZXdcIjpmYWxzZSxcInBhc3N3b3JkXCI6XCI3Mzc1MzA0MWY3NzZiNjg0MjE0NmFlNTA0MTQ4NjBiMzdmMzY5Nzg2Njk4N2NiMGZcIixcInBob25lXCI6XCIxNTM4ODEyNjA3MlwiLFwic3RhdHVzXCI6MSxcInVzZXJOYW1lXCI6XCLlvKDkuInlkbXlkbXlkbVcIn0iLCJpYXQiOjE2MDcwNjUzNDV9.-Uy_6KyXi-3QNqyLCwnjylczcDIYQPa3NfMOsI-cPUD0bLp_uSDzrmy6Auz5fLuBZ-YtqeklwACGgf26D9fUlA",
+               "Accept_Language":"zh",
+               "region":"online"}
 
-    t = Http_Request('post',url=url,data=data,header=None)
-    result = t.get_json()
-    print(result)
+    t = Http_Request('post',url=url,data=data,header=header2)
+    print(t.get_text())
 
 
 

@@ -108,26 +108,26 @@ class BeeClueMain(unittest.TestCase):
             if len(clue) == response["content"]["tc"]:
                 for i in range(len(clue)):
                     if clue[i]["keeper_name"]:
-                        self.assertEqual(response["content"]["datas"][i]["keeperName"], clue[i]["keeper_name"])
-                    self.assertEqual(response["content"]["datas"][i]["contactNumber"], clue[i]["contact_number"])
+                        self.assertEqual(response["content"]["test_case"][i]["keeperName"], clue[i]["keeper_name"])
+                    self.assertEqual(response["content"]["test_case"][i]["contactNumber"], clue[i]["contact_number"])
                     if clue[i]["province"]:
-                        self.assertEqual(response["content"]["datas"][i]["province"], clue[i]["province"])
+                        self.assertEqual(response["content"]["test_case"][i]["province"], clue[i]["province"])
                     if clue[i]["city"]:
-                        self.assertEqual(response["content"]["datas"][i]["city"], clue[i]["city"])
+                        self.assertEqual(response["content"]["test_case"][i]["city"], clue[i]["city"])
                     if clue[i]["county"]:
-                        self.assertEqual(response["content"]["datas"][i]["county"], clue[i]["county"])
+                        self.assertEqual(response["content"]["test_case"][i]["county"], clue[i]["county"])
                     if clue[i]["address"]:
-                        self.assertEqual(response["content"]["datas"][i]["address"], clue[i]["address"])
+                        self.assertEqual(response["content"]["test_case"][i]["address"], clue[i]["address"])
                     if clue[i]["lng"]:
-                        self.assertEqual(response["content"]["datas"][i]["lng"], clue[i]["lng"])
+                        self.assertEqual(response["content"]["test_case"][i]["lng"], clue[i]["lng"])
                     if clue[i]["lat"]:
-                        self.assertEqual(response["content"]["datas"][i]["lat"], clue[i]["lat"])
+                        self.assertEqual(response["content"]["test_case"][i]["lat"], clue[i]["lat"])
                     if clue[i]["sale_num"]:
-                        self.assertEqual(response["content"]["datas"][i]["saleNum"], clue[i]["sale_num"])
+                        self.assertEqual(response["content"]["test_case"][i]["saleNum"], clue[i]["sale_num"])
                     if clue[i]["spleen_num"]:
-                        self.assertEqual(response["content"]["datas"][i]["spleenNum"], clue[i]["spleen_num"])
+                        self.assertEqual(response["content"]["test_case"][i]["spleenNum"], clue[i]["spleen_num"])
                     if clue[i]["intention_price"]:
-                        self.assertEqual(response["content"]["datas"][i]["intentionPrice"], clue[i]["intention_price"])
+                        self.assertEqual(response["content"]["test_case"][i]["intentionPrice"], clue[i]["intention_price"])
             else:
                 raise AssertionError("数据库未查询出数据")
         else:
@@ -146,28 +146,28 @@ class BeeClueMain(unittest.TestCase):
         if response["status"] == "OK":
             if len(clue) > 0:
                 if clue[0]["keeper_name"]:
-                    self.assertEqual(response["content"]["datas"]["keeperName"], clue[0]["keeper_name"])
-                self.assertEqual(response["content"]["datas"]["contactNumber"], clue[0]["contact_number"])
+                    self.assertEqual(response["content"]["test_case"]["keeperName"], clue[0]["keeper_name"])
+                self.assertEqual(response["content"]["test_case"]["contactNumber"], clue[0]["contact_number"])
                 if clue[0]["province"]:
-                    self.assertEqual(response["content"]["datas"]["province"], clue[0]["province"])
+                    self.assertEqual(response["content"]["test_case"]["province"], clue[0]["province"])
                 if clue[0]["city"]:
-                    self.assertEqual(response["content"]["datas"]["city"], clue[0]["city"])
+                    self.assertEqual(response["content"]["test_case"]["city"], clue[0]["city"])
                 if clue[0]["county"]:
-                    self.assertEqual(response["content"]["datas"]["county"], clue[0]["county"])
+                    self.assertEqual(response["content"]["test_case"]["county"], clue[0]["county"])
                 if clue[0]["address"]:
-                    self.assertEqual(response["content"]["datas"]["address"], clue[0]["address"])
+                    self.assertEqual(response["content"]["test_case"]["address"], clue[0]["address"])
                 if clue[0]["lng"]:
-                    self.assertEqual(response["content"]["datas"]["lng"], clue[0]["lng"])
+                    self.assertEqual(response["content"]["test_case"]["lng"], clue[0]["lng"])
                 if clue[0]["lat"]:
-                    self.assertEqual(response["content"]["datas"]["lat"], clue[0]["lat"])
+                    self.assertEqual(response["content"]["test_case"]["lat"], clue[0]["lat"])
                 if clue[0]["sale_num"]:
-                    self.assertEqual(response["content"]["datas"]["saleNum"], clue[0]["sale_num"])
+                    self.assertEqual(response["content"]["test_case"]["saleNum"], clue[0]["sale_num"])
                 if clue[0]["spleen_num"]:
-                    self.assertEqual(response["content"]["datas"]["spleenNum"], clue[0]["spleen_num"])
+                    self.assertEqual(response["content"]["test_case"]["spleenNum"], clue[0]["spleen_num"])
                 if clue[0]["intention_price"]:
-                    self.assertEqual(response["content"]["datas"]["intentionPrice"], clue[0]["intention_price"])
+                    self.assertEqual(response["content"]["test_case"]["intentionPrice"], clue[0]["intention_price"])
             else:
-                self.assertEqual([], response["content"]["datas"])
+                self.assertEqual([], response["content"]["test_case"])
         else:
             self.assertTrue(False, "卖蜂线索查询失败")
 
@@ -176,7 +176,7 @@ class BeeClueMain(unittest.TestCase):
         POST /mobile/bee-clue/edit 编辑卖蜂线索
         :return:
         """
-        clue_list = self.beeclue._mobile_bee_clue_list()['content']['datas']
+        clue_list = self.beeclue._mobile_bee_clue_list()['content']['test_case']
         contact_number = self.fake.phone_number()
         province_id, city_id, district_id, address, lng, lat = self.fl.fake_location()
         sale_num = self.fake.random_number(digits=6)
@@ -203,7 +203,7 @@ class BeeClueMain(unittest.TestCase):
         接口地址：POST /mobile/bee-clue/detail  卖蜂线索详情
         :return:
         """
-        clue_list = self.beeclue._mobile_bee_clue_list()['content']['datas']
+        clue_list = self.beeclue._mobile_bee_clue_list()['content']['test_case']
         if len(clue_list) is not None:
             num = random.randrange(0, len(clue_list))
             clue_id = clue_list[num]["id"]
@@ -249,7 +249,7 @@ class BeeClueMain(unittest.TestCase):
         接口地址：POST /mobile/bee-clue/del 删除卖蜂线索
         :return:
         """
-        clue_list = self.beeclue._mobile_bee_clue_list()['content']['datas']
+        clue_list = self.beeclue._mobile_bee_clue_list()['content']['test_case']
         if len(clue_list) is not None:
             num = random.randrange(0, len(clue_list))
             clue_id = clue_list[num]["id"]

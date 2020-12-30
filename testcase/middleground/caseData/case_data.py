@@ -59,6 +59,14 @@ class middleground_data:
     test_inventory_add = [{"skuId":"","skuCode":"","quantity":1000},
                           ]
 
+    test_product_push = [{"title":"同步至ERP","data":{"skus":["T0101020001","T0101020002","T0101010001","T0101010002","T0102010001","T0102020001","T0102020002","T0101010003","T0103010001","T0102020003","T0102010002"],"subjectCode":"1"},"expect":"OK"},
+                         {"title":"sku不存在","data":{"skus":["0022222222222000"],"subjectCode":"1"},"expect":"ERROR"},
+                         {"title":"Code不存在","data":{"skus":["T0101020001","T0101020002","T0101010001"],"subjectCode":None},"expect":"ERROR"}]
+    test_product_sync = []
+    test_product_list = [{"pn":"","ps":"","name":"","skuCode":"","status":""}]
+    test_product_detail = []
+
+
 
 if __name__ == '__main__':
     t = Random().logo_list()

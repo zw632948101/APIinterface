@@ -91,7 +91,7 @@ class SuppliesMain(testCase):
         self.assertEqual(register['status'], "OK")
         supplies_list = self.fq.query_farm_supplies_info_list(farm_id, suppliesType)
         register = register.get('content')
-        datas = register.get('datas')
+        datas = register.get('test_case')
         self.assertEqual(register.get('tc'), len(supplies_list))
         for i in range(len(datas)):
             self.assertEqual(datas[i].get('id'), supplies_list[i].get('id'))

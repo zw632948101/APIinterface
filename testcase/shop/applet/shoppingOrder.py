@@ -100,19 +100,19 @@ class shopping_order(unittest.TestCase):
 
     # # 确认下单
     # @data(*submit_order().web_order_submit_order)
-    # def test_3_admin_web_order_submit_order(self,case):
-    #     shopId_ = case['data']['shopId']
+    # def test_3_admin_web_order_submit_order(self,datas):
+    #     shopId_ = datas['data']['shopId']
     #     product_ = str([{"cartId":getattr(Centext,'cartId'),"skuNo":mp_label().gti_web_cart_add2(True)[0]['code'],"skuNum":"3"}])
-    #     addressId_ = case['data']['addressId']
-    #     freight_ = case['data']['freight']
-    #     deliveryType_ = case['data']['deliveryType']
-    #     productPrice_ = case['data']['productPrice']
-    #     buyerMemo_ = case['data']['buyerMemo']
+    #     addressId_ = datas['data']['addressId']
+    #     freight_ = datas['data']['freight']
+    #     deliveryType_ = datas['data']['deliveryType']
+    #     productPrice_ = datas['data']['productPrice']
+    #     buyerMemo_ = datas['data']['buyerMemo']
     #     res = self.api._web_order_submit_order(shopId_=shopId_, product_=product_,
     #                                            addressId_=addressId_, freight_=freight_,
     #                                            deliveryType_=deliveryType_, productPrice_=productPrice_,
     #                                            buyerMemo_=buyerMemo_)
-    #     self.assertEqual(case['expect'], res.get('status'))
+    #     self.assertEqual(datas['expect'], res.get('status'))
     #     if res.get('status') == 'OK':
     #         orderNo=res.get('content')['orderNo']# 订单号存起来
     #         setattr(Centext,'orderNo',orderNo)

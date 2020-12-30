@@ -46,7 +46,7 @@ class CollectionStatistics(unittest.TestCase, DataConversion):
         b_status = random.choice([1, 2])
         response = self.ba._admin_platform_bee_friend_list(status_=b_status, pn_=1, ps_=20)
         self.assertEqual(response.get('status'), "OK")
-        content = sorted(response.get('content').get('datas'), key=lambda x: x['userId'])
+        content = sorted(response.get('content').get('test_case'), key=lambda x: x['userId'])
         friend = dataassemble(self.db.query_common_bee_friend(b_status=b_status))
         friend = sorted(friend, key=lambda x: x['userId'])
         for i in range(len(friend)):
@@ -68,7 +68,7 @@ class CollectionStatistics(unittest.TestCase, DataConversion):
         userinfo = random.choice(list(userinfo.values()))
         response = self.ba._admin_platform_bee_friend_list(status_=b_status, pn_=1, ps_=20, search_=userinfo)
         self.assertEqual(response.get('status'), "OK")
-        content = sorted(response.get('content').get('datas'), key=lambda x: x['userId'])
+        content = sorted(response.get('content').get('test_case'), key=lambda x: x['userId'])
         friend = dataassemble(self.db.query_common_bee_friend(b_status=b_status, b_search=userinfo))
         friend = sorted(friend, key=lambda x: x['userId'])
         for i in range(len(friend)):

@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 # @Time:2020/11/12 09:36
 # @Author: wei.zhang
-# @File : mobileApply.py
+# @File : Apply.py
 # @Software: PyCharm
 
 import json
@@ -48,3 +48,9 @@ class apply(unittest.TestCase):
                                           province_=province_, city_=city_, county_=county_,
                                           address_=address_, lng_=lng_, lat_=lat_)
         self.assertEqual(resp.get('status'), 'OK')
+
+    def test_admin_apply_cancel(self):
+        """
+        申请单-调拨申请取消
+        :return:
+        """

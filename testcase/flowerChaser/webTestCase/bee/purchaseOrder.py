@@ -41,7 +41,7 @@ class PurchaseOrder(unittest.TestCase, ConfigProductSql, FakeLocation, DataConve
         """
         response = self.trad._admin_purchase_order_page_list(status_=10)
         self.assertEqual("OK", response.get("status"))
-        datas = random.choice(response.get('content').get('datas'))
+        datas = random.choice(response.get('content').get('test_case'))
         orderNo = datas.get('orderNo')
         orderNo = '2009211820022744000702'
         response = self.trad._admin_purchase_order_product_info(orderNo_=orderNo)

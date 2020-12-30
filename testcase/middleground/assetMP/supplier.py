@@ -61,7 +61,7 @@ class supplier(unittest.TestCase):
         """
         code = 'MS-%s' % random.randint(1, 9999)
         name = '苗叔3'
-        supplierTypeId = 6
+        supplierTypeId = 8
         adderss = '四川省成都市高新区软件园A区'
         contacts = self.faker.name()
         phone = '15388126072'

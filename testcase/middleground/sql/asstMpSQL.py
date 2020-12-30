@@ -45,9 +45,7 @@ class productSQL(DataBaseOperate):
                unix_timestamp(ta.create_time) * 1000 AS createTime,
                unix_timestamp(ta.edit_time) * 1000 AS editTime,
                ta.id,
-               ta.is_delete   AS isDelete,
-               ''             AS orderField,
-               ''             AS orderFieldType
+               ta.is_delete   AS isDelete
             FROM `mp-asset`.t_attribute_dict ta
             WHERE ta.is_delete = 0
               AND ta.product_id = {pid}
@@ -55,7 +53,8 @@ class productSQL(DataBaseOperate):
               """.format(pid=pid)
         return self.operate_db(sql=sql)
 
-    def query_product_list_page(self, typeid=None, name=None, code=None, pn=None, ps=None):
+    def query_product_list_page(self, typeid=None, name=None, code=None, pn=None, ps=None,
+                                productid=None):
         """
         查询资产产品列表
         :param typeid:
@@ -63,11 +62,13 @@ class productSQL(DataBaseOperate):
         :param code:
         :param pn:
         :param ps:
+        :param productid:
         :return:
         """
         typeid = "AND tp.type_id = '%s'" % typeid if typeid is not None else ''
         name = "AND tp.name = '%s'" % name if name is not None else ''
         code = "AND tp.code = '%s'" % code if code is not None else ''
+        productid = "AND tp.code = '%s'" % productid if productid is not None else ''
         if pn is not None and ps is not None:
             p = int(ps)
             ps = int(ps) * int(pn)
@@ -86,14 +87,59 @@ class productSQL(DataBaseOperate):
                    tt.prefix,
                    unix_timestamp(tp.create_time) * 1000                                                                                         AS createTime,
                    (SELECT count(*) FROM `mp-asset`.t_code_base tc WHERE tc.product_id = tp.id AND tc.is_delete = 0)                                     AS baseTotal,
-                   (SELECT count(*) FROM `mp-asset`.t_code_base tc WHERE tc.product_id = tp.id AND tc.is_delete = 0 AND tc.storage_batch_id IS NOT NULL) AS baseUsed,
+                   (SELECT count(*) FROM `mp-asset`.t_code_base tc WHERE tc.product_id = tp.id AND tc.is_delete = 0 AND tc.status = 20) AS baseUsed,
                    (SELECT count(*) FROM `mp-asset`.t_code_base_rfid tc WHERE tc.product_id = tp.id AND tc.is_delete = 0) AS rfidTotal,
-                   (SELECT count(*) FROM `mp-asset`.t_code_base_rfid tc WHERE tc.product_id = tp.id AND tc.is_delete = 0 AND tc.storage_batch_id) AS rfidUsed
+                   (SELECT count(*) FROM `mp-asset`.t_code_base_rfid tc WHERE tc.product_id = tp.id AND tc.is_delete = 0 AND tc.status = 20) AS rfidUsed
             FROM `mp-asset`.t_product tp
                      LEFT JOIN `mp-asset`.t_product_type tt ON tp.type_id = tt.id
             WHERE tp.is_delete = 0
-            {typeid} {name} {code} {limit};
-              """.format(typeid=typeid, name=name, code=code, limit=limit)
+            {typeid} {name} {code} {productid}
+            ORDER BY tp.type_id ASC ,tp.create_time ASC
+            {limit};
+              """.format(typeid=typeid, name=name, code=code, limit=limit, productid=productid)
+        return self.operate_db(sql=sql)
+
+    def query_product_type_id(self):
+        """
+        查询产品类型id
+        :return:
+        """
+        sql = """
+        SELECT id,prefix FROM `mp-asset`.t_product_type WHERE is_delete = 0;
+              """
+        return self.operate_db(sql=sql)
+
+    def query_prodcut_parameter_info(self, code, name, unit, typeid):
+        """
+        根据参数查询资产信息
+        :param code:
+        :param name:
+        :param unit:
+        :param typeid:
+        :return:
+        """
+        sql = """
+            SELECT *
+            FROM `mp-asset`.t_product
+            WHERE code = '%s'
+              AND name = '%s'
+              AND unit = '%s'
+              AND type_id = %s;
+              """ % (code, name, unit, typeid)
+        return self.operate_db(sql=sql)
+
+    def query_admin_product_list(self):
+        """
+        查询资产产品
+        :return:
+        """
+        sql = """
+            SELECT tp.id,
+                   tp.name
+            FROM `mp-asset`.t_product tp
+            WHERE tp.is_delete = 0
+            ORDER BY tp.id DESC;
+              """
         return self.operate_db(sql=sql)
 
 
@@ -127,7 +173,8 @@ class warehouseSQL(DataBaseOperate):
               """.format(applicantid=applicantid, status=status)
         return self.operate_db(sql=sql)
 
-    def query_status_product_warehouse_aseet_code(self, status=10, warehouseid=None, product_id=None):
+    def query_status_product_warehouse_aseet_code(self, status=10, warehouseid=None,
+                                                  product_id=None):
         """
         跟进资产id和仓库id查询待出库的编码
         :param status:
@@ -164,22 +211,121 @@ class mobileWarehouseSQL(DataBaseOperate):
         super(mobileWarehouseSQL, self).__init__()
         self.operate_db = lambda sql: self.operate(host=host_ip, sql=sql)
 
-    def query_init_warehouse_code(self):
+    def query_admin_type_dict(self, typeid=None):
         """
-        查询未出库的RFID和二维码
+        根据传入参数查询类型
+        :param typeid:
         :return:
         """
         sql = """
-            SELECT tc.code AS qrCode, tf.code AS rfidCode
-            FROM `mp-asset`.t_code_base tc,
-                 `mp-asset`.t_code_base_rfid tf
-            WHERE tc.product_id = 1
-              AND tf.product_id = 1
-              AND tc.status = 10
-              AND tf.status = 10
-              AND tc.is_delete = 0
-              AND tf.is_delete = 0;
-              """
+        SELECT tt.id,tt.name FROM `mp-asset`.t_type_dict tt WHERE tt.type = {typeid};
+              """.format(typeid=typeid)
+        return self.operate_db(sql=sql)
+
+    def query_warehouse_detail(self, id_=None, code=None, name=None):
+        """
+        根据传入参数查询仓库详情
+        :param id_:
+        :param code:
+        :param name:
+        :return:
+        """
+        id_ = 'AND tw.id = %s' % id_ if id_ else ''
+        code = "AND tw.code = '%s'" % code if code else ''
+        name = "AND tw.name = '%s'" % name if name else ''
+        sql = """
+            SELECT tw.address,
+                   tw.area,
+                   tw.capacity,
+                   tw.code,
+                   unix_timestamp(tw.create_time) * 1000 AS createTime,
+                   tw.id,
+                   tw.landlord,
+                   tw.landlord_phone                     AS landlordPhone,
+                   tw.lat,
+                   tw.lng,
+                   tw.name,
+                   tw.remark,
+                   tw.rent,
+                   tw.rent_unit                          AS rentUnit,
+                   unix_timestamp(tw.lease_end_time)* 1000 AS leaseEndTime,
+                   unix_timestamp(tw.lease_start_time)* 1000 AS leaseStartTime,
+                   tw.goods_type_ids AS goodsType
+            FROM `mp-asset`.t_warehouse tw
+            WHERE tw.is_delete = 0
+            {code} {name} {id} ;
+              """.format(code=code, id=id_, name=name)
+        return self.operate_db(sql)
+
+    def query_asset_biz_attach(self, bizid):
+        """
+        查询业务附件
+        :param bizid:
+        :return:
+        """
+        sql = """
+                SELECT *
+                FROM `mp-asset`.t_biz_attach tb
+                WHERE tb.is_delete = 0
+                  AND tb.biz_id = %s
+                  AND tb.file_type = 1
+                  AND tb.biz_type = 1
+                  ORDER BY tb.id DESC;
+              """ % bizid
+        return self.operate_db(sql=sql)
+
+    def query_warehouse_user_base(self, warid):
+        """
+        根据仓库查询仓库管理员
+        :param warid:
+        :return:
+        """
+        sql = """
+            SELECT tb.user_id, tb.name
+            FROM `mp-asset`.t_storeman ts
+                     LEFT JOIN `mp-asset`.t_user_base tb ON tb.user_id = ts.user_id
+            WHERE ts.warehouse_id = %s;
+              """ % warid
+        return self.operate_db(sql)
+
+    def query_my_warehouse_info(self, userid):
+        """
+        根据用户id查询当前用户的仓库
+        :param userid:
+        :return:
+        """
+        sql = """
+            SELECT tw.code, tw.id, tw.name
+            FROM `mp-asset`.t_warehouse tw
+                     LEFT JOIN `mp-asset`.t_storeman ts ON tw.id = ts.warehouse_id
+            WHERE tw.is_delete = 0
+              AND ts.is_delete = 0
+              AND ts.user_id = %s;
+              """ % userid
+        return self.operate_db(sql)
+
+    def query_warehouse_info(self, name=None, code=None):
+        """
+        通过仓库代码和仓库名称查询仓库信息
+        :param name:
+        :param code:
+        :return:
+        """
+        code = " AND tw.code = '%s'" % code if code else ''
+        name = " AND tw.name = '%s'" % name if name else ''
+        sql = """
+            SELECT tw.address, tw.code, unix_timestamp(tw.create_time) * 1000 AS createTime, tw.id, tw.name, tu.name AS creator, group_concat(t.name) AS manager
+            FROM `mp-asset`.t_warehouse tw
+                     LEFT JOIN `mp-asset`.t_user_base tu ON tu.user_id = tw.creator_id
+                     LEFT JOIN (SELECT tub.name, ts.warehouse_id
+                                FROM `mp-asset`.t_storeman ts
+                                         LEFT JOIN `mp-asset`.t_user_base tub ON ts.user_id = tub.user_id
+                                WHERE ts.is_delete = 0
+                                  AND tub.is_delete = 0) AS t ON t.warehouse_id = tw.id
+            WHERE tw.is_delete = 0
+            {code} {name}
+            GROUP BY tw.id;
+              """.format(code=code, name=name)
         return self.operate_db(sql=sql)
 
 
@@ -215,3 +361,44 @@ class assetSQL(DataBaseOperate):
               AND tc.status = 10 LIMIT 20;
               """ % productid
         return self.operate_db(sql=sql)
+
+    def test_sql(self):
+        sql = """
+            SELECT p.id AS strategyId,p1.grade,CASE
+                WHEN 1=1 THEN
+                    ceiling(rand()*p1.price_max) 
+            END 'price',CASE
+                WHEN 1=1 THEN
+                    18455
+            END 'sellerId',
+            p.province,p.city,CASE
+                WHEN p.county=0 THEN
+                    r.id
+                ELSE
+                    p.county
+            END 'county',p.category,p.variety,
+            convert(CASE
+                WHEN p.category=1 THEN
+                    ceiling(rand()*3)
+                ELSE
+                    ceiling(rand()*2)
+            END,SIGNED) 'type',c.`key` AS purity,CASE
+                WHEN p.category=1 THEN
+                    ceiling(rand()*9 + 36)
+            END 'consistence',CASE
+                WHEN p.category=1 THEN
+                    ceiling(rand()*100)
+            END 'capRate',CASE
+                WHEN p.category=2 THEN
+                    ceiling(rand()*100)
+            END 'humidity',p.category
+            FROM `fc-trade`.t_price_category p,
+            `fc-bee`.t_region r,`fc-bee`.t_config c,`fc-trade`.t_price_strategy p1
+            WHERE p.`status`=1 AND r.parent_id=p.city AND c.`code`=10015 AND p1.price_category_id=p.id;
+              """
+        return self.operate_db(sql=sql)
+
+
+if __name__ == '__main__':
+    a = assetSQL()
+    print(a.test_sql())
