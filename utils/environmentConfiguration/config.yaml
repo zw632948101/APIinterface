@@ -1,6 +1,6 @@
 which_project: &which_project middleground
 env: &env
-  run: DEV
+  run: QA
   updateActionAPI: DEV_API
   version: 2.3.1
   RUN_LEVEL: 3
@@ -10,7 +10,7 @@ env: &env
     DEV:
       PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
     QA:
-      PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
+      PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
 
 flowerChaser:
   <<: *env

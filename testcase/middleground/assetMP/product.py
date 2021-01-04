@@ -92,7 +92,7 @@ class codeBase(unittest.TestCase):
         :return:
         """
         self.api = assetAction()
-        self.api.set_user(mobile=15388126072)
+        self.api.set_user(mobile=15388126082, account_type='user')
         self.db = productSQL()
         self.faker = Faker('zh_CN')
 
@@ -319,11 +319,11 @@ class codeBase(unittest.TestCase):
         """
         pid_info = random.choice(self.db.query_product_info())
         pid = pid_info.get('id')
-        productT = random.choice(self.db.query_product_type_id())
-        typeId = productT.get('id')  # 产品类型id
-        code = str(productT.get('prefix')) + str(random.randint(1, 9999))  # 代码库编码
-        name = '世界农场设备' + str(random.randint(1, 9999))  # 资产名称
-        unit = '台'  # 单位
+        # productT = random.choice(self.db.query_product_type_id())
+        typeId = pid_info.get('type_id')  # 产品类型id
+        code = pid_info.get('code')
+        name = pid_info.get('name')  # 资产名称
+        unit = pid_info.get('unit')  # 单位
         desc = self.faker.text(50)  # 资产说明
         attrs = json.dumps([{'attrName': '数量', 'unit': '台', 'type': '1'}])  # 资产属性集合
         response = self.api._admin_product_edit(id_=pid, typeId_=typeId, code_=code, name_=name,

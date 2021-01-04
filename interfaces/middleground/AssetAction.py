@@ -319,8 +319,8 @@ class assetAction(object):
         if self.user is None:
             data = {'input': input_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
-        response = self.request.post(url=self.url+'/admin/supplier/add', data=data, hosts=self.url)
+            data = {'input': input_}
+        response = self.request.post(url=self.url+'/admin/supplier/add', jsons=input_, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _admin_supplier_detail(self, id_=None):
@@ -336,7 +336,7 @@ class assetAction(object):
             data = {'input': input_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
-        response = self.request.post(url=self.url+'/admin/supplier/edit', data=data, hosts=self.url)
+        response = self.request.post(url=self.url+'/admin/supplier/edit', jsons=input_, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _admin_supplier_enable(self, id_=None, enabled_=None):
@@ -368,7 +368,7 @@ class assetAction(object):
             data = {'input': input_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
-        response = self.request.post(url=self.url+'/admin/supplier/page', data=data, hosts=self.url)
+        response = self.request.post(url=self.url+'/admin/supplier/page', data=input_, hosts=self.url)
         return self.__judge_response_status(json.loads(response))
 
     def _admin_supplier_record(self, pn_=None, ps_=None, supplierId_=None):

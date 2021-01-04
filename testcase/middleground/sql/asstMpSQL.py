@@ -148,6 +148,12 @@ class supplierSQL(DataBaseOperate):
         super(supplierSQL, self).__init__()
         self.operate_db = lambda sql: self.operate(host=host_ip, sql=sql)
 
+    def query_asset_supplier(self):
+        sql = """
+            SELECT * FROM `mp-asset`.t_supplier ts WHERE ts.is_delete = 0;
+              """
+        return self.operate_db(sql=sql)
+
 
 class warehouseSQL(DataBaseOperate):
     def __init__(self):
