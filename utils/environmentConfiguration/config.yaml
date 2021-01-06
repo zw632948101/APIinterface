@@ -113,7 +113,7 @@ middleground:
       MP_WMS: 'http://dev-gateway.worldfarm.com/mp-wms'
       MP_MEMBER: 'http://dev-gateway.worldfarm.com/mp-member'
       MP_SHOP: 'http://dev-gateway.worldfarm.com/mp-shop'
-      MP_PAY: 'http://dev-gateway.worldfarm.com/mp-pay'
+#      MP_PAY: 'http://dev-gateway.worldfarm.com/mp-pay'
       MP_OMS: 'http://dev-gateway.worldfarm.com/mp-oms'
 
     DEV_API:
@@ -123,7 +123,7 @@ middleground:
       MP_WMS: 'http://dev-gateway.worldfarm.com/mp-wms'
       MP_MEMBER: 'http://dev-gateway.worldfarm.com/mp-member'
       MP_SHOP: 'http://dev-gateway.worldfarm.com/mp-shop'
-      MP_PAY: 'http://dev-gateway.worldfarm.com/mp-pay'
+#      MP_PAY: 'http://dev-gateway.worldfarm.com/mp-pay'
       MP_OMS: 'http://dev-gateway.worldfarm.com/mp-oms'
 
     QA:
@@ -133,7 +133,7 @@ middleground:
       MP_WMS: 'http://qa-gateway.worldfarm.com/mp-wms'
       MP_MEMBER: 'http://qa-gateway.worldfarm.com/mp-member'
       MP_SHOP: 'http://qa-gateway.worldfarm.com/mp-shop'
-      MP_PAY: 'http://qa-gateway.worldfarm.com/mp-pay'
+#      MP_PAY: 'http://qa-gateway.worldfarm.com/mp-pay'
       MP_OMS: 'http://qa-gateway.worldfarm.com/mp-oms'
 
     QA_API:
@@ -143,7 +143,7 @@ middleground:
       MP_WMS: 'http://qa-gateway.worldfarm.com/mp-wms'
       MP_MEMBER: 'http://qa-gateway.worldfarm.com/mp-member'
       MP_SHOP: 'http://qa-gateway.worldfarm.com/mp-shop'
-      MP_PAY: 'http://qa-gateway.worldfarm.com/mp-pay'
+#      MP_PAY: 'http://qa-gateway.worldfarm.com/mp-pay'
       MP_OMS: 'http://qa-gateway.worldfarm.com/mp-oms'
 
 wxshop:

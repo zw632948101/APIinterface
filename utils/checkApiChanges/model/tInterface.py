@@ -22,7 +22,8 @@ class Interface(Base):
     createTime = Column(DateTime, nullable=False, server_default=func.now(), comment='记录创建时间')
     updateTime = Column(DateTime, nullable=False, server_default=func.now(), onupdate=func.now(), comment='记录更新时间')
 
-    input_parameters = relationship("InputParameters", backref="input_parameters_of_api")
-    extract_parameters = relationship("ExtractParameters", backref="extract_parameters_of_api")
+    # input_parameters = relationship("InputParameters", backref="input_parameters_of_api")
+    # interface = relationship("Interface", backref="interface_of_api")
+    # extract_parameters = relationship("ExtractParameters", backref="extract_parameters_of_api")
 
 

@@ -27,7 +27,7 @@ class DBEngine(object):
                                       pool_timeout=30,  # 池中没有线程最多等待的时间
                                       pool_recycle=-1,  # 多久之后对线程中的线程进行一次连接的回收(重置)
                                       encoding="utf-8",
-                                      echo=True)
+                                      echo=False)
         Base.metadata.create_all(self.__engine)
         self.session = None
 
