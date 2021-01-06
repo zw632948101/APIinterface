@@ -43,20 +43,22 @@ class Request(object):
                 cn += ch.encode('utf-8')
         return cn
 
-    def post(self, url, data, headers=None, hosts=None):
+    def post(self, url, data=None, headers=None, jsons=None, hosts=None):
         client = requests.session()
         if headers is None:
             headers = self.headers.copy()
         if url.find('mgr.agrrobot.com') > 0:
             headers['Authentication-Token'] = data.get('_tk_')
-        response = client.post(url=url, data=data, headers=headers, cookies=None)
+        if url.find('admin/supplier/add') > 0 or url.find("/admin/supplier/edit") > 0:
+            headers["Content-Type"] = 'application/json;charset=UTF-8'
+        response = client.post(url=url, data=data, json=jsons, headers=headers, cookies=None)
         content = response.content
         log.info('headers: %s' % headers)
         Content_Type = response.headers.get('Content-Type')
         log.info(Content_Type)
         if not Content_Type.find('excel'):
             content = content.decode("utf-8")
-        log.debug('\n\trequest: %s\n\tdata: %s\n\tresponse: %s' % (url, data, content))
+        log.debug('\n\trequest: %s\n\tdata: %s\n\tjson: %s\n\tresponse: %s' % (url, data,jsons, content))
         try:
             response_json = json.loads(content)
             log.debug("\n" + json.dumps(response_json, ensure_ascii=False,
@@ -96,7 +98,8 @@ class Request(object):
         if url.find('mgr.agrrobot.com') > 0:
             headers['Authentication-Token'] = data.get('_tk_')
         response = requests.post(url=url, data=data, files=files, headers=headers).content
-        log.debug('\n\trequest: %s\n\tfile: %s\n\tresponse: %s' % (url, file_path, response.decode("utf-8")))
+        log.debug('\n\trequest: %s\n\tfile: %s\n\tresponse: %s' % (
+        url, file_path, response.decode("utf-8")))
         try:
             response_json = json.loads(response)
             log.debug("\n" + json.dumps(response_json, ensure_ascii=False,
@@ -105,6 +108,3 @@ class Request(object):
             log.debug(response)
         # rea().reload_data(host_name=hosts, url=url)
         return response.decode("utf-8")
-
-
-

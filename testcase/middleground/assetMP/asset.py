@@ -23,7 +23,7 @@ class asset(unittest.TestCase):
         :return:
         """
         self.api = assetAction()
-        self.api.set_user(mobile=15388126082)
+        self.api.set_user(mobile=18482332785)
         self.db = assetSQL()
         self.faker = Faker('zh_CN')
 
@@ -32,10 +32,10 @@ class asset(unittest.TestCase):
         初始化资产
         :return:
         """
-        codeinfo = self.db.query_code_base_all_code(productid=3)
-        rfid = self.db.query_code_base_all_rfidcode(productid=3)
+        codeinfo = self.db.query_code_base_all_code(productid=1)
+        rfid = self.db.query_code_base_all_rfidcode(productid=1)
         codes = json.dumps([dict(i, **k) for i, k in zip(codeinfo, rfid)])
-        warehouseId = 9
+        warehouseId = 18
         supplierId = 6
-        resp = self.api._admin_asset_init(codes_=codes, warehouseId_=warehouseId, supplierId_=supplierId)
+        resp = self.api._admin_asset_init(codes_=codes, warehouseId_=warehouseId, supplierId_=supplierId,haveRfid_=True)
         self.assertEqual(resp.get('status'), 'OK')
