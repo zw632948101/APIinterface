@@ -451,5 +451,5 @@ class ManageTest(testCase):
 
 
 if __name__ == '__main__':
-    m = Main()
+    m = ManageTest()
     unittest.main()
