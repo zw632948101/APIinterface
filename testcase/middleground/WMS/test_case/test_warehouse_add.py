@@ -85,7 +85,7 @@ class warehouse_add(unittest.TestCase):
                        cookie=None)
         self.assertEqual(case['expect'],resp.get_json()['status'])
         if resp.get_json()['status'] == 'OK':
-            pass
+            print(resp.get_json())
 
     # 分页列表
     @data(*warehouse_data().admin_warehouse_page_list)

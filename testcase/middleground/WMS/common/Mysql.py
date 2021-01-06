@@ -26,7 +26,21 @@ class mp_label(DataBaseOperate):
         sql = "SELECT * FROM `mp-wms`.`t_warehouse_monitor` where is_delete != 0 order by id desc limit 1;"
         return self.operate_db(sql=sql)
 
+    def git_warehouse_status(self):
+        '''查询已启用状态得仓库'''
+        sql = "select * from `mp-wms`.`t_warehouse` " \
+              "where id in (select `id` from `mp-wms`.`t_warehouse` group by `name` having `status` = 1) " \
+              "and `name` != '' order by id desc limit 10;"
+        return self.operate_db(sql=sql)
 
+    def git_warehouse_employee(self):
+        '''查出仓库已绑定员工的关系id'''
+        sql = "select * from `mp-wms`.`t_warehouse_employee` where is_delete = 0 order by id desc limit 1;"
+        return self.operate_db(sql=sql)
+    def gti_warehouse_erp_sync_log(self):
+        '''查wms同步到erp的日志'''
+        sql = "select * from `mp-wms`.t_warehouse_erp_sync_log where `status` = 1;"
+        return self.operate_db(sql=sql)
 
 
 
@@ -72,8 +86,5 @@ class mp_label(DataBaseOperate):
 
 
 if __name__ == '__main__':
-    sql = "SELECT * FROM `t_warehouse_monitor`  where warehouse_id = 1  and is_delete != 1 order by id desc limit 1;"
-
-    warehouse = mp_label().git_warehouse_monitor_is_delete()[0]['name']
-    # 获取绑定关系的id，需要在解绑的时候传入
-    print(warehouse)
+   t = mp_label().gti_warehouse_erp_sync_log()
+   print(t)

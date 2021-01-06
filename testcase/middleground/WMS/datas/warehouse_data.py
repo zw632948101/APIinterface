@@ -1,6 +1,6 @@
+import random
 
-
-
+from testcase.middleground.WMS.common.Mysql import mp_label
 
 class warehouse_data:
 
@@ -176,5 +176,27 @@ class warehouse_data:
                               ]
     admin_warehouse_monitor_list = [{"title":"获取绑定的列表","url":"/admin/warehouse/monitor/list","data":{"id":"1"},"expect":"OK"},
                                     {"title":"id传空","url":"/admin/warehouse/monitor/list","data":{"id":None},"expect":"ERROR"}]
+    admin_wraehouse_employee_add = [{"title":"员工关联-正常关联",
+                                     "data":{"userIds":[18457,18607,18595,18511,18315],"warehouseId":random.choice(mp_label().git_warehouse_status())['id']},
+                                     "expect":"OK"},
+                                    {"title":"员工关联-id为空",
+                                     "data":{"userIds":"","warehouseId":"111"},
+                                     "expect":"ERROR"},
+                                    {"title":"员工关联-id不存在",
+                                     "data":{"userIds":"[99999,88888]","warehouseId":"111"},
+                                     "expect":"ERROR"},
+                                    {"title":"员工关联-仓库id为空",
+                                     "data":{"userIds":"[18457,18607,18595,18511,18315]","warehouseId":""},
+                                     "expect":"ERROR"},
+                                    {"title":"员工关联-仓库id不存在",
+                                     "data":{"userIds":"[18457,18607,18595,18511,18315]","warehouseId":"99999999"},
+                                     "expect":"ERROR"}]
+    admin_wraehouse_employee_del = [{"title":"解除绑定-正常解除",
+                                     "data":{"warehouseEmployeeId":mp_label().git_warehouse_employee()[0]['id']},
+                                     "expect":"OK"},
+                                    {"title":"解除绑定-id为空","data":{"warehouseEmployeeId":""},"expect":"ERROR"},
+                                    {"title":"解除绑定-id不存在","data":{"warehouseEmployeeId":"777777777"},"expect":"ERROR"}]
+    admin_wraehouse_employee_list = [{"title":"","data":{"id":mp_label().git_warehouse_employee()[0]['id']},"expect":"OK"},
+                                     {"title":"","data":{"id":''},"expect":"ERROR"}]
 
 
