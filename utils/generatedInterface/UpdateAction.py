@@ -224,3 +224,7 @@ if __name__ == '__main__':
     # update_action.add_latest_yaml()
     # update_action.add_path_only_txt()
     # update_action.get_edit_api()
+    # from utils.checkApiChanges.model.dbEngine import DBEngine
+    # db = DBEngine()
+    # db.db_create()
+    # db.update_migrate()
