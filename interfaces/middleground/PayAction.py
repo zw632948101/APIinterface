@@ -8,12 +8,12 @@ from utils.checkApiChanges.checher.apiTestResult import apiTestResult
 import json
 
 
-class action_nameAction(object):
+class payAction(object):
     def __init__(self):
         self.request = Request()
-        self.url = config.get('hosts').get(config.get('run')).get('url_host')
+        self.url = config.get('hosts').get(config.get('run')).get('MP_PAY')
 
-    def set_user(self, mobile=None, account_type='accounttype', **kwargs):
+    def set_user(self, mobile=None, account_type='user', **kwargs):
         if mobile is None:
             self.user = None
         else:

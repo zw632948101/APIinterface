@@ -4,4 +4,5 @@
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_idfunc_param}
         response = self.request.get(url=self.url+'key', params=data, hosts=self.url)
+        apiTestResult(api='key', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
