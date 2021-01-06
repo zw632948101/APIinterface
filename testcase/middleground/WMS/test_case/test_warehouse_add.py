@@ -30,34 +30,82 @@ class warehouse_add(unittest.TestCase):
             "region": "online"
         }
 
-    @data(*warehouse_data().admin_warehouse_add)
-    def test_warehouse_add(self,case):
-        url = read_config(Public_mkdir).get("test_url","url") + case['url']
-        data = json.dumps(case['data'])
-        response = Request('post',url=url,data=data,headers=self.headers,cookie=None)
-        result = response.get_json()
-        print(result)
-        self.assertEqual(case['expect'],result['status'])
-        if result['status'] == 'OK':
-            pass
-            # 接口请求成功，做数据库断言
-        else:
-            pass
-    # @data(*warehouse_data().admin_warehouse_update)
-    # def test_warehouse_update(self,case):
-    #     url = read_config(Public_mkdir).get("test_url","url")
+        self.url = read_config(Public_mkdir).get("test_url","url")
+
+    # @data(*warehouse_data().admin_warehouse_add)
+    # def test_warehouse_add(self,case):
+    #     url = read_config(Public_mkdir).get("test_url","url") + case['url']
     #     data = json.dumps(case['data'])
-    #     response = Request('post', url=url, data=data, headers=self.headers, cookie=None)
-    #     result = response.get_json()
-    #     self.assertEqual(case['expect'], result['status'])
-    #     if result['status'] == 'OK':
-    #         url_2 = read_config(Public_mkdir).get("test_url","url") + "/admin/warehouse/detail"
-    #         Request('post',url=url_2,data=case['data']['id'],headers=self.headers, cookie=None)
     #
+    #     response = Request('post',url=url,data=data,headers=self.headers,cookie=None)
+    #     result = response.get_json()
+    #
+    #     self.assertEqual(case['expect'],result['status'])
+    #     if result['status'] == 'OK':
+    #         pass
+    #         # 接口请求成功，做数据库断言
     #     else:
     #         pass
+    # 详情-附加属性
+    @data(*warehouse_data().admin_warehouse_detail)
+    def test_admin_warehouse_additional_detail(self,case):
+        url = self.url + '/admin/warehouse/additional-detail'
+        data = case['data']
+        resp = Request('post',
+                       url=url,
+                       data=data,
+                       headers=self.headers,
+                       cookie=None)
+        self.assertEqual(case['expect'],resp.get_json()['status'])
+        if resp.get_json()['status'] == 'OK':
+            pass
+            #print(resp.get_json())
+    @data(*warehouse_data().admin_warehouse_additional_update)
+    def test_admin_warehouse_additional_update(self,case):
+        url = self.url + '/admin/warehouse/additional-update'
+        data = case['data']
 
+        resp = Request('post',
+                       url=url,
+                       data=data,
+                       headers=self.headers,
+                       cookie=None)
+        self.assertEqual(case['expect'],resp.get_json()['status'])
+        if resp.get_json()['status'] == 'OK':
+            pass
+    # 仓库列表
+    @data(*warehouse_data().admin_warehouse_list)
+    def test_admin_warehouse_list(self,case):
+        url = self.url + '/admin/warehouse/list'
+        data = case['data']
+        resp = Request('post',
+                       url=url,
+                       data=data,
+                       headers=self.headers,
+                       cookie=None)
+        self.assertEqual(case['expect'],resp.get_json()['status'])
+        if resp.get_json()['status'] == 'OK':
+            pass
 
+    # 分页列表
+    @data(*warehouse_data().admin_warehouse_page_list)
+    def test_admin_warehouse_page_list(self,case):
+        url = self.url + '/admin/warehouse/page-list'
+        data = case['data']
+        resp = Request('post',url=url,data=data,headers=self.headers,cookie=None)
+        self.assertEqual(case['expect'],resp.get_json()['status'])
+
+    # 推送至erp
+    @data(*warehouse_data().admin_warehouse_push_to_erp)
+    def test_admin_warehouse_push_to_erp(self,case):
+        url = self.url + '/admin/warehouse/push-to-erp'
+        data = case['data']
+        resp = Request('post',
+                       url=url,
+                       data=data,
+                       headers=self.headers,
+                       cookie=None)
+        self.assertEqual(case['expect'],resp.get_json()['status'])
 
 
 if __name__ == '__main__':
