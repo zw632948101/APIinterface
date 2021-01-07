@@ -5,7 +5,7 @@ import warnings
 from interfaces.middleground.ProductAction import ProductAction
 from interfaces.middleground.ProductAction import ProductAction
 from testcase.middleground.caseData.case_api import api_data
-from testcase.middleground.sql.shopMP import mp_label
+from testcase.middleground.sql.shopMP import mpShopSql
 from utils import runlevel, timestamp
 from ddt import data, unpack, ddt
 from faker import Faker
@@ -19,7 +19,7 @@ class shopManage(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         global expect
-        expect = mp_label().git_admin_shop_add()[0]['is_delete']
+        expect = mpShopSql().git_admin_shop_add()[0]['is_delete']
     def setUp(self) -> None:
         """
         测试前数据准备
@@ -27,7 +27,7 @@ class shopManage(unittest.TestCase):
         """
         self.api = ProductAction()
         self.api.set_user(mobile=15388126072)
-        self.db = mp_label()
+        self.db = mpShopSql()
         self.faker = Faker('zh_CN')
 
 
@@ -61,9 +61,9 @@ class shopManage(unittest.TestCase):
     # #删除最新的店铺
     @data(*api_data().admin_shop_delete)
     def test_admin_shop_fdelete(self,case):
-        _id = mp_label().git_admin_shop_add()[0]['id']
+        _id = mpShopSql().git_admin_shop_add()[0]['id']
         isDelete_ = case['data']['isDelete_']
-        actual = mp_label().git_admin_shop_add()[0]['is_delete']
+        actual = mpShopSql().git_admin_shop_add()[0]['is_delete']
 
         resp = self.api._admin_shop_delete(id_=_id, isDelete_=isDelete_)
         self.assertEqual(case['expected'],resp.get('status'))

@@ -55,6 +55,10 @@ class SessionTool(object):
         elif account_type == 'employee':
             session = Request().post(url=host + "/admin/sso/email-login",
                                      data=data)
+        elif account_type == 'web-mp':
+            data['deviceType'] = 'WEB'
+            session = Request().post(url=host + "/admin/sso/sms-login",
+                                     data=data)
         elif account_type == 'wf_account':
             datas = {'appId': 'WORLD_FARM', 'deviceType': 'IOS', 'deviceId': 'qaTeam',
                      'account': mobile,
@@ -66,6 +70,14 @@ class SessionTool(object):
                                      data=data)
         else:
             raise Exception("account_type非法, 仅支持user/employee")
+        if account_type in ('web-mp') and json.loads(session).get('status') == 'OK':
+            headers = Request.headers.copy()
+            headers['_Device-Id_'] = json.loads(session)['content']['deviceId']
+            headers['_Token_'] = json.loads(session)['content']['token']
+            host = host.replace('world-passport', 'fc-bee')
+            resp = Request().post(url=host + '/admin/fc-user/permission-check', headers=headers)
+            if json.loads(resp).get('status') == 'ERROR':
+                session = resp
         return session
 
 
@@ -73,9 +85,13 @@ class UserSession(object):
     def __init__(self, mobile, account_type='user', **kwargs):
         session = SessionTool().get_user_session(mobile, account_type, **kwargs)
         session_json = json.loads(session)
-        self.deviceId = str(session_json["content"]["deviceId"])
-        self.encryptedPwd = str(session_json["content"]["encryptedPwd"])
-        self.token = str(session_json["content"]["token"])
+        if session_json.get('status') == 'OK':
+            self.deviceId = str(session_json["content"]["deviceId"])
+            self.encryptedPwd = str(session_json["content"]["encryptedPwd"])
+            self.token = str(session_json["content"]["token"])
+            self.userId = str(session_json["content"]["bizId"])
+        if session_json.get('status') == 'ERROR':
+            self.errorMsg = session_json.get("message")
 
 
 class User(object):
@@ -86,15 +102,19 @@ class User(object):
         self.request = Request()
         us = UserSession(mobile, account_type, **kwargs)
         self.token = us.token
-        self.user_info = self.db_user_info.mgr_query_user_info_by_account(mobile)
-        if self.user_info != ():
-            self.user_info = self.user_info[0]
-            self.user_id = self.user_info["user_id"]
-            self.phone = self.user_info["phone"]
-            self.username = self.user_info["username"]
-            self.create_time = self.user_info["create_time"]
-            self.device_id = self.user_info["device_id"]
-            self.is_delete = self.user_info["is_delete"]
+        self.phone = mobile
+        self.email = mobile
+        self.user_id = us.userId
+        self.device_id = us.deviceId
+        # self.user_info = self.db_user_info.mgr_query_user_info_by_account(mobile)
+        # if self.user_info != ():
+        #     self.user_info = self.user_info[0]
+        #     self.user_id = self.user_info["user_id"]
+        #     self.phone = self.user_info["phone"]
+        #     self.username = self.user_info["username"]
+        #     self.create_time = self.user_info["create_time"]
+        #     self.device_id = self.user_info["device_id"]
+        #     self.is_delete = self.user_info["is_delete"]
 
     def check_token(self):
         """

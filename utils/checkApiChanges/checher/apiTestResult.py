@@ -12,7 +12,6 @@ import json
 from utils.checkApiChanges.model.tInterface import Interface
 from utils.checkApiChanges.model.tServer import Server
 from utils.checkApiChanges.model.tExtractParameters import ExecutionApi
-from utils import conversion
 
 
 class InternalServerError(Exception):
@@ -52,11 +51,11 @@ class apiTestResult(object):
             raise InternalServerError("无当前执行接口：%s" % self.api)
         apiInterface = session.query(Interface).filter(
             and_(Interface.id == whichapi.id, Interface.apiStatus == 1)).first()
-        apiInterface.testStatus = 1
+        apiInterface.testStatus = 2
+        session.commit()
         casepar = session.query(ExecutionApi).filter(
             and_(ExecutionApi.apiId == whichapi.id, ExecutionApi.isDelete == 0,
                  ExecutionApi.respStatus == json.loads(self.resp).get('status'))).all()
-        session.commit()
         ca = []
         for i in casepar:
             ca.append(i.extParameter)
