@@ -6,7 +6,7 @@ import json
 from interfaces.middleground.ProductAction import ProductAction
 from testcase.middleground.sql.goodsMP import mp_label as goods_mp
 from testcase.middleground.sql.brandMP import mp_label as brand_mp
-from testcase.middleground.sql.shopMP import mp_label as shop_mp
+from testcase.middleground.sql.shopMP import mpShopSql as shop_mp
 from testcase.middleground.sql.sku_inventoryMP import mp_label as sku_mp
 from testcase.middleground.caseData.case_data import middleground_data
 from utils import runlevel, timestamp
