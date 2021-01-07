@@ -82,6 +82,51 @@ class wms_apiAction(object):
         apiTestResult(api='/admin/invoice/detail', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
+    def _admin_invoice_notice_confirm(self, orderCode_=None):
+        if self.user is None:
+            data = {'orderCode': orderCode_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'orderCode': orderCode_}
+        response = self.request.post(url=self.url+'/admin/invoice/notice/confirm', data=data, hosts=self.url)
+        apiTestResult(api='/admin/invoice/notice/confirm', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_invoice_notice_count(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/admin/invoice/notice/count', data=data, hosts=self.url)
+        apiTestResult(api='/admin/invoice/notice/count', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_invoice_notice_detail(self, pn_=None, ps_=None, orderCode_=None):
+        if self.user is None:
+            data = {'pn': pn_, 'ps': ps_, 'orderCode': orderCode_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'orderCode': orderCode_}
+        response = self.request.post(url=self.url+'/admin/invoice/notice/detail', data=data, hosts=self.url)
+        apiTestResult(api='/admin/invoice/notice/detail', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_invoice_notice_page_list(self, pn_=None, ps_=None, orderCode_=None, relevanceCode_=None, status_=None, type_=None, warehouseCode_=None, operatorId_=None):
+        if self.user is None:
+            data = {'pn': pn_, 'ps': ps_, 'orderCode': orderCode_, 'relevanceCode': relevanceCode_, 'status': status_, 'type': type_, 'warehouseCode': warehouseCode_, 'operatorId': operatorId_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'orderCode': orderCode_, 'relevanceCode': relevanceCode_, 'status': status_, 'type': type_, 'warehouseCode': warehouseCode_, 'operatorId': operatorId_}
+        response = self.request.post(url=self.url+'/admin/invoice/notice/page-list', data=data, hosts=self.url)
+        apiTestResult(api='/admin/invoice/notice/page-list', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_invoice_notice_product_page_list(self, pn_=None, ps_=None, orderCode_=None):
+        if self.user is None:
+            data = {'pn': pn_, 'ps': ps_, 'orderCode': orderCode_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'orderCode': orderCode_}
+        response = self.request.post(url=self.url+'/admin/invoice/notice/product/page-list', data=data, hosts=self.url)
+        apiTestResult(api='/admin/invoice/notice/product/page-list', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
     def _admin_invoice_page_list(self, pn_=None, ps_=None, orderCode_=None, status_=None, type_=None, warehouseCode_=None, operatorId_=None):
         if self.user is None:
             data = {'pn': pn_, 'ps': ps_, 'orderCode': orderCode_, 'status': status_, 'type': type_, 'warehouseCode': warehouseCode_, 'operatorId': operatorId_, }
@@ -145,51 +190,6 @@ class wms_apiAction(object):
     #     apiTestResult(api='/admin/move/pda/pick-submit', host=self.url,datas=data, resp=response)
     #     return self.__judge_response_status(json.loads(response))
 
-    def _admin_notice_product_page_list(self, pn_=None, ps_=None, orderCode_=None):
-        if self.user is None:
-            data = {'pn': pn_, 'ps': ps_, 'orderCode': orderCode_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'orderCode': orderCode_}
-        response = self.request.post(url=self.url+'/admin/notice-product/page-list', data=data, hosts=self.url)
-        apiTestResult(api='/admin/notice-product/page-list', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
-    def _admin_notice_confirm(self, orderCode_=None):
-        if self.user is None:
-            data = {'orderCode': orderCode_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'orderCode': orderCode_}
-        response = self.request.post(url=self.url+'/admin/notice/confirm', data=data, hosts=self.url)
-        apiTestResult(api='/admin/notice/confirm', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
-    def _admin_notice_count(self):
-        if self.user is None:
-            data = {}
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
-        response = self.request.post(url=self.url+'/admin/notice/count', data=data, hosts=self.url)
-        apiTestResult(api='/admin/notice/count', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
-    def _admin_notice_detail(self, pn_=None, ps_=None, orderCode_=None):
-        if self.user is None:
-            data = {'pn': pn_, 'ps': ps_, 'orderCode': orderCode_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'orderCode': orderCode_}
-        response = self.request.post(url=self.url+'/admin/notice/detail', data=data, hosts=self.url)
-        apiTestResult(api='/admin/notice/detail', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
-    def _admin_notice_page_list(self, pn_=None, ps_=None, orderCode_=None, relevanceCode_=None, status_=None, type_=None, warehouseCode_=None, operatorId_=None):
-        if self.user is None:
-            data = {'pn': pn_, 'ps': ps_, 'orderCode': orderCode_, 'relevanceCode': relevanceCode_, 'status': status_, 'type': type_, 'warehouseCode': warehouseCode_, 'operatorId': operatorId_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'orderCode': orderCode_, 'relevanceCode': relevanceCode_, 'status': status_, 'type': type_, 'warehouseCode': warehouseCode_, 'operatorId': operatorId_}
-        response = self.request.post(url=self.url+'/admin/notice/page-list', data=data, hosts=self.url)
-        apiTestResult(api='/admin/notice/page-list', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
     def _admin_operation_log_list(self, bizCode_=None, biz_=None):
         if self.user is None:
             data = {'bizCode': bizCode_, 'biz': biz_, }
@@ -206,6 +206,33 @@ class wms_apiAction(object):
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'orderCode': orderCode_}
         response = self.request.post(url=self.url+'/admin/order/erp-sync-log/list', data=data, hosts=self.url)
         apiTestResult(api='/admin/order/erp-sync-log/list', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_pda_receipt_list(self, pn_=None, ps_=None, status_=None, type_=None, shopCode_=None):
+        if self.user is None:
+            data = {'pn': pn_, 'ps': ps_, 'status': status_, 'type': type_, 'shopCode': shopCode_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'status': status_, 'type': type_, 'shopCode': shopCode_}
+        response = self.request.post(url=self.url+'/admin/pda/receipt/list', data=data, hosts=self.url)
+        apiTestResult(api='/admin/pda/receipt/list', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_pda_receipt_product_list(self, code_=None):
+        if self.user is None:
+            data = {'code': code_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_}
+        response = self.request.post(url=self.url+'/admin/pda/receipt/product/list', data=data, hosts=self.url)
+        apiTestResult(api='/admin/pda/receipt/product/list', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_pda_receipt_product_submit(self, code_=None, productInfo_=None, qualityResult_=None, receiptQualityInfo_=None):
+        if self.user is None:
+            data = {'code': code_, 'productInfo': productInfo_, 'qualityResult': qualityResult_, 'receiptQualityInfo': receiptQualityInfo_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_, 'productInfo': productInfo_, 'qualityResult': qualityResult_, 'receiptQualityInfo': receiptQualityInfo_}
+        response = self.request.post(url=self.url+'/admin/pda/receipt/product/submit', data=data, hosts=self.url)
+        apiTestResult(api='/admin/pda/receipt/product/submit', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
     def _admin_pick_doc_count(self):
@@ -242,6 +269,141 @@ class wms_apiAction(object):
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'orderCode': orderCode_}
         response = self.request.post(url=self.url+'/admin/pick-product/page-list', data=data, hosts=self.url)
         apiTestResult(api='/admin/pick-product/page-list', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_receipt_cancel(self, code_=None):
+        if self.user is None:
+            data = {'code': code_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_}
+        response = self.request.post(url=self.url+'/admin/receipt/cancel', data=data, hosts=self.url)
+        apiTestResult(api='/admin/receipt/cancel', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_receipt_count(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/admin/receipt/count', data=data, hosts=self.url)
+        apiTestResult(api='/admin/receipt/count', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_receipt_detail(self, code_=None):
+        if self.user is None:
+            data = {'code': code_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_}
+        response = self.request.post(url=self.url+'/admin/receipt/detail', data=data, hosts=self.url)
+        apiTestResult(api='/admin/receipt/detail', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_receipt_notice_add(self, relevanceCode_=None, source_=None, type_=None, warehouseCode_=None, purchasingCompany_=None, possessor_=None, supplier_=None, remark_=None, erpType_=None, productInfo_=None):
+        if self.user is None:
+            data = {'relevanceCode': relevanceCode_, 'source': source_, 'type': type_, 'warehouseCode': warehouseCode_, 'purchasingCompany': purchasingCompany_, 'possessor': possessor_, 'supplier': supplier_, 'remark': remark_, 'erpType': erpType_, 'productInfo': productInfo_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'relevanceCode': relevanceCode_, 'source': source_, 'type': type_, 'warehouseCode': warehouseCode_, 'purchasingCompany': purchasingCompany_, 'possessor': possessor_, 'supplier': supplier_, 'remark': remark_, 'erpType': erpType_, 'productInfo': productInfo_}
+        response = self.request.post(url=self.url+'/admin/receipt/notice/add', data=data, hosts=self.url)
+        apiTestResult(api='/admin/receipt/notice/add', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_receipt_notice_cancel(self, code_=None):
+        if self.user is None:
+            data = {'code': code_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_}
+        response = self.request.post(url=self.url+'/admin/receipt/notice/cancel', data=data, hosts=self.url)
+        apiTestResult(api='/admin/receipt/notice/cancel', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_receipt_notice_confirm(self, code_=None):
+        if self.user is None:
+            data = {'code': code_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_}
+        response = self.request.post(url=self.url+'/admin/receipt/notice/confirm', data=data, hosts=self.url)
+        apiTestResult(api='/admin/receipt/notice/confirm', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_receipt_notice_count(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/admin/receipt/notice/count', data=data, hosts=self.url)
+        apiTestResult(api='/admin/receipt/notice/count', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_receipt_notice_detail(self, code_=None):
+        if self.user is None:
+            data = {'code': code_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_}
+        response = self.request.post(url=self.url+'/admin/receipt/notice/detail', data=data, hosts=self.url)
+        apiTestResult(api='/admin/receipt/notice/detail', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_receipt_notice_page_list(self, pn_=None, ps_=None, code_=None, status_=None, type_=None, warehouseCode_=None, creatorId_=None):
+        if self.user is None:
+            data = {'pn': pn_, 'ps': ps_, 'code': code_, 'status': status_, 'type': type_, 'warehouseCode': warehouseCode_, 'creatorId': creatorId_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'code': code_, 'status': status_, 'type': type_, 'warehouseCode': warehouseCode_, 'creatorId': creatorId_}
+        response = self.request.post(url=self.url+'/admin/receipt/notice/page-list', data=data, hosts=self.url)
+        apiTestResult(api='/admin/receipt/notice/page-list', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_receipt_notice_product_page_list(self, pn_=None, ps_=None, orderCode_=None):
+        if self.user is None:
+            data = {'pn': pn_, 'ps': ps_, 'orderCode': orderCode_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'orderCode': orderCode_}
+        response = self.request.post(url=self.url+'/admin/receipt/notice/product/page-list', data=data, hosts=self.url)
+        apiTestResult(api='/admin/receipt/notice/product/page-list', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_receipt_notice_update(self, code_=None, warehouseCode_=None, possessor_=None, purchasingCompany_=None, remark_=None):
+        if self.user is None:
+            data = {'code': code_, 'warehouseCode': warehouseCode_, 'possessor': possessor_, 'purchasingCompany': purchasingCompany_, 'remark': remark_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_, 'warehouseCode': warehouseCode_, 'possessor': possessor_, 'purchasingCompany': purchasingCompany_, 'remark': remark_}
+        response = self.request.post(url=self.url+'/admin/receipt/notice/update', data=data, hosts=self.url)
+        apiTestResult(api='/admin/receipt/notice/update', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_receipt_page_list(self, pn_=None, ps_=None, code_=None, status_=None, type_=None, warehouseCode_=None, creatorId_=None):
+        if self.user is None:
+            data = {'pn': pn_, 'ps': ps_, 'code': code_, 'status': status_, 'type': type_, 'warehouseCode': warehouseCode_, 'creatorId': creatorId_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'code': code_, 'status': status_, 'type': type_, 'warehouseCode': warehouseCode_, 'creatorId': creatorId_}
+        response = self.request.post(url=self.url+'/admin/receipt/page-list', data=data, hosts=self.url)
+        apiTestResult(api='/admin/receipt/page-list', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_receipt_product_page_list(self, pn_=None, ps_=None, orderCode_=None):
+        if self.user is None:
+            data = {'pn': pn_, 'ps': ps_, 'orderCode': orderCode_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'orderCode': orderCode_}
+        response = self.request.post(url=self.url+'/admin/receipt/product/page-list', data=data, hosts=self.url)
+        apiTestResult(api='/admin/receipt/product/page-list', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_receipt_sync_erp(self, code_=None):
+        if self.user is None:
+            data = {'code': code_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_}
+        response = self.request.post(url=self.url+'/admin/receipt/sync-erp', data=data, hosts=self.url)
+        apiTestResult(api='/admin/receipt/sync-erp', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_receipt_tracing_page_list(self, pn_=None, ps_=None, orderCode_=None, productCode_=None, tracingCode_=None):
+        if self.user is None:
+            data = {'pn': pn_, 'ps': ps_, 'orderCode': orderCode_, 'productCode': productCode_, 'tracingCode': tracingCode_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'orderCode': orderCode_, 'productCode': productCode_, 'tracingCode': tracingCode_}
+        response = self.request.post(url=self.url+'/admin/receipt/tracing/page-list', data=data, hosts=self.url)
+        apiTestResult(api='/admin/receipt/tracing/page-list', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
     def _admin_shop_list(self, companyCode_=None):
@@ -631,168 +793,6 @@ class wms_apiAction(object):
         apiTestResult(api='/admin/warehouse/update', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_whs_pda_receipt_list(self, pn_=None, ps_=None, status_=None, type_=None, shopCode_=None):
-        if self.user is None:
-            data = {'pn': pn_, 'ps': ps_, 'status': status_, 'type': type_, 'shopCode': shopCode_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'status': status_, 'type': type_, 'shopCode': shopCode_}
-        response = self.request.post(url=self.url+'/admin/whs/pda/receipt/list', data=data, hosts=self.url)
-        apiTestResult(api='/admin/whs/pda/receipt/list', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
-    def _admin_whs_pda_receipt_product_list(self, code_=None):
-        if self.user is None:
-            data = {'code': code_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_}
-        response = self.request.post(url=self.url+'/admin/whs/pda/receipt/product/list', data=data, hosts=self.url)
-        apiTestResult(api='/admin/whs/pda/receipt/product/list', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
-    def _admin_whs_pda_receipt_product_submit(self, code_=None, productInfo_=None, qualityResult_=None, receiptQualityInfo_=None):
-        if self.user is None:
-            data = {'code': code_, 'productInfo': productInfo_, 'qualityResult': qualityResult_, 'receiptQualityInfo': receiptQualityInfo_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_, 'productInfo': productInfo_, 'qualityResult': qualityResult_, 'receiptQualityInfo': receiptQualityInfo_}
-        response = self.request.post(url=self.url+'/admin/whs/pda/receipt/product/submit', data=data, hosts=self.url)
-        apiTestResult(api='/admin/whs/pda/receipt/product/submit', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
-    def _admin_whs_receipt_cancel(self, code_=None):
-        if self.user is None:
-            data = {'code': code_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_}
-        response = self.request.post(url=self.url+'/admin/whs/receipt/cancel', data=data, hosts=self.url)
-        apiTestResult(api='/admin/whs/receipt/cancel', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
-    def _admin_whs_receipt_count(self):
-        if self.user is None:
-            data = {}
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
-        response = self.request.post(url=self.url+'/admin/whs/receipt/count', data=data, hosts=self.url)
-        apiTestResult(api='/admin/whs/receipt/count', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
-    def _admin_whs_receipt_detail(self, code_=None):
-        if self.user is None:
-            data = {'code': code_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_}
-        response = self.request.post(url=self.url+'/admin/whs/receipt/detail', data=data, hosts=self.url)
-        apiTestResult(api='/admin/whs/receipt/detail', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
-    def _admin_whs_receipt_notice_add(self, relevanceCode_=None, source_=None, type_=None, warehouseCode_=None, purchasingCompany_=None, possessor_=None, supplier_=None, remark_=None, erpType_=None, productInfo_=None):
-        if self.user is None:
-            data = {'relevanceCode': relevanceCode_, 'source': source_, 'type': type_, 'warehouseCode': warehouseCode_, 'purchasingCompany': purchasingCompany_, 'possessor': possessor_, 'supplier': supplier_, 'remark': remark_, 'erpType': erpType_, 'productInfo': productInfo_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'relevanceCode': relevanceCode_, 'source': source_, 'type': type_, 'warehouseCode': warehouseCode_, 'purchasingCompany': purchasingCompany_, 'possessor': possessor_, 'supplier': supplier_, 'remark': remark_, 'erpType': erpType_, 'productInfo': productInfo_}
-        response = self.request.post(url=self.url+'/admin/whs/receipt/notice/add', data=data, hosts=self.url)
-        apiTestResult(api='/admin/whs/receipt/notice/add', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
-    def _admin_whs_receipt_notice_cancel(self, code_=None):
-        if self.user is None:
-            data = {'code': code_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_}
-        response = self.request.post(url=self.url+'/admin/whs/receipt/notice/cancel', data=data, hosts=self.url)
-        apiTestResult(api='/admin/whs/receipt/notice/cancel', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
-    def _admin_whs_receipt_notice_confirm(self, code_=None):
-        if self.user is None:
-            data = {'code': code_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_}
-        response = self.request.post(url=self.url+'/admin/whs/receipt/notice/confirm', data=data, hosts=self.url)
-        apiTestResult(api='/admin/whs/receipt/notice/confirm', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
-    def _admin_whs_receipt_notice_count(self):
-        if self.user is None:
-            data = {}
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
-        response = self.request.post(url=self.url+'/admin/whs/receipt/notice/count', data=data, hosts=self.url)
-        apiTestResult(api='/admin/whs/receipt/notice/count', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
-    def _admin_whs_receipt_notice_detail(self, code_=None):
-        if self.user is None:
-            data = {'code': code_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_}
-        response = self.request.post(url=self.url+'/admin/whs/receipt/notice/detail', data=data, hosts=self.url)
-        apiTestResult(api='/admin/whs/receipt/notice/detail', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
-    def _admin_whs_receipt_notice_page_list(self, pn_=None, ps_=None, code_=None, status_=None, type_=None, warehouseCode_=None, creatorId_=None):
-        if self.user is None:
-            data = {'pn': pn_, 'ps': ps_, 'code': code_, 'status': status_, 'type': type_, 'warehouseCode': warehouseCode_, 'creatorId': creatorId_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'code': code_, 'status': status_, 'type': type_, 'warehouseCode': warehouseCode_, 'creatorId': creatorId_}
-        response = self.request.post(url=self.url+'/admin/whs/receipt/notice/page-list', data=data, hosts=self.url)
-        apiTestResult(api='/admin/whs/receipt/notice/page-list', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
-    def _admin_whs_receipt_notice_product_page_list(self, pn_=None, ps_=None, orderCode_=None):
-        if self.user is None:
-            data = {'pn': pn_, 'ps': ps_, 'orderCode': orderCode_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'orderCode': orderCode_}
-        response = self.request.post(url=self.url+'/admin/whs/receipt/notice/product/page-list', data=data, hosts=self.url)
-        apiTestResult(api='/admin/whs/receipt/notice/product/page-list', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
-    def _admin_whs_receipt_notice_update(self, code_=None, warehouseCode_=None, possessor_=None, purchasingCompany_=None, remark_=None):
-        if self.user is None:
-            data = {'code': code_, 'warehouseCode': warehouseCode_, 'possessor': possessor_, 'purchasingCompany': purchasingCompany_, 'remark': remark_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_, 'warehouseCode': warehouseCode_, 'possessor': possessor_, 'purchasingCompany': purchasingCompany_, 'remark': remark_}
-        response = self.request.post(url=self.url+'/admin/whs/receipt/notice/update', data=data, hosts=self.url)
-        apiTestResult(api='/admin/whs/receipt/notice/update', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
-    def _admin_whs_receipt_page_list(self, pn_=None, ps_=None, code_=None, status_=None, type_=None, warehouseCode_=None, creatorId_=None):
-        if self.user is None:
-            data = {'pn': pn_, 'ps': ps_, 'code': code_, 'status': status_, 'type': type_, 'warehouseCode': warehouseCode_, 'creatorId': creatorId_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'code': code_, 'status': status_, 'type': type_, 'warehouseCode': warehouseCode_, 'creatorId': creatorId_}
-        response = self.request.post(url=self.url+'/admin/whs/receipt/page-list', data=data, hosts=self.url)
-        apiTestResult(api='/admin/whs/receipt/page-list', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
-    def _admin_whs_receipt_product_page_list(self, pn_=None, ps_=None, orderCode_=None):
-        if self.user is None:
-            data = {'pn': pn_, 'ps': ps_, 'orderCode': orderCode_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'orderCode': orderCode_}
-        response = self.request.post(url=self.url+'/admin/whs/receipt/product/page-list', data=data, hosts=self.url)
-        apiTestResult(api='/admin/whs/receipt/product/page-list', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
-    def _admin_whs_receipt_sync_erp(self, code_=None):
-        if self.user is None:
-            data = {'code': code_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_}
-        response = self.request.post(url=self.url+'/admin/whs/receipt/sync-erp', data=data, hosts=self.url)
-        apiTestResult(api='/admin/whs/receipt/sync-erp', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
-    def _admin_whs_receipt_tracing_page_list(self, pn_=None, ps_=None, orderCode_=None, productCode_=None, tracingCode_=None):
-        if self.user is None:
-            data = {'pn': pn_, 'ps': ps_, 'orderCode': orderCode_, 'productCode': productCode_, 'tracingCode': tracingCode_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'orderCode': orderCode_, 'productCode': productCode_, 'tracingCode': tracingCode_}
-        response = self.request.post(url=self.url+'/admin/whs/receipt/tracing/page-list', data=data, hosts=self.url)
-        apiTestResult(api='/admin/whs/receipt/tracing/page-list', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
     def _api_asset_sync_archives(self, input_=None):
         if self.user is None:
             data = {'input': input_, }
@@ -816,9 +816,36 @@ class wms_apiAction(object):
             data = {'input': input_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
-        response = self.request.post(url=self.url+'/api/invoice-notice/add', data=data, hosts=self.url)
-        apiTestResult(api='/api/invoice-notice/add', host=self.url,datas=data, resp=response)
+        response = self.request.post(url=self.url+'/api/invoice/notice/add', data=data, hosts=self.url)
+        apiTestResult(api='/api/invoice/notice/add', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
+
+    def _api_pda_receipt_list(self, status_=None, type_=None, shopCode_=None):
+        if self.user is None:
+            data = {'status': status_, 'type': type_, 'shopCode': shopCode_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'status': status_, 'type': type_, 'shopCode': shopCode_}
+        response = self.request.post(url=self.url+'/api/pda/receipt/list', data=data, hosts=self.url)
+        apiTestResult(api='/api/pda/receipt/list', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _api_pda_receipt_product_list(self, code_=None):
+        if self.user is None:
+            data = {'code': code_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_}
+        response = self.request.post(url=self.url+'/api/pda/receipt/product/list', data=data, hosts=self.url)
+        apiTestResult(api='/api/pda/receipt/product/list', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    # def _api_pda_receipt_product_submit(self, receiptProducts[0]_receiptTracings[0]_tracingCode_=None, receiptProducts[0]_receiptTracings[0]_weight_=None, receiptProducts[0]_productCode_=None, receiptProducts[0]_actualQuantity_=None, code_=None):
+    #     if self.user is None:
+    #         data = {'receiptProducts[0]_receiptTracings[0]_tracingCode': receiptProducts[0]_receiptTracings[0]_tracingCode_, 'receiptProducts[0]_receiptTracings[0]_weight': receiptProducts[0]_receiptTracings[0]_weight_, 'receiptProducts[0]_productCode': receiptProducts[0]_productCode_, 'receiptProducts[0]_actualQuantity': receiptProducts[0]_actualQuantity_, 'code': code_, }
+    #     else:
+    #         data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'receiptProducts[0]_receiptTracings[0]_tracingCode': receiptProducts[0]_receiptTracings[0]_tracingCode_, 'receiptProducts[0]_receiptTracings[0]_weight': receiptProducts[0]_receiptTracings[0]_weight_, 'receiptProducts[0]_productCode': receiptProducts[0]_productCode_, 'receiptProducts[0]_actualQuantity': receiptProducts[0]_actualQuantity_, 'code': code_}
+    #     response = self.request.post(url=self.url+'/api/pda/receipt/product/submit', data=data, hosts=self.url)
+    #     apiTestResult(api='/api/pda/receipt/product/submit', host=self.url,datas=data, resp=response)
+    #     return self.__judge_response_status(json.loads(response))
 
     def _api_receipt_notice_asset_recycle(self, input_=None):
         if self.user is None:
@@ -882,33 +909,6 @@ class wms_apiAction(object):
         response = self.request.post(url=self.url+'/api/warehouse/list', data=data, hosts=self.url)
         apiTestResult(api='/api/warehouse/list', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
-
-    def _api_whs_pda_receipt_list(self, status_=None, type_=None, shopCode_=None):
-        if self.user is None:
-            data = {'status': status_, 'type': type_, 'shopCode': shopCode_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'status': status_, 'type': type_, 'shopCode': shopCode_}
-        response = self.request.post(url=self.url+'/api/whs/pda/receipt/list', data=data, hosts=self.url)
-        apiTestResult(api='/api/whs/pda/receipt/list', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
-    def _api_whs_pda_receipt_product_list(self, code_=None):
-        if self.user is None:
-            data = {'code': code_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_}
-        response = self.request.post(url=self.url+'/api/whs/pda/receipt/product/list', data=data, hosts=self.url)
-        apiTestResult(api='/api/whs/pda/receipt/product/list', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
-    # def _api_whs_pda_receipt_product_submit(self, receiptProducts[0]_receiptTracings[0]_tracingCode_=None, receiptProducts[0]_receiptTracings[0]_weight_=None, receiptProducts[0]_productCode_=None, receiptProducts[0]_actualQuantity_=None, code_=None):
-    #     if self.user is None:
-    #         data = {'receiptProducts[0]_receiptTracings[0]_tracingCode': receiptProducts[0]_receiptTracings[0]_tracingCode_, 'receiptProducts[0]_receiptTracings[0]_weight': receiptProducts[0]_receiptTracings[0]_weight_, 'receiptProducts[0]_productCode': receiptProducts[0]_productCode_, 'receiptProducts[0]_actualQuantity': receiptProducts[0]_actualQuantity_, 'code': code_, }
-    #     else:
-    #         data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'receiptProducts[0]_receiptTracings[0]_tracingCode': receiptProducts[0]_receiptTracings[0]_tracingCode_, 'receiptProducts[0]_receiptTracings[0]_weight': receiptProducts[0]_receiptTracings[0]_weight_, 'receiptProducts[0]_productCode': receiptProducts[0]_productCode_, 'receiptProducts[0]_actualQuantity': receiptProducts[0]_actualQuantity_, 'code': code_}
-    #     response = self.request.post(url=self.url+'/api/whs/pda/receipt/product/submit', data=data, hosts=self.url)
-    #     apiTestResult(api='/api/whs/pda/receipt/product/submit', host=self.url,datas=data, resp=response)
-    #     return self.__judge_response_status(json.loads(response))
 
     def _common_config_list(self, types_=None, code_=None):
         if self.user is None:
