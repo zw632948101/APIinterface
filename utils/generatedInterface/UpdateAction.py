@@ -49,6 +49,11 @@ class UpdateAction(object):
                 desc = desc + ' ' + summary
                 para_desc_list.append(desc)
                 paras = paths[p][request_method].get("parameters", [])
+                if paras != [] and paras[0]['in'] == 'body' and paras[0]['schema'].get('$ref'):
+                    schema = paras[0]['schema']['$ref']
+                    schema = schema.split('/')[-1]
+                    properties = json.loads(json_content)['definitions'][schema]['properties']
+                    paras = [{'name': pr} for pr in properties]
                 para_desc_list.append(request_method)
             p_dict = {}
             if paras is None:
@@ -76,7 +81,8 @@ class UpdateAction(object):
         # L.logger.debug(path_detail_list)
         if not os.path.exists(self.template_path + "docs"):
             os.makedirs(self.template_path + "docs")
-        with codecs.open(self.template_path + 'docs/' + str(file_name) + now + '.txt', 'a', 'utf-8') as f:
+        with codecs.open(self.template_path + 'docs/' + str(file_name) + now + '.txt', 'a',
+                         'utf-8') as f:
             # with codecs.open('./PATH_ONLY_' + str(file_name) + now + '.txt', 'a', 'utf-8') as f:
             for item in path_detail_list:
                 for k, v in item.items():
@@ -96,7 +102,8 @@ class UpdateAction(object):
         # current_path = os.path.dirname(os.path.abspath(__file__))
         if not os.path.exists(self.template_path + "tmpDocs"):
             os.makedirs(self.template_path + "tmpDocs")
-        with codecs.open(self.template_path + "tmpDocs/" + str(file_name) + now + '.yaml', 'a', 'utf-8') as f:
+        with codecs.open(self.template_path + "tmpDocs/" + str(file_name) + now + '.yaml', 'a',
+                         'utf-8') as f:
             f.write(host_name + ':\n')
             for item in path_detail_list:
                 for k, v in item.items():
@@ -105,7 +112,8 @@ class UpdateAction(object):
                         for x, y in v[2].items():
                             f.write('    %s:\n' % x)
 
-    def constitute_request_method(self, request_method, param_data, lower_action, fun_name, api, fun_data, param_datas):
+    def constitute_request_method(self, request_method, param_data, lower_action, fun_name, api,
+                                  fun_data, param_datas):
         """
         组合接口调用方法
         :param request_method: 请求方式，根据请求方式不同读取不同的模板文件
@@ -121,7 +129,8 @@ class UpdateAction(object):
         elif request_method == 'get':
             fun_template = open(self.template_path + 'fun_get_template.txt', 'r').read()
 
-        param_rep = {'func_param': param_data, 'lower_action': lower_action, 'fun_name': fun_name, 'key': api,
+        param_rep = {'func_param': param_data, 'lower_action': lower_action, 'fun_name': fun_name,
+                     'key': api,
                      'functions': fun_data, 'fun_params': param_datas}
         param_rep = dict((re.escape(k), v) for k, v in param_rep.items())
         pattern = re.compile("|".join(param_rep.keys()))
@@ -130,7 +139,8 @@ class UpdateAction(object):
 
     def __constitute_upload(self, param_data, lower_action, fun_name, api, fun_data):
         fun_template = open(self.template_path + 'fun_upload_template.txt', 'r').read()
-        param_rep = {'param': param_data, 'lower_action': lower_action, 'fun_name': fun_name, 'key': api,
+        param_rep = {'param': param_data, 'lower_action': lower_action, 'fun_name': fun_name,
+                     'key': api,
                      'functions': fun_data}
         param_rep = dict((re.escape(k), v) for k, v in param_rep.items())
         pattern = re.compile("|".join(param_rep.keys()))
@@ -151,7 +161,8 @@ class UpdateAction(object):
         lower_action = action_name.lower()
         url_host = url_host
         # 读取模板文件，替换相应的字段
-        action_template = open(self.template_path + 'action_template.txt', 'r', encoding='utf-8').read()
+        action_template = open(self.template_path + 'action_template.txt', 'r',
+                               encoding='utf-8').read()
         rep = {'lower_action': lower_action, 'action_name': action_name, 'url_host': url_host,
                'accounttype': account_type}
         rep = dict((re.escape(k), v) for k, v in rep.items())
@@ -188,9 +199,12 @@ class UpdateAction(object):
                                 param_data += ", '%s': %s" % (param, param + '_')
                                 param_datas += "'%s': %s, " % (param, param + '_')
                                 fun_data += ", " + param + '_=None'
-                    fun_str = self.constitute_request_method(request_method=value[1], param_data=param_data,
-                                                             lower_action=lower_action, fun_name=fun_name,
-                                                             param_datas=param_datas, fun_data=fun_data, api=api)
+                    fun_str = self.constitute_request_method(request_method=value[1],
+                                                             param_data=param_data,
+                                                             lower_action=lower_action,
+                                                             fun_name=fun_name,
+                                                             param_datas=param_datas,
+                                                             fun_data=fun_data, api=api)
                     f.writelines(fun_str)
 
     def add_path_only_txt(self):
@@ -212,6 +226,7 @@ class UpdateAction(object):
     def add_latest_action(self):
         for key, host in self.hosts.items():
             log.info(key)
+            # self.create_action(key, host)
             try:
                 self.create_action(key, host)
             except Exception as e:
