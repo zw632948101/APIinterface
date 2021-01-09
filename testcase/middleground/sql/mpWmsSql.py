@@ -1,0 +1,160 @@
+#! /usr/bin/env python3
+# -*- coding: UTF-8 -*-
+# @Time:2021/1/7 15:46
+# @Author: wei.zhang
+# @File : mpWmsSql.py
+# @Software: PyCharm
+from . import Base, OutStorehouseEnumerate, Source_Enumerate, Warehousing_Enumerate, \
+    Transfer_Enumerate
+from utils import conversion
+
+
+class OutStorehouse(Base):
+    def __init__(self):
+        super(OutStorehouse, self).__init__()
+
+    def query_invoice_count(self):
+        """
+        出库通知单-统计
+        :return:
+        """
+        sql = """
+            SELECT count(*) AS allCount, 
+                   count(if(ti.status = 0, 1, NULL)) AS waitCount,
+                   count(if(ti.status = 1, 1, NULL)) AS finishCount,
+                   COUNT(IF(ti.status = 2, 1, NULL)) AS cancelCount
+            FROM `mp-wms`.t_whs_invoice ti
+            WHERE ti.is_delete = 0;
+              """
+        return self.operate_db(sql=sql)
+
+    def query_admin_invoice_notice_info(self, code=None, relevanceCode=None, status=None,
+                                        type_=None, warehouseCode=None, operatorId=None, pn=None,
+                                        ps=20):
+        """
+        查询出库通知单单
+        :param code:
+        :param relevanceCode:
+        :param status:
+        :param type_:
+        :param warehouseCode:
+        :param operatorId:
+        :return:
+        """
+        limit = "limit {ps}".format(ps=ps) if pn is None else "limit {pn},{ps}".format(
+            pn=(pn - 1) * ps, ps=ps)
+        code = "AND tn.code = '%s'" % code if code is not None else ''
+        relevanceCode = "AND tn.relevance_code = '%s'" % relevanceCode if relevanceCode is not None else ''
+        status = "AND tn.status = '%s'" % status if status is not None else ''
+        type_ = "AND tn.type = '%s'" % type_ if type_ is not None else ''
+        warehouseCode = "AND tn.warehouse_code = '%s'" % warehouseCode if warehouseCode is not None else ''
+        operatorId = "AND tn.creator_id = '%s'" % operatorId if operatorId is not None else ''
+        sql = """
+            SELECT tn.code,
+                   unix_timestamp(tn.create_time) * 1000 AS createTime,
+                   tn.relevance_code                     AS relevanceCode,
+                   tn.source                             AS sourceName,
+                   tw.name                               AS warehouseName,
+                   tn.type AS typeName,
+                   CASE tn.status WHEN 0 THEN '待确认' WHEN 1 THEN '已确认' WHEN 2 THEN '已完成' WHEN 3 THEN '取消' END statusName
+            FROM `mp-wms`.t_whs_invoice_notice tn,
+                 `mp-wms`.t_warehouse tw
+            WHERE tn.is_delete = 0
+              AND tw.is_delete = 0
+              AND tn.warehouse_code = tw.code {codestr} {relevance} {status}
+              {type_} {warehouse} {operatorId} 
+              ORDER BY tn.id DESC 
+              {limit};
+              """.format(codestr=code, relevance=relevanceCode, status=status, type_=type_,
+                         warehouse=warehouseCode, operatorId=operatorId, limit=limit)
+        dbinfo = conversion.replace_dict_value(replace_key='typeName',
+                                               keep_dict=self.operate_db(sql=sql),
+                                               enumerate_dict=OutStorehouseEnumerate)
+        dbinfo = conversion.replace_dict_value(replace_key='sourceName',
+                                               keep_dict=dbinfo,
+                                               enumerate_dict=Source_Enumerate)
+        return dbinfo
+
+    def query_order_code_prdouct_info(self, order_code, pn=None, ps=20):
+        """
+        查询出库通知单明细
+        :param order_code:关联出库通知单
+        :param pn:页码
+        :param ps:条数
+        :return:
+        """
+        limit = "limit {ps}".format(ps=ps) if pn is None else "limit {pn},{ps}".format(
+            pn=(pn - 1) * ps, ps=ps)
+        sql = """
+            SELECT tw.price,tw.tax_rate AS taxRate,
+                   tw.plan_quantity AS planQuantity,
+                   ti.name AS productName,
+                   ti.alias AS productAlias,
+                   ti.code AS productCode,
+                   tc1.name AS class1Name,
+                   tc2.name AS class2Name,
+                   tc3.name AS class3Name,
+                   tp.stock_unit AS stockUnit
+            FROM `mp-wms`.t_item ti,
+                 `mp-wms`.t_item_category tc1,
+                 `mp-wms`.t_item_category tc2,
+                 `mp-wms`.t_item_category tc3,
+                 `mp-wms`.t_whs_invoice_notice_product tw,
+                 `mp-wms`.t_product tp
+            WHERE ti.class1 = tc1.code
+              AND ti.class2 = tc2.code
+              AND ti.class3 = tc3.code
+              AND ti.code = tw.product_code
+              AND ti.code = tp.code
+              AND tw.order_code = '{order_code}'
+              {limit};
+              """.format(order_code=order_code, limit=limit)
+        return self.operate_db(sql=sql)
+
+    def query_admin_invoice_info(self, code=None, relevanceCode=None, status=None,
+                                 type_=None, warehouseCode=None, operatorId=None, pn=None,
+                                 ps=20):
+        """
+        查询出库单
+        :param code:
+        :param relevanceCode:
+        :param status:
+        :param type_:
+        :param warehouseCode:
+        :param operatorId:
+        :return:
+        """
+        limit = "limit {ps}".format(ps=ps) if pn is None else "limit {pn},{ps}".format(
+            pn=(pn - 1) * ps, ps=ps)
+        code = "AND tn.code = '%s'" % code if code is not None else ''
+        relevanceCode = "AND tn.relevance_code = '%s'" % relevanceCode if relevanceCode is not None else ''
+        status = "AND tn.status = '%s'" % status if status is not None else ''
+        type_ = "AND tn.type = '%s'" % type_ if type_ is not None else ''
+        warehouseCode = "AND tn.warehouse_code = '%s'" % warehouseCode if warehouseCode is not None else ''
+        operatorId = "AND tn.creator_id = '%s'" % operatorId if operatorId is not None else ''
+        sql = """
+            SELECT tn.code,
+                   unix_timestamp(tn.create_time) * 1000 AS createTime,
+                   tn.relevance_code                     AS relevanceCode,
+                   tn.source                             AS sourceName,
+                   tw.name                               AS warehouseName,
+                   tn.type AS typeName,
+                   CASE tn.status WHEN 0 THEN '待出库' WHEN 1 THEN '已确认' WHEN 2 THEN '取消' WHEN 3 THEN '已完成' END statusName,
+                   CASE tn.erp_sync_status WHEN 0 THEN '待同步' WHEN 1 THEN '同步成功' WHEN 2 THEN '同步失败' END erpSyncStatus
+            FROM `mp-wms`.t_whs_invoice tn,
+                 `mp-wms`.t_warehouse tw
+            WHERE tn.is_delete = 0
+              AND tw.is_delete = 0
+              AND tn.warehouse_code = tw.code {codestr} {relevance} {status}
+              {type_} {warehouse} {operatorId} 
+              ORDER BY tn.id DESC 
+              {limit};
+              """.format(codestr=code, relevance=relevanceCode, status=status, type_=type_,
+                         warehouse=warehouseCode, operatorId=operatorId, limit=limit)
+        dbinfo = conversion.replace_dict_value(replace_key='typeName',
+                                               keep_dict=self.operate_db(sql=sql),
+                                               enumerate_dict=OutStorehouseEnumerate)
+        dbinfo = conversion.replace_dict_value(replace_key='sourceName',
+                                               keep_dict=dbinfo,
+                                               enumerate_dict=Source_Enumerate)
+        return dbinfo
