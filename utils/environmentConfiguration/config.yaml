@@ -1,7 +1,7 @@
 which_project: &which_project middleground
 env: &env
   run: QA
-  updateActionAPI: DEV_API
+  updateActionAPI: QA_API
   version: 2.3.1
   RUN_LEVEL: 3
   dataBaseURI: 5595ec6c66c0374940fb2d6919a487f9162ddc9bcbd00523b504b2f25d55dc30ad413b43d196ffa16fc59cc4d2f2a9d04993d429fa428436f36c2d79d4d0478d
