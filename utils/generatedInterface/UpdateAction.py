@@ -50,6 +50,7 @@ class UpdateAction(object):
                 para_desc_list.append(desc)
                 paras = paths[p][request_method].get("parameters", [])
                 if paras != [] and paras[0]['in'] == 'body' and paras[0]['schema'].get('$ref'):
+                    # 判断传参类型是否为body并且以json展示
                     schema = paras[0]['schema']['$ref']
                     schema = schema.split('/')[-1]
                     properties = json.loads(json_content)['definitions'][schema]['properties']
@@ -60,9 +61,11 @@ class UpdateAction(object):
                 pass
             else:
                 for para in paras:
-                    p_dict[para['name']] = u"%s_%s_%s" % (para.get('type', 'noType'),
-                                                          para.get('required', 'noRequired'),
-                                                          para.get('description', 'noDescription'))
+                    if not re.findall(r'\[\d{0,1}\]', para.get('name')):  # 判断参数是否为子参数
+                        p_dict[para['name']] = u"%s_%s_%s" % (para.get('type', 'noType'),
+                                                              para.get('required', 'noRequired'),
+                                                              para.get('description',
+                                                                       'noDescription'))
             para_desc_list.append(p_dict)
             path_detail_list.append({p: para_desc_list})
         return path_detail_list
@@ -226,11 +229,11 @@ class UpdateAction(object):
     def add_latest_action(self):
         for key, host in self.hosts.items():
             log.info(key)
-            # self.create_action(key, host)
-            try:
-                self.create_action(key, host)
-            except Exception as e:
-                log.error(e)
+            self.create_action(key, host)
+            # try:
+            #     self.create_action(key, host)
+            # except Exception as e:
+            #     log.error(e)
 
 
 if __name__ == '__main__':
@@ -238,4 +241,4 @@ if __name__ == '__main__':
     update_action.add_latest_action()
     # update_action.add_latest_yaml()
     # update_action.add_path_only_txt()
-    update_action.get_edit_api()
+    # update_action.get_edit_api()

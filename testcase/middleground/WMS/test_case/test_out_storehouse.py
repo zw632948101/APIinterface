@@ -8,7 +8,7 @@ import json
 import random
 
 from interfaces.middleground.Wms_apiAction import wms_apiAction
-from testcase.middleground.sql.mpWmsSql import OutStorehouse
+from testcase.middleground.sql.mpWmsSql import OutStorehouseSql
 from ddt import data, ddt
 from utils import runlevel, conversion
 from faker import Faker
@@ -20,7 +20,7 @@ import unittest
 
 
 @ddt
-class ErpUnclearedOrder(unittest.TestCase):
+class OutStorehouse(unittest.TestCase):
     def setUp(self) -> None:
         """
         测试前数据准备
@@ -28,7 +28,7 @@ class ErpUnclearedOrder(unittest.TestCase):
         """
         self.api = wms_apiAction()
         self.api.set_user(mobile=15388126082, account_type='web-mp')
-        self.db = OutStorehouse()
+        self.db = OutStorehouseSql()
         self.faker = Faker('zh_CN')
 
     def tearDown(self) -> None:

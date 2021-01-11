@@ -9,9 +9,9 @@ from . import Base, OutStorehouseEnumerate, Source_Enumerate, Warehousing_Enumer
 from utils import conversion
 
 
-class OutStorehouse(Base):
+class OutStorehouseSql(Base):
     def __init__(self):
-        super(OutStorehouse, self).__init__()
+        super(OutStorehouseSql, self).__init__()
 
     def query_invoice_count(self):
         """
@@ -158,3 +158,68 @@ class OutStorehouse(Base):
                                                keep_dict=dbinfo,
                                                enumerate_dict=Source_Enumerate)
         return dbinfo
+
+
+class MpMoveSql(Base):
+    """
+    分拣单模块
+    """
+
+    def __init__(self):
+        super(MpMoveSql, self).__init__()
+
+    def query_move_code(self, status=None):
+        status = 't.status = %s' % status if status else ''
+        sql = """
+            SELECT t.code,
+                   t.relevance_code AS                                                       invoiceCode,
+                   t.status,
+                   CASE t.status WHEN 0 THEN '待分拣' WHEN 1 THEN '分拣完成' WHEN 2 THEN '取消分拣' END 'statusName',
+                   t.type           AS                                                       typeName,
+                   tw.name AS warehouseName,
+                   t.remark,
+                   t.customer,
+                   t.supplierName
+            FROM `mp-wms`.t_whs_move_doc t LEFT JOIN `mp-wms`.t_warehouse tw ON tw.code = t.warehouse_code
+            WHERE t.is_delete = 0
+              {status}
+            ORDER BY t.id DESC;
+              """.format(status=status)
+        return conversion.replace_dict_value(replace_key='typeName',
+                                             keep_dict=self.operate_db(sql=sql),
+                                             enumerate_dict=OutStorehouseEnumerate)
+
+    def query_move_detail_list(self, orderCode):
+        """
+        拣货单-PDA分拣任务列表
+        :param orderCode:
+        :return:
+        """
+        sql = """
+            SELECT tm.*,
+                   tp.name       AS productName,
+                   tp.stock_unit AS stockUnit,
+                   tp.isTracing  AS tracing,
+                   tp.isLot,
+                   ti.alias      AS productAlias,
+                   tc1.name      AS class1Name,
+                   tc2.name      AS class2Name,
+                   tc3.name      AS class3Name
+            FROM (SELECT tmp.actual_quantity AS actualQuantity, tmp.id, tmp.lot, tmp.plan_quantity AS planQuantity, tmp.price, tmp.product_code AS productCode
+                  FROM `mp-wms`.t_whs_move_doc td
+                           LEFT JOIN `mp-wms`.t_whs_move_product tmp ON td.code = tmp.order_code
+                  WHERE td.is_delete = 0
+                    AND tmp.is_delete = 0
+                    AND td.code = '{orderCode}') tm
+                     LEFT JOIN `mp-wms`.t_product tp ON tm.productCode = tp.code
+                     LEFT JOIN `mp-wms`.t_item ti ON tm.productCode = ti.code
+                     LEFT JOIN `mp-wms`.t_item_category tc1 ON ti.class1 = tc1.code
+                     LEFT JOIN `mp-wms`.t_item_category tc2 ON ti.class2 = tc2.code
+                     LEFT JOIN `mp-wms`.t_item_category tc3 ON ti.class3 = tc3.code
+            WHERE tp.is_delete = 0
+              AND ti.is_delete = 0
+              AND tc1.is_delete = 0
+              AND tc2.is_delete = 0
+              AND tc3.is_delete = 0;
+              """.format(orderCode=orderCode)
+        return conversion.del_dict_value_null(self.operate_db(sql=sql))
