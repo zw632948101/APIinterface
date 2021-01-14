@@ -223,3 +223,83 @@ class MpMoveSql(Base):
               AND tc3.is_delete = 0;
               """.format(orderCode=orderCode)
         return conversion.del_dict_value_null(self.operate_db(sql=sql))
+
+    def query_move_doc_count(self):
+        """
+        pda分拣单统计
+        :return:
+        """
+        sql = """
+            SELECT count(td.id) AS allCount,
+                   count(if(td.status = 1, 1, NULL)) AS finishCount,
+                   count(if(td.status = 2, 1, NULL)) AS cancelCount,
+                   count(if(td.status = 0, 1, NULL)) AS waitCount
+            FROM `mp-wms`.t_whs_move_doc td
+            WHERE td.is_delete = 0;
+              """
+        return self.operate_db(sql=sql)
+
+    def query_pick_doc_info(self, pn=None, ps=20, orderCode=None, status=None, type_=None,
+                            warehouseCode=None, operatorId=None):
+        """
+        查询拣货单列表和拣货单详情
+        :param pn: 分页
+        :param ps: 条数，默认20
+        :param orderCode: 拣货单号
+        :param status: 拣货单状态
+        :param type_: 单据类型
+        :param warehouseCode: 仓库代码
+        :param operatorId: 操作人
+        :return:
+        """
+        limit = "limit {ps}".format(ps=ps) if pn is None else "limit {pn},{ps}".format(
+            pn=(pn - 1) * ps, ps=ps)
+        status = "AND t.status = '%s'" % status if status is not None else ''
+        type_ = "AND t.type = '%s'" % type_ if type_ is not None else ''
+        warehouseCode = "AND t.warehouse_code = '%s'" % warehouseCode if warehouseCode is not None else ''
+        operatorId = "AND t.creator_id = '%s'" % operatorId if operatorId is not None else ''
+        orderCode = "AND t.code = '%s'" % orderCode if orderCode else ''
+        sql = """
+            SELECT t.code,
+                   t.relevance_code AS                                                       relevanceCode,
+                   CASE t.status WHEN 0 THEN '待分拣' WHEN 1 THEN '分拣完成' WHEN 2 THEN '取消分拣' END 'statusName',
+                   t.type           AS                                                       typeName,
+                   tw.name          AS                                                       warehouseName,
+                   t.source         AS                                                       sourceName,
+                   (unix_timestamp(t.create_time)-8*3600) * 1000     AS                      createTime,
+                   tu.phone                                          AS                      creatorPhone,
+                   tu.username                                       AS                      creatorName
+            FROM `mp-wms`.t_whs_move_doc t
+                     LEFT JOIN `mp-wms`.t_warehouse tw ON tw.code = t.warehouse_code AND tw.is_delete = 0
+                     LEFT JOIN `world-user`.t_user tu ON tu.id = t.creator_id AND tu.is_delete = 0
+            WHERE t.is_delete = 0
+            {ordercode}
+            {status}
+            {type_}
+            {warehouseCode}
+            {operatorId}
+            ORDER BY t.id DESC {limit};
+              """.format(ordercode=orderCode, status=status, type_=type_,
+                         warehouseCode=warehouseCode, operatorId=operatorId, limit=limit)
+        dbinfo = conversion.replace_dict_value('typeName', self.operate_db(sql=sql),
+                                               OutStorehouseEnumerate)
+        return conversion.replace_dict_value('sourceName', dbinfo, Source_Enumerate)
+
+
+class ReeciptProduct(Base):
+    def __init__(self):
+        super(ReeciptProduct, self).__init__()
+
+    def query_pda_receipt_product_list(self, ordercode):
+        """
+        根据入库订单查询商品清单
+        :param ordercode:
+        :return:
+        """
+        sql = """
+            SELECT tp.product_code AS productCode, tp.plan_quantity AS actualQuantity
+            FROM `mp-wms`.t_whs_receipt_product tp
+            WHERE tp.is_delete = 0
+              AND tp.order_code = '{ordercode}';
+              """.format(ordercode=ordercode)
+        return self.operate_db(sql=sql)
