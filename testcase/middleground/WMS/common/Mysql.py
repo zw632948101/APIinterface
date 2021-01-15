@@ -42,49 +42,32 @@ class mp_label(DataBaseOperate):
         sql = "select * from `mp-wms`.t_warehouse_erp_sync_log where `status` = 1;"
         return self.operate_db(sql=sql)
 
+    def git_whs_receipt(self,status=None):
+        '''查不同状态入库单'''
+        # 待入库
+        if status == 0:
+            sql = "select * from `mp-wms`.`t_whs_receipt` where `status` = 0 order by id desc limit 1;"
+            return self.operate_db(sql=sql)
+        # 已入库
+        elif status == 1:
+            sql = "select * from `mp-wms`.`t_whs_receipt` where `status` = 1 order by id desc limit 1;"
+            return self.operate_db(sql=sql)
+        # 已取消
+        elif status == 2:
+            sql = "select * from `mp-wms`.`t_whs_receipt` where `status` = 2 order by id desc limit 1;"
+            return self.operate_db(sql=sql)
+    def git_whs_receipt_notice(self):
+        sql = "select * from `mp-wms`.`t_whs_receipt` " \
+              "where `auto_receiving` = 0 " \
+              "and `status` = 0 " \
+              "and `source` = 'ERP' " \
+              "order by id desc  limit 1;"
+        return self.operate_db(sql=sql)
 
 
 
-# class MysqlUtil:
-#
-#     def __init__(self):
-#         conf = configparser.ConfigParser()
-#         conf.read(Public_mkdir,encoding='utf-8')
-#         host = conf.get('mysql', 'host')
-#         port = conf.getint('mysql', 'port')
-#         user = conf.get('mysql', 'user')
-#         password = conf.get('mysql', 'password')
-#         database = conf.get('mysql','database')
-#         try:
-#             self.mysql = pymysql.connect(host=host,
-#                                          user=user,
-#                                          password=password,
-#                                          database=database,
-#                                          port=port,
-#                                          cursorclass=pymysql.cursors.DictCursor)
-#
-#         except Exception as e :
-#             print("数据库连接错误:{}".format(e))
-#             raise e
-#
-#     def fetch_one(self,sql):
-#         cursor = self.mysql.cursor()
-#         cursor.execute(sql)
-#         return cursor.fetchone()
-#
-#
-#     def fetch_all(self,sql):
-#         cursor = self.mysql.cursor()
-#         cursor.execute(sql)
-#         return cursor.fetchall()
-#
-#     def commit(self):
-#         self.mysql.commit()
-#
-#     def close(self):
-#         self.mysql.close()
 
 
 if __name__ == '__main__':
-   t = mp_label().gti_warehouse_erp_sync_log()
+   t = mp_label().git_whs_receipt_notice()
    print(t)
