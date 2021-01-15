@@ -267,7 +267,7 @@ class payAction(object):
             data = {'bodyId': bodyId_, 'outOrderNo': outOrderNo_, 'source': source_, 'tradeOrderNo': tradeOrderNo_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'bodyId': bodyId_, 'outOrderNo': outOrderNo_, 'source': source_, 'tradeOrderNo': tradeOrderNo_}
-        response = self.request.post(url=self.url+'/open/api/trade/pay-query', data=data, hosts=self.url)
+        response = self.request.post(url=self.url+'/open/api/trade/pay-query', jsons=data, hosts=self.url)
         apiTestResult(api='/open/api/trade/pay-query', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
@@ -303,6 +303,6 @@ class payAction(object):
             data = {'channelNo': channelNo_, 'withdrawAmout': withdrawAmout_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'channelNo': channelNo_, 'withdrawAmout': withdrawAmout_}
-        response = self.request.post(url=self.url+'/open/api/trade/withdraw', data=data, hosts=self.url)
+        response = self.request.post(url=self.url+'/open/api/trade/withdraw', jsons=data, hosts=self.url)
         apiTestResult(api='/open/api/trade/withdraw', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))

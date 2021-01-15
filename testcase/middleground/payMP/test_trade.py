@@ -34,17 +34,17 @@ class TradeTest(unittest.TestCase):
         当面付 - 付款码支付
         :return:
         """
-        authCode = '134699914949527175'  # 付款码id
-        bodyId = '0000001'  # 渠道id
-        disregardaAmount = 1  # 优惠后金额
+        authCode = '287138479593850125'  # 付款码id
+        bodyId = '100004'  # 渠道id
+        disregardaAmount = 10  # 优惠后金额
         due = 0  # 优惠金额
         mchCreateIp = '172.12.13.15'  # 商户地址
-        mchNo = '1603750796'  # 商户号
-        outOrderNo = '25358884655471'  # 外部订单号
+        mchNo = '2088041261907815'  # 商户号
+        outOrderNo = '25358884655575'  # 外部订单号
         regardaAmount = 0  #
         source = 'POS'  # 来源渠道
         subject = '椴树蜜'  # 商品名称
-        totalAmount = 1  # 实收金额
+        totalAmount = 10  # 实收金额
         resp = self.api._open_api_trade_tradePay(authCode_=authCode, bodyId_=bodyId,
                                                  disregardaAmount_=disregardaAmount, due_=due,
                                                  mchCreateIp_=mchCreateIp, mchNo_=mchNo,
@@ -87,3 +87,24 @@ class TradeTest(unittest.TestCase):
         }
         resp = self.api._open_api_trade_cashOrderPay(input_=[input_])
         self.assertEqual(resp.get('status'), 'OK')
+
+    def test_open_api_trade_cashOrdePay(self):
+        """
+        提现
+        :return:
+        """
+        channelNo = 100004
+        withdrawAmout = 200
+        resp = self.api._open_api_trade_withdraw(channelNo_=channelNo, withdrawAmout_=withdrawAmout)
+
+    def test_open_api_trade_pay_query(self):
+        """
+        查询
+        :return:
+        """
+        bodyId = '100004'
+        outOrderNo = '25358884655572'
+        tradeOrderNo = 'P210115174346802070122'
+        source = 'POS'
+        self.api._open_api_trade_pay_query(bodyId_=bodyId, outOrderNo_=outOrderNo, source_=source,
+                                           tradeOrderNo_=tradeOrderNo)
