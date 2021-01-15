@@ -258,7 +258,7 @@ class payAction(object):
             data = {'input': input_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
-        response = self.request.post(url=self.url+'/open/api/trade/cashOrderPay', data=data, hosts=self.url)
+        response = self.request.post(url=self.url+'/open/api/trade/cashOrderPay', jsons=input_, hosts=self.url)
         apiTestResult(api='/open/api/trade/cashOrderPay', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
@@ -276,7 +276,7 @@ class payAction(object):
             data = {'bodyId': bodyId_, 'outOrderNo': outOrderNo_, 'outRefundOrderNo': outRefundOrderNo_, 'refundAmount': refundAmount_, 'refundType': refundType_, 'source': source_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'bodyId': bodyId_, 'outOrderNo': outOrderNo_, 'outRefundOrderNo': outRefundOrderNo_, 'refundAmount': refundAmount_, 'refundType': refundType_, 'source': source_}
-        response = self.request.post(url=self.url+'/open/api/trade/refund', data=data, hosts=self.url)
+        response = self.request.post(url=self.url+'/open/api/trade/refund', jsons=data, hosts=self.url)
         apiTestResult(api='/open/api/trade/refund', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 

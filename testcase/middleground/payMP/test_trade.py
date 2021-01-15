@@ -34,17 +34,17 @@ class TradeTest(unittest.TestCase):
         当面付 - 付款码支付
         :return:
         """
-        authCode = '134799496115354842'
+        authCode = '134617647963252055'
         bodyId = '0000001'
-        disregardaAmount = 10
+        disregardaAmount = 1
         due = 0
         mchCreateIp = '172.12.13.15'
-        mchNo = '1351'
-        outOrderNo = '15358884655464'
+        mchNo = '2088041261907815'
+        outOrderNo = '25358884655467'
         regardaAmount = 0
-        source = 'OMS'
+        source = 'POS'
         subject = '椴树蜜'
-        totalAmount = 10
+        totalAmount = 1
         resp = self.api._open_api_trade_tradePay(authCode_=authCode, bodyId_=bodyId,
                                                  disregardaAmount_=disregardaAmount, due_=due,
                                                  mchCreateIp_=mchCreateIp, mchNo_=mchNo,
@@ -52,4 +52,40 @@ class TradeTest(unittest.TestCase):
                                                  regardaAmount_=regardaAmount,
                                                  source_=source, subject_=subject,
                                                  totalAmount_=totalAmount)
-        self.assertEqual(resp.get('OK'), 'OK')
+        self.assertEqual(resp.get('status'), 'OK')
+
+    def test_open_api_trade_refund(self):
+        """
+        退款
+        :return:
+        """
+        bodyId = '0000001'
+        outOrderNo = '25358884655462'
+        outRefundOrderNo = '4200000834202101155906249399'
+        refundAmount = 1
+        refundType = 'WX_PAY'
+        source = 'POS'
+        self.api._open_api_trade_refund(bodyId_=bodyId, outOrderNo_=outOrderNo,
+                                        outRefundOrderNo_=outRefundOrderNo,
+                                        refundAmount_=refundAmount, refundType_=refundType,
+                                        source_=source)
+
+    def test_open_api_trade_casshOrderPay(self):
+        """
+        现金交易
+        :return:
+        """
+        input_ = {
+            "bodyId": '0000001',
+            "disregardaAmount": 1,
+            "due": 0,
+            "mchCreateIp": '172.12.13.15',
+            "mchNo": "2088041261907815",
+            "outOrderNo": "25358884655463",
+            "regardaAmount": 0,
+            "source": 'POS',
+            "subject": "椴树蜜",
+            "totalAmount": 1
+        }
+        resp = self.api._open_api_trade_cashOrderPay(input_=input_)
+        self.assertEqual(resp.get('status'), 'OK')
