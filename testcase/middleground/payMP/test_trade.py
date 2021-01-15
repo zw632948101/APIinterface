@@ -34,13 +34,14 @@ class TradeTest(unittest.TestCase):
         当面付 - 付款码支付
         :return:
         """
-        authCode = '287138479593850125'  # 付款码id
+        authCode = '134742476577480562'  # 付款码id
         bodyId = '100004'  # 渠道id
         disregardaAmount = 10  # 优惠后金额
         due = 0  # 优惠金额
         mchCreateIp = '172.12.13.15'  # 商户地址
-        mchNo = '2088041261907815'  # 商户号
-        outOrderNo = '25358884655575'  # 外部订单号
+        # mchNo = '2088041261907815'  # 商户号
+        mchNo = '1603750796'  # 微信商户号
+        outOrderNo = '25358884655579'  # 外部订单号
         regardaAmount = 0  #
         source = 'POS'  # 来源渠道
         subject = '椴树蜜'  # 商品名称
@@ -60,10 +61,10 @@ class TradeTest(unittest.TestCase):
         :return:
         """
         bodyId = '100004'
-        outOrderNo = '35358884655261'
-        outRefundOrderNo = '1603750796'
-        refundAmount = 100
-        refundType = 'CASH'
+        outOrderNo = '25358884655579'
+        outRefundOrderNo = '4200000779202101158343694892'
+        refundAmount = 10
+        refundType = 'FUND'
         source = 'POS'
         self.api._open_api_trade_refund(bodyId_=bodyId, outOrderNo_=outOrderNo,
                                         outRefundOrderNo_=outRefundOrderNo,
@@ -103,8 +104,8 @@ class TradeTest(unittest.TestCase):
         :return:
         """
         bodyId = '100004'
-        outOrderNo = '25358884655572'
-        tradeOrderNo = 'P210115174346802070122'
+        outOrderNo = '25358884655579'
+        tradeOrderNo = 'P210115211939770070402'
         source = 'POS'
         self.api._open_api_trade_pay_query(bodyId_=bodyId, outOrderNo_=outOrderNo, source_=source,
                                            tradeOrderNo_=tradeOrderNo)
