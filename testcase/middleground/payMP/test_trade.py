@@ -34,13 +34,13 @@ class TradeTest(unittest.TestCase):
         当面付 - 付款码支付
         :return:
         """
-        authCode = '283685125040405890'  # 付款码id
+        authCode = '134699914949527175'  # 付款码id
         bodyId = '0000001'  # 渠道id
         disregardaAmount = 1  # 优惠后金额
         due = 0  # 优惠金额
         mchCreateIp = '172.12.13.15'  # 商户地址
-        mchNo = '2088041261907815'  # 商户号
-        outOrderNo = '25358884655469'  # 外部订单号
+        mchNo = '1603750796'  # 商户号
+        outOrderNo = '25358884655471'  # 外部订单号
         regardaAmount = 0  #
         source = 'POS'  # 来源渠道
         subject = '椴树蜜'  # 商品名称
@@ -59,11 +59,11 @@ class TradeTest(unittest.TestCase):
         退款
         :return:
         """
-        bodyId = '0000001'
-        outOrderNo = '25358884655462'
-        outRefundOrderNo = '4200000834202101155906249399'
-        refundAmount = 1
-        refundType = 'WX_PAY'
+        bodyId = '100004'
+        outOrderNo = '35358884655261'
+        outRefundOrderNo = '1603750796'
+        refundAmount = 100
+        refundType = 'CASH'
         source = 'POS'
         self.api._open_api_trade_refund(bodyId_=bodyId, outOrderNo_=outOrderNo,
                                         outRefundOrderNo_=outRefundOrderNo,
@@ -76,16 +76,14 @@ class TradeTest(unittest.TestCase):
         :return:
         """
         input_ = {
-            "bodyId": '0000001',
-            "disregardaAmount": 1,
+            "bodyId": '100004',
+            "disregardaAmount": 100,
             "due": 0,
-            "mchCreateIp": '172.12.13.15',
-            "mchNo": "2088041261907815",
-            "outOrderNo": "25358884655463",
+            "outOrderNo": "35358884655263",
             "regardaAmount": 0,
             "source": 'POS',
             "subject": "椴树蜜",
-            "totalAmount": 1
+            "totalAmount": 100
         }
-        resp = self.api._open_api_trade_cashOrderPay(input_=input_)
+        resp = self.api._open_api_trade_cashOrderPay(input_=[input_])
         self.assertEqual(resp.get('status'), 'OK')
