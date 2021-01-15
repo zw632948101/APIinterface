@@ -133,18 +133,18 @@ middleground:
       MP_WMS: 'http://qa-gateway.worldfarm.com/mp-wms'
       MP_MEMBER: 'http://qa-gateway.worldfarm.com/mp-member'
       MP_SHOP: 'http://qa-gateway.worldfarm.com/mp-shop'
-#      MP_PAY: 'http://qa-gateway.worldfarm.com/mp-pay'
+      MP_PAY: 'http://qa-gateway.worldfarm.com/mp-pay'
       MP_OMS: 'http://qa-gateway.worldfarm.com/mp-oms'
 
     QA_API:
-      MP_PRODUCT: 'http://qa-gateway.worldfarm.com/mp-product'
+#      MP_PRODUCT: 'http://qa-gateway.worldfarm.com/mp-product'
 #      MP_DELIVERY: 'http://qa-gateway.worldfarm.com/mp-delivery'
-      MP_ASSET: 'http://qa-gateway.worldfarm.com/mp-asset'
-      MP_WMS: 'http://qa-gateway.worldfarm.com/mp-wms'
-      MP_MEMBER: 'http://qa-gateway.worldfarm.com/mp-member'
-      MP_SHOP: 'http://qa-gateway.worldfarm.com/mp-shop'
-#      MP_PAY: 'http://qa-gateway.worldfarm.com/mp-pay'
-      MP_OMS: 'http://qa-gateway.worldfarm.com/mp-oms'
+#      MP_ASSET: 'http://qa-gateway.worldfarm.com/mp-asset'
+#      MP_WMS: 'http://qa-gateway.worldfarm.com/mp-wms'
+#      MP_MEMBER: 'http://qa-gateway.worldfarm.com/mp-member'
+#      MP_SHOP: 'http://qa-gateway.worldfarm.com/mp-shop'
+      MP_PAY: 'http://qa-gateway.worldfarm.com/mp-pay'
+#      MP_OMS: 'http://qa-gateway.worldfarm.com/mp-oms'
 
 wxshop:
   <<: *env
