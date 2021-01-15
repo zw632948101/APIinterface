@@ -37,6 +37,30 @@ class DataConversion(object):
         return sample(parameters_ld, num)
 
     @staticmethod
+    def del_dict_key(key, dt):
+        """
+        删除字典中指定的key
+        :param key:要删除的key，可以为str和list
+        :param dt:需要操作的数据，可以为dict和list
+        :return:
+        """
+        if isinstance(key, str):
+            key = [key]
+        if isinstance(dt, dict):
+            dt = [dt]
+        del_key = lambda k, d: d.pop(k)
+
+        def del_l_key(k: str, dt: list):
+            _dl = []
+            for d in dt:
+                _dl.append(del_key(k, d))
+            return _dl
+
+        for k in key:
+            del_l_key(k, dt)
+        return dt
+
+    @staticmethod
     def del_dict_value_null(dt):
         """
         删除字典中Value为空的键值对
@@ -84,3 +108,22 @@ class DataConversion(object):
         c = ConfigInformationSql()
         urllist = choices(c.query_attach_all(), k=num)
         return json.dumps([dict(i, **kwargs) for i in urllist])
+
+    @staticmethod
+    def replace_dict_value(replace_key, keep_dict, enumerate_dict: dict):
+        """
+        根据传入参数替换字段中值
+        :param replace_key: 替换key
+        :param keep_dict: 需要替换的数据，list or dict,其他类型数据直接返回源数据
+        :param dict enumerate_dict: 替换枚举数据，dict
+        :return: keep_dict
+        """
+        if isinstance(keep_dict, list):
+            _dl = []
+            for d in keep_dict:
+                d[replace_key] = enumerate_dict.get(d.get(replace_key))
+                _dl.append(d)
+            keep_dict = _dl
+        if isinstance(keep_dict, dict):
+            keep_dict[replace_key] = enumerate_dict.get(keep_dict.get(replace_key))
+        return keep_dict

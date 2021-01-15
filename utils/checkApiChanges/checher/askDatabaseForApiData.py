@@ -27,14 +27,17 @@ class AskDatabaseForApiData(object):
         session = self.__db_engine.creat_session()
 
         # 获取该服务器下所有接口
-        whichService = session.query(Server.id).filter(or_(Server.qaURL == host, Server.devURL == host), and_(Server.serverStatus == 1)).first()
+        whichService = session.query(Server.id).filter(
+            or_(Server.qaURL == host, Server.devURL == host),
+            and_(Server.serverStatus == 1)).first()
         if whichService == [] or whichService is None:
             servername = ''
             for i in self.env.keys():
                 if self.env.get(i) == host:
                     servername = i
                     break
-            serverid = session.query(Server).filter(and_(Server.serverName == servername, Server.serverStatus == 1)).first()
+            serverid = session.query(Server).filter(
+                and_(Server.serverName == servername, Server.serverStatus == 1)).first()
             if config.get('updateActionAPI') in ('DEV_API', 'DEV'):
                 devurl = host
                 qaurl = config.get('hosts').get('QA').get(servername)
@@ -42,15 +45,19 @@ class AskDatabaseForApiData(object):
                 qaurl = host
                 devurl = config.get('hosts').get('DEV').get(servername)
             if serverid == [] or serverid is None:
-                addserver = Server(serverName=servername, swaggerURI='/v2/api-docs', qaURL=qaurl, devURL=devurl, serverStatus=1)
+                addserver = Server(serverName=servername, swaggerURI='/v2/api-docs', qaURL=qaurl,
+                                   devURL=devurl, serverStatus=1)
                 session.add(addserver)
             else:
                 log.info('数据库中已有相同的服务名：%s' % servername)
             session.commit()
-            whichService = session.query(Server.id).filter(or_(Server.qaURL == host, Server.devURL == host)).first()
+            whichService = session.query(Server.id).filter(
+                or_(Server.qaURL == host, Server.devURL == host)).first()
         whichService = whichService.id
-        apis = session.query(Interface.id, Interface.apiPath, Interface.apiDesc, Interface.apiRequestMethod
-                             ).filter(and_(Interface.apiServerId == whichService, Interface.apiStatus == 1)).all()
+        apis = session.query(Interface.id, Interface.apiPath, Interface.apiDesc,
+                             Interface.apiRequestMethod
+                             ).filter(
+            and_(Interface.apiServerId == whichService, Interface.apiStatus == 1)).all()
         api_result = {}
 
         # 获取接口中所有参数信息
@@ -69,9 +76,10 @@ class AskDatabaseForApiData(object):
 
             # 组装请求字段信息
             try:
-                in_parameter = session.query(InputParameters.inParameter).filter(and_(InputParameters.apiId == api_id,
-                                                                                      InputParameters.inParameterStatus == 1
-                                                                                      )).one()
+                in_parameter = session.query(InputParameters.inParameter).filter(
+                    and_(InputParameters.apiId == api_id,
+                         InputParameters.inParameterStatus == 1
+                         )).one()
                 api_result.get(api_path).update({"inParameter": json.loads(in_parameter[0])})
             except orm.exc.NoResultFound:
                 api_result.get(api_path).update({"inParameter": None})
@@ -99,7 +107,8 @@ class AskDatabaseForApiData(object):
         log.info('执行数据更新接口信息')
         session = self.__db_engine.creat_session()
         serverid = session.query(Server.id).filter(
-            or_(Server.qaURL == host, Server.devURL == host), and_(Server.serverStatus == 1)).first()
+            or_(Server.qaURL == host, Server.devURL == host),
+            and_(Server.serverStatus == 1)).first()
         for status in keys.keys():
             if status == 'new_info':
                 nwe_info = keys.get(status)
@@ -107,41 +116,56 @@ class AskDatabaseForApiData(object):
                     apiparameter = nwe_info.get(api)
                     desc = str(apiparameter.get('desc'))
                     method = str(apiparameter.get('method'))
-                    apiId = session.query(Interface.id).filter(and_(Interface.apiPath == api, Interface.apiStatus == 1)).first()
+                    apiId = session.query(Interface.id).filter(
+                        and_(Interface.apiPath == api, Interface.apiStatus == 1,
+                             Interface.apiServerId == serverid.id)).first()
                     if apiId is None:
-                        ifs = Interface(apiPath=api, apiServerId=serverid.id, apiDesc=desc, apiRequestMethod=method, apiStatus=1)
+                        ifs = Interface(apiPath=api, apiServerId=serverid.id, apiDesc=desc,
+                                        apiRequestMethod=method, apiStatus=1)
                         session.add(ifs)
                         session.commit()
-                        apiId = session.query(Interface.id).filter(and_(Interface.apiPath == api, Interface.apiStatus == 1)).first()
+                        apiId = session.query(Interface.id).filter(
+                            and_(Interface.apiPath == api, Interface.apiStatus == 1,
+                                 Interface.apiServerId == serverid.id)).first()
                     inParameter = json.dumps(apiparameter.get('inParameter'))
                     extParameter = json.dumps(apiparameter.get('outParameter'))
-                    ips = InputParameters(apiId=apiId.id, inParameter=inParameter, inParameterStatus=1)
-                    eps = ExtractParameters(apiId=apiId.id, extParameter=extParameter, extParameterStatus=1)
+                    ips = InputParameters(apiId=apiId.id, inParameter=inParameter,
+                                          inParameterStatus=1)
+                    eps = ExtractParameters(apiId=apiId.id, extParameter=extParameter,
+                                            extParameterStatus=1)
                     session.add_all([ips, eps])
                     session.commit()
             elif status == 'update_info':
                 update_info = keys.get(status)
                 for api in update_info.keys():
                     apiparameter = update_info.get(api)
-                    apiId = session.query(Interface.id).filter(and_(Interface.apiPath == api, Interface.apiStatus == 1)).first()
+                    apiId = session.query(Interface.id).filter(
+                        and_(Interface.apiPath == api, Interface.apiStatus == 1,
+                             Interface.apiServerId == serverid.id)).first()
                     inParameter = json.dumps(apiparameter.get('inParameter'))
                     extParameter = json.dumps(apiparameter.get('outParameter'))
                     ips = session.query(InputParameters).filter(
-                        and_(InputParameters.apiId == apiId.id, InputParameters.inParameterStatus == 1)).first()
+                        and_(InputParameters.apiId == apiId.id,
+                             InputParameters.inParameterStatus == 1)).first()
                     ips.inParameter = inParameter
                     eps = session.query(ExtractParameters).filter(
-                        and_(ExtractParameters.apiId == apiId.id, ExtractParameters.extParameterStatus == 1)).first()
+                        and_(ExtractParameters.apiId == apiId.id,
+                             ExtractParameters.extParameterStatus == 1)).first()
                     eps.extParameter = extParameter
                     session.commit()
             elif status == 'del_info':
                 update_info = keys.get(status)
                 for api in update_info.keys():
-                    apiId = session.query(Interface).filter(and_(Interface.apiPath == api, Interface.apiStatus == 1)).first()
+                    apiId = session.query(Interface).filter(
+                        and_(Interface.apiPath == api, Interface.apiStatus == 1,
+                             Interface.apiServerId == serverid.id)).first()
                     ips = session.query(InputParameters).filter(
-                        and_(InputParameters.apiId == apiId.id, InputParameters.inParameterStatus == 1)).first()
+                        and_(InputParameters.apiId == apiId.id,
+                             InputParameters.inParameterStatus == 1)).first()
                     ips.inParameterStatus = 2
                     eps = session.query(ExtractParameters).filter(
-                        and_(ExtractParameters.apiId == apiId.id, ExtractParameters.extParameterStatus == 1)).first()
+                        and_(ExtractParameters.apiId == apiId.id,
+                             ExtractParameters.extParameterStatus == 1)).first()
                     eps.extParameterStatus = 2
                     apiId.apiStatus = 2
                     session.commit()

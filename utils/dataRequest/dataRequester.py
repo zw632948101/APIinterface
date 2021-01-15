@@ -51,6 +51,8 @@ class Request(object):
             headers['Authentication-Token'] = data.get('_tk_')
         if url.find('admin/supplier/add') > 0 or url.find("/admin/supplier/edit") > 0:
             headers["Content-Type"] = 'application/json;charset=UTF-8'
+        if jsons is not None:
+            headers["Content-Type"] = 'application/json;charset=UTF-8'
         response = client.post(url=url, data=data, json=jsons, headers=headers, cookies=None)
         content = response.content
         log.info('headers: %s' % headers)
