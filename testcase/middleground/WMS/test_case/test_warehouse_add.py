@@ -11,10 +11,6 @@ from testcase.middleground.WMS.datas.warehouse_data import warehouse_data
 from ddt import data, ddt
 from testcase.middleground.WMS.common.Http import Request
 
-
-
-
-
 @ddt
 class warehouse_add(unittest.TestCase):
 
@@ -110,7 +106,6 @@ class warehouse_add(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
 
 
 
