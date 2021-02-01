@@ -1,4 +1,4 @@
-which_project: &which_project middleground
+which_project: &which_project flowerChaser
 env: &env
   run: QA
   updateActionAPI: QA_API
@@ -18,7 +18,7 @@ flowerChaser:
     DEV:
       host_ip: eca79b6781bc07f5ead511b284f07cd1
     QA:
-      host_ip: 38decc2956f8bcf5731227852dd4d5bd
+      host_ip: ca42f3c003f675fb5b71da3d0b0990d19f0539b99d42f8f9901740d9c5ac64f8
   urldict:
     FC_PASSPORT: "Passport"
     FC_USER: "User"
@@ -50,7 +50,7 @@ worldFarm:
     DEV:
       host_ip: eca79b6781bc07f5ead511b284f07cd1
     QA:
-      host_ip: 38decc2956f8bcf5731227852dd4d5bd
+      host_ip: ca42f3c003f675fb5b71da3d0b0990d19f0539b99d42f8f9901740d9c5ac64f8
   urldict:
     WF_OFFLINE: "Offline"
     WF_USER: "User"
@@ -94,7 +94,7 @@ middleground:
     DEV:
       host_ip: eca79b6781bc07f5ead511b284f07cd1
     QA:
-      host_ip: 38decc2956f8bcf5731227852dd4d5bd
+      host_ip: ca42f3c003f675fb5b71da3d0b0990d19f0539b99d42f8f9901740d9c5ac64f8
   urldict:
     MP_PRODUCT: "Product"
     MP_DELIVERY: "delivery"
@@ -113,7 +113,7 @@ middleground:
       MP_WMS: 'http://dev-gateway.worldfarm.com/mp-wms'
       MP_MEMBER: 'http://dev-gateway.worldfarm.com/mp-member'
       MP_SHOP: 'http://dev-gateway.worldfarm.com/mp-shop'
-#      MP_PAY: 'http://dev-gateway.worldfarm.com/mp-pay'
+      MP_PAY: 'http://dev-gateway.worldfarm.com/mp-pay'
       MP_OMS: 'http://dev-gateway.worldfarm.com/mp-oms'
 
     DEV_API:
@@ -123,8 +123,8 @@ middleground:
       MP_WMS: 'http://dev-gateway.worldfarm.com/mp-wms'
       MP_MEMBER: 'http://dev-gateway.worldfarm.com/mp-member'
       MP_SHOP: 'http://dev-gateway.worldfarm.com/mp-shop'
-#      MP_PAY: 'http://dev-gateway.worldfarm.com/mp-pay'
-#      MP_OMS: 'http://dev-gateway.worldfarm.com/mp-oms'
+      MP_PAY: 'http://dev-gateway.worldfarm.com/mp-pay'
+      MP_OMS: 'http://dev-gateway.worldfarm.com/mp-oms'
 
     QA:
       MP_PRODUCT: 'http://qa-gateway.worldfarm.com/mp-product'
@@ -137,14 +137,14 @@ middleground:
       MP_OMS: 'http://qa-gateway.worldfarm.com/mp-oms'
 
     QA_API:
-#      MP_PRODUCT: 'http://qa-gateway.worldfarm.com/mp-product'
-#      MP_DELIVERY: 'http://qa-gateway.worldfarm.com/mp-delivery'
-#      MP_ASSET: 'http://qa-gateway.worldfarm.com/mp-asset'
-#      MP_WMS: 'http://qa-gateway.worldfarm.com/mp-wms'
-#      MP_MEMBER: 'http://qa-gateway.worldfarm.com/mp-member'
-#      MP_SHOP: 'http://qa-gateway.worldfarm.com/mp-shop'
+      MP_PRODUCT: 'http://qa-gateway.worldfarm.com/mp-product'
+      MP_DELIVERY: 'http://qa-gateway.worldfarm.com/mp-delivery'
+      MP_ASSET: 'http://qa-gateway.worldfarm.com/mp-asset'
+      MP_WMS: 'http://qa-gateway.worldfarm.com/mp-wms'
+      MP_MEMBER: 'http://qa-gateway.worldfarm.com/mp-member'
+      MP_SHOP: 'http://qa-gateway.worldfarm.com/mp-shop'
       MP_PAY: 'http://qa-gateway.worldfarm.com/mp-pay'
-#      MP_OMS: 'http://qa-gateway.worldfarm.com/mp-oms'
+      MP_OMS: 'http://qa-gateway.worldfarm.com/mp-oms'
 
 wxshop:
   <<: *env
@@ -152,7 +152,7 @@ wxshop:
     DEV:
       host_ip: eca79b6781bc07f5ead511b284f07cd1
     QA:
-      host_ip: 38decc2956f8bcf5731227852dd4d5bd
+      host_ip: ca42f3c003f675fb5b71da3d0b0990d19f0539b99d42f8f9901740d9c5ac64f8
   urldict:
     WX_PRODUCT: "Product"
     WX_MALL: "Mall"

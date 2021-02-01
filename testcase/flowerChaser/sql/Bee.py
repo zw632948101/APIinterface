@@ -24,7 +24,8 @@ class ConfigInformationSql(object):
         :param full_name:
         :return:
         """
-        sql = "SELECT id FROM `fc-bee`.t_region WHERE level = 1 AND full_name LIKE '%%%s%%' AND parent_id = %s;" % (full_name, parent_id)
+        sql = "SELECT id FROM `fc-bee`.t_region WHERE level = 1 AND full_name LIKE '%%%s%%' AND parent_id = %s;" % (
+        full_name, parent_id)
         return self.db.operate(host_ip, sql)
 
     def query_reason_cityid_by_full_name(self, city_id, full_name):
@@ -63,7 +64,8 @@ class NectarSourceInformationSql(object):
         查询已入驻状态的蜜源地
         :return:
         """
-        sql = "SELECT * FROM `fc-bee`.t_nectar_source WHERE `status`='%s' AND is_delete=0;" % str(status)
+        sql = "SELECT * FROM `fc-bee`.t_nectar_source WHERE `status`='%s' AND is_delete=0;" % str(
+            status)
         return self.db.operate(host_ip, sql)
 
     def sql_query_extract_add_png(self):
@@ -434,8 +436,10 @@ class ClinteleSql(DataBaseOperate):
         else:
             return
 
-    def query_bee_friend_According_to_the_condition(self, pn=None, ps=None, phone=None, province_id=None, city_id=None,
-                                                    county=None, lng=None, lat=None, cooperationIntentions=None,
+    def query_bee_friend_According_to_the_condition(self, pn=None, ps=None, phone=None,
+                                                    province_id=None, city_id=None,
+                                                    county=None, lng=None, lat=None,
+                                                    cooperationIntentions=None,
                                                     searchType=None, distanceType=None):
         """
         根据条件查询蜂友资料
@@ -454,7 +458,8 @@ class ClinteleSql(DataBaseOperate):
         """
         if searchType == 1:
             lng = lat = 'NULL'
-            pcc = "AND t.province = %s AND t.city = %s AND t.county = %s" % (province_id, city_id, county)
+            pcc = "AND t.province = %s AND t.city = %s AND t.county = %s" % (
+            province_id, city_id, county)
         else:
             pcc = ''
         if lng is None:
@@ -555,6 +560,16 @@ class BeeSettleInRecordSql(object):
 
     def query_test(self):
         sql = "SELECT * FROM `fc-bee`.t_user_info WHERE is_delete = 0;"
+        return self.db.operate(host_ip, sql)
+
+    def query_fc_bee_userid(self, phone):
+        """
+
+        :param phone:
+        :return:
+        """
+        sql = "SELECT * FROM `fc-bee`.t_bee_friend WHERE is_delete = 0 AND contact_number = {phone};".format(
+            phone=phone)
         return self.db.operate(host_ip, sql)
 
 
@@ -1191,15 +1206,17 @@ class BeekeeperNearbySql(object):
 
     def sql_beekeeper_nearby_search_content_random(self):
         from threading import Thread
-        sql_dict = {"mutual_labels_all": 'SELECT `value` FROM `fc-bee`.t_config WHERE code=10006 AND is_delete=0',
-                    "user_name": 'SELECT username FROM `world-user`.t_user ORDER BY rand() LIMIT 1;',
-                    "user_mobile": 'SELECT phone FROM `world-user`.t_user WHERE phone IS NOT NULL ORDER BY rand() LIMIT 1;',
-                    "user_id": 'SELECT id FROM `world-user`.t_user WHERE phone IS NOT NULL ORDER BY rand() LIMIT 1;',
-                    }
+        sql_dict = {
+            "mutual_labels_all": 'SELECT `value` FROM `fc-bee`.t_config WHERE code=10006 AND is_delete=0',
+            "user_name": 'SELECT username FROM `world-user`.t_user ORDER BY rand() LIMIT 1;',
+            "user_mobile": 'SELECT phone FROM `world-user`.t_user WHERE phone IS NOT NULL ORDER BY rand() LIMIT 1;',
+            "user_id": 'SELECT id FROM `world-user`.t_user WHERE phone IS NOT NULL ORDER BY rand() LIMIT 1;',
+            }
         thread_list, sql_result = list(), dict()
 
         for sql_name, sql in sql_dict.items():
-            t = Thread(target=lambda sql_name_, sql_: sql_result.update({sql_name_: self.__db.query_data(sql_)}),
+            t = Thread(target=lambda sql_name_, sql_: sql_result.update(
+                {sql_name_: self.__db.query_data(sql_)}),
                        args=(sql_name, sql))
             t.start()
             thread_list.append(t)
@@ -1233,18 +1250,21 @@ FROM `fc-bee`.t_bee_friend AS tbf
         if len(search_content) > 1:
             sql += ' WHERE'
             if search_content.get('searchKey', None):
-                sql += ' AND tu.username LIKE "%%%s%%" OR tu.phone LIKE "%%%s%%" ' % (search_content.get('searchKey'),
-                                                                                      search_content.get('searchKey'))
+                sql += ' AND tu.username LIKE "%%%s%%" OR tu.phone LIKE "%%%s%%" ' % (
+                search_content.get('searchKey'),
+                search_content.get('searchKey'))
 
             if search_content.get('intentions', None):
-                sql += ' AND tbf.intention in (%s) ' % ','.join([str(x) for x in search_content.get('intentions')])
+                sql += ' AND tbf.intention in (%s) ' % ','.join(
+                    [str(x) for x in search_content.get('intentions')])
 
             if search_content.get('mutualLabels', None):
                 mutual_labels_keys = self.__db.query_data('''SELECT `key` AS db_key
 FROM `fc-bee`.t_config
 WHERE code = 10006 AND `value` IN %s''' % str(tuple(search_content.get('mutualLabels'))))
 
-                sql_sub = 'WHERE label_type in %s' % str(tuple(x.get('db_key') for x in mutual_labels_keys))
+                sql_sub = 'WHERE label_type in %s' % str(
+                    tuple(x.get('db_key') for x in mutual_labels_keys))
                 sql = sql.replace('this_is_a_tag_str_for_formart_sql', sql_sub)
             else:
                 sql = sql.replace('this_is_a_tag_str_for_formart_sql', '')
@@ -1294,7 +1314,8 @@ WHERE code = 10006 AND `value` IN %s''' % str(tuple(search_content.get('mutualLa
        username AS 'keeperName',
        phone AS 'contactNumber'
 FROM `world-user`.t_user
-WHERE  account_type = 21 AND (username LIKE '%{0}%' OR phone LIKE '%{0}%') ORDER BY id DESC ;'''.format(key)
+WHERE  account_type = 21 AND (username LIKE '%{0}%' OR phone LIKE '%{0}%') ORDER BY id DESC ;'''.format(
+            key)
         return self.__db.query_data(sql)
 
     def sql_mobile_nearby_bee_friend_detail(self, user_id):

@@ -34,25 +34,27 @@ class TradeTest(unittest.TestCase):
         当面付 - 付款码支付
         :return:
         """
-        authCode = '134742476577480562'  # 付款码id
-        bodyId = '100004'  # 渠道id
+        authCode = '134913179359291610'  # 付款码id
+        bodyId = '100005'  # 渠道id
         disregardaAmount = 10  # 优惠后金额
         due = 0  # 优惠金额
         mchCreateIp = '172.12.13.15'  # 商户地址
         # mchNo = '2088041261907815'  # 商户号
         mchNo = '1603750796'  # 微信商户号
-        outOrderNo = '25358884655579'  # 外部订单号
+        outOrderNo = '25358884655586'  # 外部订单号
         regardaAmount = 0  #
         source = 'POS'  # 来源渠道
         subject = '椴树蜜'  # 商品名称
         totalAmount = 10  # 实收金额
+        shopId = 1
+        shopName = '追花自营'
         resp = self.api._open_api_trade_tradePay(authCode_=authCode, bodyId_=bodyId,
                                                  disregardaAmount_=disregardaAmount, due_=due,
                                                  mchCreateIp_=mchCreateIp, mchNo_=mchNo,
                                                  outOrderNo_=outOrderNo,
                                                  regardaAmount_=regardaAmount,
                                                  source_=source, subject_=subject,
-                                                 totalAmount_=totalAmount)
+                                                 totalAmount_=totalAmount,shopId=shopId,shopName=shopName)
         self.assertEqual(resp.get('status'), 'OK')
 
     def test_open_api_trade_refund(self):
@@ -60,10 +62,10 @@ class TradeTest(unittest.TestCase):
         退款
         :return:
         """
-        bodyId = '100004'
-        outOrderNo = '25358884655579'
-        outRefundOrderNo = '4200000779202101158343694892'
-        refundAmount = 10
+        bodyId = '100005'
+        outOrderNo = '25358884655586'
+        outRefundOrderNo = '4200000786202101197174787236'
+        refundAmount = 1
         refundType = 'FUND'
         source = 'POS'
         self.api._open_api_trade_refund(bodyId_=bodyId, outOrderNo_=outOrderNo,
@@ -103,9 +105,9 @@ class TradeTest(unittest.TestCase):
         查询
         :return:
         """
-        bodyId = '100004'
-        outOrderNo = '25358884655579'
-        tradeOrderNo = 'P210115211939770070402'
+        bodyId = '100005'
+        outOrderNo = '25358884655586'
+        tradeOrderNo = 'P210119180357677070092'
         source = 'POS'
         self.api._open_api_trade_pay_query(bodyId_=bodyId, outOrderNo_=outOrderNo, source_=source,
                                            tradeOrderNo_=tradeOrderNo)
