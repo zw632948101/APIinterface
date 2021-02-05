@@ -107,7 +107,17 @@ class warehouse_add(unittest.TestCase):
                        cookie=None)
         self.assertEqual(case['expect'],resp.get_json()['status'])
 
-
+    @data(*warehouse_data().admin_warehouse_count)
+    def test_admin_warehouse_count(self,case):
+        url = self.url + '/admin/warehouse/count'
+        data = {}
+        resp = Request('post',
+                       url=url,
+                       data=data,
+                       headers=self.headers,
+                       cookie=None)
+        self.assertEqual(case['expect'],resp.get_json()['status'])
+        print(resp.get_json())
 if __name__ == '__main__':
     unittest.main()
 

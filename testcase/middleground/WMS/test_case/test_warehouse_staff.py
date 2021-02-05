@@ -1,42 +1,63 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import requests
-import unittest
+from utils.log import log
+import time
 import json
 import random
-from testcase.middleground.WMS.prepare.login import login
-from testcase.middleground.WMS.common.Pash import Header_mkdir # 存放header值得配置文件
-from testcase.middleground.WMS.common.Pash import Public_mkdir
-from testcase.middleground.WMS.common.config import read_config
+import warnings
+import unittest
+from interfaces.middleground.Wms_apiAction import wms_apiAction
 from testcase.middleground.WMS.common.Mysql import mp_label
-from testcase.middleground.WMS.datas.warehouse_data import warehouse_data
-from ddt import data, ddt
-from testcase.middleground.WMS.common.Http import Request
+from utils.userInfo.GetUserInfo import SessionTool
+from testcase.middleground.sql.sku_inventoryMP import mp_label
+from testcase.middleground.WMS.datas.whs_warehousing_notice_data import warehousing_notice_data
+from testcase.middleground.WMS.datas.whs_in_order_data import whs_in_order
+from utils import runlevel, timestamp
+from ddt import data, unpack, ddt
+from faker import Faker
 
+
+
+
+# 获取仓库列表-绑定员工-解绑员工-列表
 class warehouse_staff(unittest.TestCase):
+
+
+    warehouse = []
+
     def setUp(self):
-        '''
-                        测试准备，先登录,准备header (header里的key一定要写成 _Device-Id_ 和 _Token_  )
-                        '''
-        self.url = r"/world-passport/admin/sso/sms-login"
-        self.login = login(self.url).test_login()
-        self.headers = {
-            "_Device-Id_": read_config(Header_mkdir).get("header", "_device-id_"),
-            "_Token_": read_config(Header_mkdir).get("header", "_token_"),
-            "region": "online"
-        }
+        """
+        测试前数据准备
+        :return:
+        """
+        self.api = wms_apiAction()
+        self.api.set_user(mobile=15198034727)
+        self.db = mp_label()
+        self.faker = Faker('zh_CN')
 
-    def test_admin_warehouse_employee_add(self):
-        # 仓库新增
-        url = read_config(Public_mkdir).get("test_url","url") + "/admin/warehouse/del"
-        data = {"id":"112"}
+    # 获取仓库列表，绑定员工
+    def test_admin_warehouse_list(self):
+        resp = self.api._admin_warehouse_list(status_=1,
+                                              code_=None,
+                                              shopCode_=None)
+        self.assertEqual('OK',resp.get('status'))
+        for warehuse in resp.get('content'):
+            self.warehouse.append(warehuse['id'])
 
-        resp = Request('post',url=url,data=data,headers=self.headers,cookie=None)
-        result = resp.get_json()
-        print(result)
+        userIds_ = 18593,18599
+        resp = self.api._admin_warehouse_employee_add(userIds_=userIds_,
+                                                      warehouseId_=self.warehouse[0])
+        self.assertEqual('OK',resp.get('status'))
 
-    def test_admin_warehouse_del(self):
-        pass
+
+    def test_admin_warehouse_employee_dell(self):
+        resp = self.api._admin_warehouse_employee_del(warehouseEmployeeId_=45)
+        self.assertEqual('OK',resp.get('status'))
+
+    def test_admin_warehouse_employee_list(self):
+        resp = self.api._admin_warehouse_employee_list(id_=45)
+        self.assertEqual('OK',resp.get('status'))
+
 
 
 if __name__ == '__main__':
