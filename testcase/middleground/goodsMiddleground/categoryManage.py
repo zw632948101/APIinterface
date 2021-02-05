@@ -36,8 +36,10 @@ class categoryData(object):
 
     def category_add_data(self):
         import copy
-        ret = lambda var: [vn for vn, v in inspect.currentframe().f_back.f_locals.items() if v is var]
-        category_dict = {"bizId": 1, 'pcode': 'T01', 'name': '', "isSale": 1, "remark": self.faker.text(20)}
+        ret = lambda var: [vn for vn, v in inspect.currentframe().f_back.f_locals.items() if
+                           v is var]
+        category_dict = {"bizId": 1, 'pcode': 'T01', 'name': '', "isSale": 1,
+                         "remark": self.faker.text(20)}
         bizId = [1, -1, 0, '#', None]
         pcode = ['01', '\#', 1, 'T01', None]
         name = ['测试商品%s' % timestamp.get_timestamp(), self.faker.text(21), None]
@@ -89,9 +91,11 @@ class tagManage(unittest.TestCase):
         isSale = 1
         remark = self.faker.text(200)
         pcode = None
-        response = self.api._admin_category_add(bizId_=bizId, pcode_=pcode, name_=name, isSale_=isSale, remark_=remark)
+        response = self.api._admin_category_add(bizId_=bizId, pcode_=pcode, name_=name,
+                                                isSale_=isSale, remark_=remark)
         self.assertEqual(response.get('status'), 'OK', response.get('errorMsg'))
-        dbinfo = self.db.query_category_add_info(bizid=bizId, name=name, isSale=isSale, remark=remark, pcode=pcode)
+        dbinfo = self.db.query_category_add_info(bizid=bizId, name=name, isSale=isSale,
+                                                 remark=remark, pcode=pcode)
         self.assertEqual(len(dbinfo), 1)
         self.assertEqual(self.api.user.user_id, str(dbinfo[0].get('creator_id')))
 
@@ -108,10 +112,12 @@ class tagManage(unittest.TestCase):
         isSale = adddict.get('isSale')
         remark = adddict.get('remark')
         pcode = adddict.get('pcode')
-        response = self.api._admin_category_add(bizId_=bizId, pcode_=pcode, name_=name, isSale_=isSale, remark_=remark)
+        response = self.api._admin_category_add(bizId_=bizId, pcode_=pcode, name_=name,
+                                                isSale_=isSale, remark_=remark)
         if response.get('status') == 'OK':
             self.assertEqual(response.get('status'), 'OK', response.get('errorMsg'))
-            dbinfo = self.db.query_category_add_info(bizid=bizId, name=name, isSale=isSale, remark=remark, pcode=pcode)
+            dbinfo = self.db.query_category_add_info(bizid=bizId, name=name, isSale=isSale,
+                                                     remark=remark, pcode=pcode)
             self.assertEqual(len(dbinfo), 1)
             self.assertEqual(self.api.user.user_id, str(dbinfo[0].get('creator_id')))
         else:
@@ -220,3 +226,17 @@ class tagManage(unittest.TestCase):
                 self.assertEqual(response.get('errorMsg'), '数据不存在')
             if response.get('errorCode') == '11020003':
                 self.assertEqual(response.get('errorMsg'), '状态不能为空')
+
+    def test_admin_category_zh_pd(self):
+        """
+        商品类目-追花*商品分类
+        :return:
+        """
+        resp = self.api._admin_category_zh_pd()
+        self.assertEqual(resp.get('status'), 'OK')
+
+    def test_admin_sku_list_zh_charge(self):
+        """
+        商品sku
+        :return:
+        """

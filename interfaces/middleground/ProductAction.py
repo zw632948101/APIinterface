@@ -235,6 +235,15 @@ class ProductAction(object):
         apiTestResult(api='/admin/category/page-list', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
+    def _admin_category_zh_pd(self):
+        if self.user is None:
+            data = {}
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id}
+        response = self.request.post(url=self.url+'/admin/category/zh-pd', data=data, hosts=self.url)
+        apiTestResult(api='/admin/category/zh-pd', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
     def _admin_inventory_add(self, skuId_=None, skuCode_=None, quantity_=None):
         if self.user is None:
             data = {'skuId': skuId_, 'skuCode': skuCode_, 'quantity': quantity_, }
@@ -316,15 +325,6 @@ class ProductAction(object):
         apiTestResult(api='/admin/label/page-list', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_product_sync_erp_push(self, skus_=None, subjectCode_=None):
-        if self.user is None:
-            data = {'skus': skus_, 'subjectCode': subjectCode_, }
-        else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'skus': skus_, 'subjectCode': subjectCode_}
-        response = self.request.post(url=self.url+'/admin/product-sync/erp-push', data=data, hosts=self.url)
-        apiTestResult(api='/admin/product-sync/erp-push', host=self.url,datas=data, resp=response)
-        return self.__judge_response_status(json.loads(response))
-
     def _admin_product_sync_pageList(self, pn_=None, ps_=None, name_=None, skuName_=None, subjectId_=None, skuCode_=None, status_=None):
         if self.user is None:
             data = {'pn': pn_, 'ps': ps_, 'name': name_, 'skuName': skuName_, 'subjectId': subjectId_, 'skuCode': skuCode_, 'status': status_, }
@@ -334,11 +334,11 @@ class ProductAction(object):
         apiTestResult(api='/admin/product-sync/pageList', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_product_sync_sync(self, skuCodes_=None, type_=None):
+    def _admin_product_sync_sync(self, skuCodes_=None, type_=None, subjectCode_=None):
         if self.user is None:
-            data = {'skuCodes': skuCodes_, 'type': type_, }
+            data = {'skuCodes': skuCodes_, 'type': type_, 'subjectCode': subjectCode_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'skuCodes': skuCodes_, 'type': type_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'skuCodes': skuCodes_, 'type': type_, 'subjectCode': subjectCode_}
         response = self.request.post(url=self.url+'/admin/product-sync/sync', data=data, hosts=self.url)
         apiTestResult(api='/admin/product-sync/sync', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
@@ -550,11 +550,11 @@ class ProductAction(object):
         apiTestResult(api='/admin/shop/list-all', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_sku_add(self, name_=None, alias_=None, class1_=None, class2_=None, class3_=None, brandId_=None, basicCost_=None, minimumPrice_=None, marketPrice_=None, validity_=None, validityUnit_=None, netWeight_=None, grossWeight_=None, baseUnit_=None, isSale_=None, airTransport_=None, basicAttr_=None, saleAttr_=None, length_=None, width_=None, height_=None, volume_=None, barCode_=None, batchMnt_=None, hasSourceCode_=None, needWeigh_=None, inventoryUnit_=None, invetoryTransWeight_=None, purchaseUnit_=None, salesUnit_=None, purchaseTaxId_=None, salesTaxId_=None, salesTaxId2_=None, accessoryCost_=None, productType_=None, skuRelatedStr_=None):
+    def _admin_sku_add(self, name_=None, alias_=None, class1_=None, class2_=None, class3_=None, brandId_=None, basicCost_=None, minimumPrice_=None, marketPrice_=None, validity_=None, validityUnit_=None, netWeight_=None, grossWeight_=None, baseUnit_=None, isSale_=None, airTransport_=None, basicAttr_=None, saleAttr_=None, length_=None, width_=None, height_=None, volume_=None, barCode_=None, batchMnt_=None, hasSourceCode_=None, needWeight_=None, inventoryUnit_=None, invetoryTransWeight_=None, purchaseUnit_=None, salesUnit_=None, purchaseTaxId_=None, salesTaxId_=None, salesTaxId2_=None, accessoryCost_=None, productType_=None, skuRelatedStr_=None, province_=None, city_=None, county_=None):
         if self.user is None:
-            data = {'name': name_, 'alias': alias_, 'class1': class1_, 'class2': class2_, 'class3': class3_, 'brandId': brandId_, 'basicCost': basicCost_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'validity': validity_, 'validityUnit': validityUnit_, 'netWeight': netWeight_, 'grossWeight': grossWeight_, 'baseUnit': baseUnit_, 'isSale': isSale_, 'airTransport': airTransport_, 'basicAttr': basicAttr_, 'saleAttr': saleAttr_, 'length': length_, 'width': width_, 'height': height_, 'volume': volume_, 'barCode': barCode_, 'batchMnt': batchMnt_, 'hasSourceCode': hasSourceCode_, 'needWeigh': needWeigh_, 'inventoryUnit': inventoryUnit_, 'invetoryTransWeight': invetoryTransWeight_, 'purchaseUnit': purchaseUnit_, 'salesUnit': salesUnit_, 'purchaseTaxId': purchaseTaxId_, 'salesTaxId': salesTaxId_, 'salesTaxId2': salesTaxId2_, 'accessoryCost': accessoryCost_, 'productType': productType_, 'skuRelatedStr': skuRelatedStr_, }
+            data = {'name': name_, 'alias': alias_, 'class1': class1_, 'class2': class2_, 'class3': class3_, 'brandId': brandId_, 'basicCost': basicCost_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'validity': validity_, 'validityUnit': validityUnit_, 'netWeight': netWeight_, 'grossWeight': grossWeight_, 'baseUnit': baseUnit_, 'isSale': isSale_, 'airTransport': airTransport_, 'basicAttr': basicAttr_, 'saleAttr': saleAttr_, 'length': length_, 'width': width_, 'height': height_, 'volume': volume_, 'barCode': barCode_, 'batchMnt': batchMnt_, 'hasSourceCode': hasSourceCode_, 'needWeight': needWeight_, 'inventoryUnit': inventoryUnit_, 'invetoryTransWeight': invetoryTransWeight_, 'purchaseUnit': purchaseUnit_, 'salesUnit': salesUnit_, 'purchaseTaxId': purchaseTaxId_, 'salesTaxId': salesTaxId_, 'salesTaxId2': salesTaxId2_, 'accessoryCost': accessoryCost_, 'productType': productType_, 'skuRelatedStr': skuRelatedStr_, 'province': province_, 'city': city_, 'county': county_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'name': name_, 'alias': alias_, 'class1': class1_, 'class2': class2_, 'class3': class3_, 'brandId': brandId_, 'basicCost': basicCost_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'validity': validity_, 'validityUnit': validityUnit_, 'netWeight': netWeight_, 'grossWeight': grossWeight_, 'baseUnit': baseUnit_, 'isSale': isSale_, 'airTransport': airTransport_, 'basicAttr': basicAttr_, 'saleAttr': saleAttr_, 'length': length_, 'width': width_, 'height': height_, 'volume': volume_, 'barCode': barCode_, 'batchMnt': batchMnt_, 'hasSourceCode': hasSourceCode_, 'needWeigh': needWeigh_, 'inventoryUnit': inventoryUnit_, 'invetoryTransWeight': invetoryTransWeight_, 'purchaseUnit': purchaseUnit_, 'salesUnit': salesUnit_, 'purchaseTaxId': purchaseTaxId_, 'salesTaxId': salesTaxId_, 'salesTaxId2': salesTaxId2_, 'accessoryCost': accessoryCost_, 'productType': productType_, 'skuRelatedStr': skuRelatedStr_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'name': name_, 'alias': alias_, 'class1': class1_, 'class2': class2_, 'class3': class3_, 'brandId': brandId_, 'basicCost': basicCost_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'validity': validity_, 'validityUnit': validityUnit_, 'netWeight': netWeight_, 'grossWeight': grossWeight_, 'baseUnit': baseUnit_, 'isSale': isSale_, 'airTransport': airTransport_, 'basicAttr': basicAttr_, 'saleAttr': saleAttr_, 'length': length_, 'width': width_, 'height': height_, 'volume': volume_, 'barCode': barCode_, 'batchMnt': batchMnt_, 'hasSourceCode': hasSourceCode_, 'needWeight': needWeight_, 'inventoryUnit': inventoryUnit_, 'invetoryTransWeight': invetoryTransWeight_, 'purchaseUnit': purchaseUnit_, 'salesUnit': salesUnit_, 'purchaseTaxId': purchaseTaxId_, 'salesTaxId': salesTaxId_, 'salesTaxId2': salesTaxId2_, 'accessoryCost': accessoryCost_, 'productType': productType_, 'skuRelatedStr': skuRelatedStr_, 'province': province_, 'city': city_, 'county': county_}
         response = self.request.post(url=self.url+'/admin/sku/add', data=data, hosts=self.url)
         apiTestResult(api='/admin/sku/add', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
@@ -577,20 +577,29 @@ class ProductAction(object):
         apiTestResult(api='/admin/sku/detail', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_sku_edit(self, code_=None, name_=None, alias_=None, brandId_=None, basicCost_=None, minimumPrice_=None, marketPrice_=None, validity_=None, validityUnit_=None, netWeight_=None, grossWeight_=None, baseUnit_=None, isSale_=None, airTransport_=None, basicAttr_=None, saleAttr_=None, length_=None, width_=None, height_=None, volume_=None, barCode_=None, batchMnt_=None, needWeigh_=None, inventoryUnit_=None, invetoryTransWeight_=None, purchaseUnit_=None, salesUnit_=None, skuRelatedCode_=None, purchaseTaxId_=None, salesTaxId_=None, salesTaxId2_=None, accessoryCost_=None, productType_=None, skuRelatedStr_=None):
+    def _admin_sku_edit(self, code_=None, name_=None, alias_=None, brandId_=None, basicCost_=None, minimumPrice_=None, marketPrice_=None, validity_=None, validityUnit_=None, netWeight_=None, grossWeight_=None, baseUnit_=None, isSale_=None, airTransport_=None, basicAttr_=None, saleAttr_=None, length_=None, width_=None, height_=None, volume_=None, barCode_=None, batchMnt_=None, needWeight_=None, inventoryUnit_=None, invetoryTransWeight_=None, purchaseUnit_=None, salesUnit_=None, skuRelatedCode_=None, purchaseTaxId_=None, salesTaxId_=None, salesTaxId2_=None, accessoryCost_=None, productType_=None, skuRelatedStr_=None, province_=None, city_=None, county_=None):
         if self.user is None:
-            data = {'code': code_, 'name': name_, 'alias': alias_, 'brandId': brandId_, 'basicCost': basicCost_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'validity': validity_, 'validityUnit': validityUnit_, 'netWeight': netWeight_, 'grossWeight': grossWeight_, 'baseUnit': baseUnit_, 'isSale': isSale_, 'airTransport': airTransport_, 'basicAttr': basicAttr_, 'saleAttr': saleAttr_, 'length': length_, 'width': width_, 'height': height_, 'volume': volume_, 'barCode': barCode_, 'batchMnt': batchMnt_, 'needWeigh': needWeigh_, 'inventoryUnit': inventoryUnit_, 'invetoryTransWeight': invetoryTransWeight_, 'purchaseUnit': purchaseUnit_, 'salesUnit': salesUnit_, 'skuRelatedCode': skuRelatedCode_, 'purchaseTaxId': purchaseTaxId_, 'salesTaxId': salesTaxId_, 'salesTaxId2': salesTaxId2_, 'accessoryCost': accessoryCost_, 'productType': productType_, 'skuRelatedStr': skuRelatedStr_, }
+            data = {'code': code_, 'name': name_, 'alias': alias_, 'brandId': brandId_, 'basicCost': basicCost_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'validity': validity_, 'validityUnit': validityUnit_, 'netWeight': netWeight_, 'grossWeight': grossWeight_, 'baseUnit': baseUnit_, 'isSale': isSale_, 'airTransport': airTransport_, 'basicAttr': basicAttr_, 'saleAttr': saleAttr_, 'length': length_, 'width': width_, 'height': height_, 'volume': volume_, 'barCode': barCode_, 'batchMnt': batchMnt_, 'needWeight': needWeight_, 'inventoryUnit': inventoryUnit_, 'invetoryTransWeight': invetoryTransWeight_, 'purchaseUnit': purchaseUnit_, 'salesUnit': salesUnit_, 'skuRelatedCode': skuRelatedCode_, 'purchaseTaxId': purchaseTaxId_, 'salesTaxId': salesTaxId_, 'salesTaxId2': salesTaxId2_, 'accessoryCost': accessoryCost_, 'productType': productType_, 'skuRelatedStr': skuRelatedStr_, 'province': province_, 'city': city_, 'county': county_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_, 'name': name_, 'alias': alias_, 'brandId': brandId_, 'basicCost': basicCost_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'validity': validity_, 'validityUnit': validityUnit_, 'netWeight': netWeight_, 'grossWeight': grossWeight_, 'baseUnit': baseUnit_, 'isSale': isSale_, 'airTransport': airTransport_, 'basicAttr': basicAttr_, 'saleAttr': saleAttr_, 'length': length_, 'width': width_, 'height': height_, 'volume': volume_, 'barCode': barCode_, 'batchMnt': batchMnt_, 'needWeigh': needWeigh_, 'inventoryUnit': inventoryUnit_, 'invetoryTransWeight': invetoryTransWeight_, 'purchaseUnit': purchaseUnit_, 'salesUnit': salesUnit_, 'skuRelatedCode': skuRelatedCode_, 'purchaseTaxId': purchaseTaxId_, 'salesTaxId': salesTaxId_, 'salesTaxId2': salesTaxId2_, 'accessoryCost': accessoryCost_, 'productType': productType_, 'skuRelatedStr': skuRelatedStr_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'code': code_, 'name': name_, 'alias': alias_, 'brandId': brandId_, 'basicCost': basicCost_, 'minimumPrice': minimumPrice_, 'marketPrice': marketPrice_, 'validity': validity_, 'validityUnit': validityUnit_, 'netWeight': netWeight_, 'grossWeight': grossWeight_, 'baseUnit': baseUnit_, 'isSale': isSale_, 'airTransport': airTransport_, 'basicAttr': basicAttr_, 'saleAttr': saleAttr_, 'length': length_, 'width': width_, 'height': height_, 'volume': volume_, 'barCode': barCode_, 'batchMnt': batchMnt_, 'needWeight': needWeight_, 'inventoryUnit': inventoryUnit_, 'invetoryTransWeight': invetoryTransWeight_, 'purchaseUnit': purchaseUnit_, 'salesUnit': salesUnit_, 'skuRelatedCode': skuRelatedCode_, 'purchaseTaxId': purchaseTaxId_, 'salesTaxId': salesTaxId_, 'salesTaxId2': salesTaxId2_, 'accessoryCost': accessoryCost_, 'productType': productType_, 'skuRelatedStr': skuRelatedStr_, 'province': province_, 'city': city_, 'county': county_}
         response = self.request.post(url=self.url+'/admin/sku/edit', data=data, hosts=self.url)
         apiTestResult(api='/admin/sku/edit', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_sku_page_list(self, pn_=None, ps_=None, skuCode_=None, name_=None):
+    def _admin_sku_list_zh_charge(self, class1_=None, class2_=None, class3_=None, province_=None, city_=None, county_=None):
         if self.user is None:
-            data = {'pn': pn_, 'ps': ps_, 'skuCode': skuCode_, 'name': name_, }
+            data = {'class1': class1_, 'class2': class2_, 'class3': class3_, 'province': province_, 'city': city_, 'county': county_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'skuCode': skuCode_, 'name': name_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'class1': class1_, 'class2': class2_, 'class3': class3_, 'province': province_, 'city': city_, 'county': county_}
+        response = self.request.post(url=self.url+'/admin/sku/list-zh-charge', data=data, hosts=self.url)
+        apiTestResult(api='/admin/sku/list-zh-charge', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _admin_sku_page_list(self, pn_=None, ps_=None, skuCode_=None, name_=None, productType_=None):
+        if self.user is None:
+            data = {'pn': pn_, 'ps': ps_, 'skuCode': skuCode_, 'name': name_, 'productType': productType_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'pn': pn_, 'ps': ps_, 'skuCode': skuCode_, 'name': name_, 'productType': productType_}
         response = self.request.post(url=self.url+'/admin/sku/page-list', data=data, hosts=self.url)
         apiTestResult(api='/admin/sku/page-list', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
