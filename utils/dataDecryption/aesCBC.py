@@ -17,4 +17,4 @@ def decrypt(cipher, mode=AES.MODE_CBC):
         return bytes.decode(plain_text).rstrip('\0')
 
 
-print(decrypt('5595ec6c66c0374940fb2d6919a487f9b500f8602951206c6f9b85cab245bd1e90a2c42c9b0fb3883c44aadb5235b9dc94d8411f761298d477315e878eb9a87f'))
+print(decrypt('ca42f3c003f675fb5b71da3d0b0990d19f0539b99d42f8f9901740d9c5ac64f8'))

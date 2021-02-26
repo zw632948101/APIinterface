@@ -40,5 +40,9 @@ class releaseManage(unittest.TestCase):
         skuName = ''
         resp = self.api._admin_release_opt_page_opt_list(pn_=pn,ps_=ps,channelId_=channeld,labelId_=labelid,labelName_=labelName,skuName_=skuName)
         self.assertEqual('OK',resp.get('status'))
+
+
+
+
 if __name__ == '__main__':
     unittest.main()

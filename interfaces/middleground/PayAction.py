@@ -289,11 +289,11 @@ class payAction(object):
         apiTestResult(api='/open/api/trade/refund-query', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _open_api_trade_tradePay(self, authCode_=None, bodyId_=None, disregardaAmount_=None, due_=None, mchCreateIp_=None, mchNo_=None, outOrderNo_=None, regardaAmount_=None, source_=None, subject_=None, totalAmount_=None):
+    def _open_api_trade_tradePay(self,shopId=None,shopName=None, authCode_=None, bodyId_=None, disregardaAmount_=None, due_=None, mchCreateIp_=None, mchNo_=None, outOrderNo_=None, regardaAmount_=None, source_=None, subject_=None, totalAmount_=None):
         if self.user is None:
-            data = {'authCode': authCode_, 'bodyId': bodyId_, 'disregardaAmount': disregardaAmount_, 'due': due_, 'mchCreateIp': mchCreateIp_, 'mchNo': mchNo_, 'outOrderNo': outOrderNo_, 'regardaAmount': regardaAmount_, 'source': source_, 'subject': subject_, 'totalAmount': totalAmount_, }
+            data = {'authCode': authCode_, 'bodyId': bodyId_, 'disregardaAmount': disregardaAmount_, 'due': due_, 'mchCreateIp': mchCreateIp_, 'mchNo': mchNo_, 'outOrderNo': outOrderNo_, 'regardaAmount': regardaAmount_, 'source': source_, 'subject': subject_, 'totalAmount': totalAmount_,'shopId':shopId,'shopName':shopName }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'authCode': authCode_, 'bodyId': bodyId_, 'disregardaAmount': disregardaAmount_, 'due': due_, 'mchCreateIp': mchCreateIp_, 'mchNo': mchNo_, 'outOrderNo': outOrderNo_, 'regardaAmount': regardaAmount_, 'source': source_, 'subject': subject_, 'totalAmount': totalAmount_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'authCode': authCode_, 'bodyId': bodyId_, 'disregardaAmount': disregardaAmount_, 'due': due_, 'mchCreateIp': mchCreateIp_, 'mchNo': mchNo_, 'outOrderNo': outOrderNo_, 'regardaAmount': regardaAmount_, 'source': source_, 'subject': subject_, 'totalAmount': totalAmount_,'shopId':shopId,'shopName':shopName}
         response = self.request.post(url=self.url+'/open/api/trade/tradePay', jsons=data, hosts=self.url)
         apiTestResult(api='/open/api/trade/tradePay', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
