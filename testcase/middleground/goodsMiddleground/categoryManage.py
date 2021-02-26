@@ -240,3 +240,17 @@ class tagManage(unittest.TestCase):
         商品sku
         :return:
         """
+
+    def test_admin_category_zh_pd(self):
+        """
+        商品类目-追花*商品分类
+        :return:
+        """
+        resp = self.api._admin_category_zh_pd()
+        self.assertEqual(resp.get('status'), 'OK')
+
+    def test_admin_sku_list_zh_charge(self):
+        """
+        商品sku
+        :return:
+        """
