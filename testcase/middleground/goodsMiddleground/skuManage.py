@@ -92,6 +92,21 @@ class skuManage(unittest.TestCase):
                                                   province_=province, city_=city, county_=county)
         self.assertEqual(resp.get('status'), 'OK')
 
+    def test_admin_sku_list_zh_charge(self):
+        """
+        商品sku-追花定金策略商品列表
+        :return:
+        """
+        class1 = 'T01'
+        class2 = 'T0105'
+        class3 = 'T010501'
+        province = None
+        city = None
+        county = None
+        resp = self.api._admin_sku_list_zh_charge(class1_=class1, class2_=class2, class3_=class3,
+                                                  province_=province, city_=city, county_=county)
+        self.assertEqual(resp.get('status'), 'OK')
+
     # @unittest.skipIf(runlevel(2), "跑主流程时，跳过该用例")
     # @data(*api_data().admin_sku_page_list)
     # def test_admin_sku_page_list(self,case):
