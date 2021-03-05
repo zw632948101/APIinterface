@@ -1,4 +1,4 @@
-which_project: &which_project flowerChaser
+which_project: &which_project middleground
 env: &env
   run: QA
   updateActionAPI: QA_API
