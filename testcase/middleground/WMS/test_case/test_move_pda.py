@@ -40,9 +40,9 @@ class move_pda(unittest.TestCase):
                                                                             {
                                                                                 "productCode":"P7001010011",
                                                                                 "actualQuantity":"1",
-                                                                                # # "receiptTracings":
-                                                                                # #                     [{"tracingCode":"JX010099001","weight":"1"},
-                                                                                # #                      {"tracingCode":"JX010099002","weight":"1"}
+                                                                                #  "receiptTracings":
+                                                                                #                      [{"tracingCode":"JX010099001","weight":"1"},
+                                                                                #                       {"tracingCode":"JX010099002","weight":"1"}
                                                                                 #
                                                                                 #                      ]
                                                                              },

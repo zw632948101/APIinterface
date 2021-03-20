@@ -14,7 +14,7 @@ from faker import Faker
 class orderflow(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        # 获取一次100001公司下，ERP关联单据
+        #获取一次100001公司下，ERP关联单据
         cls.headers = assembleHeader(url="/world-passport/admin/sso/sms-login").add_header()
         cls.url = "http://qa-gateway.worldfarm.com/mp-wms/admin/erp/uncleared/order/purchase-list"
         cls.data = {"companyCode": "100001"}
@@ -23,6 +23,8 @@ class orderflow(unittest.TestCase):
                                 headers=cls.headers)
         cls.result = cls.resp.json()['content'][0]
         print(cls.result)
+        pass
+
 
     def setUp(self) -> None:
         """
@@ -36,13 +38,16 @@ class orderflow(unittest.TestCase):
 
     def tearDown(self) -> None:
         pass
+    def test_admin_erp_uncleared_order_purchase_list(self):
+        resp = self.api._admin_erp_uncleared_order_purchase_list(companyCode_=100001)
+        print(resp.get('content')[0])
 
     def test_admin_receipt_notice_add(self):
         # 通过ERP关联单号接口获取
-        relevanceCode_ = self.result['relevanceCode']
-        supplier_ = self.result['supplierCode']
-        supplierName_ = self.result['supplierName']
-        erpType_ = self.result['erpType']
+        relevanceCode_ = 72
+        supplier_ = 'MS-4550'
+        supplierName_ = '苗叔1'
+        erpType_ = 22
         productInfo_ = json.dumps(self.result['purchaseProducts'])
 
         resp = self.api._admin_receipt_notice_add(relevanceCode_=relevanceCode_,
