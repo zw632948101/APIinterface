@@ -143,8 +143,7 @@ class UpdateAction(object):
     def __constitute_upload(self, param_data, lower_action, fun_name, api, fun_data):
         fun_template = open(self.template_path + 'fun_upload_template.txt', 'r').read()
         param_rep = {'param': param_data, 'lower_action': lower_action, 'fun_name': fun_name,
-                     'key': api,
-                     'functions': fun_data}
+                     'key': api, 'functions': fun_data}
         param_rep = dict((re.escape(k), v) for k, v in param_rep.items())
         pattern = re.compile("|".join(param_rep.keys()))
         fun_str = pattern.sub(lambda m: param_rep[re.escape(m.group(0))], fun_template)
@@ -239,6 +238,6 @@ class UpdateAction(object):
 if __name__ == '__main__':
     update_action = UpdateAction()
     update_action.add_latest_action()
-    # update_action.add_latest_yaml()
-    # update_action.add_path_only_txt()
+    update_action.add_latest_yaml()
+    update_action.add_path_only_txt()
     update_action.get_edit_api()
