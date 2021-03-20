@@ -1,7 +1,7 @@
-which_project: &which_project middleground
+which_project: &which_project beefcattle
 env: &env
-  run: QA
-  updateActionAPI: QA_API
+  run: DEV
+  updateActionAPI: DEV_API
   version: 2.3.1
   RUN_LEVEL: 3
   dataBaseURI: 5595ec6c66c0374940fb2d6919a487f9162ddc9bcbd00523b504b2f25d55dc30ad413b43d196ffa16fc59cc4d2f2a9d04993d429fa428436f36c2d79d4d0478d
@@ -173,3 +173,41 @@ wxshop:
     QA_API:
       WX_PRODUCT: 'http://qa-gateway.worldfarm.com/wx-product'
       WX_MALL: 'http://qa-gateway.worldfarm.com/wx-mall'
+
+beefcattle:
+  <<: *env
+  database:
+    DEV:
+      host_ip: eca79b6781bc07f5ead511b284f07cd1
+    QA:
+      host_ip: ca42f3c003f675fb5b71da3d0b0990d19f0539b99d42f8f9901740d9c5ac64f8
+  urldict:
+    BF_PLANT: "plant"
+    BF_WAGY: "wagy"
+    BF_TRADE: "trade"
+    BF_BREED: "breed"
+  accounttype: 'user'
+  hosts:
+    DEV:
+      BF_PLANT: 'http://dev-gateway.worldfarm.com/bf-plant'
+      BF_WAGY: 'http://dev-gateway.worldfarm.com/bf-wagy'
+      BF_TRADE: 'http://dev-gateway.worldfarm.com/bf-trade'
+      BF_BREED: 'http://dev-gateway.worldfarm.com/bf-breed'
+
+    DEV_API:
+      BF_PLANT: 'http://dev-gateway.worldfarm.com/bf-plant'
+      BF_WAGY: 'http://dev-gateway.worldfarm.com/bf-wagy'
+      BF_TRADE: 'http://dev-gateway.worldfarm.com/bf-trade'
+      BF_BREED: 'http://dev-gateway.worldfarm.com/bf-breed'
+
+    QA:
+      BF_PLANT: 'http://qa-gateway.worldfarm.com/bf-plant'
+      BF_WAGY: 'http://qa-gateway.worldfarm.com/bf-wagy'
+      BF_TRADE: 'http://qa-gateway.worldfarm.com/bf-trade'
+      BF_BREED: 'http://qa-gateway.worldfarm.com/bf-breed'
+
+    QA_API:
+      BF_PLANT: 'http://qa-gateway.worldfarm.com/bf-plant'
+      BF_WAGY: 'http://qa-gateway.worldfarm.com/bf-wagy'
+      BF_TRADE: 'http://qa-gateway.worldfarm.com/bf-trade'
+      BF_BREED: 'http://qa-gateway.worldfarm.com/bf-breed'
