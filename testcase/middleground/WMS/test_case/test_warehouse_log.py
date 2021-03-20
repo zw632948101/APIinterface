@@ -53,6 +53,5 @@ class warehouse_log(unittest.TestCase):
     #     data = {}
     #
     #     resp = Request('post',url=url,data=data,headers=self.headers,cookie=None)
-
 if __name__ == '__main__':
     unittest.main()

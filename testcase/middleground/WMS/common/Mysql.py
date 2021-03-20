@@ -30,7 +30,7 @@ class mp_label(DataBaseOperate):
         '''查询已启用状态得仓库'''
         sql = "select * from `mp-wms`.`t_warehouse` " \
               "where id in (select `id` from `mp-wms`.`t_warehouse` group by `name` having `status` = 1) " \
-              "and `name` != '' order by id desc limit 10;"
+              "and `name` != '' order by id desc limit 1;"
         return self.operate_db(sql=sql)
 
     def git_warehouse_employee(self):
@@ -69,5 +69,5 @@ class mp_label(DataBaseOperate):
 
 
 if __name__ == '__main__':
-   t = mp_label().git_whs_receipt_notice()
+   t = mp_label().git_warehouse_status()
    print(t)

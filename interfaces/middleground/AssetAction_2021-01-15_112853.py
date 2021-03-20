@@ -127,14 +127,14 @@ class assetAction(object):
         apiTestResult(api='/admin/asset/statics-by-owner', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    # def _admin_asset_transfer(self, address_province_=None, address_city_=None, address_county_=None, address_address_=None, address_lng_=None, address_lat_=None, codes[0]_attrs[0]_attrId_=None, codes[0]_attrs[0]_type_=None, codes[0]_attrs[0]_attrName_=None, codes[0]_attrs[0]_unit_=None, codes[0]_attrs[0]_value_=None, codes[0]_code_=None, codes[0]_weight_=None, senderRole_=None, receiverRole_=None, receiverId_=None, bizNo_=None, remark_=None, transferTime_=None, apiaryId_=None, recoveryDate_=None):
-    #     if self.user is None:
-    #         data = {'address_province': address_province_, 'address_city': address_city_, 'address_county': address_county_, 'address_address': address_address_, 'address_lng': address_lng_, 'address_lat': address_lat_, 'codes[0]_attrs[0]_attrId': codes[0]_attrs[0]_attrId_, 'codes[0]_attrs[0]_type': codes[0]_attrs[0]_type_, 'codes[0]_attrs[0]_attrName': codes[0]_attrs[0]_attrName_, 'codes[0]_attrs[0]_unit': codes[0]_attrs[0]_unit_, 'codes[0]_attrs[0]_value': codes[0]_attrs[0]_value_, 'codes[0]_code': codes[0]_code_, 'codes[0]_weight': codes[0]_weight_, 'senderRole': senderRole_, 'receiverRole': receiverRole_, 'receiverId': receiverId_, 'bizNo': bizNo_, 'remark': remark_, 'transferTime': transferTime_, 'apiaryId': apiaryId_, 'recoveryDate': recoveryDate_, }
-    #     else:
-    #         data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'address_province': address_province_, 'address_city': address_city_, 'address_county': address_county_, 'address_address': address_address_, 'address_lng': address_lng_, 'address_lat': address_lat_, 'codes[0]_attrs[0]_attrId': codes[0]_attrs[0]_attrId_, 'codes[0]_attrs[0]_type': codes[0]_attrs[0]_type_, 'codes[0]_attrs[0]_attrName': codes[0]_attrs[0]_attrName_, 'codes[0]_attrs[0]_unit': codes[0]_attrs[0]_unit_, 'codes[0]_attrs[0]_value': codes[0]_attrs[0]_value_, 'codes[0]_code': codes[0]_code_, 'codes[0]_weight': codes[0]_weight_, 'senderRole': senderRole_, 'receiverRole': receiverRole_, 'receiverId': receiverId_, 'bizNo': bizNo_, 'remark': remark_, 'transferTime': transferTime_, 'apiaryId': apiaryId_, 'recoveryDate': recoveryDate_}
-    #     response = self.request.post(url=self.url+'/admin/asset/transfer', data=data, hosts=self.url)
-    #     apiTestResult(api='/admin/asset/transfer', host=self.url,datas=data, resp=response)
-    #     return self.__judge_response_status(json.loads(response))
+    def _admin_asset_transfer(self, address_province_=None, address_city_=None, address_county_=None, address_address_=None, address_lng_=None, address_lat_=None, senderRole_=None, receiverRole_=None, receiverId_=None, bizNo_=None, remark_=None, transferTime_=None, apiaryId_=None, recoveryDate_=None):
+        if self.user is None:
+            data = {'address_province': address_province_, 'address_city': address_city_, 'address_county': address_county_, 'address_address': address_address_, 'address_lng': address_lng_, 'address_lat': address_lat_, 'senderRole': senderRole_, 'receiverRole': receiverRole_, 'receiverId': receiverId_, 'bizNo': bizNo_, 'remark': remark_, 'transferTime': transferTime_, 'apiaryId': apiaryId_, 'recoveryDate': recoveryDate_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'address_province': address_province_, 'address_city': address_city_, 'address_county': address_county_, 'address_address': address_address_, 'address_lng': address_lng_, 'address_lat': address_lat_, 'senderRole': senderRole_, 'receiverRole': receiverRole_, 'receiverId': receiverId_, 'bizNo': bizNo_, 'remark': remark_, 'transferTime': transferTime_, 'apiaryId': apiaryId_, 'recoveryDate': recoveryDate_}
+        response = self.request.post(url=self.url+'/admin/asset/transfer', data=data, hosts=self.url)
+        apiTestResult(api='/admin/asset/transfer', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
 
     def _admin_code_base_page(self, pn_=None, ps_=None, code_=None, supplierIds_=None, statuses_=None):
         if self.user is None:
@@ -163,11 +163,11 @@ class assetAction(object):
         apiTestResult(api='/admin/code-batch/page', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_code_goods_binding(self, input_=None):
+    def _admin_code_goods_binding(self, assetCode_=None, codes_=None, operatorId_=None):
         if self.user is None:
-            data = {'input': input_, }
+            data = {'assetCode': assetCode_, 'codes': codes_, 'operatorId': operatorId_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'assetCode': assetCode_, 'codes': codes_, 'operatorId': operatorId_}
         response = self.request.post(url=self.url+'/admin/code-goods/binding', data=data, hosts=self.url)
         apiTestResult(api='/admin/code-goods/binding', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
@@ -352,11 +352,11 @@ class assetAction(object):
         apiTestResult(api='/admin/rfid/page', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_supplier_add(self, input_=None):
+    def _admin_supplier_add(self, address_=None, business_=None, city_=None, contacts_=None, county_=None, lat_=None, lng_=None, name_=None, phone_=None, province_=None, remark_=None, sku_=None, supplierExtInput_=None, supplierType_=None):
         if self.user is None:
-            data = {'input': input_, }
+            data = {'address': address_, 'business': business_, 'city': city_, 'contacts': contacts_, 'county': county_, 'lat': lat_, 'lng': lng_, 'name': name_, 'phone': phone_, 'province': province_, 'remark': remark_, 'sku': sku_, 'supplierExtInput': supplierExtInput_, 'supplierType': supplierType_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'address': address_, 'business': business_, 'city': city_, 'contacts': contacts_, 'county': county_, 'lat': lat_, 'lng': lng_, 'name': name_, 'phone': phone_, 'province': province_, 'remark': remark_, 'sku': sku_, 'supplierExtInput': supplierExtInput_, 'supplierType': supplierType_}
         response = self.request.post(url=self.url+'/admin/supplier/add', data=data, hosts=self.url)
         apiTestResult(api='/admin/supplier/add', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
@@ -370,11 +370,11 @@ class assetAction(object):
         apiTestResult(api='/admin/supplier/detail', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_supplier_edit(self, input_=None):
+    def _admin_supplier_edit(self, address_=None, business_=None, city_=None, contacts_=None, county_=None, id_=None, lat_=None, lng_=None, phone_=None, province_=None, remark_=None, supplierExtInput_=None):
         if self.user is None:
-            data = {'input': input_, }
+            data = {'address': address_, 'business': business_, 'city': city_, 'contacts': contacts_, 'county': county_, 'id': id_, 'lat': lat_, 'lng': lng_, 'phone': phone_, 'province': province_, 'remark': remark_, 'supplierExtInput': supplierExtInput_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'address': address_, 'business': business_, 'city': city_, 'contacts': contacts_, 'county': county_, 'id': id_, 'lat': lat_, 'lng': lng_, 'phone': phone_, 'province': province_, 'remark': remark_, 'supplierExtInput': supplierExtInput_}
         response = self.request.post(url=self.url+'/admin/supplier/edit', data=data, hosts=self.url)
         apiTestResult(api='/admin/supplier/edit', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
@@ -406,11 +406,11 @@ class assetAction(object):
         apiTestResult(api='/admin/supplier/list-sku', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_supplier_page(self, input_=None):
+    def _admin_supplier_page(self, city_=None, county_=None, enabled_=None, name_=None, pn_=None, province_=None, ps_=None, supplierType_=None):
         if self.user is None:
-            data = {'input': input_, }
+            data = {'city': city_, 'county': county_, 'enabled': enabled_, 'name': name_, 'pn': pn_, 'province': province_, 'ps': ps_, 'supplierType': supplierType_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'city': city_, 'county': county_, 'enabled': enabled_, 'name': name_, 'pn': pn_, 'province': province_, 'ps': ps_, 'supplierType': supplierType_}
         response = self.request.post(url=self.url+'/admin/supplier/page', data=data, hosts=self.url)
         apiTestResult(api='/admin/supplier/page', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
@@ -469,11 +469,11 @@ class assetAction(object):
         apiTestResult(api='/admin/warehouse/detail', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_warehouse_in_warehouse(self, input_=None):
+    def _admin_warehouse_in_warehouse(self, codes_=None, warehouseId_=None):
         if self.user is None:
-            data = {'input': input_, }
+            data = {'codes': codes_, 'warehouseId': warehouseId_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'codes': codes_, 'warehouseId': warehouseId_}
         response = self.request.post(url=self.url+'/admin/warehouse/in-warehouse', data=data, hosts=self.url)
         apiTestResult(api='/admin/warehouse/in-warehouse', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
@@ -568,20 +568,20 @@ class assetAction(object):
         apiTestResult(api='/api/inner/sync/supplier', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _api_open_asset_asset_check(self, input_=None):
+    def _api_open_asset_asset_check(self, checkType_=None, codeList_=None, userId_=None, userRole_=None):
         if self.user is None:
-            data = {'input': input_, }
+            data = {'checkType': checkType_, 'codeList': codeList_, 'userId': userId_, 'userRole': userRole_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'checkType': checkType_, 'codeList': codeList_, 'userId': userId_, 'userRole': userRole_}
         response = self.request.post(url=self.url+'/api/open/asset/asset-check', data=data, hosts=self.url)
         apiTestResult(api='/api/open/asset/asset-check', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _api_open_asset_bee_friend_number(self, input_=None):
+    def _api_open_asset_bee_friend_number(self, productCode_=None, userId_=None):
         if self.user is None:
-            data = {'input': input_, }
+            data = {'productCode': productCode_, 'userId': userId_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'productCode': productCode_, 'userId': userId_}
         response = self.request.post(url=self.url+'/api/open/asset/bee-friend-number', data=data, hosts=self.url)
         apiTestResult(api='/api/open/asset/bee-friend-number', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
@@ -604,38 +604,38 @@ class assetAction(object):
         apiTestResult(api='/api/open/asset/get-recovery-detail', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _api_open_asset_grant_page(self, input_=None):
+    def _api_open_asset_grant_page(self, beekeeperId_=None, pn_=None, ps_=None):
         if self.user is None:
-            data = {'input': input_, }
+            data = {'beekeeperId': beekeeperId_, 'pn': pn_, 'ps': ps_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'beekeeperId': beekeeperId_, 'pn': pn_, 'ps': ps_}
         response = self.request.post(url=self.url+'/api/open/asset/grant-page', data=data, hosts=self.url)
         apiTestResult(api='/api/open/asset/grant-page', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _api_open_asset_list_bee_friend(self, input_=None):
+    def _api_open_asset_list_bee_friend(self, productCode_=None, userId_=None):
         if self.user is None:
-            data = {'input': input_, }
+            data = {'productCode': productCode_, 'userId': userId_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'productCode': productCode_, 'userId': userId_}
         response = self.request.post(url=self.url+'/api/open/asset/list-bee-friend', data=data, hosts=self.url)
         apiTestResult(api='/api/open/asset/list-bee-friend', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _api_open_asset_page_grant_Number(self, input_=None):
+    def _api_open_asset_page_grant_Number(self, bookEndTime_=None, bookStartTime_=None, city_=None, county_=None, pn_=None, province_=None, ps_=None, recoveryEndTime_=None, recoveryStartTime_=None, userIdList_=None):
         if self.user is None:
-            data = {'input': input_, }
+            data = {'bookEndTime': bookEndTime_, 'bookStartTime': bookStartTime_, 'city': city_, 'county': county_, 'pn': pn_, 'province': province_, 'ps': ps_, 'recoveryEndTime': recoveryEndTime_, 'recoveryStartTime': recoveryStartTime_, 'userIdList': userIdList_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'bookEndTime': bookEndTime_, 'bookStartTime': bookStartTime_, 'city': city_, 'county': county_, 'pn': pn_, 'province': province_, 'ps': ps_, 'recoveryEndTime': recoveryEndTime_, 'recoveryStartTime': recoveryStartTime_, 'userIdList': userIdList_}
         response = self.request.post(url=self.url+'/api/open/asset/page-grant-Number', data=data, hosts=self.url)
         apiTestResult(api='/api/open/asset/page-grant-Number', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _api_open_asset_page_recovery_Number(self, input_=None):
+    def _api_open_asset_page_recovery_Number(self, city_=None, county_=None, pn_=None, province_=None, ps_=None, recoveryEndTime_=None, recoveryStartTime_=None, recoveryType_=None, userIdList_=None):
         if self.user is None:
-            data = {'input': input_, }
+            data = {'city': city_, 'county': county_, 'pn': pn_, 'province': province_, 'ps': ps_, 'recoveryEndTime': recoveryEndTime_, 'recoveryStartTime': recoveryStartTime_, 'recoveryType': recoveryType_, 'userIdList': userIdList_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'city': city_, 'county': county_, 'pn': pn_, 'province': province_, 'ps': ps_, 'recoveryEndTime': recoveryEndTime_, 'recoveryStartTime': recoveryStartTime_, 'recoveryType': recoveryType_, 'userIdList': userIdList_}
         response = self.request.post(url=self.url+'/api/open/asset/page-recovery-Number', data=data, hosts=self.url)
         apiTestResult(api='/api/open/asset/page-recovery-Number', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
@@ -649,29 +649,29 @@ class assetAction(object):
         apiTestResult(api='/api/open/asset/query', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _api_open_asset_recovery(self, input_=None):
+    def _api_open_asset_recovery(self, address_=None, apiaryId_=None, bizNo_=None, codes_=None, receiverId_=None, recoveryReason_=None, remark_=None, senderId_=None, transferTime_=None):
         if self.user is None:
-            data = {'input': input_, }
+            data = {'address': address_, 'apiaryId': apiaryId_, 'bizNo': bizNo_, 'codes': codes_, 'receiverId': receiverId_, 'recoveryReason': recoveryReason_, 'remark': remark_, 'senderId': senderId_, 'transferTime': transferTime_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'address': address_, 'apiaryId': apiaryId_, 'bizNo': bizNo_, 'codes': codes_, 'receiverId': receiverId_, 'recoveryReason': recoveryReason_, 'remark': remark_, 'senderId': senderId_, 'transferTime': transferTime_}
         response = self.request.post(url=self.url+'/api/open/asset/recovery', data=data, hosts=self.url)
         apiTestResult(api='/api/open/asset/recovery', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _api_open_asset_recovery_page(self, input_=None):
+    def _api_open_asset_recovery_page(self, beekeeperIds_=None, city_=None, county_=None, endTime_=None, pn_=None, province_=None, ps_=None, staffId_=None, startTime_=None):
         if self.user is None:
-            data = {'input': input_, }
+            data = {'beekeeperIds': beekeeperIds_, 'city': city_, 'county': county_, 'endTime': endTime_, 'pn': pn_, 'province': province_, 'ps': ps_, 'staffId': staffId_, 'startTime': startTime_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'beekeeperIds': beekeeperIds_, 'city': city_, 'county': county_, 'endTime': endTime_, 'pn': pn_, 'province': province_, 'ps': ps_, 'staffId': staffId_, 'startTime': startTime_}
         response = self.request.post(url=self.url+'/api/open/asset/recovery-page', data=data, hosts=self.url)
         apiTestResult(api='/api/open/asset/recovery-page', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _api_open_asset_transfer(self, input_=None):
+    def _api_open_asset_transfer(self, action_=None, address_=None, assets_=None, bizNo_=None, bookTime_=None, operatorId_=None, receiver_=None, receiverType_=None, remark_=None, sender_=None, senderType_=None):
         if self.user is None:
-            data = {'input': input_, }
+            data = {'action': action_, 'address': address_, 'assets': assets_, 'bizNo': bizNo_, 'bookTime': bookTime_, 'operatorId': operatorId_, 'receiver': receiver_, 'receiverType': receiverType_, 'remark': remark_, 'sender': sender_, 'senderType': senderType_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'action': action_, 'address': address_, 'assets': assets_, 'bizNo': bizNo_, 'bookTime': bookTime_, 'operatorId': operatorId_, 'receiver': receiver_, 'receiverType': receiverType_, 'remark': remark_, 'sender': sender_, 'senderType': senderType_}
         response = self.request.post(url=self.url+'/api/open/asset/transfer', data=data, hosts=self.url)
         apiTestResult(api='/api/open/asset/transfer', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
@@ -838,11 +838,11 @@ class assetAction(object):
         apiTestResult(api='/mobile/asset/page-grant', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_asset_transfer(self, input_=None):
+    def _mobile_asset_transfer(self, address_=None, apiaryId_=None, bizNo_=None, codes_=None, receiverId_=None, receiverRole_=None, recoveryDate_=None, remark_=None, senderRole_=None, transferTime_=None):
         if self.user is None:
-            data = {'input': input_, }
+            data = {'address': address_, 'apiaryId': apiaryId_, 'bizNo': bizNo_, 'codes': codes_, 'receiverId': receiverId_, 'receiverRole': receiverRole_, 'recoveryDate': recoveryDate_, 'remark': remark_, 'senderRole': senderRole_, 'transferTime': transferTime_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'address': address_, 'apiaryId': apiaryId_, 'bizNo': bizNo_, 'codes': codes_, 'receiverId': receiverId_, 'receiverRole': receiverRole_, 'recoveryDate': recoveryDate_, 'remark': remark_, 'senderRole': senderRole_, 'transferTime': transferTime_}
         response = self.request.post(url=self.url+'/mobile/asset/transfer', data=data, hosts=self.url)
         apiTestResult(api='/mobile/asset/transfer', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
@@ -901,11 +901,11 @@ class assetAction(object):
         apiTestResult(api='/mobile/warehouse/id-check', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_warehouse_in_warehouse(self, input_=None):
+    def _mobile_warehouse_in_warehouse(self, codes_=None, warehouseId_=None):
         if self.user is None:
-            data = {'input': input_, }
+            data = {'codes': codes_, 'warehouseId': warehouseId_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'codes': codes_, 'warehouseId': warehouseId_}
         response = self.request.post(url=self.url+'/mobile/warehouse/in-warehouse', data=data, hosts=self.url)
         apiTestResult(api='/mobile/warehouse/in-warehouse', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))

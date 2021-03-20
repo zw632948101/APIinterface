@@ -91,11 +91,11 @@ class wms_apiAction(object):
         apiTestResult(api='/admin/invoice/detail', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_invoice_notice_add(self, relevanceCode_=None, type_=None, source_=None, warehouseCode_=None, purchasingCompany_=None, possessor_=None, supplier_=None, remark_=None, itemList_=None):
+    def _admin_invoice_notice_add(self, relevanceCode_=None, type_=None, source_=None, warehouseCode_=None, purchasingCompany_=None, possessor_=None, supplier_=None, supplierName_=None, remark_=None, itemList_=None):
         if self.user is None:
-            data = {'relevanceCode': relevanceCode_, 'type': type_, 'source': source_, 'warehouseCode': warehouseCode_, 'purchasingCompany': purchasingCompany_, 'possessor': possessor_, 'supplier': supplier_, 'remark': remark_, 'itemList': itemList_, }
+            data = {'relevanceCode': relevanceCode_, 'type': type_, 'source': source_, 'warehouseCode': warehouseCode_, 'purchasingCompany': purchasingCompany_, 'possessor': possessor_, 'supplier': supplier_, 'supplierName': supplierName_, 'remark': remark_, 'itemList': itemList_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'relevanceCode': relevanceCode_, 'type': type_, 'source': source_, 'warehouseCode': warehouseCode_, 'purchasingCompany': purchasingCompany_, 'possessor': possessor_, 'supplier': supplier_, 'remark': remark_, 'itemList': itemList_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'relevanceCode': relevanceCode_, 'type': type_, 'source': source_, 'warehouseCode': warehouseCode_, 'purchasingCompany': purchasingCompany_, 'possessor': possessor_, 'supplier': supplier_, 'supplierName': supplierName_, 'remark': remark_, 'itemList': itemList_}
         response = self.request.post(url=self.url+'/admin/invoice/notice/add', data=data, hosts=self.url)
         apiTestResult(api='/admin/invoice/notice/add', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
@@ -964,13 +964,22 @@ class wms_apiAction(object):
         apiTestResult(api='/common/file/upload/public-pic', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _mobile_inventory_shop_list(self, shopCode_=None, warehouseType_=None, productType_=None):
+    def _mobile_inventory_pos_count(self, shopCode_=None, warehouseType_=None, productType_=None):
         if self.user is None:
             data = {'shopCode': shopCode_, 'warehouseType': warehouseType_, 'productType': productType_, }
         else:
             data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'shopCode': shopCode_, 'warehouseType': warehouseType_, 'productType': productType_}
-        response = self.request.post(url=self.url+'/mobile/inventory/shop/list', data=data, hosts=self.url)
-        apiTestResult(api='/mobile/inventory/shop/list', host=self.url,datas=data, resp=response)
+        response = self.request.post(url=self.url+'/mobile/inventory/pos/count', data=data, hosts=self.url)
+        apiTestResult(api='/mobile/inventory/pos/count', host=self.url,datas=data, resp=response)
+        return self.__judge_response_status(json.loads(response))
+
+    def _mobile_inventory_pos_list(self, shopCode_=None, productName_=None, warehouseType_=None, productType_=None):
+        if self.user is None:
+            data = {'shopCode': shopCode_, 'productName': productName_, 'warehouseType': warehouseType_, 'productType': productType_, }
+        else:
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'shopCode': shopCode_, 'productName': productName_, 'warehouseType': warehouseType_, 'productType': productType_}
+        response = self.request.post(url=self.url+'/mobile/inventory/pos/list', data=data, hosts=self.url)
+        apiTestResult(api='/mobile/inventory/pos/list', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
     def _mobile_move_pda_pick_detail_list(self, orderCode_=None):

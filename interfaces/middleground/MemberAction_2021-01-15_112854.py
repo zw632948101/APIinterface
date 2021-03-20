@@ -496,11 +496,11 @@ class memberAction(object):
         apiTestResult(api='/api/member/benefits-list', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _api_member_blackList_by_userId(self, input_=None):
+    def _api_member_blackList_by_userId(self, limitType_=None, userId_=None):
         if self.user is None:
-            data = {'input': input_, }
+            data = {'limitType': limitType_, 'userId': userId_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'limitType': limitType_, 'userId': userId_}
         response = self.request.post(url=self.url+'/api/member/blackList-by-userId', data=data, hosts=self.url)
         apiTestResult(api='/api/member/blackList-by-userId', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
@@ -514,29 +514,29 @@ class memberAction(object):
         apiTestResult(api='/api/member/import-members', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _api_member_integral_sync(self, input_=None):
+    def _api_member_integral_sync(self, bizType_=None, platform_=None, userId_=None):
         if self.user is None:
-            data = {'input': input_, }
+            data = {'bizType': bizType_, 'platform': platform_, 'userId': userId_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'bizType': bizType_, 'platform': platform_, 'userId': userId_}
         response = self.request.post(url=self.url+'/api/member/integral-sync', data=data, hosts=self.url)
         apiTestResult(api='/api/member/integral-sync', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _api_member_member_by_userId(self, input_=None):
+    def _api_member_member_by_userId(self, userId_=None):
         if self.user is None:
-            data = {'input': input_, }
+            data = {'userId': userId_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'userId': userId_}
         response = self.request.post(url=self.url+'/api/member/member-by-userId', data=data, hosts=self.url)
         apiTestResult(api='/api/member/member-by-userId', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _api_member_sync_member(self, input_=None):
+    def _api_member_sync_member(self, age_=None, birthday_=None, city_=None, companyName_=None, county_=None, email_=None, gender_=None, headImg_=None, idCardNo_=None, mobile_=None, name_=None, platform_=None, platformRole_=None, province_=None, realName_=None, type_=None, userId_=None):
         if self.user is None:
-            data = {'input': input_, }
+            data = {'age': age_, 'birthday': birthday_, 'city': city_, 'companyName': companyName_, 'county': county_, 'email': email_, 'gender': gender_, 'headImg': headImg_, 'idCardNo': idCardNo_, 'mobile': mobile_, 'name': name_, 'platform': platform_, 'platformRole': platformRole_, 'province': province_, 'realName': realName_, 'type': type_, 'userId': userId_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'age': age_, 'birthday': birthday_, 'city': city_, 'companyName': companyName_, 'county': county_, 'email': email_, 'gender': gender_, 'headImg': headImg_, 'idCardNo': idCardNo_, 'mobile': mobile_, 'name': name_, 'platform': platform_, 'platformRole': platformRole_, 'province': province_, 'realName': realName_, 'type': type_, 'userId': userId_}
         response = self.request.post(url=self.url+'/api/member/sync-member', data=data, hosts=self.url)
         apiTestResult(api='/api/member/sync-member', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))

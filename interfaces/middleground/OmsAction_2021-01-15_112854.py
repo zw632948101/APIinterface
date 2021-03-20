@@ -82,11 +82,11 @@ class omsAction(object):
         apiTestResult(api='/admin/order/shipment', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _api_delivery_status_change(self, input_=None):
+    def _api_delivery_status_change(self, failedReason_=None, shipType_=None, status_=None, time_=None, transportNo_=None, wayBillNo_=None):
         if self.user is None:
-            data = {'input': input_, }
+            data = {'failedReason': failedReason_, 'shipType': shipType_, 'status': status_, 'time': time_, 'transportNo': transportNo_, 'wayBillNo': wayBillNo_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'input': input_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'failedReason': failedReason_, 'shipType': shipType_, 'status': status_, 'time': time_, 'transportNo': transportNo_, 'wayBillNo': wayBillNo_}
         response = self.request.post(url=self.url+'/api/delivery/status-change', data=data, hosts=self.url)
         apiTestResult(api='/api/delivery/status-change', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))

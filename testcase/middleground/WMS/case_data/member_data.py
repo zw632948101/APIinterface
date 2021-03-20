@@ -2,13 +2,28 @@ import random
 import time
 
 class Random:
+    # 只能传list
+    def __init__(self,city=None,name=None,now=None):
+        if city == None:
+            self.city = ["铜仁","郫县","溶洞","音乐空间"]
+        else:
+            self.city = city
+        if name == None:
+            self.name = ["行政仓","车间仓","项目仓"]
+        else:
+            self.name = name
+        if now == None:
+            self.now = time.strftime('%S', time.localtime(time.time()))
+        else:
+            self.now = now
+
     # 随机名字
     def create_name(self):
-        xs = ["桂","龙","荔","山","荆","校","洋","紫","桉","刺","向","巢","榨","浓缩","油","苕","橡","荞","春","棉"]
-        mz = ["花蜜","眼蜜","枝蜜","条蜜","树蜜","英蜜","樨蜜","槐蜜","葵蜜","菜蜜","子蜜","胶蜜","麦蜜","瓜蜜","桔蜜","刺蜜","木蜜","橘蜜","桕蜜"]
-        sj = time.strftime('%S', time.localtime(time.time())) # 获取当前时间秒
-        name = random.choice(xs) + random.choice(mz) + sj
-        return name
+        new_name = random.choice(self.city) \
+                   + random.choice(self.name) \
+                   + self.now
+        return new_name
+
     def logo_list(self):
         form = ".jpg"
         logo = ["https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1767448974,2051103783&fm=26&gp=0",
