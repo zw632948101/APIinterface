@@ -47,7 +47,12 @@ class OutStorehouse(unittest.TestCase):
                                             usedNo_=case['data']['usedNo_'],
                                             pics_=case['data']['pics_']
                                    )
-        self.assertEqual(case['expect'],resp.get('status'))
+        try:
+            self.assertEqual(case['expect'],resp.get('status'))
+        except Exception as e:
+            print("断言失败原因: {}".format(e))
+            raise "请求参数:{}".format(case['data'])
+
         if resp.get('status') == "OK":
             # 确保值写入库中
             expect = case['data']['cattleEarTagNo_']
