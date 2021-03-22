@@ -64,11 +64,11 @@ class breedAction(object):
         apiTestResult(api='/admin/bull/detail', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
 
-    def _admin_bull_edit(self, id_=None, frozenSemenNo_=None, variety_=None, fatherNo_=None, motherNo_=None, sexControlStatus_=None, remark_=None):
+    def _admin_bull_edit(self, cattleNo_=None, id_=None, frozenSemenNo_=None, variety_=None, fatherNo_=None, motherNo_=None, sexControlStatus_=None, remark_=None):
         if self.user is None:
-            data = {'id': id_, 'frozenSemenNo': frozenSemenNo_, 'variety': variety_, 'fatherNo': fatherNo_, 'motherNo': motherNo_, 'sexControlStatus': sexControlStatus_, 'remark': remark_, }
+            data = {'cattleNo':cattleNo_, 'id': id_, 'frozenSemenNo': frozenSemenNo_, 'variety': variety_, 'fatherNo': fatherNo_, 'motherNo': motherNo_, 'sexControlStatus': sexControlStatus_, 'remark': remark_, }
         else:
-            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'id': id_, 'frozenSemenNo': frozenSemenNo_, 'variety': variety_, 'fatherNo': fatherNo_, 'motherNo': motherNo_, 'sexControlStatus': sexControlStatus_, 'remark': remark_}
+            data = {'_tk_': self.user.token, '_deviceId_': self.user.device_id, 'cattleNo':cattleNo_, 'id': id_, 'frozenSemenNo': frozenSemenNo_, 'variety': variety_, 'fatherNo': fatherNo_, 'motherNo': motherNo_, 'sexControlStatus': sexControlStatus_, 'remark': remark_}
         response = self.request.post(url=self.url+'/admin/bull/edit', data=data, hosts=self.url)
         apiTestResult(api='/admin/bull/edit', host=self.url,datas=data, resp=response)
         return self.__judge_response_status(json.loads(response))
