@@ -17,7 +17,8 @@ from utils import timestamp
 
 class BullLibraryCase(unittest.TestCase):
     """
-    接口文档:
+    本地公牛库模块
+    接口文档:http://dev-gateway.worldfarm.com/swagger-ui.html
     """
     breed = breedAction()
     log.info("养殖育肥服务-公牛库模块测试")
