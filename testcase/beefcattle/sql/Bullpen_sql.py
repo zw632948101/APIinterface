@@ -29,10 +29,20 @@ class Bullpen(DataBaseOperate):
               "where is_delete != '1' order by id desc limit 1;"
         return self.operate_db(sql=sql)
 
+    def get_cattle_cattle_list_by_cattle_no(self):
+        sql = "select cattle_ear_tag_no from `bf-breed`.`t_cattle` " \
+              "where is_delete != 1 and cattle_ear_tag_no != 'null' " \
+              "order by id desc limit 5;"
+        no = []
+        for cattle_ear_tag_no in self.operate_db(sql=sql):
+            no.append(cattle_ear_tag_no['cattle_ear_tag_no'])
+        return no
 
 
 
 if __name__ == '__main__':
-    t = int(Bullpen().get_cattle()[0]['cattle_ear_tag_no']) + 1
-    b = Bullpen().get_product_category_mapping()[0]['sku_code']
-    print(b)
+    t = Bullpen().get_cattle_cattle_list_by_cattle_no()
+    print(t)
+
+
+
