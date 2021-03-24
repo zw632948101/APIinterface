@@ -10,7 +10,7 @@ from ..sql.breed import BullLibrary, CattleFence, FaecesSeparator
 from utils.log import log
 from faker import Faker
 from random import choice, randint
-from utils import timestamp
+from utils import timestamp, conversion
 import json
 
 
@@ -34,7 +34,7 @@ class TestFaecesSeparator(unittest.TestCase):
         :return:
         """
         farm_id = choice(self.farmid).get('id')
-        fence_id = choice(self.fence.query_cattle_fence_list(farmid=farm_id)).get('id')
+        fence_id = choice(self.fence.query_cattle_fence_list(farm_id=farm_id)).get('id')
         make_date = timestamp.get_timestamp()
         up_floor_ratio = randint(30, 40)
         middle_floor_ratio = randint(30, 40)
@@ -66,7 +66,7 @@ class TestFaecesSeparator(unittest.TestCase):
         middle_floor_ratio = randint(30, 40)
         down_floor_ratio = 100 - up_floor_ratio - middle_floor_ratio
         json_string = [{"cattleFarmId": farm_id,
-                        "fenceId": choice(self.fence.query_cattle_fence_list(farmid=farm_id)).get(
+                        "fenceId": choice(self.fence.query_cattle_fence_list(farm_id=farm_id)).get(
                             'id'),
                         "makeDate": timestamp.get_standardtime_timestamp(type=-1,
                                                                          day=randint(1, 30)),
@@ -84,7 +84,7 @@ class TestFaecesSeparator(unittest.TestCase):
         :return:
         """
         farm_id = choice(self.farmid).get('id')
-        fence_id = choice(self.fence.query_cattle_fence_list(farmid=farm_id)).get('id')
+        fence_id = choice(self.fence.query_cattle_fence_list(farm_id=farm_id)).get('id')
         faeces = choice(self.faeces.query_faeces_separator_list_info(farm_id=farm_id))
         make_date = timestamp.get_timestamp()
         up_floor_ratio = randint(30, 40)
@@ -99,6 +99,7 @@ class TestFaecesSeparator(unittest.TestCase):
                                                       id_=faeces.get('id'))
         self.assertEqual(resp.get('status'), 'OK')
         faeces_list = self.faeces.query_faeces_separator_list_info(farm_id=farm_id)
+        faeces_list = conversion.del_dict_value_null(faeces_list)
         self.assertNotIn(faeces, faeces_list)
 
     def test_admin_faeces_separator_detail(self):
@@ -110,6 +111,7 @@ class TestFaecesSeparator(unittest.TestCase):
         faeces = choice(self.faeces.query_faeces_separator_list_info(farm_id=farm_id))
         resp = self.breed._admin_faecesSeparator_detail(id_=faeces.get('id'))
         self.assertEqual(resp.get('status'), 'OK')
+        faeces = conversion.del_dict_value_null(faeces)
         self.assertDictEqual(faeces, resp.get('content'))
 
     def test_admin_faeces_separator_del(self):
@@ -130,7 +132,7 @@ class TestFaecesSeparator(unittest.TestCase):
         :return:
         """
         farm_id = choice(self.farmid).get('id')
-        fence_no = choice(self.fence.query_cattle_fence_list(farmid=farm_id)).get('fence_no')
+        fence_no = choice(self.fence.query_cattle_fence_list(farm_id=farm_id)).get('fence_no')
         # fence_no = '05-01'
         pn = 1
         ps = 20
@@ -145,5 +147,6 @@ class TestFaecesSeparator(unittest.TestCase):
                                                                   start_date=start_date,
                                                                   end_date=end_date, ps=ps, pn=pn)
         content = resp.get('content')
-        for c, f in zip(content.get('datas'), faece_list):
+        faeces_list = conversion.del_dict_value_null(faece_list)
+        for c, f in zip(content.get('datas'), faeces_list):
             self.assertDictEqual(c, f)

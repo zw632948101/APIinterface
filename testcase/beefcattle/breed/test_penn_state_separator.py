@@ -10,7 +10,7 @@ from ..sql.breed import BullLibrary, CattleFence, PennStateSeparator
 from utils.log import log
 from faker import Faker
 from random import choice, randint
-from utils import timestamp
+from utils import timestamp,conversion
 import json
 
 
@@ -34,7 +34,7 @@ class TestPennStateSeparator(unittest.TestCase):
         :return:
         """
         cattleFarmId = choice(self.farmid).get('id')
-        fenceId = choice(self.fence.query_cattle_fence_list(farmid=cattleFarmId)).get('id')
+        fenceId = choice(self.fence.query_cattle_fence_list(farm_id=cattleFarmId)).get('id')
         # fenceId = None
         makeDate = timestamp.get_timestamp()
         # makeDate = None
@@ -72,7 +72,7 @@ class TestPennStateSeparator(unittest.TestCase):
         fenceRemark = self.fake.text(200)
         jsonString = [{"cattleFarmId_": cattleFarmId,
                        "fenceId_": choice(
-                           self.fence.query_cattle_fence_list(farmid=cattleFarmId)).get('id'),
+                           self.fence.query_cattle_fence_list(farm_id=cattleFarmId)).get('id'),
                        "makeDate_": makeDate,
                        "dryMatterRatio_": dryMatterRatio,
                        "waterRatio_": waterRatio,
@@ -107,6 +107,7 @@ class TestPennStateSeparator(unittest.TestCase):
                                                          end_date=endMakeDate, ps=ps, pn=pn)
 
         content = resp.get('content')
+        penn = conversion.del_dict_value_null(penn)
         for d, p in zip(content.get('datas'), penn):
             self.assertDictEqual(d, p)
 
@@ -120,6 +121,7 @@ class TestPennStateSeparator(unittest.TestCase):
         resp = self.breed._admin_pennStateSeparator_detail(id_=penn.get('id'))
         self.assertEqual(resp.get('status'), 'OK')
         content = resp.get('content')
+        penn = conversion.del_dict_value_null(penn)
         self.assertDictEqual(penn, content)
 
     def test_admin_penn_state_separator_edit(self):
@@ -129,7 +131,7 @@ class TestPennStateSeparator(unittest.TestCase):
         """
         farm_id = choice(self.farmid).get('id')
         penn = choice(self.penn.query_penn_state_separator_list(farm_id=farm_id))
-        fenceId = choice(self.fence.query_cattle_fence_list(farmid=farm_id)).get('id')
+        fenceId = choice(self.fence.query_cattle_fence_list(farm_id=farm_id)).get('id')
         # fenceId = None
         makeDate = timestamp.get_timestamp()
         # makeDate = None

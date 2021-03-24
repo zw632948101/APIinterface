@@ -92,41 +92,103 @@ class CowshedSql(DataBaseOperate):
         super(CowshedSql, self).__init__()
         self.operate_db = lambda sql: self.operate(host=host_ip, sql=sql)
 
-    def query_cowshed_list_info(self, farmid):
+    def query_cowshed_list_info(self, farm_id=None, cowshed_no=None, cowshed_name=None, epc_no=None,
+                                ps=20, pn=1):
         """
         根据农场id，查询农场下的牛舍
-        :param farmid:
-        :return:
+        :param farm_id: 牛场编号
+        :param cowshed_no: 牛舍编号
+        :param cowshed_name: 牛舍名称
+        :param epc_no:
+        :param ps: 条数
+        :param pn: 页码
+        :return: 牛舍列表
         """
+        farm_id = f'AND tc.cattle_farm_id = {farm_id}' if farm_id else ''
+        cowshed_no = f'AND tc.cowshed_no LIKE \'%{cowshed_no}%\'' if cowshed_no else ''
+        cowshed_name = f'AND tc.cowshed_name LIKE \'%{cowshed_name}%\'' if cowshed_name else ''
+        epc_no = f'AND tc.epc_no LIKE \'%{epc_no}%\'' if epc_no else ''
+        pn = ps * pn - ps
         sql = f"""
-            SELECT *
+            SELECT tc.cattle_farm_id AS cattleFarmId,
+                   tc.cowshed_name   AS cowshedName,
+                   tc.cowshed_no     AS cowshedNo,
+                   tc.id,
+                   count(tcf.id)     AS fenceNum,
+                   tc.epc_no         AS epcNo,
+                   tc.area,
+                   tc.remark
             FROM `bf-breed`.t_cowshed tc
+                     LEFT JOIN `bf-breed`.t_cattle_fence tcf ON tcf.cowshed_id = tc.id
             WHERE tc.is_delete = 0
-              AND tc.cattle_farm_id = {farmid};
+              {farm_id} {cowshed_no} {cowshed_name} {epc_no}
+            GROUP BY tc.id
+            LIMIT {pn},{ps};
               """
         return self.operate_db(sql=sql)
 
 
 class CattleFence(DataBaseOperate):
     """
-    牛舍模块查询
+    牛栏模块查询
     """
 
     def __init__(self):
         super(CattleFence, self).__init__()
         self.operate_db = lambda sql: self.operate(host=host_ip, sql=sql)
 
-    def query_cattle_fence_list(self, farmid):
+    def query_cattle_fence_list(self, farm_id=None, fence_no=None, fence_name=None, cowshed_id=None,
+                                type_=None, area=None, epc_no=None, remark=None, exist_filter=None,
+                                pn=1, ps=20):
         """
         根据牛场id查询牛栏信息
-        :param farmid:
-        :return:
+        :param farm_id: 牛场id
+        :param fence_no: 牛栏编号
+        :param fence_name: 牛栏名称
+        :param cowshed_id: 牛舍id
+        :param type_: 牛栏养殖类型
+        :param area: 牛栏面积
+        :param epc_no: 牛栏硬件编号
+        :param remark: 牛栏备注
+        :param exist_filter: 过滤无牛的牛栏
+        :param pn: 页码
+        :param ps: 条数
+        :return: 牛栏列表
         """
+        farm_id = f'AND tf.cattle_farm_id = {farm_id}' if farm_id else ''
+        cowshed_id = f'AND tf.cowshed_id = {cowshed_id}' if cowshed_id else ''
+        type_ = f'AND tf.type = {type_}' if type_ else ''
+        area = f'AND tf.area = {area}' if area else ''
+        fence_no = f'AND tf.fence_no LIKE \'%{fence_no}%\'' if fence_no else ''
+        fence_name = f'AND tf.fence_name LIKE \'%{fence_name}%\'' if fence_name else ''
+        epc_no = f'AND tf.epc_no LIKE \'%{epc_no}%\'' if epc_no else ''
+        remark = f'AND tf.remark LIKE \'%{remark}%\'' if remark else ''
+        exist_filter = 'HAVING COUNT(tca.id) > 0' if exist_filter else ''
+        pn = pn * ps - ps
         sql = f"""
-            SELECT *
+            SELECT tf.area,
+                   tf.cattle_farm_id                                                AS cattleFarmId,
+                   COUNT(tca.id)                                                    AS cattleNum,
+                   tf.cowshed_id                                                    AS cowshedId,
+                   tc.cowshed_name                                                  AS cowshedName,
+                   tf.epc_no                                                        AS epcNo,
+                   tf.fence_name                                                    AS fenceName,
+                   tf.fence_no                                                      AS fenceNo,
+                   tf.id,
+                   tf.remark,
+                   tf.`type`,
+                   (SELECT tcf.name FROM `bf-breed`.t_config tcf 
+                    WHERE tcf.code = tf.type AND tcf.type = '10002') AS typeDesc
             FROM `bf-breed`.t_cattle_fence tf
+                     LEFT JOIN `bf-breed`.t_cowshed tc ON tc.id = tf.cowshed_id
+                     LEFT JOIN `bf-breed`.t_cattle tca ON tca.cattle_fence_id = tf.id 
+                                                            AND tca.is_delete = 0
             WHERE tf.is_delete = 0
-              AND tf.cattle_farm_id = {farmid};
+              {farm_id} {fence_no} {fence_name} {cowshed_id} {type_} {area} {epc_no} {remark}
+            GROUP BY tf.id
+            {exist_filter}
+            ORDER BY tf.id ASC
+            LIMIT {pn},{ps};
               """
         return self.operate_db(sql=sql)
 

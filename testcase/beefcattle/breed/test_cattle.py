@@ -11,7 +11,7 @@ from ..sql.breed import BullLibrary, CattleFence
 from utils.log import log
 from faker import Faker
 from random import choice, randint
-from utils import timestamp
+from utils import timestamp, conversion
 
 
 class TestCattle(unittest.TestCase):
@@ -35,7 +35,7 @@ class TestCattle(unittest.TestCase):
         """
         farmid = choice(self.farmid).get('id')
         cattleEarTagNo_ = 'EB' + str(timestamp.get_timestamp())
-        cattleFenceId_ = choice(self.cattle.query_cattle_fence_list(farmid)).get('id')
+        cattleFenceId_ = choice(self.cattle.query_cattle_fence_list(farm_id=farmid)).get('id')
         variety_ = None
         gender_ = choice(['1001', '1002', '1003'])
         birthday_ = timestamp.get_standardtime_timestamp(type=-1, week=randint(8, 90))
