@@ -109,7 +109,7 @@ class TestCattleFence(unittest.TestCase):
         :return:
         """
         farm_id = choice(self.farmid).get('id')
-        fence_name = '的'
+        fence_name = None
         fence_no = None
         cowshed_id = None
         pn = 1
