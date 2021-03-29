@@ -1,9 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-__author__ = "yong.guo"
-__data__ = "2019/07/27"
-"""
+
 import codecs
 import os, sys
 import time

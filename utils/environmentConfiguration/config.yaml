@@ -4,210 +4,26 @@ env: &env
   updateActionAPI: DEV_API
   version: 2.3.1
   RUN_LEVEL: 3
-  dataBaseURI: 5595ec6c66c0374940fb2d6919a487f9162ddc9bcbd00523b504b2f25d55dc30ad413b43d196ffa16fc59cc4d2f2a9d04993d429fa428436f36c2d79d4d0478d
+  dataBaseURI:
   projectName: *which_project
   loginhosts:
     DEV:
-      PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
+      PASSPORT:
     QA:
-      PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
+      PASSPORT:
 
 flowerChaser:
   <<: *env
   database:
     DEV:
-      host_ip: eca79b6781bc07f5ead511b284f07cd1
+      host_ip:
     QA:
-      host_ip: ca42f3c003f675fb5b71da3d0b0990d19f0539b99d42f8f9901740d9c5ac64f8
+      host_ip:
   urldict:
-    FC_PASSPORT: "Passport"
-    FC_USER: "User"
-    FC_BEE: "Bee"
-    FC_TRADE: "Trade"
+
   accounttype: 'user'
   hosts:
     DEV:
-      FC_BEE: 'http://dev-gateway.worldfarm.com/fc-bee'
-      FC_USER: 'http://dev-gateway.worldfarm.com/world-user'
-
     DEV_API:
-      FC_BEE: 'http://dev-gateway.worldfarm.com/fc-bee'
-      FC_USER: 'http://dev-user.worldfarm.com'
-
     QA:
-      FC_BEE: 'http://qa-gateway.worldfarm.com/fc-bee'
-      FC_TRADE: 'http://qa-gateway.worldfarm.com/fc-trade'
-      FC_USER: 'http://qa-gateway.worldfarm.com/world-user'
-
     QA_API:
-      FC_BEE: 'http://qa-gateway.worldfarm.com/fc-bee'
-      FC_TRADE: 'http://qa-gateway.worldfarm.com/fc-trade'
-      FC_USER: 'http://qa-gateway.worldfarm.com/world-user'
-
-worldFarm:
-  <<: *env
-  database:
-    DEV:
-      host_ip: eca79b6781bc07f5ead511b284f07cd1
-    QA:
-      host_ip: ca42f3c003f675fb5b71da3d0b0990d19f0539b99d42f8f9901740d9c5ac64f8
-  urldict:
-    WF_OFFLINE: "Offline"
-    WF_USER: "User"
-    WF_KOALA: "Koala"
-    WF_PASSPORT: "Passport"
-  accounttype: 'wf_account'
-  account:
-    username: 632948101@qq.com
-    password: 123456
-  hosts:
-    DEV:
-      WF_OFFLINE: 'http://dev-gateway.worldfarm.com/world-offline'
-      WF_USER: 'http://dev-gateway.worldfarm.com/world-user'
-      WF_KOALA: 'http://dev-gateway.worldfarm.com/world-koala'
-      WF_PASSPORT: 'http://dev-gateway.worldfarm.com/world-passport'
-      WF_SSO: 'http://dev.sso.worldfarm.com'
-      WF_MGR: 'http://dev-mgr.agrrobot.com'
-
-    DEV_API:
-      WF_OFFLINE: 'http://dev-offline.worldfarm.com'
-      WF_USER: 'http://dev-user.worldfarm.com'
-      WF_KOALA: 'http://dev-koala.worldfarm.com'
-      WF_PASSPORT: 'http://dev-passport.worldfarm.com'
-
-    QA:
-      WF_OFFLINE: 'http://qa-gateway.worldfarm.com/world-offline'
-      WF_USER: 'http://qa-gateway.worldfarm.com/world-user'
-      WF_KOALA: 'http://qa-gateway.worldfarm.com/world-koala'
-      WF_PASSPORT: 'http://qa-gateway.worldfarm.com/world-passport'
-
-    QA_API:
-      WF_USER: 'http://qa-user.worldfarm.com'
-      WF_KOALA: 'http://qa-koala.worldfarm.com'
-      WF_PASSPORT: 'http://qa-passport.worldfarm.com'
-      WF_OFFLINE: 'http://qa-offline.worldfarm.com'
-      WF_SSO: 'http://qa.sso.worldfarm.com'
-
-middleground:
-  <<: *env
-  database:
-    DEV:
-      host_ip: eca79b6781bc07f5ead511b284f07cd1
-    QA:
-      host_ip: ca42f3c003f675fb5b71da3d0b0990d19f0539b99d42f8f9901740d9c5ac64f8
-  urldict:
-    MP_PRODUCT: "Product"
-    MP_DELIVERY: "delivery"
-    MP_ASSET: "asset"
-    MP_WMS : "wms_api"
-    MP_MEMBER : "member"
-    MP_SHOP : "shop"
-    MP_PAY : "pay"
-    MP_OMS : "oms"
-  accounttype: 'user'
-  hosts:
-    DEV:
-      MP_PRODUCT: 'http://dev-gateway.worldfarm.com/mp-product'
-      MP_DELIVERY: 'http://dev-gateway.worldfarm.com/mp-delivery'
-      MP_ASSET: 'http://dev-gateway.worldfarm.com/mp-asset'
-      MP_WMS: 'http://dev-gateway.worldfarm.com/mp-wms'
-      MP_MEMBER: 'http://dev-gateway.worldfarm.com/mp-member'
-      MP_SHOP: 'http://dev-gateway.worldfarm.com/mp-shop'
-      MP_PAY: 'http://dev-gateway.worldfarm.com/mp-pay'
-      MP_OMS: 'http://dev-gateway.worldfarm.com/mp-oms'
-
-    DEV_API:
-      MP_PRODUCT: 'http://dev-gateway.worldfarm.com/mp-product'
-      MP_DELIVERY: 'http://dev-gateway.worldfarm.com/mp-delivery'
-      MP_ASSET: 'http://dev-gateway.worldfarm.com/mp-asset'
-      MP_WMS: 'http://dev-gateway.worldfarm.com/mp-wms'
-      MP_MEMBER: 'http://dev-gateway.worldfarm.com/mp-member'
-      MP_SHOP: 'http://dev-gateway.worldfarm.com/mp-shop'
-      MP_PAY: 'http://dev-gateway.worldfarm.com/mp-pay'
-      MP_OMS: 'http://dev-gateway.worldfarm.com/mp-oms'
-
-    QA:
-      MP_PRODUCT: 'http://qa-gateway.worldfarm.com/mp-product'
-      MP_DELIVERY: 'http://qa-gateway.worldfarm.com/mp-delivery'
-      MP_ASSET: 'http://qa-gateway.worldfarm.com/mp-asset'
-      MP_WMS: 'http://qa-gateway.worldfarm.com/mp-wms'
-      MP_MEMBER: 'http://qa-gateway.worldfarm.com/mp-member'
-      MP_SHOP: 'http://qa-gateway.worldfarm.com/mp-shop'
-      MP_PAY: 'http://qa-gateway.worldfarm.com/mp-pay'
-      MP_OMS: 'http://qa-gateway.worldfarm.com/mp-oms'
-
-    QA_API:
-      MP_PRODUCT: 'http://qa-gateway.worldfarm.com/mp-product'
-      MP_DELIVERY: 'http://qa-gateway.worldfarm.com/mp-delivery'
-      MP_ASSET: 'http://qa-gateway.worldfarm.com/mp-asset'
-      MP_WMS: 'http://qa-gateway.worldfarm.com/mp-wms'
-      MP_MEMBER: 'http://qa-gateway.worldfarm.com/mp-member'
-      MP_SHOP: 'http://qa-gateway.worldfarm.com/mp-shop'
-      MP_PAY: 'http://qa-gateway.worldfarm.com/mp-pay'
-      MP_OMS: 'http://qa-gateway.worldfarm.com/mp-oms'
-
-wxshop:
-  <<: *env
-  database:
-    DEV:
-      host_ip: eca79b6781bc07f5ead511b284f07cd1
-    QA:
-      host_ip: ca42f3c003f675fb5b71da3d0b0990d19f0539b99d42f8f9901740d9c5ac64f8
-  urldict:
-    WX_PRODUCT: "Product"
-    WX_MALL: "Mall"
-  accounttype: 'user'
-  hosts:
-    DEV:
-      WX_PRODUCT: 'http://dev-gateway.worldfarm.com/wx-product'
-      WX_MALL: 'http://dev-gateway.worldfarm.com/wx-mall'
-
-    DEV_API:
-      WX_PRODUCT: 'http://dev-gateway.worldfarm.com/wx-product'
-      WX_MALL: 'http://dev-gateway.worldfarm.com/wx-mall'
-
-    QA:
-      WX_PRODUCT: 'http://qa-gateway.worldfarm.com/wx-product'
-      WX_MALL: 'http://qa-gateway.worldfarm.com/wx-mall'
-
-    QA_API:
-      WX_PRODUCT: 'http://qa-gateway.worldfarm.com/wx-product'
-      WX_MALL: 'http://qa-gateway.worldfarm.com/wx-mall'
-
-beefcattle:
-  <<: *env
-  database:
-    DEV:
-      host_ip: eca79b6781bc07f5ead511b284f07cd1
-    QA:
-      host_ip: ca42f3c003f675fb5b71da3d0b0990d19f0539b99d42f8f9901740d9c5ac64f8
-  urldict:
-    BF_PLANT: "plant"
-    BF_WAGY: "wagy"
-    BF_TRADE: "trade"
-    BF_BREED: "breed"
-  accounttype: 'user'
-  hosts:
-    DEV:
-      BF_PLANT: 'http://dev-gateway.worldfarm.com/bf-plant'
-      BF_WAGY: 'http://dev-gateway.worldfarm.com/bf-wagy'
-      BF_TRADE: 'http://dev-gateway.worldfarm.com/bf-trade'
-      BF_BREED: 'http://dev-gateway.worldfarm.com/bf-breed'
-
-    DEV_API:
-      BF_PLANT: 'http://dev-gateway.worldfarm.com/bf-plant'
-      BF_WAGY: 'http://dev-gateway.worldfarm.com/bf-wagy'
-      BF_TRADE: 'http://dev-gateway.worldfarm.com/bf-trade'
-      BF_BREED: 'http://dev-gateway.worldfarm.com/bf-breed'
-
-    QA:
-      BF_PLANT: 'http://qa-gateway.worldfarm.com/bf-plant'
-      BF_WAGY: 'http://qa-gateway.worldfarm.com/bf-wagy'
-      BF_TRADE: 'http://qa-gateway.worldfarm.com/bf-trade'
-      BF_BREED: 'http://qa-gateway.worldfarm.com/bf-breed'
-
-    QA_API:
-      BF_PLANT: 'http://qa-gateway.worldfarm.com/bf-plant'
-      BF_WAGY: 'http://qa-gateway.worldfarm.com/bf-wagy'
-      BF_TRADE: 'http://qa-gateway.worldfarm.com/bf-trade'
-      BF_BREED: 'http://qa-gateway.worldfarm.com/bf-breed'

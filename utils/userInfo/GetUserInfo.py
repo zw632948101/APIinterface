@@ -115,20 +115,3 @@ class User(object):
         #     self.create_time = self.user_info["create_time"]
         #     self.device_id = self.user_info["device_id"]
         #     self.is_delete = self.user_info["is_delete"]
-
-    def check_token(self):
-        """
-        验证用户token
-        :return:
-        """
-        data = {'token': self.token,
-                'deviceId': self.device_id}
-        response = Request().post(
-            url="http://dev-gateway.worldfarm.com/world-passport/api/sso/check-token", data=data)
-        json_response = json.loads(response)
-        if json_response["status"] == "OK":
-            pass
-        elif json_response["status"] == "ERROR":
-            raise Exception("status返回ERROR")
-        else:
-            raise Exception("status未返回OK或ERROR")

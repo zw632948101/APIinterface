@@ -47,7 +47,8 @@ class TimestampTransform(object):
         return otherStyleTime
 
     @staticmethod
-    def get_standardtime_by_offset(type=1, week=0, day=0, hour=0, minute=0, second=0, formats="%Y-%m-%d %H:%M:%S"):
+    def get_standardtime_by_offset(type=1, week=0, day=0, hour=0, minute=0, second=0,
+                                   formats="%Y-%m-%d %H:%M:%S"):
         """
         根据现在时间和设定偏移量获取标准时间
         :param type:偏移类型，1为加法，其他为减法
@@ -60,13 +61,16 @@ class TimestampTransform(object):
         :return:
         """
         if type == 1:
-            return (datetime.datetime.now() + datetime.timedelta(weeks=week, days=day, hours=hour, minutes=minute,
+            return (datetime.datetime.now() + datetime.timedelta(weeks=week, days=day, hours=hour,
+                                                                 minutes=minute,
                                                                  seconds=second)).strftime(formats)
-        return (datetime.datetime.now() - datetime.timedelta(weeks=week, days=day, hours=hour, minutes=minute,
+        return (datetime.datetime.now() - datetime.timedelta(weeks=week, days=day, hours=hour,
+                                                             minutes=minute,
                                                              seconds=second)).strftime(formats)
 
     @staticmethod
-    def get_standardtime_timestamp(type=1, week=0, day=0, hour=0, minute=0, second=0, formats="%Y-%m-%d %H:%M:%S"):
+    def get_standardtime_timestamp(type=1, week=0, day=0, hour=0, minute=0, second=0,
+                                   formats="%Y-%m-%d %H:%M:%S"):
         """
         根据现在时间和设定偏移量获取标准时间的时间戳
         :param type:偏移类型，1为加法，其他为减法
@@ -78,7 +82,8 @@ class TimestampTransform(object):
         :param second:
         :return:
         """
-        t = TimestampTransform.get_standardtime_by_offset(type=type, week=week, day=day, hour=hour, minute=minute,
+        t = TimestampTransform.get_standardtime_by_offset(type=type, week=week, day=day, hour=hour,
+                                                          minute=minute,
                                                           second=second, formats=formats)
         return TimestampTransform.str_time_timestamp(t, formats=formats)
 
@@ -92,8 +97,3 @@ class TimestampTransform(object):
         end_date = time.mktime((year, 12, 31, 0, 0, 0, 0, 0, 0))
         date = status_date + random() * (end_date - status_date)
         return TimestampTransform.timestamp_formatting(date, formats="%m%d")
-
-
-if __name__ == '__main__':
-    t = TimestampTransform()
-    print(t.get_standardtime_by_offset(type=2,day=350))

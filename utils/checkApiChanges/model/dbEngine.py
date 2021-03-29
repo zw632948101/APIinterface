@@ -1,9 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-__author__ = "yong.guo"
-__data__ = "2019/07/23"
-"""
+
 from sqlalchemy import create_engine
 from utils.dataDecryption import decrypt
 from utils.environmentConfiguration import config

@@ -1,11 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
-"""
-@Time: 2019 2019/12/30 15:05
-@Author: hengxin
-"""
-
 import random
 import json
 from testcase.flowerChaser.sql.Bee import ConfigInformationSql

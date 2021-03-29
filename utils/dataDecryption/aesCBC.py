@@ -15,6 +15,3 @@ def decrypt(cipher, mode=AES.MODE_CBC):
         return json.loads(bytes.decode(plain_text).rstrip('\0'))
     except json.decoder.JSONDecodeError as e:
         return bytes.decode(plain_text).rstrip('\0')
-
-
-print(decrypt('ca42f3c003f675fb5b71da3d0b0990d19f0539b99d42f8f9901740d9c5ac64f8'))

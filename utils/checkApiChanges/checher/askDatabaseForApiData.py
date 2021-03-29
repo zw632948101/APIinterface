@@ -1,9 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-__author__ = "yong.guo"
-__data__ = "2019/07/25"
-"""
+
 from utils.log import log
 from utils.checkApiChanges.model.dbEngine import DBEngine
 from sqlalchemy import orm
