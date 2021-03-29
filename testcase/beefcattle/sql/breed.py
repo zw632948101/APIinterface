@@ -25,7 +25,7 @@ class BullLibrary(DataBaseOperate):
         userid = f'AND tcf.creator_id = {userid}' if userid else ''
         sql = f"""
                 SELECT tcf.id
-                FROM `bf-wagy`.t_cattle_farm tcf
+                FROM `bf-wagy`.t_service_point tcf
                 WHERE tcf.is_delete = 0
                   {userid};
               """

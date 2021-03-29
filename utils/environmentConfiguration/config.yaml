@@ -1,6 +1,6 @@
 which_project: &which_project beefcattle
 env: &env
-  run: DEV
+  run: QA
   updateActionAPI: DEV_API
   version: 2.3.1
   RUN_LEVEL: 3

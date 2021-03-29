@@ -27,7 +27,7 @@ class TestCattleFence(unittest.TestCase):
     cow = CowshedSql()
     cattle = CattleFence()
     breed.set_user(mobile=15388126072)
-    farmid = bull.query_cattle_farm_id(userid=breed.user.user_id)
+    farmid = bull.query_cattle_farm_id(userid=660)
 
     def test_admin_cattle_fence_add(self):
         """

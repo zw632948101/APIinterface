@@ -26,7 +26,7 @@ class TestCowshed(unittest.TestCase):
     bull = BullLibrary()
     cowshed = CowshedSql()
     breed.set_user(mobile=15388126072)
-    farmid = bull.query_cattle_farm_id(userid=breed.user.user_id)
+    farmid = bull.query_cattle_farm_id(userid=660)
 
     def test_admin_cowshed_newCowshedNo(self):
         """
@@ -41,15 +41,15 @@ class TestCowshed(unittest.TestCase):
         WEB-牛舍-新增牛舍
         :return:
         """
-        cowshedName = choice(self.bull.query_cattle_config_variety()).get('name') + '牛舍'
+        cowshedName = choice(self.bull.query_cattle_config_variety()).get('name') + '牛舍2'
         cattleFarmId = choice(self.farmid).get('id')
         cowNo_info = self.breed._admin_cowshed_newCowshedNo(cattleFarmId_=cattleFarmId)
         cowshedNo = cowNo_info.get('content')
         area = randint(999, 999999)
-        epcNo = 'NC' + str(timestamp.get_timestamp()) + '12345'
+        epcNo = 'NC' + str(timestamp.get_timestamp())
         remark = self.fake.text(30)
         resp = self.breed._admin_cowshed_add(cowshedName_=cowshedName, cowshedNo_=cowshedNo,
-                                             cattleFarmId_=199, area_=area, epcNo_=epcNo,
+                                             cattleFarmId_=cattleFarmId, area_=area, epcNo_=epcNo,
                                              remark_=remark)
         self.assertEqual(resp.get('status'), 'OK')
         cowsheds = self.cowshed.query_cowshed_list_info(farm_id=cattleFarmId, cowshed_no=cowshedNo,
